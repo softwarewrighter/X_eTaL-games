@@ -1,0 +1,1 @@
+Vendored X_eTaL 39938f3 (own commit); vendor/build/check scripts from X_eTaL-demos; build sets XETAL_BUILD_SHA so --version names the vendored commit; vendor-probe native+wasm32; gate runs check-vendor
