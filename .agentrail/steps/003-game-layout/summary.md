@@ -1,0 +1,1 @@
+games/_template, games.py, test-games.sh with expected/NAME.in as stdin, selftest in gate, new-game/run-game/fetch-assets, recipes, README section
