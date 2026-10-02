@@ -1,0 +1,1 @@
+Scaffold: agentrail saga foundation, CLAUDE.md (briefing + rules incl. untracked third-party assets), AGENTS.md symlink, README, COPYRIGHT, LICENSE, CHANGES.md, .gitignore, justfile, gate (markdown), docs/plan.md (A1-A10, 20 games, 4 sagas), docs/xetal-asks.md
