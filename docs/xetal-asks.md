@@ -12,7 +12,7 @@ workaround in use.
 
 | Status | Kind | Ask | Games | Workaround |
 | ------ | ---- | --- | ----- | ---------- |
-| open | feature | Build the `xetal` CLI for `wasm32-wasip1` (a cargo feature to leave out the terminal editor and line editor) | all (pages run the real binary) | blocked: pages still use the engine library (`xetal-play`) compiled into each page |
+| open | feature | A terminal for interactive programs, in the browser and at the CLI: a `[]TE` interface, a sw-tos-style browser terminal replacing `window.prompt`, and a `terminal` cargo feature so `xetal-cli` builds for `wasm32-wasip1` (full write-up: [`xetal-terminal-request.md`](xetal-terminal-request.md)) | all interactive games; all pages (the real binary) | pages link the engine library (`xetal-play`) and replay the typed history on every line |
 | open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
 ## Details
@@ -38,7 +38,9 @@ error[E0432]: unresolved import `sys::position`
 `xetal-edit` (`xetal edit`) and `xetal-line` (the REPL's line editor),
 which `xetal-cli` always depends on.
 
-Ask: a default-on cargo feature in `xetal-cli` (say `terminal`) that
+This is part 3 of the terminal request,
+[`xetal-terminal-request.md`](xetal-terminal-request.md). Ask: a
+default-on cargo feature in `xetal-cli` (say `terminal`) that
 brings in `xetal-edit` and the `ratatui` line editor; built with
 `--no-default-features`, `xetal edit` reports it is unavailable and
 `xetal repl` reads plain lines from standard input. Then

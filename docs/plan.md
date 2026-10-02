@@ -136,11 +136,12 @@ BASIC and whole-array X_eTaL. Each port keeps the original `.bas` in
 | # | Step slug | Delivers |
 | - | --------- | -------- |
 | 1 | guess | DONE: NumberGuess.xtl (answer rule item by item; `l:p_ossible`, every candidate against every guess by `t_able`; the halving player on all 100 secrets at once: 1 2 4 8 16 32 37); play.xtl as the BASIC plays; the page runs play.xtl unmodified in a terminal (`microscope::terminal::session`: typed history replayed, echoed where it is read); the layout check enforces the program/library split. Planned: guess the number (guess.bas, guess-random.bas): the smallest game; the terminal page pattern: an output pane and a command line, the program re-run with the whole typed history as its input (`xetal-store` typed lines) and a fixed seed per game |
-| 2 | robot-chase | robot-chase.bas: robots as an N x 2 matrix all moving at once by the sign of the difference; wrecks where positions repeat; teleport; the board page |
-| 3 | trek-adventure | trek-adventure.bas ("Decaying orbit"): rooms, exits, items and flags as tables and vectors, the numeric command menu as a state machine; on the terminal page |
-| 4 | terminal-shell | the parts the text games' pages share (output pane, command line, history replay) moved into `shared/`, the pages' tests unchanged |
-| 5 | trek | startrek.bas: an 8 x 8 galaxy of 8 x 8 sectors, SRS/LRS as array slices, phasers and torpedoes, docking; terminal page with a sector grid |
-| 6 | gallery-1-release | catalog, README, per-game docs, screenshots, retrospective |
+| 2 | xetal-wasm | BLOCKED on the terminal request (`docs/xetal-terminal-request.md`): `xetal-cli` cannot build for wasm32-wasip1 (ratatui/crossterm). When it lands: vendor, `xetal.wasm` for the site, our own WASI shim, a shared terminal page running `play.xtl` with the binary, Node tests reproducing every native golden, the Yew engine pages retired. No game uses a browser dialog for input, ever. |
+| 3 | robot-chase | robot-chase.bas: robots as an N x 2 matrix all moving at once by the sign of the difference; wrecks where positions repeat; teleport; the board page |
+| 4 | trek-adventure | trek-adventure.bas ("Decaying orbit"): rooms, exits, items and flags as tables and vectors, the numeric command menu as a state machine; on the terminal page |
+| 5 | terminal-shell | the parts the text games' pages share (output pane, command line, history replay) moved into `shared/`, the pages' tests unchanged |
+| 6 | trek | startrek.bas: an 8 x 8 galaxy of 8 x 8 sectors, SRS/LRS as array slices, phasers and torpedoes, docking; terminal page with a sector grid |
+| 7 | gallery-1-release | catalog, README, per-game docs, screenshots, retrospective |
 
 ## Saga 3 -- grids (P0 and the arcade shell)
 
