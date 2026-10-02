@@ -1,6 +1,6 @@
 number = 4
 slug = "pages-pipeline"
-status = "pending"
+status = "in-progress"
 description = "foundation step 4: shared/microscope copied from ../X_eTaL-demos (repo links ..."
 role = "production"
 context_files = []
