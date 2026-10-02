@@ -82,6 +82,7 @@ just games                           # the games, in catalog order
 just run SLUG                        # run a game's program (a scripted game)
 just play SLUG                       # play it at the terminal (play.xtl)
 just show SLUG                       # the program as a notebook: each statement, then its output
+just repl SLUG                       # the X_eTaL REPL in the game's directory; "h:" u_se< "HorseRace" loads its rules
 just test-game SLUG                  # check its output against expected/
 just new-game nim "Nim"              # start a new game from games/_template
 just bless SLUG                      # rewrite its expected output (review the diff)

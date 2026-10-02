@@ -12,9 +12,49 @@ workaround in use.
 
 | Status | Kind | Ask | Games | Workaround |
 | ------ | ---- | --- | ----- | ---------- |
+| open | feature | Build the `xetal` CLI for `wasm32-wasip1` (a cargo feature to leave out the terminal editor and line editor) | all (pages run the real binary) | blocked: pages still use the engine library (`xetal-play`) compiled into each page |
 | open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
 ## Details
+
+### The `xetal` binary for WebAssembly (WASI)
+
+The game pages should run the real `xetal` binary, the one the goldens
+test, compiled to WebAssembly: `xetal run --seed S play.xtl` in the
+browser under a small WASI shim, with the game's files in an in-memory
+file system and what the player typed as standard input, and `xetal
+render --html` for the decorated source. Today `xetal-cli` cannot be
+built for `wasm32-wasip1`:
+
+```
+$ cd vendor/xetal/components/cli
+$ cargo build --release -p xetal-cli --target wasm32-wasip1
+error[E0432]: unresolved import `sys::position`
+  --> crossterm-0.29.0/src/cursor.rs:52:9
+...
+```
+
+`crossterm` (no WASI support) comes in through `ratatui` in
+`xetal-edit` (`xetal edit`) and `xetal-line` (the REPL's line editor),
+which `xetal-cli` always depends on.
+
+Ask: a default-on cargo feature in `xetal-cli` (say `terminal`) that
+brings in `xetal-edit` and the `ratatui` line editor; built with
+`--no-default-features`, `xetal edit` reports it is unavailable and
+`xetal repl` reads plain lines from standard input. Then
+
+```
+cargo build --release -p xetal-cli --no-default-features --target wasm32-wasip1
+```
+
+gives a `xetal.wasm` exposing `run`, `eval`, `render`, `type` and the
+rest unchanged. Nothing else in the CLI looked platform-bound (it
+reads files and standard input, writes standard output; `[]S_HOW`
+writes numbered files, which a shim can collect).
+
+Workaround meanwhile: each page links the X_eTaL engine library
+(`xetal-play`, the same crate X_eTaL's own live demo uses) compiled to
+wasm32, and runs the game's unmodified `.xtl` files with it.
 
 ### A program defining `l:` names
 

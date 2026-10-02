@@ -44,6 +44,10 @@ run slug file="":
 play slug:
     @scripts/run-game.sh "$1" play.xtl
 
+# The X_eTaL REPL in a game's directory, its rules library importable: just repl horse-race
+repl slug:
+    cd games/{{slug}} && "$(../../scripts/build-xetal.sh)" repl
+
 # Run a game's program as a notebook: each statement drawn, then its output
 show slug file="":
     @scripts/run-game.sh --echo "$1" ${2:+"$2"}
