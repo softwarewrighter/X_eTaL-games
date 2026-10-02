@@ -1,0 +1,1 @@
+guess live: NumberGuess.xtl, guess.xtl, play.xtl (scripted-input golden), page runs play.xtl unmodified via terminal::session; pages show program + library separately; layout check for program/library split; ask filed
