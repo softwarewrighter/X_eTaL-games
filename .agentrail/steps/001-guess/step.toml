@@ -1,0 +1,9 @@
+number = 1
+slug = "guess"
+status = "pending"
+description = "basic step 1: games/guess from guess.bas and guess-random.bas (original/ kept..."
+role = "production"
+context_files = []
+created_at = "2026-10-02T12:32:00"
+task_type = "game"
+commits = []
