@@ -1,6 +1,6 @@
 number = 5
 slug = "horse-race"
-status = "pending"
+status = "in-progress"
 description = "foundation step 5: games/horse-race end to end. horse-race.xtl: five horses, ..."
 role = "production"
 context_files = []

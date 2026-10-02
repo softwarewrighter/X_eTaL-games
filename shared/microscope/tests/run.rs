@@ -39,3 +39,18 @@ fn errors_are_reported() {
 fn sections_cut_between_markers() {
     assert_eq!(section("a\n# start\nx\n# end\nb", "# start", "# end"), "# start\nx\n");
 }
+
+#[test]
+fn a_program_uses_a_library_from_the_pages_store() {
+    microscope::run::library("Probe", "l:t_wice := { x -> 2 * x }\n");
+    let out = output("\"p:\" u_se< \"Probe\"\np:t_wice 21", 1).unwrap();
+    assert_eq!(out, vec!["42".to_string()]);
+}
+
+#[test]
+fn seeds_change_the_rolls_and_repeat_them() {
+    use microscope::run::output_seeded;
+    let roll = |seed| output_seeded("r_oll! 20 r_eshape 6", 1, seed).unwrap();
+    assert_eq!(roll(7), roll(7));
+    assert_ne!(roll(7), roll(8));
+}

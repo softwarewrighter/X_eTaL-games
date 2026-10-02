@@ -1,0 +1,16 @@
+[package]
+name = "horse-race-web"
+description = "The horse race in the browser: five horses as one vector of positions, every round one X_eTaL expression"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+microscope = { path = "../../../shared/microscope" }
+yew = { version = "0.21", features = ["csr"] }
+gloo-timers = "0.3"
+js-sys = "0.3"
+console_error_panic_hook = "0.1"
+
+[workspace]

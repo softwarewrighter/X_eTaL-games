@@ -1,0 +1,8 @@
+l:finish : Int
+l:n_ames : Unit -> Char
+l:n_ew : Num a => Int -> a
+l:r_oll : a -> Int
+l:m_ove : Num a => a -> a -> a
+l:s_tatus : Truthy a => Int -> a
+l:w_inners : Num a => a -> Int
+l:v_iew : Int -> Char
