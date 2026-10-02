@@ -1,9 +1,10 @@
 number = 5
 slug = "horse-race"
-status = "in-progress"
+status = "completed"
 description = "foundation step 5: games/horse-race end to end. horse-race.xtl: five horses, ..."
 role = "production"
 context_files = []
 created_at = "2026-10-02T06:55:57"
+completed_at = "2026-10-02T12:30:15"
 task_type = "game"
-commits = []
+commits = ["94309a3b84a44b58dd698e6523df08709ab566f8"]

@@ -1,0 +1,1 @@
+horse-race live: HorseRace.xtl library shared by horse-race.xtl, play.xtl (scripted-input golden) and the web page (microscope::run::library + output_seeded); README with APL original; A4 revised (rules library per game); plan reordered: COR24 BASIC games saga 2; green favicon; spelling fix
