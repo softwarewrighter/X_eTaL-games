@@ -1,0 +1,409 @@
+look at my sw-embed/web-sw-cor24-* repos for the subset of live-demo dropdown demos that are games, like trek adventure, horse-race, etc. and look at sw-fun/sudoku, and suggest any other games in my orgs/repos and list the paths (if cloned locally) or URLs if only on github for anything game-like that could be demoed in softwarewrighter/X_eTaL-games, following the style of softwarewrighter/X_eTaL-demos (i.e., I want to demo games written in my array language, softwarewrighter/X_eTaL.  Also, suggest similar scale/effort games to add to this new demo repo.  Avoid games that require lots of game assets; keep the games simple.  Games includes puzzle games and casual games.  One to look at (which may be in a git repo or on another system) is https://wrighter.space/staging/m3/
+
+I found a fairly coherent starter set. I’d make X_eTaL-games primarily a collection of small games whose interesting logic is array-shaped—boards, grids, vectors of racers, cellular state, constraint matrices, probability/state tables—rather than trying to turn X_eTaL into a sprite/game engine.
+
+I also checked the current X_eTaL-demos: its demos/ structure (ca-lab, julia, langtons-ant, life-microscope, mandelbrot, reaction-diffusion, wave-tank) gives a good model for a sibling games repo: one self-contained directory per demo, shared browser/runtime infrastructure, and X_eTaL as the substantive computation. X_eTaL-demos
+
+Existing Software Wrighter games I found
+
+Nothing relevant appears to be cloned in the filesystem available to me, so these are GitHub paths/URLs rather than local paths.
+
+Game	Existing source	X_eTaL suitability	Why
+Horse Race	`sw-comp-history/apl-horse-race/src/idiomatic-race.apl`	Excellent	Almost tailor-made: existing idiomatic APL is only ~394 bytes; racer positions are vectors.
+Horse Race, original version	`src/race.apl`	Excellent	Gives you a nice original APL → idiomatic APL → X_eTaL comparison.
+Robot Chase / Robots	`sw-cor24-basic/examples/robot-chase.bas`	Excellent	Grid, vectorized robot motion, collision detection, occupancy/count operations.
+Star Trek	`examples/startrek.bas`	Very good	8×8 galaxy + 8×8 sectors, scans, distances, combat state. Classic array-programming material.
+Trek Adventure	`examples/trek-adventure.bas`	Good	More state-machine/table driven than array-driven, but historically interesting and compact.
+Guess the Number	`web-sw-cor24-basic/examples/guess.bas`	Fair	Tiny introductory game, although not much of an array-language showcase.
+Random Guessing Game	`examples/guess-random.bas`	Fair	Same; useful as a minimal RNG/input example.
+Sudoku	`sw-fun/sudoku`	Excellent	9×9 matrices, masks, candidates, constraint propagation and solving strategies.
+Shut the Box	`softwarewrighter/shut_the_box`	Excellent	Current version is unnecessarily 3D for this purpose; game itself is tiny and array/set/combinatorics oriented.
+
+The COR24 BASIC live-demo material confirms that Star Trek, Trek Adventure, and Robot Chase are explicitly the three games in that demo family. The BASIC source is already exposed in the web repo's examples dropdown/source set.
+
+The Horse Race is particularly compelling. Your historical repo contains both:
+
+sw-comp-history/apl-horse-race/
+    src/
+        race.apl               1217 bytes
+        idiomatic-race.apl      394 bytes
+
+That is probably the first game I would port. It directly demonstrates the proposition behind X_eTaL: an array language expressing a simulation much more naturally than scalar loops.
+
+Sudoku is similarly strong. Your existing version is Rust/Yew/WASM and goes beyond a simple player: it has candidate notes, strategy identification, Learn mode, Show Me mode, seeded generation, and uniqueness checking. For X_eTaL-games, I would initially port only board validation + candidate generation + a few solver operations, leaving the existing browser UI concepts as inspiration.
+
+shut_the_box is another unexpectedly good match. The existing Rust game has dice, remaining tiles, combination validation, scoring, and game-over detection; all the elaborate Three.js presentation can simply disappear.
+
+My initial X_eTaL-games collection
+
+I would start with roughly this progression:
+
+X_eTaL-games/
+    games/
+        horse-race/
+        guess/
+        tic-tac-toe/
+        robot-chase/
+        shut-the-box/
+        connect-four/
+        minesweeper/
+        sudoku/
+        trek/
+        trek-adventure/
+Tier 1 — tiny language demonstrations
+
+Horse Race should be first. A vector holds every horse position; one expression advances selected horses; comparison against track length finds the winner. You can show the X_eTaL source alongside the 1970s-style APL.
+
+Guess is useful mostly as a smoke test for game infrastructure: RNG, input, persistent state, messages and restart.
+
+Tic-Tac-Toe is especially appropriate because you already explored TTT/TTTML in X_eTaL. A 3×3 board plus line extraction gives a beautifully small example, and later you can offer three opponents: random, minimax, and the existing ML approach.
+
+Tier 2 — particularly array-ish games
+
+Robot Chase may be the best real game demonstration. Represent the robots as either an N×2 coordinate matrix or occupancy matrix. Then each turn becomes approximately:
+
+player position
+robot positions
+      ↓
+direction/sign toward player
+      ↓
+all robot positions move simultaneously
+      ↓
+histogram / group duplicate positions
+      ↓
+robots sharing cells destroyed
+      ↓
+render occupancy matrix
+
+That's a superb array-language example because vectorization is part of the game semantics: all robots really do move simultaneously.
+
+Shut the Box demonstrates boolean masks and subset sums:
+
+tiles      = 1..9
+open       = boolean vector
+roll       = d1 + d2
+legal      = subsets(open tiles) whose sum = roll
+
+That gives X_eTaL a completely different workload from a cellular automaton.
+
+Connect Four is also unusually suitable: a 6×7 integer matrix, column insertion, and winner detection by extracting horizontal, vertical and two diagonal families. It is small enough that the entire rule engine ought to remain comprehensible on one screen.
+
+Minesweeper is almost obligatory for an array language. Mine placement is a boolean matrix; adjacent-mine counts are essentially a neighborhood convolution. You already have the conceptual machinery from Life/CA demos.
+
+Tier 3 — substantial demonstrations
+
+Sudoku becomes the constraint/logic showcase.
+
+A particularly nice X_eTaL representation would maintain:
+
+board       9 × 9
+candidates  9 × 9 × 9 boolean
+
+Then eliminate candidates using broadcast masks across rows, columns and boxes. This is much more interesting for X_eTaL than simply translating the existing Rust solver line-for-line.
+
+Star Trek then becomes the retro flagship. Your existing BASIC implementation already models the galaxy and sector maps explicitly and provides SRS/LRS, warp/impulse, phasers, torpedoes, shields, docking, etc.
+
+I would call the X_eTaL version simply Trek rather than reproducing branding/artwork. Its terminal/grid aesthetic requires essentially no assets.
+
+Other new games I think fit unusually well
+
+Beyond those, I'd consider 2048, Lights Out, Mastermind, Reversi/Othello, 15 Puzzle, SameGame/Flood-It, Battleship, and Nim.
+
+Of those, 2048 is probably the most compelling addition. A move is basically an array transformation:
+
+orient board
+→ remove zeros from each row
+→ group/merge equal adjacent cells
+→ pad with zeros
+→ restore orientation
+
+It makes a very nice demonstration of composition.
+
+Reversi is somewhat larger but exceptionally array-oriented: directional rays from each empty square, masks for bounded opponent runs, flipping entire selected vectors.
+
+Lights Out is even better pedagogically because the whole game can be expressed as operations over a binary matrix; eventually you can show the GF(2) linear-algebra solution next to interactive play.
+
+Flood-It/SameGame adds connected-component/flood-fill operations, which exercises something quite different from the other games.
+
+I would not initially add Pong, Breakout, Asteroids, platformers, etc. They're simple games in conventional languages, but most of the work becomes frame timing, collision geometry, keyboard state and rendering. They don't demonstrate why X_eTaL exists nearly as well as the board/puzzle/simulation games above.
+
+Suggested implementation sequence
+
+My order would therefore be:
+
+Horse Race — tiny, historical, already APL.
+Tic-Tac-Toe — tiny but genuine board game; connects directly to your existing X_eTaL/TTTML work.
+Robot Chase — first really convincing vectorized game.
+Shut the Box — masks/combinatorics/RNG.
+Minesweeper — neighborhood/convolution operations.
+2048 — array transformation/composition.
+Connect Four — line/diagonal manipulation plus simple AI.
+Sudoku — candidate tensor/constraint propagation.
+Trek — larger flagship retro game.
+Trek Adventure — state-machine/table-oriented counterexample showing X_eTaL isn't restricted to numerical grids.
+
+That produces a much more interesting collection than ten arbitrary casual games: each one demonstrates a different array-programming technique.
+
+One thing I couldn't verify
+
+I tried the wrighter.space/staging/m3/ location specifically, but it isn't indexed in the search results available to me and direct retrieval of that staging URL failed. So I have not counted whatever game is there as inspected; I don't want to guess what it contains.
+
+Also, I found no relevant checkouts mounted locally in this ChatGPT environment, so the paths above are repository-relative paths rather than paths on one of your machines.
+
+One potentially useful next pass would be to turn this into a concrete X_eTaL-games backlog table with columns for existing source, X_eTaL feature exercised, UI needed, estimated X_eTaL LOC, estimated JS LOC, difficulty, and proposed directory. That would make it fairly obvious which 4–5 games should constitute v0.1.
+
+proceed w/backlog table
+
+Yes. I’d make the backlog explicitly optimize for showing why X_eTaL is interesting, not merely accumulating games. The key dimensions are array-language value, implementation effort, browser-shell complexity, and whether you already have source/reference material.
+
+Proposed X_eTaL-games backlog
+Pri	Game	Existing reference	X_eTaL concepts exercised	Est. X_eTaL LOC	UI effort	Overall effort	Proposed path
+P0	Horse Race	APL Horse Race — src/idiomatic-race.apl, src/race.apl	vectors, RNG, boolean selection, reduction, ranking	15–30	Tiny	Tiny	games/horse-race/
+P0	Tic-Tac-Toe	Existing X_eTaL TTT/TTTML work	3×3 matrix, reshape, line extraction, masks, reductions; later ML	40–80	Small	Small	games/tic-tac-toe/
+P0	Robot Chase	COR24 BASIC	coordinate matrices, simultaneous vector motion, sign, collision/group detection, RNG	60–120	Small	Small–Med	games/robot-chase/
+P0	Shut the Box	existing Rust game	masks, subset selection, subset sums, RNG, filtering	60–100	Small	Small	games/shut-the-box/
+P0	Minesweeper	New	matrices, neighborhood shifts/convolution, masks, coordinate selection, flood fill	70–130	Small	Small–Med	games/minesweeper/
+P1	2048	New	rotate/transpose, partition, compress, adjacent grouping, merge, reshape	60–110	Small	Small–Med	games/2048/
+P1	Connect Four	New	6×7 matrix, column operations, horizontal/vertical/diagonal windows, reductions	70–130	Small	Small–Med	games/connect-four/
+P1	Lights Out	New	boolean matrices, shifts, XOR/GF(2), linear algebra	40–80	Tiny	Small	games/lights-out/
+P1	Sudoku	sw-fun/sudoku	matrices, 9×9×9 candidate tensor, masks, broadcasting, constraint propagation	150–300	Medium	Medium	games/sudoku/
+P1	Mastermind	New	vectors, equality masks, histograms/frequencies, intersections	40–80	Tiny	Small	games/mastermind/
+P2	Trek	existing BASIC Star Trek	matrices, coordinates, distance vectors, masks, RNG, state transformations	250–450	Medium	Medium–Large	games/trek/
+P2	Reversi / Othello	New	matrices, directional rays, masks, bounded runs, bulk updates	120–220	Small	Medium	games/reversi/
+P2	Flood-It	New	matrices, connected components/flood fill, masks	70–130	Small	Small–Med	games/flood-it/
+P2	15 Puzzle	New	reshape, coordinates, permutation, indexing	35–70	Small	Small	games/15-puzzle/
+P2	Nim	New	vectors, reductions, bit operations, game strategy	25–50	Tiny	Tiny	games/nim/
+P2	Battleship	New	matrices, coordinate ranges, masks, RNG, probability maps	100–180	Medium	Medium	games/battleship/
+P3	Trek Adventure	existing BASIC adventure	tables, indexing, state machine, inventory/state vectors	200–400	Medium	Medium–Large	games/trek-adventure/
+P3	Guess	existing BASIC version	RNG, scalar state, comparison	10–20	Tiny	Tiny	games/guess/
+
+The LOC estimates mean game logic in X_eTaL, not generated HTML/JS glue. They're deliberately approximate; the language is evolving enough that availability of a good primitive could halve some of them.
+
+What I would actually build for v0.1
+
+I wouldn't start with ten games. I'd target six, chosen so that each answers a different question about X_eTaL:
+
+Game	What it demonstrates
+Horse Race	"Can X_eTaL express classic APL programs elegantly?"
+Tic-Tac-Toe	"Can it express conventional board-game logic?"
+Robot Chase	"What does simultaneous vectorized game state look like?"
+Shut the Box	"How good is it at combinatorial/set-like problems?"
+Minesweeper	"How good are neighborhood/grid calculations?"
+2048	"Can array transformations directly model game mechanics?"
+
+That's a very strong initial gallery because none is redundant.
+
+Horse Race should probably be game #1
+
+The provenance makes it unusually valuable:
+
+original personal program
+        ↓
+APL reconstruction
+        ↓
+idiomatic APL
+        ↓
+X_eTaL
+
+You could display all three implementations side-by-side.
+
+The existing idiomatic APL is only 394 bytes, so there's also an interesting challenge: can the X_eTaL version be similarly concise while remaining more readable?
+
+Robot Chase should be the flagship v0.1 game
+
+Conceptually, I'd aim for something like:
+
+robots : N × 2 coordinates
+player : 1 × 2 coordinate
+
+delta  ← sign(player - robots)
+robots ← robots + delta
+
+occupancy ← count-by-coordinate robots
+wrecks    ← coordinates where occupancy > 1
+robots    ← robots excluding wrecks
+
+That is exactly the sort of computation where an array language should look dramatically better than a conventional imperative implementation.
+
+v0.2: algorithms become opponents
+
+Then I'd add:
+
+Connect Four → Sudoku → Lights Out → Mastermind → Reversi
+
+This introduces an important second dimension to the repo: games aren't just demonstrations of representation; they become demonstrations of algorithms written in X_eTaL.
+
+For example:
+
+connect-four/
+    game.xtl
+    win.xtl
+    random-player.xtl
+    heuristic-player.xtl
+    minimax.xtl
+
+And similarly:
+
+tic-tac-toe/
+    game.xtl
+    random-player.xtl
+    minimax.xtl
+    tttml-player.xtl
+
+That last one is especially valuable because the same game can compare:
+
+random → symbolic perfect play → ML-derived play.
+
+v0.3: "array language superpowers"
+
+I'd then deliberately choose games where a mathematical formulation becomes part of the exhibit.
+
+Lights Out
+
+Don't just implement clicking lights.
+
+Have two modes:
+
+PLAY
+
+    ordinary interactive Lights Out
+
+SOLVE
+
+    board → GF(2) system → solution vector
+
+That makes it a miniature linear-algebra demo disguised as a game.
+
+Sudoku
+
+Likewise, show the candidate tensor:
+
+             candidate digit
+                   ↓
+          ┌─────────────────┐
+          │ 9 × 9 × 9 bool │
+          └─────────────────┘
+             ↑       ↑
+            row     column
+
+Let a "microscope" view expose how an X_eTaL expression eliminates candidates.
+
+That fits particularly well with the explanatory character you've already established in X_eTaL-demos.
+
+Reversi
+
+Show the eight directional arrays/rays used to identify captures. That could become one of the strongest demonstrations of multidirectional array manipulation.
+
+Suggested repo architecture
+
+I would copy the philosophy of X_eTaL-demos, but make the boundary between language and browser particularly strict:
+
+X_eTaL-games/
+│
+├── README.md
+├── games/
+│   ├── _template/
+│   │   ├── game.xtl
+│   │   ├── tests.xtl
+│   │   ├── index.html
+│   │   ├── game.js
+│   │   └── README.md
+│   │
+│   ├── horse-race/
+│   ├── tic-tac-toe/
+│   ├── robot-chase/
+│   ├── shut-the-box/
+│   ├── minesweeper/
+│   └── 2048/
+│
+├── shared/
+│   ├── xetal-runner.js
+│   ├── board.js
+│   ├── controls.js
+│   └── game.css
+│
+└── pages/
+    └── index.html
+
+The architectural rule I'd put in AGENTS.md is essentially:
+
+If game rules can reasonably be expressed in X_eTaL, they MUST NOT be implemented in JavaScript.
+
+JS should do things like:
+
+mouse click → [row,column]
+                    ↓
+             X_eTaL move()
+                    ↓
+             new array state
+                    ↓
+              HTML renderer
+
+rather than:
+
+mouse click
+     ↓
+JavaScript implements game
+     ↓
+X_eTaL called somewhere
+so we can call it an X_eTaL demo
+
+That distinction will matter a lot as coding agents add games.
+
+Common X_eTaL game API
+
+I'd seriously consider standardizing a tiny protocol from the beginning:
+
+new(seed)        → state
+move(state, x)   → state
+legal(state)     → moves
+status(state)    → playing | won | lost | draw
+view(state)      → display array
+
+Optional:
+
+score(state)     → number
+ai(state)        → move
+hint(state)      → move
+
+That gives the JS harness essentially no knowledge of individual games.
+
+For grid games, view could simply return an integer/character matrix and a little metadata. That means adding a new game can approach:
+
+game.xtl
+tests.xtl
+manifest.json
+
+rather than building another web application.
+
+One additional backlog category
+
+I'd explicitly label each game's "array-language lesson" in the gallery:
+
+HORSE RACE
+Vectors · random selection · reduction
+
+ROBOT CHASE
+Coordinate matrices · broadcasting · collision grouping
+
+MINESWEEPER
+Neighborhoods · shifts · masks
+
+2048
+Reshape · compress · partition · merge
+
+LIGHTS OUT
+Boolean arrays · GF(2) linear algebra
+
+SUDOKU
+3-D candidate arrays · constraint propagation
+
+REVERSI
+Directional rays · masks · selective updates
+
+TREK
+Nested spatial state · distances · stochastic simulation
+
+That turns X_eTaL-games into something more useful than a games collection: it becomes a progressive array-programming course in which every lesson happens to be playable.
+
+For that reason, I'd promote Lights Out from P1 to effectively P0/P1. Horse Race → Robot Chase → Minesweeper → 2048 → Lights Out is an unusually good progression from vectors through matrices, neighborhoods, transformations, and finally algebra.

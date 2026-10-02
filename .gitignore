@@ -1,0 +1,29 @@
+# cargo (every workspace shares ./target via .cargo/config.toml)
+/target/
+**/target/
+**/*.rs.bk
+
+# trunk serve output (just serve SLUG); the published copy is pages/
+games/*/web/dist/
+
+# third-party assets are fetched by games/<slug>/assets/fetch.sh, never tracked
+games/*/assets/cache/
+
+# agentrail raw session transcripts (large, local only)
+.agentrail/sessions/*.jsonl
+.agentrail-archive/*/sessions/*.jsonl
+
+# Claude Code local state (shared slash commands may live in .claude/commands/)
+.claude/*
+!.claude/commands/
+
+# editors and OS
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+
+# local scratch and game output
+/tmp/
+work/
