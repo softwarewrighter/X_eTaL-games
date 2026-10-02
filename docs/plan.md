@@ -117,8 +117,8 @@ first game published end to end.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
-| 1 | scaffold | agentrail saga; CLAUDE.md (AGENTS.md a symlink); README (intro, games, build, status, copyright, license); COPYRIGHT; LICENSE; CHANGES.md; .gitignore; justfile; `scripts/gate.sh`; this plan; `docs/xetal-asks.md` |
-| 2 | vendor-xetal | `just vendor [REF]` (scripts from X_eTaL-demos), `vendor/xetal/VENDORED`, `just xetal`, `just xetal-version`, `just eval`; `tools/vendor-probe` (xetal-play natively and for wasm32); the gate checks the vendored build |
+| 1 | scaffold | DONE: agentrail saga; CLAUDE.md (AGENTS.md a symlink); README (intro, games, build, status, copyright, license); COPYRIGHT; LICENSE; CHANGES.md; .gitignore; justfile; `scripts/gate.sh`; this plan; `docs/xetal-asks.md` |
+| 2 | vendor-xetal | DONE: vendored 39938f3; the CLI is built with `XETAL_BUILD_SHA` set from `VENDORED`, so `xetal --version` names the vendored commit (checked by the gate). Planned: `just vendor [REF]` (scripts from X_eTaL-demos), `vendor/xetal/VENDORED`, `just xetal`, `just xetal-version`, `just eval`; `tools/vendor-probe` (xetal-play natively and for wasm32); the gate checks the vendored build |
 | 3 | game-layout | `games/_template`, `scripts/games.py` (list, check, json over `game.toml`), `scripts/test-games.sh` (goldens, `.in` as stdin, web/ cargo test and wasm32 check, test.sh), its self-test, `just new-game`, `run`, `play`, `show`, `test`, `test-game`, `bless`, `fetch` |
 | 4 | pages-pipeline | `shared/microscope` copied in; `scripts/build-catalog.py` (cards from `game.toml`: lesson, concepts, status), `scripts/build-pages.sh`, `scripts/serve-pages.sh`, `.github/workflows/pages.yml` (upload only); Pages enabled; the deploy verified |
 | 5 | horse-race | the race as one vector: `pos := pos + r_oll! 5 r_eshape 3`; the scripted race and an interactive pick-a-horse `play.xtl` (goldens with `.in`); the APL originals side by side in the README; web page: the track, the roll vector each round, the winner by `w_here pos = 'm_ax r_/ pos`; live |
