@@ -1,0 +1,11 @@
+{
+  "task_type": "game",
+  "state": {
+    "number": 1,
+    "step": "guess"
+  },
+  "action": "X_eTaL library; custom xetal-store Store for terminal replay; Yew; native tests; selftest",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-02T13:57:07"
+}
