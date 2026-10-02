@@ -1,5 +1,10 @@
 # X_eTaL games
 
+<p align="center">
+  <b><a href="https://softwarewrighter.github.io/X_eTaL-games/">The live game catalog</a></b>
+  -- every game running in your browser (WebAssembly)
+</p>
+
 Small games written in
 [X_eTaL](https://github.com/softwarewrighter/X_eTaL), the
 eXperimental eXtensible Typed Array Language: board games, puzzles,
@@ -95,13 +100,35 @@ The rules are written as a small protocol (`u:n_ew`, `u:m_ove`,
 about each game: it turns a click into a move, runs the game's X_eTaL
 and draws the arrays that come back.
 
+The web apps share one shell, `shared/microscope/` (copied from
+X_eTaL-demos): running X_eTaL and reading arrays back, the decorated
+source with the current stage highlighted, canvases, clickable cells,
+panels, header and footer. Its
+[README](shared/microscope/README.md) walks through adding a game's
+web app.
+
+## The live site
+
+```bash
+just serve SLUG       # one game's web app at http://127.0.0.1:8095/, rebuilt on change
+just pages            # build the whole site into pages/
+just serve-pages      # preview pages/ at http://127.0.0.1:8096/X_eTaL-games/
+```
+
+The site is built locally: `just pages` fetches any third-party
+assets, builds every game that has a web app into `pages/<slug>/` and
+writes the catalog, `pages/index.html`, from the games' `game.toml`
+files. `pages/` is committed, and pushing it to `main` runs a GitHub
+Actions workflow (`.github/workflows/pages.yml`) that only publishes
+the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
+
 ## Status
 
 Starting. The project process, plan and gate are in place, and the
 bundled X_eTaL builds and is checked by the gate (its command-line
 interpreter, and its library natively and for WebAssembly). The game
-layout and its test runner (with scripted terminal input) are in
-place. Next: the live site, and the first game (the horse race). See [`docs/plan.md`](docs/plan.md).
+layout and its test runner (with scripted terminal input) and the
+live catalog are in place. Next: the first game, the horse race. See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation
 

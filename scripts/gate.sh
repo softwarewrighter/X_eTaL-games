@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # The pre-commit gate: the vendored X_eTaL (scripts/check-vendor.sh),
-# the game tooling (scripts/selftest-games.sh), every game's tests,
+# the game tooling (scripts/selftest-games.sh), the shared page shell,
+# every game's tests,
 # then ASCII-only markdown for the docs we own.
 #   scripts/gate.sh
 set -euo pipefail
@@ -8,6 +9,10 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 "$root/scripts/check-vendor.sh"
 "$root/scripts/selftest-games.sh"
+# The shared shell of the game pages (shared/microscope).
+(cd "$root/shared/microscope" && cargo test -q >/dev/null 2>&1 && cargo check -q --target wasm32-unknown-unknown) \
+  || { (cd "$root/shared/microscope" && cargo test -q); echo "FAIL: shared/microscope"; exit 1; }
+echo "ok: shared/microscope"
 "$root/scripts/test-games.sh"
 md=(README.md CHANGES.md docs/plan.md docs/xetal-asks.md)
 for f in games/*/README.md shared/*/README.md; do [ -e "$f" ] && md+=("$f"); done

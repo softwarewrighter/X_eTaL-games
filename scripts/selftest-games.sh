@@ -2,7 +2,8 @@
 # Test the game tooling itself in a scratch games directory: new-game
 # makes a game that passes; a wrong expected output fails; an unexpected
 # stderr fails; XETAL_BLESS=1 repairs it; a program reading standard
-# input gets expected/<name>.in; a bad game.toml is rejected.
+# input gets expected/<name>.in; the catalog shows it (escaped, its
+# lesson, no play link without a web app); a bad game.toml is rejected.
 #   scripts/selftest-games.sh
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -34,6 +35,13 @@ printf 'you said hello\n' > "$g/expected/probe.out"
 expect pass "scripted input from expected/probe.in"
 printf 'goodbye\n' > "$g/expected/probe.in"
 expect fail "different scripted input"
+"$root/scripts/build-catalog.py" "$XETAL_GAMES_DIR/index.html" >/dev/null
+grep -q '<h2>Probe &amp; Co</h2>' "$XETAL_GAMES_DIR/index.html" \
+  || { echo "selftest: the catalog has no card for the game" >&2; exit 1; }
+grep -q '<p class="lesson">' "$XETAL_GAMES_DIR/index.html" \
+  || { echo "selftest: the catalog card has no lesson" >&2; exit 1; }
+! grep -q 'href="probe/"' "$XETAL_GAMES_DIR/index.html" \
+  || { echo "selftest: the catalog links a game with no web app" >&2; exit 1; }
 sed -i '' 's/^status = .*/status = "bogus"/' "$g/game.toml"
 expect fail "a bad status"
 echo "selftest-games: ok"
