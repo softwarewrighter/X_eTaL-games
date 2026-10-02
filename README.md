@@ -32,7 +32,7 @@ and is tested by its expected output.
 | Game | The lesson | Status |
 | ---- | ---------- | ------ |
 | [Horse race](games/horse-race/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/horse-race/)) | vectors, random rolls, reduction | live |
-| Guess the number | input, comparison (from COR24 BASIC) | planned |
+| [Guess the number](games/guess/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/guess/)) | comparison tables, masks, every game at once (from COR24 BASIC) | live |
 | Robot chase | coordinate matrices, simultaneous motion, collisions (from COR24 BASIC) | planned |
 | Trek adventure | tables and a state machine (from COR24 BASIC) | planned |
 | Trek | a galaxy of sectors, scans, distances (from COR24 BASIC) | planned |
@@ -134,9 +134,10 @@ the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
 Early. The project process, plan and build scaffolding are in place,
 the bundled X_eTaL builds and is checked by the gate, the game layout
 and its test runner (with scripted terminal input) and the live catalog
-are in place, and the first game, the horse race, is live. Next: the
-COR24 BASIC games (guess the number, robot chase, trek adventure,
-trek), then the grid games. See [`docs/plan.md`](docs/plan.md).
+are in place; the horse race and guess the number are live. Next:
+the browser runs the real `xetal` binary (compiled to WebAssembly),
+then the other COR24 BASIC games (robot chase, trek adventure, trek)
+and the grid games. See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation
 

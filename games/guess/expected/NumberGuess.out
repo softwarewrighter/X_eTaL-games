@@ -1,0 +1,8 @@
+l:top : Int
+l:n_ew : Int -> Int
+l:m_ove : (Ord a, Num b, Truthy b) => a -> a -> b
+l:s_tatus : (Eq a, Truthy b) => a -> a -> b
+l:r_eply : Int -> Char
+l:g_uess : Int -> Int
+l:n_arrow : Num a => Int -> a -> Int
+l:p_ossible : Truthy a => Int -> Int -> a

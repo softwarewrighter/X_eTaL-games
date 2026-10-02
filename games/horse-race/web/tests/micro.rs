@@ -49,3 +49,14 @@ fn the_track_draws_each_position() {
         assert_eq!(row.matches('#').count() as i64, p.min(20), "{row}");
     }
 }
+
+#[test]
+fn every_stage_is_called_by_the_page_program_and_defined_in_the_library() {
+    use horse_race_web::view::{call, range, STAGES};
+    let src = program(&[0; HORSES]);
+    for s in STAGES {
+        assert!(src.contains(call(s)), "{:?} not called", s);
+        let (a, b) = range(s);
+        assert!(a < b && RULES[a..b].starts_with("l:"), "{:?} not defined", s);
+    }
+}

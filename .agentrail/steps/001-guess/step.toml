@@ -1,6 +1,6 @@
 number = 1
 slug = "guess"
-status = "pending"
+status = "in-progress"
 description = "basic step 1: games/guess from guess.bas and guess-random.bas (original/ kept..."
 role = "production"
 context_files = []

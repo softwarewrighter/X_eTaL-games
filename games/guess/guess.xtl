@@ -1,0 +1,41 @@
+#!/usr/bin/env xetal
+# Guess the number, scripted (seed 1), with the rules of NumberGuess.xtl.
+"g:" u_se< "NumberGuess"
+
+# A secret, and three guesses answered at once.
+t := g:n_ew g:top
+t g:m_ove 10 50 90
+g:r_eply t g:m_ove 50
+
+# The halving player on this secret: guess the middle of what is still
+# possible, narrow, repeat. Each guess is printed with its answer, and
+# the result is how many guesses it took.
+u:p_lay := { t b ->
+  k := f_irst r_avel g:g_uess b
+  r := t g:m_ove k
+  shown := p_rint! (f_ormat k) c_at "  " c_at g:r_eply r
+  r = 0 ? 1; 1 + t u:p_lay b g:n_arrow r
+}
+start := 2 1 r_eshape 1 c_at g:top
+t u:p_lay start
+
+# What three guesses say: every candidate checked against every guess
+# at once; the secrets still possible.
+w_here t g:p_ossible 50 75 62
+
+# Every game at once: all 100 secrets, a column each, played by the
+# same player in lockstep. The state is three rows: the ranges' low and
+# high ends, and how many wrong guesses each game has had so far.
+s := r_ange g:top
+u:r_ound := { st ->
+  b := 2 t_ake st
+  r := s g:m_ove g:g_uess b
+  (b g:n_arrow r) c_at (3 s_elect st) + r != 0
+}
+st0 := (3 c_at g:top) r_eshape (g:top r_eshape 1) c_at (g:top r_eshape g:top) c_at g:top r_eshape 0
+st := 7 'u:r_ound p_ower st0
+'+ r_/ s = g:g_uess 2 t_ake st      # games won after 7 rounds: all of them
+n := 1 + 3 s_elect st                # the guesses each secret needed
+10 t_ake n
+'+ r_/_2 (r_ange 7) '= t_able n      # games won in 1, 2, ... 7 guesses
+'m_ax r_/ n                          # never more than 7: 2^7 > 100

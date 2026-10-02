@@ -1,0 +1,17 @@
+[package]
+name = "guess-web"
+description = "Guess the number in the browser: the COR24 BASIC game in X_eTaL, played at a terminal, every candidate checked against every guess at once"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+microscope = { path = "../../../shared/microscope" }
+yew = { version = "0.21", features = ["csr"] }
+gloo-timers = "0.3"
+js-sys = "0.3"
+web-sys = { version = "0.3", features = ["HtmlInputElement", "Element"] }
+console_error_panic_hook = "0.1"
+
+[workspace]

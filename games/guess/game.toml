@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "guess"
+title = "Guess the number"
+summary = "The smallest COR24 BASIC game, at a terminal: higher or lower until you have it. Beside it, every candidate from 1 to 100 is checked against every guess at once, and the halving player wins all 100 games in lockstep."
+lesson = "comparison tables, masks, playing every game at once"
+concepts = ["r_oll!", "t_able", "reduce", "masks", "[]R_EAD", "libraries"]
+status = "live"
+order = 20
+sources = ["sw-embed/web-sw-cor24-basic (examples/guess.bas, examples/guess-random.bas)"]
+needs = []

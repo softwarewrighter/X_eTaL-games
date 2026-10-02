@@ -14,6 +14,7 @@ once three games have pages.
 | `source` | `code(src)` draws any snippet decorated and coloured, as X_eTaL renders it; `line(src, range)` and `block(src, range)` draw a line or a program with `range` highlighted as one block; `between` and `find` compute ranges; `shape(dims, meaning)` labels a shape as `s_hape = ...` with a tooltip |
 | `canvas`, `colour` | `Canvas` draws an RGBA array scaled to its box and reports clicks as (row, column); `colour` turns arrays into pixels (`field`, `scaled`, `signed`, `mask`, `ramp`) |
 | `cells` | small boards as clickable HTML cells (0 / 1 boards, shaded counts with numbers) |
+| `terminal` | `session(libraries, src, typed, seed)` runs a text game's terminal program with everything typed so far as its keyboard and returns the transcript (printed lines and typed lines, in order), whether it is waiting for the next line, and any error: a terminal page replays the session on every line typed |
 | `chrome` | `header` (logo, title, lede), `chip` (a stage: name, code, shape), `panel`, `notice`, `footer` (copyright, license, repository, all games, the vendored X_eTaL commit, build host, sha and time) |
 
 `microscope.css` is the shared stylesheet (light and dark themes, the
@@ -43,7 +44,10 @@ highlight, panels, chips, canvases); a page links it with
 6. `just serve SLUG` while working; `just test-game SLUG`; `just
    pages`; set `status = "live"` in `game.toml`.
 
-Conventions: every code snippet on a page is drawn decorated, never as
-typed ASCII; shapes are shown as `s_hape`; an X_eTaL error keeps the
+Conventions: a page shows the program it runs (with its `u_se<` line)
+and the game's library separately, labelled as a library, so `l:`
+names are only ever seen in the library and the program's calls use
+its alias (`h:r_oll p`); stage chips quote the program's calls; every
+code snippet on a page is drawn decorated, never as typed ASCII; shapes are shown as `s_hape`; an X_eTaL error keeps the
 last good state and shows a notice; anything X_eTaL lacks goes in
 `docs/xetal-asks.md` and the game's README.

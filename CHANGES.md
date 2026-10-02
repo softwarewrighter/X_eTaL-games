@@ -12,6 +12,11 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 13:55 `game` Guess the number, live: NumberGuess.xtl (the answer rule item by item; the secrets still possible, every candidate against every guess by one table; the halving player winning all 100 games at once), play.xtl as the COR24 BASIC game plays (tested with typed guesses), the page running play.xtl unmodified in a terminal beside the hundred candidates.
+- 13:55 `feat` Page shell: `terminal::session` runs a terminal program with everything typed as its keyboard and returns the transcript, typed lines echoed where they are read.
+- 13:55 `fix` Pages show the program they run (with its `u_se<`) and the library separately, so `l:` names appear only in the library; stage chips quote the program's calls.
+- 13:55 `test` The layout check rejects a program defining `l:` names, a library without exports, and a library named like its game (they collide on a case-insensitive disk); self-tested; ask filed for X_eTaL's own check.
+
 - 12:32 `chore` Saga foundation archived; saga basic (the COR24 BASIC games) started.
 
 - 12:30 `chore` Saga step horse-race completed; saga foundation done.
