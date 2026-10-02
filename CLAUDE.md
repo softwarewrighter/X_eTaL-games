@@ -286,7 +286,7 @@ a safety net for what is not yet committed.
 ## Project Overview
 
 A gallery of small games written in X_eTaL (the eXperimental
-eXtensible Typed Array Language, developed in `../X_eTaL`), each
+Extensible Typed Array Language, developed in `../X_eTaL`), each
 playable from the command line and live in the browser via GitHub
 Pages. Every game teaches one array-programming lesson (vectors,
 masks, neighbourhoods, composition, constraint tensors) and happens to
@@ -313,9 +313,11 @@ Read before working:
    scripts, optional test.sh, web/ its own Cargo workspace). A game
    never reaches into another game; what pages share lives in
    `shared/`.
-3. Games follow the protocol in `docs/plan.md` A4 (`u:n_ew`,
-   `u:m_ove`, `u:l_egal`, `u:s_tatus`, `u:v_iew`, optional `u:s_core`,
-   `u:a_i`, `u:h_int`) as far as it fits the game.
+3. A game's rules are one X_eTaL library, `games/<slug>/<Name>.xtl`,
+   imported by its scripted game, its terminal game and its page, and
+   follow the protocol in `docs/plan.md` A4 (`l:n_ew`, `l:m_ove`,
+   `l:l_egal`, `l:s_tatus`, `l:v_iew`, optional `l:s_core`, `l:a_i`,
+   `l:h_int`) as far as it fits the game.
 4. X_eTaL is used only through the vendored snapshot in
    `vendor/xetal/` (`just vendor [REF]` from a COMMITTED ref of
    `../X_eTaL`, at a saga start or when an ask has landed, never
@@ -326,7 +328,7 @@ Read before working:
    workaround). Do not fix X_eTaL from this repo and do not hide a
    workaround: name it in the ask and in the game's README.
 6. Games that cannot be built with the vendored X_eTaL are deferred
-   (plan saga 4) until their asks land; implementable games first.
+   (plan saga 5) until their asks land; implementable games first.
 7. Third-party assets (map SVGs, star catalogs, ...) are NEVER
    committed: track only `games/<slug>/assets/fetch.sh` (source URL,
    license, checksum); fetched files go to the git-ignored

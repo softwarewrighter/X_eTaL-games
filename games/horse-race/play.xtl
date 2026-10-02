@@ -1,0 +1,36 @@
+#!/usr/bin/env xetal
+# Horse race at the terminal: you start with 10 coins. Before each race
+# pick a horse, 1 to 5, and bet a coin on it; if it wins (a share of a
+# tie counts) you get 4 back. Type q to stop. The rules are those of
+# HorseRace.xtl.
+"h:" u_se< "HorseRace"
+
+# The race, a round at a time, the track printed after each round.
+u:r_ace := { p ->
+  q := p h:m_ove h:r_oll p
+  shown := p_rint! h:v_iew q
+  gap := p_rint! ""
+  1 = h:s_tatus q ? q; u:r_ace q
+}
+
+# Your pick: 1 to 5, 0 to stop, or it asks again.
+u:a_sk := { c ->
+  shown := p_rint! "you have " c_at (f_ormat c) c_at " coins; your horse (1 to 5, q to stop):"
+  t := []R_EAD @
+  k := "12345q" i_ndexOf f_irst t c_at " "
+  k <= 5 ? k; k = 6 ? 0; u:a_sk c
+}
+
+# One race on your pick, then the next, until you stop or run out.
+u:b_et := { c ->
+  k := u:a_sk c
+  k = 0 ? "you leave with " c_at f_ormat c
+  shown := p_rint! "THE RACE IS ON! you are on " c_at k s_elect h:n_ames @
+  w := h:w_inners u:r_ace h:n_ew 5
+  won := f_irst k m_ember? w
+  said := p_rint! "WINNER: " c_at r_avel w s_elect h:n_ames @
+  c := c + (4 * won) - 1
+  told := p_rint! d_isclose (1 + won) s_elect "you lose a coin" "you win 4 coins"
+  c = 0 ? "out of coins"; u:b_et c
+}
+u:b_et 10

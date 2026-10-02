@@ -7,7 +7,7 @@
 
 Small games written in
 [X_eTaL](https://github.com/softwarewrighter/X_eTaL), the
-eXperimental eXtensible Typed Array Language: board games, puzzles,
+eXperimental Extensible Typed Array Language: board games, puzzles,
 simulations and quizzes whose rules are array-shaped, each playable on
 the command line and (soon) live in the browser.
 
@@ -31,16 +31,22 @@ and is tested by its expected output.
 
 | Game | The lesson | Status |
 | ---- | ---------- | ------ |
-| Horse race | vectors, random selection, reduction | planned |
+| [Horse race](games/horse-race/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/horse-race/)) | vectors, random rolls, reduction | live |
+| Guess the number | input, comparison (from COR24 BASIC) | planned |
+| Robot chase | coordinate matrices, simultaneous motion, collisions (from COR24 BASIC) | planned |
+| Trek adventure | tables and a state machine (from COR24 BASIC) | planned |
+| Trek | a galaxy of sectors, scans, distances (from COR24 BASIC) | planned |
 | Tic-tac-toe | a 3 x 3 board, line extraction, minimax | planned |
-| Robot chase | coordinate matrices, simultaneous motion, collisions | planned |
 | Shut the box | boolean masks, subset sums | planned |
 | Minesweeper | neighbourhoods by rotation, flood fill | planned |
 | 2048 | compress, merge, pad: composition | planned |
 | Lights out | boolean matrices, XOR, GF(2) | planned |
 | Connect four, Mastermind, Sudoku, Flood-it, Fifteen, Nim, Reversi | windows, histograms, candidate tensors, regions, permutations, binary digits, rays | planned |
 | Capitals, Stargazer | map and sky quizzes: projections, distances, scoring | planned |
-| Battleship, Trek, Trek adventure, Guess | larger and retro games | planned |
+| Battleship | placement masks, a probability map | planned |
+
+A game's name links to its own page (`games/<name>/README.md`) once it
+exists.
 
 What a game needs from X_eTaL that it does not have yet is listed in
 [`docs/xetal-asks.md`](docs/xetal-asks.md).
@@ -88,16 +94,17 @@ Each game is a sub-project, `games/<slug>/`:
 | ---- | ---------- |
 | `game.toml` | title, one-line summary, the lesson, concepts, status (draft, live, deferred), catalog order, sources, the X_eTaL asks it needs |
 | `README.md` | the game's own page: how to play, the program, how it works |
-| `<slug>.xtl` | the rules and a scripted game; run by the tests (seed 1) |
+| `<Name>.xtl` | the rules, a library (`l:n_ew`, `l:m_ove`, ...) that the scripted game, the terminal game and the page all import |
+| `<slug>.xtl` | a scripted game using the rules; run by the tests (seed 1) |
 | `play.xtl` | the game at the terminal (it reads moves with `[]R_EAD`), when it has one |
 | `expected/` | each program's expected output (`NAME.out`, `NAME.err` when it should fail) and the moves typed into it (`NAME.in`) |
 | `assets/fetch.sh` | downloads third-party files into the git-ignored `assets/cache/`, when the game needs any |
 | `web/` | its browser app (a Cargo workspace), when it has one |
 | `test.sh` | any further tests, when it has them |
 
-The rules are written as a small protocol (`u:n_ew`, `u:m_ove`,
-`u:l_egal`, `u:s_tatus`, `u:v_iew`) so a page needs to know little
-about each game: it turns a click into a move, runs the game's X_eTaL
+The rules are written once, as a library with a small protocol
+(`l:n_ew`, `l:m_ove`, `l:l_egal`, `l:s_tatus`, `l:v_iew`), so a page
+needs to know little about each game: it turns a click into a move, runs the game's X_eTaL
 and draws the arrays that come back.
 
 The web apps share one shell, `shared/microscope/` (copied from
@@ -124,11 +131,12 @@ the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
 
 ## Status
 
-Starting. The project process, plan and gate are in place, and the
-bundled X_eTaL builds and is checked by the gate (its command-line
-interpreter, and its library natively and for WebAssembly). The game
-layout and its test runner (with scripted terminal input) and the
-live catalog are in place. Next: the first game, the horse race. See [`docs/plan.md`](docs/plan.md).
+Early. The project process, plan and build scaffolding are in place,
+the bundled X_eTaL builds and is checked by the gate, the game layout
+and its test runner (with scripted terminal input) and the live catalog
+are in place, and the first game, the horse race, is live. Next: the
+COR24 BASIC games (guess the number, robot chase, trek adventure,
+trek), then the grid games. See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation
 

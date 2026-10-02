@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "horse-race"
+title = "Horse race"
+summary = "Five horses race to 15, each running 1, 2 or 3 a round, all at once. The field is one vector of positions and a round is one expression; the track is a character matrix drawn by a table. Back a horse and watch."
+lesson = "vectors, random rolls, reduction"
+concepts = ["vectors", "r_oll!", "reduce", "w_here", "t_able", "libraries"]
+status = "live"
+order = 10
+sources = ["sw-comp-history/apl-horse-race (src/race.apl, src/idiomatic-race.apl)", "sw-embed/sw-cor24-apl (samples/25-horse-race-simple.apl, samples/26-horse-race.apl)"]
+needs = []

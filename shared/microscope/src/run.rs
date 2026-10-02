@@ -26,10 +26,27 @@ pub fn matrix(name: &str, rows: usize, cols: usize, items: impl IntoIterator<Ite
     format!("{name} := ({rows} c_at {cols}) r_eshape {}\n", body.join(" "))
 }
 
+/// Make a game's rules library available to programs as `name`
+/// (`"g:" u_se< "Name"` then finds `Name.xtl`): the page's own
+/// in-memory store is installed (once; the browser has no files) and
+/// the library written to it. Natively the same store is used, so
+/// tests see what the page sees.
+pub fn library(name: &str, text: &str) {
+    static STORE: std::sync::OnceLock<()> = std::sync::OnceLock::new();
+    STORE.get_or_init(|| xetal_store::install(std::sync::Arc::new(xetal_store::Memory::default())));
+    let _ = xetal_store::write(&format!("{name}.xtl"), text);
+}
+
 /// Run `src` and return its output lines, which must number `lines`;
 /// an X_eTaL error (or a different count) is the Err.
 pub fn output(src: &str, lines: usize) -> Result<Vec<String>, String> {
-    let run = xetal_play::run(src, 1);
+    output_seeded(src, lines, 1)
+}
+
+/// As `output`, with `r_oll!` rolling from `seed` (a game passes a new
+/// seed each turn, or every run would roll the same).
+pub fn output_seeded(src: &str, lines: usize, seed: u64) -> Result<Vec<String>, String> {
+    let run = xetal_play::run(src, seed);
     if !run.err.is_empty() {
         return Err(run.err);
     }

@@ -4,11 +4,13 @@
 # expected/<name>.in when there is one) and its output compared with
 # expected/<name>.out (and .err when it has one).
 #
-# The game protocol (docs/plan.md A4), as far as it fits the game:
-#   u:n_ew      seed or size -> state
-#   u:m_ove     state u:m_ove move -> state
-#   u:l_egal    state -> the legal moves
-#   u:s_tatus   state -> 0 playing, 1 won, 2 lost, 3 draw
-#   u:v_iew     state -> a display array
+# The rules go in a library beside this file, <Name>.xtl, exporting
+# under l: what applies of the game protocol (docs/plan.md A4); this
+# program, play.xtl and the page import it with "g:" u_se< "Name":
+#   l:n_ew      seed or size -> state
+#   l:m_ove     state l:m_ove move -> state
+#   l:l_egal    state -> the legal moves
+#   l:s_tatus   state -> 0 playing, 1 over or won, 2 lost, 3 draw
+#   l:v_iew     state -> a display array
 # The state is a flat numeric array, so a page can pass it back in.
 '+ r_/ r_ange 10
