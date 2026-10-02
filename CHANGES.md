@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 15:02 `fix` The logo replaced by the corrected one ("eXperimental Extensible Typed Array Language"), in images/ and the published pages.
+
 - 13:57 `chore` Saga step guess completed.
 
 - 13:55 `game` Guess the number, live: NumberGuess.xtl (the answer rule item by item; the secrets still possible, every candidate against every guess by one table; the halving player winning all 100 games at once), play.xtl as the COR24 BASIC game plays (tested with typed guesses), the page running play.xtl unmodified in a terminal beside the hundred candidates.
