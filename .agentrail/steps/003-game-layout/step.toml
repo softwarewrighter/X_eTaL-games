@@ -1,6 +1,6 @@
 number = 3
 slug = "game-layout"
-status = "pending"
+status = "in-progress"
 description = "foundation step 3: games/_template (game.toml, README.md, SLUG.xtl, expected/..."
 role = "production"
 context_files = []

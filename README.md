@@ -64,13 +64,44 @@ commit of `../X_eTaL`) or `just vendor REF`; only committed X_eTaL
 work is ever copied, and the refresh is committed on its own after
 `just gate` passes.
 
+## Playing and adding games
+
+```bash
+just games                           # the games, in catalog order
+just run SLUG                        # run a game's program (a scripted game)
+just play SLUG                       # play it at the terminal (play.xtl)
+just show SLUG                       # the program as a notebook: each statement, then its output
+just test-game SLUG                  # check its output against expected/
+just new-game nim "Nim"              # start a new game from games/_template
+just bless SLUG                      # rewrite its expected output (review the diff)
+just fetch [SLUG]                    # download third-party assets (never committed)
+```
+
+Each game is a sub-project, `games/<slug>/`:
+
+| File | What it is |
+| ---- | ---------- |
+| `game.toml` | title, one-line summary, the lesson, concepts, status (draft, live, deferred), catalog order, sources, the X_eTaL asks it needs |
+| `README.md` | the game's own page: how to play, the program, how it works |
+| `<slug>.xtl` | the rules and a scripted game; run by the tests (seed 1) |
+| `play.xtl` | the game at the terminal (it reads moves with `[]R_EAD`), when it has one |
+| `expected/` | each program's expected output (`NAME.out`, `NAME.err` when it should fail) and the moves typed into it (`NAME.in`) |
+| `assets/fetch.sh` | downloads third-party files into the git-ignored `assets/cache/`, when the game needs any |
+| `web/` | its browser app (a Cargo workspace), when it has one |
+| `test.sh` | any further tests, when it has them |
+
+The rules are written as a small protocol (`u:n_ew`, `u:m_ove`,
+`u:l_egal`, `u:s_tatus`, `u:v_iew`) so a page needs to know little
+about each game: it turns a click into a move, runs the game's X_eTaL
+and draws the arrays that come back.
+
 ## Status
 
 Starting. The project process, plan and gate are in place, and the
 bundled X_eTaL builds and is checked by the gate (its command-line
-interpreter, and its library natively and for WebAssembly). Next: the
-game layout and its tests, the live site, and the first game (the
-horse race). See [`docs/plan.md`](docs/plan.md).
+interpreter, and its library natively and for WebAssembly). The game
+layout and its test runner (with scripted terminal input) are in
+place. Next: the live site, and the first game (the horse race). See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation
 

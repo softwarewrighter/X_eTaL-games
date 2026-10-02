@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "__SLUG__"            # the directory name, games/<slug>/
+title = "__TITLE__"
+summary = "One sentence: what you play and what the array program reveals."
+lesson = "the array idea it teaches"   # one line, shown on the catalog card
+concepts = ["arrays"]        # the X_eTaL ideas it uses
+status = "draft"             # draft | live | deferred
+order = 100                  # position in the catalog (lower first)
+sources = []                 # where the game comes from (repos, files, URLs)
+needs = []                   # asks in docs/xetal-asks.md it waits on or works around
