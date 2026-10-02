@@ -1,0 +1,1 @@
+shared/microscope copied+adapted (gate), build-catalog (lesson cards), build-pages (fetch assets first), serve-pages, screenshots, pages.yml; Pages enabled (workflow); deploy verified at softwarewrighter.github.io/X_eTaL-games/
