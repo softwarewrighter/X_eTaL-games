@@ -1,0 +1,1 @@
+basic step 4: the parts the text pages share (output pane, command line, history replay, seed) moved from games/guess and games/trek-adventure into shared/ (microscope module or shared/terminal), the pages' tests unchanged, README how-to.

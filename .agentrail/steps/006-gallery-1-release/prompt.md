@@ -1,0 +1,1 @@
+basic step 6: release: catalog order and summaries, README game list and status, per-game READMEs and screenshots, docs/plan.md saga 2 retrospective, CHANGES.md.
