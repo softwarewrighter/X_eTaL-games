@@ -1,0 +1,14 @@
+#!/usr/bin/env xetal
+# __TITLE__: replace this program. Each top-level *.xtl in the game
+# directory is run by `just test` (with --seed 1, standard input from
+# expected/<name>.in when there is one) and its output compared with
+# expected/<name>.out (and .err when it has one).
+#
+# The game protocol (docs/plan.md A4), as far as it fits the game:
+#   u:n_ew      seed or size -> state
+#   u:m_ove     state u:m_ove move -> state
+#   u:l_egal    state -> the legal moves
+#   u:s_tatus   state -> 0 playing, 1 won, 2 lost, 3 draw
+#   u:v_iew     state -> a display array
+# The state is a flat numeric array, so a page can pass it back in.
+'+ r_/ r_ange 10

@@ -28,6 +28,42 @@ eval expr:
 check-vendor:
     scripts/check-vendor.sh
 
+# The games, in catalog order
+games:
+    @scripts/games.py list
+
+# Start a game sub-project from games/_template: just new-game horse-race "Horse race"
+new-game slug title:
+    scripts/new-game.sh "$1" "$2"
+
+# Run a game's program (default SLUG.xtl, a scripted game): just run horse-race
+run slug file="":
+    @scripts/run-game.sh "$1" ${2:+"$2"}
+
+# Play a game at the terminal (its play.xtl): just play horse-race
+play slug:
+    @scripts/run-game.sh "$1" play.xtl
+
+# Run a game's program as a notebook: each statement drawn, then its output
+show slug file="":
+    @scripts/run-game.sh --echo "$1" ${2:+"$2"}
+
+# Test every game: expected outputs (with scripted input), web/ tests, test.sh
+test:
+    scripts/test-games.sh
+
+# Test one game: just test-game horse-race
+test-game slug:
+    scripts/test-games.sh "$1"
+
+# Rewrite one game's expected outputs from its programs (review the diff!)
+bless slug:
+    XETAL_BLESS=1 scripts/test-games.sh "$1"
+
+# Fetch third-party assets (never tracked) into games/<slug>/assets/cache/
+fetch *slugs:
+    scripts/fetch-assets.sh "$@"
+
 # The full pre-commit gate
 gate:
     scripts/gate.sh
