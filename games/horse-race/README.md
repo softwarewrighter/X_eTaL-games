@@ -15,9 +15,29 @@ moves and the finish check, highlighted in the rules.
 
 ## The program
 
+A program imports the rules and calls them under the name it gives
+the library, here `h:`. The race in `horse-race.xtl`:
+
+```
+"h:" u_se< "HorseRace"
+u:r_ace := { p ->
+  r := p_rint! h:r_oll p
+  q := p h:m_ove r
+  shown := p_rint! h:v_iew q
+  1 = h:s_tatus q ? q; u:r_ace q
+}
+final := u:r_ace h:n_ew 5
+(h:w_inners final) s_elect h:n_ames @
+```
+
+## The rules: a library
+
 The rules are a library, `HorseRace.xtl`, used by the scripted race
 (`horse-race.xtl`), the terminal game (`play.xtl`) and the web page,
-so they are written once:
+so they are written once. A library names what it exports with `l:`
+("this library"); each importer sees those names under its own alias
+(`h:` above). A program cannot define `l:` names, and a library
+cannot define `u:` ones.
 
 ```
 l:finish := 15

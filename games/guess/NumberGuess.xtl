@@ -1,0 +1,36 @@
+# Guess the number's rules, a library: guess.xtl (scripted games),
+# play.xtl (at the terminal) and the web page all use these. The
+# computer thinks of a number from 1 to 100; each guess is answered
+# higher, lower or correct.
+
+l:top := 100
+# A new game: the secret, 1 to n.
+l:n_ew := { n -> r_oll! n }
+# A guess against the secret: -1 the secret is higher, 1 lower, 0
+# right. Item by item, so it answers many guesses (or games) at once.
+l:m_ove := { t g -> (g > t) - g < t }
+# 1 once the guess is right.
+l:s_tatus := { t g -> t = g }
+# The answer as the BASIC printed it.
+l:r_eply := { r -> d_isclose (2 + r) s_elect "HIGHER!" "CORRECT! YOU GUESSED IT." "LOWER!" }
+
+# The halving player: the range still possible, low and high, as a
+# 2-row matrix with a column per game; its guess is the middle.
+l:g_uess := { b -> ('+ r_/ b) d_iv 2 }
+# Narrow every range by the answers to its guess: a higher answer
+# raises the low end past the guess, a lower one drops the high end.
+l:n_arrow := { b r ->
+  g := l:g_uess b
+  lo := (1 s_elect b) m_ax (r = -1) * g + 1
+  hi := (2 s_elect b) m_in (l:top * r != 1) + (r = 1) * g - 1
+  (2 c_at s_hape lo) r_eshape lo c_at hi
+}
+
+# The secrets still possible after guesses gs were answered for secret
+# t: every candidate 1 to 100 against every guess at once (a table of
+# answers, candidates by guesses), kept where its whole row agrees with
+# the answers t got: a 0/1 vector of 100.
+l:p_ossible := { t gs ->
+  m := (r_ange l:top) 'l:m_ove t_able gs
+  '& r_/_2 m = (s_hape m) r_eshape l:top 'r_ight t_able t l:m_ove gs
+}

@@ -12,7 +12,32 @@ workaround in use.
 
 | Status | Kind | Ask | Games | Workaround |
 | ------ | ---- | --- | ----- | ---------- |
+| open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
-None yet. Asks already filed by X_eTaL-demos
+## Details
+
+### A program defining `l:` names
+
+X_eTaL decides that a file is a library when it defines `l:` names.
+So a program (a file with a `#!/usr/bin/env xetal` shebang, run with
+`xetal run`) that defines one is treated as a library, and the error
+MC8 row 9 ("a program defines `l:` names") never appears: with an
+expression the message is the library's ("a library holds definitions
+only"), and with only definitions it runs, printing types, exit 0.
+
+```
+$ printf '#!/usr/bin/env xetal\nl:finish := 15\nl:finish + 1\n' > app.xtl
+$ xetal run app.xtl
+error[expression-in-library]: a library holds definitions only; ...
+$ printf '#!/usr/bin/env xetal\nl:finish := 15\n' > app.xtl
+$ xetal run app.xtl      # exit 0
+l:finish : Int
+```
+
+Ask: treat a file starting with a shebang as a program and report row
+9 for its `l:` definitions. Workaround: this repo's layout check
+(`scripts/games.py check`, in the gate) rejects them.
+
+Asks already filed by X_eTaL-demos
 (`../X_eTaL-demos/docs/xetal-asks.md`) that a game also hits are
 copied here with the game named, so this list stands on its own.

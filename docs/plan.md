@@ -135,7 +135,7 @@ BASIC and whole-array X_eTaL. Each port keeps the original `.bas` in
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
-| 1 | guess | guess the number (guess.bas, guess-random.bas): the smallest game; the terminal page pattern: an output pane and a command line, the program re-run with the whole typed history as its input (`xetal-store` typed lines) and a fixed seed per game |
+| 1 | guess | DONE: NumberGuess.xtl (answer rule item by item; `l:p_ossible`, every candidate against every guess by `t_able`; the halving player on all 100 secrets at once: 1 2 4 8 16 32 37); play.xtl as the BASIC plays; the page runs play.xtl unmodified in a terminal (`microscope::terminal::session`: typed history replayed, echoed where it is read); the layout check enforces the program/library split. Planned: guess the number (guess.bas, guess-random.bas): the smallest game; the terminal page pattern: an output pane and a command line, the program re-run with the whole typed history as its input (`xetal-store` typed lines) and a fixed seed per game |
 | 2 | robot-chase | robot-chase.bas: robots as an N x 2 matrix all moving at once by the sign of the difference; wrecks where positions repeat; teleport; the board page |
 | 3 | trek-adventure | trek-adventure.bas ("Decaying orbit"): rooms, exits, items and flags as tables and vectors, the numeric command menu as a state machine; on the terminal page |
 | 4 | terminal-shell | the parts the text games' pages share (output pane, command line, history replay) moved into `shared/`, the pages' tests unchanged |

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guess the Number</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/guess/guess-web-ae4f17514c20b660.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/guess/guess-web-ae4f17514c20b660_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/guess/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/guess/microscope-69d1768cfdcd66dc.css" integrity="sha384-4t7bXs+c/CtSXWyJNmHiOa75b07EMQNomfjR8ddq9CnAgZDcH2rfuSC4/XqwOfDd"/>
+  <style>
+    .term { margin: 0; padding: 12px 14px; background: #10141a; color: #c9f7c9; border-radius: 8px;
+      font: .98rem/1.5 ui-monospace, "JuliaMono", Menlo, monospace; min-height: 16em; max-height: 28em; overflow-y: auto; white-space: pre-wrap; }
+    .term .in { color: #ffd479; }
+    .term form { display: flex; gap: 6px; margin: 4px 0 0; }
+    .term input { flex: 1; font: inherit; background: transparent; color: #ffd479; border: 0; border-bottom: 1px solid #3a4a3a; outline: none; }
+    .term .done { color: #8fb0ff; }
+    .line100 { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; max-width: 420px; }
+    .line100 span { text-align: center; font: .78rem/1.9 ui-monospace, Menlo, monospace; border-radius: 3px;
+      background: var(--off); color: var(--muted); }
+    .line100 span.ok { background: #d3f9d8; color: #1d1d1f; font-weight: 600; }
+    .line100 span.lo { background: #a5d8ff; color: #1d1d1f; }
+    .line100 span.hi { background: #ffc078; color: #1d1d1f; }
+    .line100 span.hit { background: #2f9e44; color: #ffffff; font-weight: 700; }
+  </style>
+<link rel="modulepreload" href="/X_eTaL-games/guess/guess-web-ae4f17514c20b660.js" crossorigin="anonymous" integrity="sha384-SOEdFZ5WsZndW+/HFVMmMiQ5vMab8yT382GevzAcVyV9TN19ZLyxZKKUY7shi1zL"><link rel="preload" href="/X_eTaL-games/guess/guess-web-ae4f17514c20b660_bg.wasm" crossorigin="anonymous" integrity="sha384-AdqqFziNSLs4tb9lHyW7JtaITSi1C9peIhVYS37NnUHKUT+KIX6l0/WiAeTS1AMa" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

@@ -8,7 +8,7 @@ use microscope::source::code;
 
 use crate::micro::HORSES;
 use crate::model::{Action, Model};
-use crate::view::{source, Stage, STAGES};
+use crate::view::{program, source, Stage, STAGES};
 
 const NAMES: [&str; HORSES] = ["Lucky", "Thunder", "Shadow", "Comet", "Blaze"];
 
@@ -19,11 +19,11 @@ fn act(m: &UseReducerHandle<Model>, a: impl Fn() -> Action + 'static) -> Callbac
 
 fn stage_chip(m: &UseReducerHandle<Model>, s: Stage) -> Html {
     let (name, src, dims, meaning): (&str, &str, Vec<usize>, &str) = match s {
-        Stage::Roll => ("roll", "r_oll! (t_ally p) r_eshape 3", vec![HORSES], "one roll per horse"),
-        Stage::Move => ("move", "p + r", vec![HORSES], "every position, moved at once"),
-        Stage::Finish => ("finish", "'| r_/ p >= l:finish", vec![], "one number: is any horse home?"),
-        Stage::Winners => ("winners", "w_here p = 'm_ax r_/ p", vec![], "the leaders' numbers (one or more)"),
-        Stage::Track => ("track", "l:v_iew p", vec![HORSES, 28], "a character matrix: names, rail, bars"),
+        Stage::Roll => ("roll", "h:r_oll p", vec![HORSES], "one roll per horse"),
+        Stage::Move => ("move", "p h:m_ove r", vec![HORSES], "every position, moved at once"),
+        Stage::Finish => ("finish", "h:s_tatus q", vec![], "one number: is any horse home?"),
+        Stage::Winners => ("winners", "h:w_inners q", vec![], "the leaders' numbers (one or more)"),
+        Stage::Track => ("track", "h:v_iew q", vec![HORSES, 28], "a character matrix: names, rail, bars"),
     };
     chip(name, src, &dims, meaning, m.focus == s, act(m, move || Action::Focus(s)))
 }
@@ -76,11 +76,11 @@ fn round_panel(m: &Model) -> Html {
             <p class="calc">{"The rolls, one per horse, all at once: "}{code("r := h:r_oll p")}</p>
             <div class="rolls">{ for r.rolls.iter().map(|x| html! { <span>{x}</span> }) }</div>
             <p class="calc">{"The new positions: "}{code("p h:m_ove r")}{" = "}{code(&r.pos.iter().map(i64::to_string).collect::<Vec<_>>().join(" "))}</p>
-            <p class="calc">{"Is any horse home? "}{code("'| r_/ p >= l:finish")}{" = "}{code(if r.over { "1" } else { "0" })}</p>
+            <p class="calc">{"Is any horse home? "}{code("h:s_tatus q")}{" = "}{code(if r.over { "1" } else { "0" })}</p>
             <p class="note">{"The whole field is one vector: a round is one addition, whether there are five horses or five thousand."}</p>
         </> },
     };
-    panel("This round:", "p + r_oll! 5 r_eshape 3", "", matches!(m.focus, Stage::Roll | Stage::Move | Stage::Finish), body)
+    panel("This round:", "p h:m_ove h:r_oll p", "", matches!(m.focus, Stage::Roll | Stage::Move | Stage::Finish), body)
 }
 
 #[function_component(App)]
@@ -110,8 +110,13 @@ pub fn app() -> Html {
                 </div>
                 <div class="col">
                     <section class="panel code">
-                        <h2>{"The rules"}</h2>
-                        <p class="note">{"HorseRace.xtl, the library the command-line games use too, run by X_eTaL in your browser; the stage you pick is highlighted."}</p>
+                        <h2>{"The program"}</h2>
+                        <p class="note">{"What the page runs for each round, in X_eTaL in your browser: it imports the rules library as h: and calls it on the positions it keeps. The stage you pick is highlighted."}</p>
+                        { program(&crate::micro::program(&m.pos), m.focus) }
+                    </section>
+                    <section class="panel code">
+                        <h2>{"The library: HorseRace.xtl"}</h2>
+                        <p class="note">{"The rules, written once and imported by the command-line race, the terminal game and this page. A library names its exports l: (\"this library\"); a program that imports it with \"h:\" u_se< \"HorseRace\" calls them as h:."}</p>
                         { source(m.focus) }
                     </section>
                 </div>

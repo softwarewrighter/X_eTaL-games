@@ -1,0 +1,26 @@
+#!/usr/bin/env xetal
+# Guess the number at the terminal, as the COR24 BASIC game plays
+# (original/guess.bas): type a number from 1 to 100; you are told to go
+# higher or lower until you have it. Anything that is not a number is
+# asked for again. The rules are those of NumberGuess.xtl.
+"g:" u_se< "NumberGuess"
+said := p_rint! "--- GUESS THE NUMBER ---"
+said := p_rint! "I AM THINKING OF A NUMBER BETWEEN 1 AND 100."
+t := g:n_ew g:top
+
+# Guess n: the first number on the line typed (other characters are
+# dropped first, as n_umbers takes only numbers).
+u:a_sk := { n ->
+  shown := p_rint! "YOUR GUESS ?"
+  line := []R_EAD @
+  v := n_umbers (line m_ember? "0123456789 ") r_eplicate line
+  0 < t_ally v ? f_loor f_irst v; u:a_sk n
+}
+# Answer each guess until one is right; how many it took.
+u:t_urn := { n ->
+  r := t g:m_ove u:a_sk n
+  shown := p_rint! g:r_eply r
+  r = 0 ? n; u:t_urn n + 1
+}
+n := u:t_urn 1
+"YOU TOOK " c_at (f_ormat n) c_at " GUESSES."
