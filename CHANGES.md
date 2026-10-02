@@ -12,6 +12,9 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 15:06 `docs` Ask filed: the `xetal` CLI cannot be built for wasm32-wasip1 (ratatui/crossterm via the editor and line editor); pages keep the engine library until a feature lets the real binary run in the browser.
+- 15:06 `build` `just repl SLUG`: the X_eTaL REPL in a game's directory, its rules library importable.
+
 - 15:02 `fix` The logo replaced by the corrected one ("eXperimental Extensible Typed Array Language"), in images/ and the published pages.
 
 - 13:57 `chore` Saga step guess completed.
