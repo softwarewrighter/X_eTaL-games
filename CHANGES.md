@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 15:33 `docs` The X_eTaL logo replaced with the corrected 2026-10-02 version (the earlier one had a typo), in images/ and every pages/ copy.
+
 - 15:23 `docs` A request to X_eTaL for a terminal: a `[]TE` interface, a sw-tos-style browser terminal replacing `window.prompt` for input, and a cargo feature so the `xetal` binary builds for wasm32-wasip1 (docs/xetal-terminal-request.md).
 
 - 15:06 `docs` Ask filed: the `xetal` CLI cannot be built for wasm32-wasip1 (ratatui/crossterm via the editor and line editor); pages keep the engine library until a feature lets the real binary run in the browser.
