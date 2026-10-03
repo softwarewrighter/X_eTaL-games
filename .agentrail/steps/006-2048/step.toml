@@ -1,6 +1,6 @@
 number = 6
 slug = "2048"
-status = "pending"
+status = "in-progress"
 description = "grids step 6: games/2048. A 4 by 4 board; a move left is, for every row at on..."
 role = "production"
 context_files = []

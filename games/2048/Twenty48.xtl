@@ -1,0 +1,86 @@
+# 2048's rules, a library: 2048.xtl (scripted), play.xtl (at the
+# terminal) and the web page all use these. Slide the tiles of a 4 by 4
+# board left, right, up or down; two equal tiles that meet merge into
+# their sum (once a move), and a 2 or a 4 appears on an empty square.
+# Make a 2048 tile; the game ends when no move changes the board.
+#
+# The state is one vector: the score, then the 16 squares row by row
+# (0 empty).
+
+l:s_core := { s -> f_irst s }
+l:b_oard := { s -> 4 4 r_eshape 1 d_rop s }
+
+# Every row at once, its tiles slid left: each tile's new column is the
+# count of tiles up to it in its row (a running sum); a 4 by 4 by 4
+# table of each square against each column (row, old column, new
+# column) puts every value in its place, summed over the old columns.
+l:c_ompress := { b ->
+  c := (b != 0) * '+ s_\_2 b != 0
+  '+ r_/_2 (b 'l_eft t_able r_ange 4) * c '= t_able r_ange 4
+}
+# Every row at once, which tiles double when equal neighbours merge,
+# left to right: a run of equal tiles starts where a tile differs from
+# the one before; each tile's place in its run is its column less the
+# run's start (the latest start so far, by a max-scan). A tile in an
+# odd place doubles when the next tile is equal; a tile in an even
+# place is absorbed (the one before it doubled).
+l:p_lace := { b ->
+  j := 4 4 r_eshape r_ange 4
+  prev := 0 c_at_2 -1 d_rop_2 b
+  1 + j - 'm_ax s_\_2 j * b != prev
+}
+l:d_oubles := { b ->
+  next := (1 d_rop_2 b) c_at_2 0
+  (b != 0) & (1 = (l:p_lace b) m_od 2) & b = next
+}
+l:m_erge := { b -> (b * 1 = (l:p_lace b) m_od 2) + b * l:d_oubles b }
+# A move left: compress, merge, compress.
+l:l_eft := { b -> l:c_ompress l:m_erge l:c_ompress b }
+
+# The other moves turn the board so that the move is left, and turn it
+# back: d is 1 left, 2 right (reverse the rows), 3 up (transpose),
+# 4 down (transpose, then reverse).
+l:t_urn := { b d ->
+  d = 1 ? b
+  d = 2 ? r_ev_2 b
+  d = 3 ? o_\ b
+  r_ev_2 o_\ b
+}
+l:b_ack := { b d ->
+  d = 1 ? b
+  d = 2 ? r_ev_2 b
+  d = 3 ? o_\ b
+  o_\ r_ev_2 b
+}
+l:s_lide := { b d -> (l:l_eft b l:t_urn d) l:b_ack d }
+# What a move scores: the value of every tile it makes by merging.
+l:g_ain := { b d ->
+  c := l:c_ompress b l:t_urn d
+  '+ r_/ r_avel 2 * c * l:d_oubles c
+}
+
+# A 2 (or, one time in ten, a 4) on a random empty square.
+l:s_pawn := { b ->
+  e := w_here 0 = r_avel b
+  0 = t_ally e ? b
+  k := (r_oll! t_ally e) s_elect e
+  v := 2 + 2 * 10 = r_oll! 10
+  4 4 r_eshape (r_avel b) + v * k = r_ange 16
+}
+l:n_ew := { x -> 0 c_at r_avel l:s_pawn l:s_pawn 4 4 r_eshape 0 }
+
+# A move d: the board slides; if anything moved, the score gains the
+# merged tiles and a new tile appears; if not, nothing happens.
+l:m_ove := { s d ->
+  b := l:b_oard s
+  n := b l:s_lide d
+  n m_atch b ? s
+  ((l:s_core s) + b l:g_ain d) c_at r_avel l:s_pawn n
+}
+# 0 playing, 1 a 2048 tile made, 2 no move changes the board.
+l:s_tatus := { s ->
+  b := l:b_oard s
+  2048 m_ember? r_avel b ? 1
+  '& r_/ '{ (b l:s_lide _r) m_atch b } e_ach 1 2 3 4 ? 2
+  0
+}

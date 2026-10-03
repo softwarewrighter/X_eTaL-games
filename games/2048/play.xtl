@@ -1,0 +1,34 @@
+#!/usr/bin/env xetal
+# 2048 at the terminal: slide the tiles with a (left), d (right), w (up)
+# or s (down), then Enter; q stops. Equal tiles that meet merge; make a 2048.
+# The board is printed as X_eTaL prints a matrix (0 is an empty
+# square). The rules are those of Twenty48.xtl.
+"t:" u_se< "Twenty48"
+said := p_rint! "2048: A LEFT, D RIGHT, W UP, S DOWN"
+
+# A direction (1 left, 2 right, 3 up, 4 down) from the first of a d w s
+# on the line, 0 for q; anything else is asked for again.
+u:a_sk := { s ->
+  said := p_rint! "MOVE (A D W S, Q TO STOP) ?"
+  line := []R_EAD @
+  k := "adwsADWSqQ" i_ndexOf f_irst line c_at " "
+  k <= 8 ? 1 + (k - 1) m_od 4
+  k <= 10 ? 0; u:a_sk s
+}
+# A turn: the score and board, a move, until the game ends.
+u:t_urn := { s ->
+  said := p_rint! ""
+  said := p_rint! "SCORE " c_at f_ormat t:s_core s
+  shown := p_rint! t:b_oard s
+  1 = t:s_tatus s ? "2048! YOU WIN WITH " c_at f_ormat t:s_core s
+  2 = t:s_tatus s ? "NO MOVES LEFT. SCORE " c_at f_ormat t:s_core s
+  d := u:a_sk s
+  0 = d ? "STOPPED WITH SCORE " c_at f_ormat t:s_core s
+  next := s t:m_ove d
+  next m_atch s ? u:t_urn u:s_tuck s; u:t_urn next
+}
+u:s_tuck := { s ->
+  said := p_rint! "NOTHING MOVES THAT WAY."
+  s
+}
+u:t_urn t:n_ew 0

@@ -20,8 +20,8 @@ u:t_urn := { s ->
   said := p_rint! ""
   shown := p_rint! m:v_iew s
   pic := []S_HOW m:p_icture s
-  m:s_tatus s = 1 ? "YOU CLEARED THE FIELD!"
-  m:s_tatus s = 2 ? "BOOM! YOU HIT A MINE."
+  1 = m:s_tatus s ? "YOU CLEARED THE FIELD!"
+  2 = m:s_tatus s ? "BOOM! YOU HIT A MINE."
   c := u:a_sk s
   1 = f_irst c ? u:t_urn s m:f_lag 1 d_rop c; u:t_urn s m:r_eveal 1 d_rop c
 }
