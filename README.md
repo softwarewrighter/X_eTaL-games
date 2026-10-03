@@ -36,7 +36,7 @@ and is tested by its expected output.
 | [Horse race](games/horse-race/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/horse-race/)) | vectors, random rolls, reduction | live |
 | [Guess the number](games/guess/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/guess/)) | comparison tables, masks, every game at once (from COR24 BASIC) | live |
 | [Robot chase](games/robot-chase/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/robot-chase/)) | coordinate matrices, simultaneous motion, collision tables (from COR24 BASIC) | live |
-| Trek adventure | tables and a state machine (from COR24 BASIC) | planned |
+| [Trek adventure](games/trek-adventure/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/trek-adventure/)) | tables, masks, a state machine as data (from COR24 BASIC) | live |
 | Trek | a galaxy of sectors, scans, distances (from COR24 BASIC) | planned |
 | Tic-tac-toe | a 3 x 3 board, line extraction, minimax | planned |
 | Shut the box | boolean masks, subset sums | planned |
@@ -139,9 +139,9 @@ the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
 Early. The project process, plan and build scaffolding are in place,
 the bundled X_eTaL builds and is checked by the gate, the game layout
 and its test runner (with scripted terminal input) and the live catalog
-are in place; the horse race, guess the number and robot chase are
-live, each page showing only X_eTaL's own output. Next: trek
-adventure and trek (COR24 BASIC), then the grid games; the browser
+are in place; the horse race, guess the number, robot chase and trek
+adventure are live, each page showing only X_eTaL's own output. Next:
+trek (COR24 BASIC), then the grid games; the browser
 terminal moves to X_eTaL's own terminal pane when it lands. See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation

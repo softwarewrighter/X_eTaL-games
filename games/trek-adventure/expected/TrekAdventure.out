@@ -1,0 +1,27 @@
+l:t_ext : Unit -> Box Char
+l:k_eys : Num a => Unit -> a
+l:f_lags : Num a => Unit -> a
+l:v_alues : Num a => Unit -> a
+l:l_ines : (Num a, Num b) => a -> b -> Int
+l:s_ay : (Num a, Num b, Num c) => a -> b -> c
+l:e_xits : Num a => Unit -> a
+l:i_tems : Unit -> Box Char
+l:h_omes : Num a => Unit -> a
+l:n_ew : Num b => a -> b
+l:r_oom : a -> a
+l:t_urns : a -> a
+l:e_vent : a -> a
+l:s_tatus : (Num a, Truthy a) => a -> a
+l:u_pdate : Int -> Int -> Int
+l:p_resent : Num a => a -> Int
+l:m_ove : Int -> Int -> Int
+l:g_o : Int -> Int -> Int
+l:t_ake : Int -> Int -> Int
+l:u_se : Int -> Int -> Int
+l:t_oolkit : Int -> Int
+l:c_oupler : Int -> Int
+l:t_hrow : Int -> Int
+l:f_ire : Int -> Int
+l:s_aid : Num a => a -> a
+l:c_lock : Int -> Int
+l:a_larms : (Num a, Truthy a, Num b) => a -> b

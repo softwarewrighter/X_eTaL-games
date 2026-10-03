@@ -1,0 +1,66 @@
+#!/usr/bin/env xetal
+# Trek adventure at the terminal, as the COR24 BASIC game plays it:
+# "Star Trek: Decaying Orbit". Pick commands by number (8 for help);
+# GO, TAKE and USE then ask for a room or an item number. Every command
+# takes a turn; fix the engines before the 30 turns run out. The rules
+# and all the text are in TrekAdventure.xtl.
+"t:" u_se< "TrekAdventure"
+
+# A number typed (the first on the line; other characters dropped), or
+# -1 when there is none.
+u:n_um := { prompt ->
+  shown := p_rint! prompt
+  line := []R_EAD @
+  v := n_umbers (line m_ember? "0123456789 ") r_eplicate line
+  f_loor f_irst v c_at -1
+}
+
+# The items here as the TAKE menu lists them, "  3=TOOLKIT".
+u:l_ist := { v ->
+  0 = t_ally v ? 0
+  shown := p_rint! "  " c_at (f_ormat f_irst v) c_at "=" c_at d_isclose (f_irst v) s_elect t:i_tems @
+  1 + u:l_ist 1 d_rop v
+}
+
+# The argument a command asks for: a room for GO, an item for TAKE (0
+# when there is nothing to take) and USE, else none.
+u:a_rg := { s c ->
+  c = 3 ? u:n_um "GO TO ROOM# ?"
+  c = 4 ? u:t_akeWhat s
+  c = 5 ? u:u_seWhat s
+  0
+}
+u:t_akeWhat := { s ->
+  said := p_rint! "TAKE WHAT?"
+  here := t:p_resent s
+  0 = t_ally here ? 0
+  listed := u:l_ist here
+  u:n_um "ITEM# ?"
+}
+u:u_seWhat := { s ->
+  said := p_rint! "USE WHAT?"
+  said := p_rint! "1=TOOLKIT 2=COUPLER 3=COMPUTER"
+  u:n_um "ITEM# ?"
+}
+
+# A turn: the room, the menu, a command, what it says, the clock.
+u:t_urn := { s ->
+  0 < t:s_tatus s ? s t:s_ay 200 + t:s_tatus s
+  said := p_rint! "----------------------------------------"
+  said := p_rint! "TURNS LEFT " c_at f_ormat t:t_urns s
+  said := p_rint! ""
+  said := s t:s_ay t:r_oom s
+  said := p_rint! ""
+  said := p_rint! "1=LOOK 2=INV  3=GO    4=TAKE"
+  said := p_rint! "5=USE  6=THROW 7=FIRE 8=HELP 0=QUIT"
+  c := u:n_um "COMMAND ?"
+  c = 0 ? s t:s_ay 204
+  next := s t:m_ove c c_at s u:a_rg c
+  said := next t:s_ay t:s_aid next
+  later := t:c_lock next
+  said := later t:s_ay t:a_larms later
+  u:t_urn later
+}
+s := t:n_ew 0
+said := s t:s_ay 300
+done := u:t_urn s

@@ -1,6 +1,6 @@
-number = 5
+number = 4
 slug = "trek-adventure"
-status = "pending"
+status = "in-progress"
 description = "basic step 3: games/trek-adventure from trek-adventure.bas ('Star Trek: Decay..."
 role = "production"
 context_files = []

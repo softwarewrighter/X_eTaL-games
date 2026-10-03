@@ -1,0 +1,339 @@
+# Trek adventure's rules, a library: trek-adventure.xtl (a scripted
+# walkthrough), play.xtl (at the terminal) and the web page all use
+# these. "Star Trek: Decaying Orbit": you wake alone on the Enterprise's
+# bridge, its orbit decaying; find the toolkit and the engine coupler,
+# prep the relay in engineering, install the coupler before the turns
+# run out, and deal with the Klingon boarders on the way.
+#
+# The game is tables, not branches: every line of text is one row of a
+# table, with a key (a room, an event, an ending) and a condition on the
+# state; a room's description or a message is the rows whose key it is
+# and whose condition holds, picked by one mask. The rooms' exits are a
+# 9 by 9 table, the items' places a vector.
+#
+# The state is one vector: 1 room, 2 turns left, items held 3 phaser,
+# 4 ID card, 5 toolkit, 6 coupler, 7 tribble (1 = carried), 8 relay
+# prepped, 9 boarders aboard, 10 won, 11 dead, 12 the last event (the
+# key of what to say).
+
+# -- the text ---------------------------------------------------------------
+l:t_ext := { @ -> (
+  ""                                             # 300
+  "*** STAR TREK: DECAYING ORBIT ***"            # 300
+  ""                                             # 300
+  "YOU AWAKEN ALONE ON THE BRIDGE OF THE"        # 300
+  "U.S.S. ENTERPRISE. RED LIGHTS FLASH."         # 300
+  "THE SHIP SHUDDERS."                           # 300
+  ""                                             # 300
+  "COMPUTER: WARNING - STABLE ORBIT LOST"        # 300
+  "COMPUTER: ENGINES OFFLINE"                    # 300
+  "COMPUTER: ORBITAL DECAY IN PROGRESS"          # 300
+  ""                                             # 300
+  "RESTORE ENGINE POWER BEFORE THE SHIP"         # 300
+  "BURNS UP. PICK 8 FOR HELP."                   # 300
+  ""                                             # 300
+  "BRIDGE"                                       # 1
+  "THE BRIDGE IS DESERTED. THE MAIN"             # 1
+  "VIEWSCREEN SHOWS A PLANET GROWING"            # 1
+  "LARGER. A DAMAGED CONSOLE SPARKS."            # 1
+  "THE TURBOLIFT DOORS STAND OPEN."              # 1
+  "A PHASER LIES UNDER THE CAPTAIN'S CHAIR."     # 1 if 3=0
+  "EXITS: 2=TURBOLIFT"                           # 1
+  "TURBOLIFT"                                    # 2
+  "THE TURBOLIFT HUMS ON EMERGENCY"              # 2
+  "POWER. DECK BUTTONS GLOW DIMLY."              # 2
+  "EXITS: 1=BRIDGE 3=CORRIDOR 6=ENGINEERING"     # 2
+  "CORRIDOR"                                     # 3
+  "A CORRIDOR STRETCHES FORE AND AFT."           # 3
+  "EMERGENCY LIGHTS PULSE ALONG THE WALLS."      # 3
+  "EXITS: 2=TURBOLIFT 4=QUARTERS"                # 3
+  "       5=STORAGE   7=ARMORY"                  # 3
+  "       9=COMPUTER"                            # 3
+  "QUARTERS"                                     # 4
+  "CREW QUARTERS ARE IN DISARRAY."               # 4
+  "A LOCKER HANGS OPEN. PERSONAL EFFECTS"        # 4
+  "FLOAT IN LOW GRAVITY."                        # 4
+  "A SECURITY ID CARD GLINTS UNDER A BUNK."      # 4 if 4=0
+  "EXITS: 3=CORRIDOR"                            # 4
+  "STORAGE"                                      # 5
+  "CARGO CONTAINERS ARE STRAPPED TO"             # 5
+  "THE DECK."                                    # 5
+  "A TOOLKIT LIES BY A MAINTENANCE CRATE."       # 5 if 5=0
+  "AN ENGINE COUPLER RESTS ON A SHELF."          # 5 if 6=0
+  "SOMETHING FURRY SQUEAKS - A TRIBBLE."         # 5 if 7=0
+  "EXITS: 3=CORRIDOR 8=SHUTTLE"                  # 5
+  "ENGINEERING"                                  # 6
+  "ENGINEERING IS HOT AND NOISY."                # 6
+  "THE WARP SYSTEMS ARE OFFLINE."                # 6
+  "A PLASMA RELAY PANEL HANGS OPEN."             # 6 if 8=0
+  "THE RELAY PANEL IS PATCHED BUT NOT"           # 6 if 8=1
+  "YET ACTIVATED."                               # 6 if 8=1
+  "EXITS: 2=TURBOLIFT"                           # 6
+  "ARMORY"                                       # 7
+  "RACKS LINE THE WALLS. MOST WEAPONS"           # 7
+  "ARE MISSING. A SPARE POWER CELL"              # 7
+  "SITS IN A CRADLE."                            # 7
+  "EXITS: 3=CORRIDOR"                            # 7
+  "SHUTTLE BAY"                                  # 8
+  "THE SHUTTLE BAY IS DARK AND COLD."            # 8
+  "A SHUTTLE HANGS IN PLACE, BUT LAUNCH"         # 8
+  "SYSTEMS ARE DEAD."                            # 8
+  "DISTANT METALLIC FOOTSTEPS ECHO."             # 8 if 9=1
+  "EXITS: 5=STORAGE"                             # 8
+  "COMPUTER CORE"                                # 9
+  "BANKS OF PANELS FLICKER IN STANDBY."          # 9
+  "A MONITOR SCROLLS SECURITY ALERTS."           # 9
+  "EXITS: 3=CORRIDOR"                            # 9
+  "?WHAT"                                        # 10
+  "YOU CAN'T GO THAT WAY."                       # 11
+  "ARMORY DOOR LOCKED - NEED ID CARD."           # 12
+  "  (NOTHING HERE TO TAKE)"                     # 20
+  "YOU DON'T SEE THAT HERE."                     # 21
+  "YOU ALREADY HAVE IT."                         # 22
+  "TAKEN: PHASER."                               # 23
+  "TAKEN: ID CARD."                              # 24
+  "TAKEN: TOOLKIT."                              # 25
+  "TAKEN: ENGINE COUPLER."                       # 26
+  "THE TRIBBLE PURRS SOFTLY. TAKEN."             # 27
+  "NOTHING HAPPENS."                             # 30
+  "YOU DON'T HAVE A TOOLKIT."                    # 31
+  "YOU TIGHTEN FITTINGS BUT THE COUPLER"         # 32
+  "IS STILL MISSING."                            # 32
+  "RELAY IS ALREADY PREPPED."                    # 33
+  "YOU REMOVE THE BURNT RELAY COVER"             # 34
+  "AND PREP THE MOUNT."                          # 34
+  "YOU DON'T HAVE THE ENGINE COUPLER."           # 35
+  "YOU NEED TOOLS TO INSTALL IT."                # 36
+  "YOU MUST PREP THE RELAY PANEL FIRST."         # 37
+  "YOU INSTALL THE ENGINE COUPLER AND"           # 38
+  "LOCK IT DOWN."                                # 38
+  "MAIN IMPULSE POWER SURGES BACK ONLINE."       # 38
+  "COMPUTER: ORBIT STABILIZED."                  # 38
+  "COMPUTER: SECURITY LOG..."                    # 39
+  "  'INTRUDER ALERT. BOARDING DETECTED.'"       # 39
+  "  'CREW EVACUATED OR CAPTURED.'"              # 39
+  "  'KLINGON SEARCH PARTIES EXPECTED.'"         # 39
+  "A MAP HIGHLIGHTS STORAGE AND"                 # 39
+  "ENGINEERING AS PRIORITY SYSTEMS."             # 39
+  "YOU DON'T HAVE A TRIBBLE."                    # 40
+  "NO TARGET. THE TRIBBLE SQUEAKS."              # 41
+  "YOU HURL THE TRIBBLE."                        # 42
+  "THE KLINGONS FREEZE. ONE SHOUTS:"             # 42
+  "'GET IT AWAY FROM ME!'"                       # 42
+  "IN THE CONFUSION, THEY RETREAT."              # 42
+  "YOU DON'T HAVE A PHASER."                     # 50
+  "YOU FIRE AT NOTHING IN PARTICULAR."           # 51
+  "YOU STUN ONE KLINGON - BUT ANOTHER"           # 52
+  "RETURNS FIRE!"                                # 52
+  "YOU ARE CARRYING:"                            # 60
+  "  PHASER"                                     # 61 if 3=1
+  "  ID CARD"                                    # 61 if 4=1
+  "  TOOLKIT"                                    # 61 if 5=1
+  "  ENGINE COUPLER"                             # 61 if 6=1
+  "  TRIBBLE"                                    # 61 if 7=1
+  "  NOTHING"                                    # 62 when nothing is carried
+  ""                                             # 80
+  "COMMANDS (PICK A NUMBER):"                    # 80
+  "  1 LOOK  - REDESCRIBE ROOM"                  # 80
+  "  2 INV   - LIST INVENTORY"                   # 80
+  "  3 GO    - THEN ENTER ROOM#"                 # 80
+  "  4 TAKE  - THEN ENTER ITEM#"                 # 80
+  "  5 USE   - THEN ENTER ITEM#"                 # 80
+  "  6 THROW - HURLS THE TRIBBLE"                # 80
+  "  7 FIRE  - FIRE THE PHASER"                  # 80
+  "  8 HELP  - THIS HELP"                        # 80
+  "  0 QUIT  - RESIGN COMMAND"                   # 80
+  ""                                             # 80
+  "ROOM# IS THE NUMBER PRINTED NEXT TO"          # 80
+  "EACH EXIT. GOAL: FIX ENGINES IN"              # 80
+  "ENGINEERING BEFORE ORBIT DECAYS."             # 80
+  "COMPUTER: INTERNAL SENSORS DETECT BOARDERS."  # 101
+  "TWO KLINGONS EMERGE FROM THE SHADOWS!"        # 102
+  "ONE RAISES A DISRUPTOR."                      # 102
+  "YOU HAVE ONLY MOMENTS TO ACT."                # 102
+  "YOU HEAR KLINGON VOICES NEARBY."              # 103
+  ""                                             # 201
+  "THE DECK STEADIES BENEATH YOUR FEET."         # 201
+  "ON THE VIEWSCREEN, THE PLANET SLOWLY"         # 201
+  "RECEDES."                                     # 201
+  "COMPUTER: ORBIT STABLE."                      # 201
+  "COMPUTER: EMERGENCY CONDITION ENDED."         # 201
+  ""                                             # 201
+  "*** YOU SAVED THE ENTERPRISE. ***"            # 201
+  ""                                             # 202
+  "A BURST OF DISRUPTOR FIRE SLAMS"              # 202
+  "INTO THE BULKHEAD BESIDE YOU."                # 202
+  "THE NEXT SHOT IS MORE ACCURATE."              # 202
+  ""                                             # 202
+  "*** YOU HAVE DIED. ***"                       # 202
+  ""                                             # 203
+  "THE SHIP SHAKES VIOLENTLY."                   # 203
+  "FLAMES ERUPT FROM DEAD CONSOLES."             # 203
+  "THE ENTERPRISE ENTERS THE UPPER"              # 203
+  "ATMOSPHERE."                                  # 203
+  ""                                             # 203
+  "*** YOU WERE TOO LATE. ***"                   # 203
+  ""                                             # 204
+  "*** COMMAND RESIGNED ***"                     # 204
+) }
+# Each line's key: a room (1 to 9), an event (10 to 99), the clock (101
+# to 103), an ending (201 to 204), the opening (300).
+l:k_eys := { @ -> (
+  300 300 300 300 300 300 300 300 300 300 300 300 300 300 1 1 1 1 1
+  1 1 2 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4 5 5 5 5 5 5 5 6 6 6 6 6 6 6 7
+  7 7 7 7 8 8 8 8 8 8 9 9 9 9 10 11 12 20 21 22 23 24 25 26 27 30 31
+  32 32 33 34 34 35 36 37 38 38 38 38 39 39 39 39 39 39 40 41 42 42
+  42 42 50 51 52 52 60 61 61 61 61 61 62 80 80 80 80 80 80 80 80 80
+  80 80 80 80 80 80 101 102 102 102 103 201 201 201 201 201 201 201
+  201 202 202 202 202 202 202 203 203 203 203 203 203 203 204 204
+) }
+# Each line's condition: shown only when this state item (0: always) ...
+l:f_lags := { @ -> (
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 4 0 0 0 0 5 6 7 0 0 0 0 8 8 8 0 0 0 0 0 0 0 0 0 0 9 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 3 4 5 6 7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+) }
+# ... has this value.
+l:v_alues := { @ -> (
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+) }
+
+# The rows for keys k (one or many) in state s: the key matches, and the
+# condition holds (a flag of 0 reads the extra -1 first, never equal to
+# a value, so the "always" rows are kept by the first test instead).
+l:l_ines := { s k ->
+  f := l:f_lags @
+  held := (1 + f) s_elect -1 c_at s
+  w_here ((l:k_eys @) m_ember? k) & (f = 0) | held = l:v_alues @
+}
+# Print the lines for keys k; how many were printed.
+l:s_ay := { s k -> e_cho (s l:l_ines k) s_elect l:t_ext @ }
+e_cho := { v ->
+  0 = t_ally v ? 0
+  shown := p_rint! d_isclose f_irst v
+  1 + e_cho 1 d_rop v
+}
+
+# -- the ship -----------------------------------------------------------------
+# Exits: row r, column x is 1 when room x can be reached from room r.
+l:e_xits := { @ -> 9 9 r_eshape (
+  0 1 0 0 0 0 0 0 0
+  1 0 1 0 0 1 0 0 0
+  0 1 0 1 1 0 1 0 1
+  0 0 1 0 0 0 0 0 0
+  0 0 1 0 0 0 0 1 0
+  0 1 0 0 0 0 0 0 0
+  0 0 1 0 0 0 0 0 0
+  0 0 0 0 1 0 0 0 0
+  0 0 1 0 0 0 0 0 0
+) }
+# The items, numbered as the TAKE menu numbers them, and where each lies.
+l:i_tems := { @ -> "PHASER" "CARD" "TOOLKIT" "COUPLER" "TRIBBLE" }
+l:h_omes := { @ -> 1 4 5 5 5 }
+
+# -- the state ------------------------------------------------------------------
+l:n_ew := { x -> 1 30 0 0 0 0 0 0 0 0 0 0 }
+l:r_oom := { s -> 1 s_elect s }
+l:t_urns := { s -> 2 s_elect s }
+l:e_vent := { s -> 12 s_elect s }
+# 0 playing, 1 won, 2 dead, 3 out of time.
+l:s_tatus := { s -> (10 s_elect s) m_ax (2 * 11 s_elect s) m_ax 3 * 0 >= l:t_urns s }
+# Several items of s changed at once: iv is index, value, index, value,
+# ... A table of every position against every index says which items
+# change and to what.
+l:u_pdate := { s iv ->
+  k := (t_ally iv) d_iv 2
+  m := (r_ange t_ally s) '= t_able ((2 * r_ange k) - 1) s_elect iv
+  v := ((t_ally s) c_at k) r_eshape (2 * r_ange k) s_elect iv
+  (s * n_ot '| r_/_2 m) + '+ r_/_2 m * v
+}
+# The items here, by number: in this room and not carried.
+l:p_resent := { s -> w_here ((l:h_omes @) = l:r_oom s) & 0 = 5 t_ake 2 d_rop s }
+
+# -- a command ------------------------------------------------------------------
+# cx is the command and its argument (a room or an item number, or 0):
+# 1 look, 2 inventory, 3 go, 4 take, 5 use, 6 throw, 7 fire, 8 help.
+# The result is the new state, its event the key of what to say.
+l:m_ove := { s cx ->
+  c := f_irst cx
+  x := 2 s_elect cx
+  c = 1 ? s l:u_pdate 12 0
+  c = 2 ? s l:u_pdate 12 60
+  c = 3 ? s l:g_o x
+  c = 4 ? s l:t_ake x
+  c = 5 ? s l:u_se x
+  c = 6 ? l:t_hrow s
+  c = 7 ? l:f_ire s
+  c = 8 ? s l:u_pdate 12 80
+  s l:u_pdate 12 10
+}
+l:g_o := { s x ->
+  (x < 1) | x > 9 ? s l:u_pdate 12 11
+  0 = x s_elect (l:r_oom s) s_elect l:e_xits @ ? s l:u_pdate 12 11
+  (x = 7) & 0 = 4 s_elect s ? s l:u_pdate 12 12
+  s l:u_pdate 1 c_at x c_at 12 0
+}
+l:t_ake := { s x ->
+  x = 0 ? s l:u_pdate 12 20
+  (x < 1) | x > 5 ? s l:u_pdate 12 21
+  (l:r_oom s) != x s_elect l:h_omes @ ? s l:u_pdate 12 21
+  1 = (2 + x) s_elect s ? s l:u_pdate 12 22
+  s l:u_pdate (2 + x) c_at 1 12 c_at 22 + x
+}
+l:u_se := { s x ->
+  r := l:r_oom s
+  (r = 6) & x = 1 ? l:t_oolkit s
+  (r = 6) & x = 2 ? l:c_oupler s
+  (r = 9) & x = 3 ? s l:u_pdate 12 39
+  s l:u_pdate 12 30
+}
+l:t_oolkit := { s ->
+  0 = 5 s_elect s ? s l:u_pdate 12 31
+  0 = 6 s_elect s ? s l:u_pdate 12 32
+  1 = 8 s_elect s ? s l:u_pdate 12 33
+  s l:u_pdate 8 1 12 34
+}
+l:c_oupler := { s ->
+  0 = 6 s_elect s ? s l:u_pdate 12 35
+  0 = 5 s_elect s ? s l:u_pdate 12 36
+  0 = 8 s_elect s ? s l:u_pdate 12 37
+  s l:u_pdate 10 1 12 38
+}
+l:t_hrow := { s ->
+  0 = 7 s_elect s ? s l:u_pdate 12 40
+  0 = 9 s_elect s ? s l:u_pdate 12 41
+  s l:u_pdate 9 0 7 0 12 42
+}
+l:f_ire := { s ->
+  0 = 3 s_elect s ? s l:u_pdate 12 50
+  0 = 9 s_elect s ? s l:u_pdate 12 51
+  s l:u_pdate 11 1 12 52
+}
+# The keys of what the last event says (the inventory adds what is
+# carried, or "nothing").
+l:s_aid := { s ->
+  e := l:e_vent s
+  e != 60 ? e
+  60 61 c_at (0 = '+ r_/ 5 t_ake 2 d_rop s) r_eplicate 62
+}
+
+# -- the clock --------------------------------------------------------------------
+# Each command takes a turn; at 21 turns left Klingons come aboard.
+l:c_lock := { s ->
+  t := (l:t_urns s) - 1
+  s l:u_pdate 2 c_at t c_at 9 c_at (9 s_elect s) m_ax t = 21
+}
+# What the clock says after a turn: the sensors (at 22), the Klingons in
+# the shuttle bay, their voices in the corridor late in the game.
+l:a_larms := { s ->
+  t := l:t_urns s
+  r := l:r_oom s
+  b := 9 s_elect s
+  ((t = 22) c_at (b & r = 8) c_at b & (r = 3) & t < 15) r_eplicate 101 102 103
+}
