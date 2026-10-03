@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 09:55 `chore` Saga step minesweeper completed.
+
 - 09:52 `game` Minesweeper, live: every square's count at once by rotations (as Life), opening by a flood fill grown to a fixed point, the field also as a picture X_eTaL draws; the shared page.
 
 - 09:05 `chore` Saga step x-pictures completed.
