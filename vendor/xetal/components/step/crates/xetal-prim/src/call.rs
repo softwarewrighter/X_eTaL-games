@@ -6,7 +6,6 @@ use std::io::Write;
 use xetal_base::{Diagnostic, Span};
 use xetal_catalog::find;
 
-use crate::run::err;
 use xetal_arith::{Rng, binary, compare, compare_chars, lift1, lift2, num, truth};
 use xetal_value::Value;
 use xetal_value::{as_array, to_value};
@@ -40,6 +39,7 @@ pub fn call<'a>(
         .or_else(|| xetal_search::call(name, args, span))
         .or_else(|| xetal_radix::call(name, args, span))
         .or_else(|| xetal_rotate::call(name, args, span))
+        .or_else(|| xetal_transpose::call(name, args, span))
         .or_else(|| xetal_system::call(name, args, span))
     {
         return result;
@@ -126,4 +126,8 @@ fn unary<'a>(name: &str, a: &Value<'a>, span: Span) -> Result<Value<'a>, Diagnos
         ("l_og", n) => Ok(Value::Float(n.f().ln())),
         _ => Err(err("unknown-builtin", span, format!("bad call of {name}"))),
     }
+}
+
+fn err(code: &str, span: Span, message: impl Into<String>) -> Diagnostic {
+    Diagnostic::new(code, message).with_span(span)
 }
