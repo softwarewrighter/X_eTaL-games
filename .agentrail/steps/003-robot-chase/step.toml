@@ -1,6 +1,6 @@
-number = 4
+number = 3
 slug = "robot-chase"
-status = "pending"
+status = "in-progress"
 description = "basic step 2: games/robot-chase from robot-chase.bas (original/ kept). RobotC..."
 role = "production"
 context_files = []

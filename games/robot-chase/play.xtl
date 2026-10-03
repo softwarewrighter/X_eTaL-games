@@ -1,0 +1,58 @@
+#!/usr/bin/env xetal
+# Robot chase at the terminal, as the COR24 BASIC game plays it
+# (original/robot-chase.bas): move with the numeric keypad (7 8 9 up,
+# 4 6 sideways, 5 waits, 1 2 3 down), 0 teleports (3 a game), 10 scans
+# the board in 4 by 4 regions, 99 resigns. Make the robots crash into
+# each other or into wrecks; clear them all to win. The rules are those
+# of RobotChase.xtl.
+"r:" u_se< "RobotChase"
+said := p_rint! ""
+said := p_rint! "*** ROBOT CHASE ***"
+said := p_rint! "EVADE THE ROBOTS - MAKE THEM COLLIDE."
+
+# A command: the first number on the line typed (other characters are
+# dropped first); one that is not a command is asked for again.
+u:a_sk := { s ->
+  said := p_rint! ""
+  said := p_rint! "1-9=MOVE(5=WAIT) 0=TELE 10=LRS 99=QUIT"
+  said := p_rint! "COMMAND ?"
+  line := []R_EAD @
+  v := n_umbers (line m_ember? "0123456789 ") r_eplicate line
+  c := f_loor f_irst v c_at -1
+  (c m_ember? 0 1 2 3 4 5 6 7 8 9 10 99) ? c; u:a_sk s
+}
+
+# The board and its header, as the BASIC prints them each turn.
+u:s_how := { s ->
+  said := p_rint! ""
+  said := p_rint! "TURN " c_at (f_ormat r:t_urn s) c_at "   ROBOTS " c_at (f_ormat '+ r_/ r:a_live s) c_at "   TELE " c_at f_ormat r:t_ele s
+  r:v_iew s
+}
+
+# A turn: show, read, move (or scan), say what happened, until the end.
+u:t_urn := { s ->
+  shown := p_rint! u:s_how s
+  c := u:a_sk s
+  c = 10 ? u:t_urn u:s_can s
+  t := s r:m_ove c
+  0 = r:e_vent t ? u:a_fter t; u:a_fter u:s_ay t
+}
+u:s_ay := { t ->
+  told := p_rint! r:m_essage t
+  t
+}
+u:a_fter := { t -> 0 < r:s_tatus t ? u:e_nd t; u:t_urn t }
+u:s_can := { s ->
+  said := p_rint! ""
+  said := p_rint! "LRS: ROBOTS, WRECKS, YOU IN EACH 4X4 REGION"
+  shown := p_rint! r:l_rs s
+  s
+}
+# The end: (unless you resigned) the board once more, then the verdict.
+u:e_nd := { s ->
+  r:e_vent s = 9 ? "GAME OVER"
+  shown := p_rint! u:s_how s
+  said := p_rint! ""
+  r:s_tatus s = 1 ? "*** YOU WIN IN " c_at (f_ormat r:t_urn s) c_at " TURNS! ***"; "*** YOU WERE CAUGHT. ***"
+}
+u:t_urn r:n_ew 0

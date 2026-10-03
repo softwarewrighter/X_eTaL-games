@@ -134,3 +134,5 @@ canvas.pic.mid { width: min(100%, 260px); }
 .nb .cell { margin: 0 0 10px; }
 .nb .out { margin: 4px 0 0; padding: 6px 10px; background: #10141a; color: #c9f7c9; border-radius: 6px;
   font: .9rem/1.45 ui-monospace, "JuliaMono", Menlo, monospace; white-space: pre; overflow-x: auto; }
+/* An empty printed line keeps its height, as in a terminal. */
+.term > div:empty, .nb .out > div:empty { min-height: 1.5em; }

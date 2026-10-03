@@ -1,0 +1,21 @@
+l:n : Int
+l:head : Int
+l:p_os : a -> a
+l:t_ele : a -> a
+l:t_urn : a -> a
+l:e_vent : a -> a
+l:s_tatus : a -> a
+l:r_obots : a -> a
+l:a_live : a -> a
+l:w_recks : a -> a
+l:c_ell : Num a => a -> a
+l:n_ew : a -> Int
+l:c_hase : Int -> Int
+l:k_eys : Num a => Unit -> a
+l:o_n : Int -> Int -> Int
+l:m_oved : Num a => a -> a -> a
+l:m_ove : Int -> Int -> Int
+l:t_eleport : Int -> Int
+l:m_essage : Int -> Char
+l:v_iew : Int -> Char
+l:l_rs : Int -> Int

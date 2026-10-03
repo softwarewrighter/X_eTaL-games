@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "robot-chase"
+title = "Robot chase"
+summary = "Twelve robots chase you across a 16 by 16 board and you make them crash. Every robot steps at once: the robots are one 2 by 12 matrix and a turn adds the sign of the difference; crashes are found by a table of every robot against every other."
+lesson = "coordinate matrices, simultaneous motion, collision tables"
+concepts = ["matrices", "sign by comparisons", "t_able", "r_eplicate", "reduce on rank 4", "g_rade", "libraries"]
+status = "live"
+order = 30
+sources = ["sw-embed/web-sw-cor24-basic (examples/robot-chase.bas)"]
+needs = []
