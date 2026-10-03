@@ -1,0 +1,1 @@
+Pages show only X_eTaL output: shared GamePage (terminal running play.xtl, notebook of scripted game, sources); HorseRace view marks winners; Rust UI removed; browser-test (headless Chrome via CDP) matches goldens, in gate; WASI plan withdrawn per X_eTaL, terminal-pane step waits on X_eTaL saga 25

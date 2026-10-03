@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 17:32 `chore` Saga step accurate-pages completed.
+
 - 17:31 `fix` Pages show only what X_eTaL prints or draws: one shared game page (the game's play.xtl in a terminal, its scripted program as a notebook, the sources); the Rust-drawn tracks, highlights, chips and candidate grid are gone. The horse race's own view now marks the winners.
 - 17:31 `test` `just browser-test`: headless Chrome types each game's play.in into its built page and requires the terminal and notebook to match the goldens; in the gate.
 - 17:31 `plan` No WASI build of `xetal` (X_eTaL's decision): the request is updated, the asks entry is filed as X_eTaL's saga 25 (a resumable evaluator and a Rust/Yew terminal pane), and the step waiting on it is terminal-pane.
