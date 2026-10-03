@@ -40,7 +40,7 @@ and is tested by its expected output.
 | [Star Trek](games/trek/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/trek/)) | planes of a galaxy, paths as matrices, windows, masked updates (from COR24 BASIC) | live |
 | [Tic-tac-toe](games/tic-tac-toe/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/tic-tac-toe/)) | a 3 by 3 board, line extraction by indexing, minimax | live |
 | [Shut the box](games/shut-the-box/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/shut-the-box/)) | boolean masks, every subset at once, subset sums | live |
-| Minesweeper | neighbourhoods by rotation, flood fill | planned |
+| [Minesweeper](games/minesweeper/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/minesweeper/)) | neighbourhoods by rotation, flood fill to a fixed point | live |
 | 2048 | compress, merge, pad: composition | planned |
 | Lights out | boolean matrices, XOR, GF(2) | planned |
 | Connect four, Mastermind, Sudoku, Flood-it, Fifteen, Nim, Reversi | windows, histograms, candidate tensors, regions, permutations, binary digits, rays | planned |

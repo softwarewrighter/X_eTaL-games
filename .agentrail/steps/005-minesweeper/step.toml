@@ -1,6 +1,6 @@
 number = 5
 slug = "minesweeper"
-status = "pending"
+status = "in-progress"
 description = "grids step 5: games/minesweeper. Mines as a 0/1 matrix (random by g_rade), ne..."
 role = "production"
 context_files = []

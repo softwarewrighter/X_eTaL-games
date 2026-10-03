@@ -1,0 +1,28 @@
+#!/usr/bin/env xetal
+# Minesweeper at the terminal: a 9 by 9 field with 10 mines. Type a row
+# and a column to open a square ("5 5"), or f and a row and a column to
+# flag one ("f 4 4"). Open every safe square to win. The rules are
+# those of Mines.xtl.
+"m:" u_se< "Mines"
+said := p_rint! "MINESWEEPER: 9 BY 9, 10 MINES"
+
+# A command: f (flag) or not, then a row and a column from 1 to 9;
+# anything else is asked for again.
+u:a_sk := { s ->
+  said := p_rint! "OPEN ROW COL, OR F ROW COL ?"
+  line := []R_EAD @
+  v := f_loor n_umbers (line m_ember? "0123456789 ") r_eplicate line
+  ok := (2 = t_ally v) & '& r_/ (v >= 1) & v <= 9
+  ok ? (('| r_/ line m_ember? "fF") c_at v); u:a_sk s
+}
+# A turn: the field (as text and as a picture), a command, its result.
+u:t_urn := { s ->
+  said := p_rint! ""
+  shown := p_rint! m:v_iew s
+  pic := []S_HOW m:p_icture s
+  m:s_tatus s = 1 ? "YOU CLEARED THE FIELD!"
+  m:s_tatus s = 2 ? "BOOM! YOU HIT A MINE."
+  c := u:a_sk s
+  1 = f_irst c ? u:t_urn s m:f_lag 1 d_rop c; u:t_urn s m:r_eveal 1 d_rop c
+}
+u:t_urn m:n_ew 0
