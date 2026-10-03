@@ -1,0 +1,1 @@
+shut-the-box live: 512 subsets as a bit matrix, sums by inner product, moves by mask + transpose; play.xtl lists moves; high-tiles player; shared page; tests pass
