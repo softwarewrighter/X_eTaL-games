@@ -1,9 +1,10 @@
 number = 1
 slug = "vendor-refresh"
-status = "in-progress"
+status = "completed"
 description = "grids step 1: just vendor (HEAD of ../X_eTaL) in its own commit; rebuild; re-..."
 role = "production"
 context_files = []
 created_at = "2026-10-03T07:16:23"
+completed_at = "2026-10-03T07:51:27"
 task_type = "vendor"
-commits = []
+commits = ["c5385633e300d1e6cb432f86dcbc44f64f366fef"]
