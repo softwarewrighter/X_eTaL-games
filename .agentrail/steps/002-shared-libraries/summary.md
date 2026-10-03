@@ -1,0 +1,1 @@
+lib/ Play, Text, Board, State with tests + type goldens in the gate; XETAL_PATH in scripts; GamePage takes shared libraries
