@@ -1,0 +1,1 @@
+trek-adventure live: text as a 157-row table (key, condition) picked by masks, exits 9x9 table, state vector with table-driven update; play.xtl full winning session golden; scripted walkthrough as a table of states; shared page; native + browser tests
