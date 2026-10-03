@@ -188,7 +188,7 @@ saga 25); every golden, page test and browser test passed unchanged.
 | # | Step slug | Delivers |
 | - | --------- | -------- |
 | 1 | tic-tac-toe | DONE: TicTacToe.xtl (board a vector of 9; the lines an 8 by 3 index table, every line's sum by one selection and one reduce; the quick player rates all squares at once through a 9 by 8 square-line table; minimax by recursion with `e_ach`, too slow from an empty board for the browser (17 s natively), so shown mid-game); play.xtl (you are X); the shared page. |
-| 2 | shut-the-box | open tiles as a mask; every subset of 1..9 by `e_ncode`; the legal moves are the subsets summing to the roll; page |
+| 2 | shut-the-box | DONE: ShutTheBox.xtl (all 512 subsets a 9 by 512 bit matrix by `e_ncode`, their sums one inner product, moves the columns that fit and make the roll, rows by `o_\`; a high-tiles player); play.xtl lists the moves and asks for tiles; the scripted game's high-tiles player shuts the box; the shared page. |
 | 3 | x-pictures | boards as pictures X_eTaL draws (`[]S_HOW []G_RID`) in the shared page's terminal and notebook, for the grid games; an ask if X_eTaL's pictures cannot do what a board needs |
 | 4 | minesweeper | counts by eight rotations; reveal by flood fill to a fixed point; page |
 | 5 | 2048 | a move as compress, merge, pad, oriented by `r_ev` and transposition; played at the terminal (w a s d) |

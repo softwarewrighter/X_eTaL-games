@@ -1,0 +1,40 @@
+#!/usr/bin/env xetal
+# Shut the box at the terminal: roll, then type the tiles to shut
+# (they must add up to the roll, for example "2 5"). The moves you have
+# are listed each turn. The game ends when no open tiles make the roll;
+# the open tiles are your score, and shutting them all wins. The rules
+# are those of ShutTheBox.xtl.
+"b:" u_se< "ShutTheBox"
+said := p_rint! "SHUT THE BOX"
+
+# Print each move (a row of 0s and 1s) as its tiles.
+u:l_ist := { m ->
+  0 = t_ally m ? 0
+  said := p_rint! "  " c_at b:t_iles f_irst m
+  1 + u:l_ist 1 d_rop m
+}
+# The tiles typed, as a 0/1 vector of 9, if they are one of the moves;
+# else it asks again.
+u:a_sk := { m ->
+  said := p_rint! "TILES TO SHUT ?"
+  line := []R_EAD @
+  k := f_loor n_umbers (line m_ember? "0123456789 ") r_eplicate line
+  want := (r_ange 9) m_ember? k
+  '| r_/ '& r_/_2 m = ((t_ally m) c_at 9) r_eshape want ? want; u:a_sk m
+}
+# A turn: the box, the roll, the moves; shut, until stuck or shut.
+u:t_urn := { s ->
+  said := p_rint! ""
+  said := p_rint! b:v_iew s
+  d := b:r_oll s
+  r := '+ r_/ d
+  said := p_rint! "YOU ROLL " c_at (f_ormat d) c_at ": " c_at f_ormat r
+  m := s b:m_oves r
+  0 = t_ally m ? "NO MOVE. YOUR SCORE: " c_at f_ormat b:s_core s
+  said := p_rint! "MOVES:"
+  listed := u:l_ist m
+  t := s b:s_hut u:a_sk m
+  0 = b:s_core t ? "YOU SHUT THE BOX!"
+  u:t_urn t
+}
+u:t_urn b:n_ew 0
