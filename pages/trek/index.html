@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Star Trek</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/trek/trek-web-8e82a83e9ce7489c.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/trek/trek-web-8e82a83e9ce7489c_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/trek/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/trek/microscope-8f776fdf0324e444.css" integrity="sha384-3pDqgeM2f6pQ0c+1mItVq7DrdbVj3FvLD2VyPXEWBWLreNApm78Z/LOB7yCkTN31"/>
+<link rel="modulepreload" href="/X_eTaL-games/trek/trek-web-8e82a83e9ce7489c.js" crossorigin="anonymous" integrity="sha384-UNdBgz13QzGUdF7bbCOhmDWXZem8Efb6maS82zXwqAGVcWhAh2eZzCq0DrzXpDFf"><link rel="preload" href="/X_eTaL-games/trek/trek-web-8e82a83e9ce7489c_bg.wasm" crossorigin="anonymous" integrity="sha384-MsJhNcOBSDgXXC2brF5B91AC+u+beidGVMEWQfKfUiLGGYfqvxqmKN0dnr5+boaf" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

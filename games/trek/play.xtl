@@ -1,0 +1,49 @@
+#!/usr/bin/env xetal
+# Star Trek at the terminal, as the COR24 BASIC game plays it: destroy
+# every Klingon before the stardate runs out. Commands by number (9 is
+# help); warp, impulse, phasers, torpedoes and shields then ask for a
+# course (1 north, clockwise to 8) and a number. The rules are those of
+# StarTrek.xtl.
+"t:" u_se< "StarTrek"
+said := p_rint! ""
+said := p_rint! "*** STAR TREK ***"
+said := p_rint! "DEFEND THE FEDERATION."
+said := p_rint! ""
+
+# A number typed (the first on the line; other characters dropped), or
+# -1 when there is none.
+u:n_um := { prompt ->
+  shown := p_rint! prompt
+  line := []R_EAD @
+  v := n_umbers (line m_ember? "0123456789 -") r_eplicate line
+  f_loor f_irst v c_at -1
+}
+
+# A command's arguments, asked for as the BASIC asks: a factor or a
+# number of sectors only after a good course; nothing to fire with
+# when there is nothing to fire at, or no torpedoes.
+u:a_rgs := { s c ->
+  c = 3 ? u:c_ourseAnd "WARP FACTOR 1-8 ?"
+  c = 4 ? u:c_ourseAnd "SECTORS 1-8 ?"
+  (c = 5) & 0 < t:h_ere s ? u:n_um "ENERGY TO FIRE ?"
+  (c = 6) & 0 < t:t_orps s ? u:n_um "TORPEDO COURSE 1-8 ?"
+  c = 7 ? u:n_um "ENERGY TO SHIELDS (NEG=DRAIN) ?"
+  0
+}
+u:c_ourseAnd := { prompt ->
+  c := u:n_um "COURSE 1-8 ?"
+  (c < 1) | c > 8 ? c c_at 0
+  c c_at u:n_um prompt
+}
+
+# A turn: the menu, a command, its result, until the game is over.
+u:t_urn := { s ->
+  0 < t:s_tatus s ? p_rint! t:e_nd s
+  said := p_rint! ""
+  said := p_rint! "1=SRS 2=LRS 3=WAR 4=IMP 5=PHA 6=TOR 7=SHE 8=STA 9=HEL 0=QUI"
+  c := u:n_um "COMMAND ?"
+  u:t_urn s t:c_ommand c c_at s u:a_rgs c
+}
+s := t:n_ew 0
+said := p_rint! "STARDATE " c_at (f_ormat t:d_ate s) c_at " - YOU HAVE 30 DAYS TO DESTROY " c_at (f_ormat t:k_lingons s) c_at " KLINGONS."
+done := u:t_urn s

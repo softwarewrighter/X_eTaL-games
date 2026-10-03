@@ -1,6 +1,6 @@
-number = 7
+number = 5
 slug = "trek"
-status = "pending"
+status = "in-progress"
 description = "basic step 5: games/trek from startrek.bas (original/ kept): an 8 x 8 galaxy ..."
 role = "production"
 context_files = []
