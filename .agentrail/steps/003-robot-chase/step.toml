@@ -1,9 +1,10 @@
 number = 3
 slug = "robot-chase"
-status = "in-progress"
+status = "completed"
 description = "basic step 2: games/robot-chase from robot-chase.bas (original/ kept). RobotC..."
 role = "production"
 context_files = []
 created_at = "2026-10-02T12:32:00"
+completed_at = "2026-10-02T19:02:07"
 task_type = "game"
-commits = []
+commits = ["c37ecde761659b09753ef2ec9b7bcf3c4ebe66ee"]
