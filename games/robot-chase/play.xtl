@@ -5,19 +5,17 @@
 # each other or into wrecks; clear them all to win. The rules are those
 # of RobotChase.xtl.
 "r:" u_se< "RobotChase"
+"p:" u_se< "Play"
 said := p_rint! ""
 said := p_rint! "*** ROBOT CHASE ***"
 said := p_rint! "EVADE THE ROBOTS - MAKE THEM COLLIDE."
 
-# A command: the first number on the line typed (other characters are
-# dropped first); one that is not a command is asked for again.
+# A command: the first number on the line; one that is not a command
+# is asked for again.
 u:a_sk := { s ->
   said := p_rint! ""
   said := p_rint! "1-9=MOVE(5=WAIT) 0=TELE 10=LRS 99=QUIT"
-  said := p_rint! "COMMAND ?"
-  line := []R_EAD @
-  v := n_umbers (line m_ember? "0123456789 ") r_eplicate line
-  c := f_loor f_irst v c_at -1
+  c := p:n_umber "COMMAND ?"
   (c m_ember? 0 1 2 3 4 5 6 7 8 9 10 99) ? c; u:a_sk s
 }
 

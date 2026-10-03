@@ -9,6 +9,7 @@ l:r_obots : a -> a
 l:a_live : a -> a
 l:w_recks : a -> a
 l:c_ell : Num a => a -> a
+l:o_nSquares : (Num a, Truthy a) => Int -> a -> a
 l:n_ew : a -> Int
 l:c_hase : Int -> Int
 l:k_eys : Num a => Unit -> a
@@ -17,6 +18,7 @@ l:m_oved : Num a => a -> a -> a
 l:m_ove : Int -> Int -> Int
 l:t_eleport : Int -> Int
 l:m_essage : Int -> Char
+l:c_odes : Int -> Int
 l:v_iew : Int -> Char
 l:p_icture : Int -> Char
 l:l_rs : Int -> Int
