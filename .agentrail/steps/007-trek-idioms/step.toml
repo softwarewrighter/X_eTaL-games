@@ -1,0 +1,9 @@
+number = 7
+slug = "trek-idioms"
+status = "pending"
+description = "idioms: rewrite games/trek in idiomatic X_eTaL per docs/style.md: the shared ..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:50"
+task_type = "refactor"
+commits = []

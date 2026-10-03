@@ -1,0 +1,9 @@
+number = 12
+slug = "2048-idioms"
+status = "pending"
+description = "idioms: rewrite games/2048 in idiomatic X_eTaL per docs/style.md: the shared ..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:51"
+task_type = "refactor"
+commits = []

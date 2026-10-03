@@ -1,0 +1,1 @@
+idioms: rewrite games/robot-chase in idiomatic X_eTaL per docs/style.md: the shared libraries, trains, tables over branches, named parts, smaller; outputs unchanged (or an explained, reviewed change); sizes before/after in the README; page and browser tests pass.

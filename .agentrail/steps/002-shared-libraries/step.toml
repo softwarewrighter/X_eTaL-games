@@ -1,0 +1,9 @@
+number = 2
+slug = "shared-libraries"
+status = "pending"
+description = "idioms step 2: X_eTaL libraries shared by the games in lib/ (Play: numbers/ch..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:50"
+task_type = "library"
+commits = []

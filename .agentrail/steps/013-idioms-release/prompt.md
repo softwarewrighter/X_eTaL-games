@@ -1,0 +1,1 @@
+idioms step 13: sizes before and after for every game in the plan and READMEs; READMEs explain the idioms used; catalog; retrospective; asks raised.

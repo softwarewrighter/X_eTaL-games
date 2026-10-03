@@ -1,0 +1,9 @@
+number = 13
+slug = "idioms-release"
+status = "pending"
+description = "idioms step 13: sizes before and after for every game in the plan and READMEs..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:51"
+task_type = "release"
+commits = []

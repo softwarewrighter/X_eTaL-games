@@ -1,0 +1,1 @@
+grids closed early at the user's review: tic-tac-toe, shut-the-box, minesweeper, 2048 live; lights-out moved to saga idioms, terminal-pane to saga features
