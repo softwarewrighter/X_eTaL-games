@@ -14,6 +14,7 @@ cd "$root"
   || { (cd "$root/shared/microscope" && cargo test -q); echo "FAIL: shared/microscope"; exit 1; }
 echo "ok: shared/microscope"
 "$root/scripts/test-lib.sh"
+"$root/scripts/check-types.py"
 "$root/scripts/test-games.sh"
 # The built pages played in a real browser (run just pages after a change).
 "$root/scripts/browser-test.mjs"

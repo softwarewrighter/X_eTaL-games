@@ -46,14 +46,19 @@ l:n_ew := { n -> n r_eshape 0 }
 l:r_oll := { p -> r_oll! (t_ally p) r_eshape 3 }
 l:m_ove := { p r -> p + r }
 l:s_tatus := { p -> '| r_/ p >= l:finish }
-l:w_inners := { p -> w_here p = 'm_ax r_/ p }
+l:l_eaders := ['m_ax r_/ = i_d]
+l:w_inners := [w_here 'm_ax r_/ = i_d]
 l:v_iew := { p ->
   cols := r_ange l:finish + 5
-  bar := (p m_in l:finish + 5) '>= t_able cols
-  line := (0 * p) '+ t_able 1 * cols = l:finish
-  (l:n_ames @) c_at_2 (f_irst "|") c_at_2 (1 + bar + 2 * line * 1 - bar) s_elect " #:"
+  bar := p '>= t_able cols
+  line := ((t_ally p) c_at t_ally cols) r_eshape cols = l:finish
+  mark := (1 + (l:s_tatus p) & l:l_eaders p) s_elect 2 10 r_eshape "           <- WINNER"
+  (l:n_ames @) c_at_2 (f_irst "|") c_at_2 ((1 + bar + 2 * line > bar) s_elect " #:") c_at_2 mark
 }
 ```
+
+Each export carries its type as a comment (`# :: Int -> Bool`),
+checked against what X_eTaL infers.
 
 ## How it works
 
@@ -65,13 +70,16 @@ Read each line right to left.
 - `p + r`: every horse moves by its own roll; shape 5 in, shape 5 out.
 - `'| r_/ p >= l:finish`: compare every position with 15 (a 0/1
   vector), then reduce with "or": 1 when any horse is home.
-- `w_here p = 'm_ax r_/ p`: the largest position (a reduce with
-  `m_ax`), compared with every position, then `w_here` gives the
-  numbers of the horses that equal it: one or more winners.
+- `['m_ax r_/ = i_d]` is a train, a fork: the largest position (a
+  reduce with `m_ax`) compared (`=`) with every position (`i_d`), a
+  0/1 vector of the leaders; `[w_here 'm_ax r_/ = i_d]` puts `w_here`
+  on top (an atop) and gives the leaders' numbers: one or more
+  winners.
 - `l:v_iew`: `t_able` compares every position with every column
-  number (a 5 by 20 table of 0s and 1s, the bars); a second table
-  marks the finish column; 1 + bar + 2 * line picks " ", "#" or ":"
-  for every cell at once; once the race is over a third table marks
+  number (a 5 by 20 table of 0s and 1s, the bars); the finish column
+  repeated for every horse is the line; `1 + bar + 2 * line > bar`
+  picks " ", "#" or ":" for every cell at once (the line only where no
+  bar covers it); once the race is over a third table marks
   the winners' rows; and `c_at_2` joins the names, the rail, the bars
   and the marks side by side: a 5 by 38 character matrix.
 

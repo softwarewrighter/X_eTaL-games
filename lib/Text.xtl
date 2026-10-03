@@ -1,13 +1,13 @@
 # Text: printing lines, shared by the games.
 
-# :: Box Char -> Int
+# :: Num b => Box a -> b
 # Print each string of a strand on its own line; how many were printed.
 l:l_ines := { v ->
   0 = t_ally v ? 0
   said := p_rint! d_isclose f_irst v
   1 + l:l_ines 1 d_rop v
 }
-# :: Int -> Int -> Bool
+# :: Truthy a => Int -> Int -> a
 # Which rows of a text table hold in state s: a row's condition is a
 # state item (0: always) and the value it must have, the second and
 # third rows of kfv (the first row, the keys, is for the caller to

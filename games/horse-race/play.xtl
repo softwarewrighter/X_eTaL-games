@@ -4,6 +4,7 @@
 # tie counts) you get 4 back. Type q to stop. The rules are those of
 # HorseRace.xtl.
 "h:" u_se< "HorseRace"
+"p:" u_se< "Play"
 
 # The race, a round at a time, the track printed after each round.
 u:r_ace := { p ->
@@ -15,9 +16,7 @@ u:r_ace := { p ->
 
 # Your pick: 1 to 5, 0 to stop, or it asks again.
 u:a_sk := { c ->
-  shown := p_rint! "you have " c_at (f_ormat c) c_at " coins; your horse (1 to 5, q to stop):"
-  t := []R_EAD @
-  k := "12345q" i_ndexOf f_irst t c_at " "
+  k := ("you have " c_at (f_ormat c) c_at " coins; your horse (1 to 5, q to stop):") p:l_etter "12345q"
   k <= 5 ? k; k = 6 ? 0; u:a_sk c
 }
 
