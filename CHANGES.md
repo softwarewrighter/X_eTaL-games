@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 19:55 `chore` Saga step trek-adventure completed.
+
 - 19:53 `game` Trek adventure, live: "Star Trek: Decaying Orbit" as tables (157 lines of text with a key and a condition each, a room picked by one mask, exits a 9 by 9 table, the state one vector changed by a table-driven update); terminal game with a full winning session as its golden; the walkthrough played into a table of states; the shared page.
 
 - 19:19 `docs` Ports are one-time rewrites: the links to and quotes of the BASIC originals are gone from the game READMEs.
