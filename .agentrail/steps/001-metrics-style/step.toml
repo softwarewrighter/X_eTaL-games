@@ -1,0 +1,9 @@
+number = 1
+slug = "metrics-style"
+status = "in-progress"
+description = "idioms step 1: scripts/size.sh + just size (non-comment, non-blank lines and ..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:50"
+task_type = "tooling"
+commits = []

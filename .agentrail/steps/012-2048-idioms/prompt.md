@@ -1,0 +1,1 @@
+idioms: rewrite games/2048 in idiomatic X_eTaL per docs/style.md: the shared libraries, trains, tables over branches, named parts, smaller; outputs unchanged (or an explained change); sizes before/after; page and browser tests pass.

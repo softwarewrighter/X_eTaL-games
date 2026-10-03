@@ -1,0 +1,1 @@
+idioms step 10: games/lights-out written in the new style from the start: a 5 by 5 0/1 board; pressing toggles a plus of lights (XOR by a stencil from Board's neighbourhoods); a puzzle from random presses; a solver over GF(2) (the 25 by 25 toggle matrix, elimination in X_eTaL, or an ask); play.xtl (row col), scripted game with the solver, the shared page, tests.

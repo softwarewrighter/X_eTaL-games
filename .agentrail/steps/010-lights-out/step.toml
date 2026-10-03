@@ -1,0 +1,9 @@
+number = 10
+slug = "lights-out"
+status = "pending"
+description = "idioms step 10: games/lights-out written in the new style from the start: a 5..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:50"
+task_type = "game"
+commits = []

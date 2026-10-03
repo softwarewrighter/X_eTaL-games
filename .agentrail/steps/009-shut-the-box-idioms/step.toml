@@ -1,0 +1,9 @@
+number = 9
+slug = "shut-the-box-idioms"
+status = "pending"
+description = "idioms: rewrite games/shut-the-box in idiomatic X_eTaL per docs/style.md: the..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T12:40:50"
+task_type = "refactor"
+commits = []

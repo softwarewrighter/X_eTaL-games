@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 12:40 `chore` Saga grids archived; saga idioms started (13 steps).
+
 - 12:02 `chore` Saga step gallery-2-release completed.
 
 - 12:01 `release` Gallery 2: nine games live; saga 3 closed early (lights out moves into saga 4, the terminal pane into saga 5); its retrospective.

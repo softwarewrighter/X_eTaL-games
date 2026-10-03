@@ -1,6 +1,6 @@
-name = "idioms"
+name = "grids"
 status = "active"
-current_step = 1
-created_at = "2026-10-03T12:40:50"
+current_step = 8
+created_at = "2026-10-03T07:16:23"
 plan_file = ".agentrail/plan.md"
 retroactive = false
