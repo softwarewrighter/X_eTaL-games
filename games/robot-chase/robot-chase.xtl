@@ -1,0 +1,45 @@
+#!/usr/bin/env xetal
+# Robot chase, scripted (seed 1), with the rules of RobotChase.xtl.
+"r:" u_se< "RobotChase"
+
+# A new game: you (P) and 12 robots (R) on 13 random squares.
+s := r:n_ew 0
+r:v_iew s
+
+# The robots are one 2 by 12 matrix (rows, columns), and so is you,
+# repeated by a table; their step is the sign of the difference, for
+# every robot and both coordinates at once.
+R := r:r_obots s
+P := (r:p_os s) 'l_eft t_able r_ange r:n
+R
+P - R
+d := P - R
+(d > 0) - d < 0
+
+# A made-up position to watch the rules: you at row 8, column 8; robots
+# at (7, 6), (9, 6) and (8, 5); the other nine dead. The first two step
+# onto (8, 7) together and crash, leaving a wreck; next turn the third
+# steps onto (8, 6), then into the wreck, and is destroyed: you win.
+rows := 7 9 8 c_at 9 r_eshape 0
+cols := 6 6 5 c_at 9 r_eshape 0
+alive := 1 1 1 c_at 9 r_eshape 0
+t := 8 8 3 0 0 0 c_at rows c_at cols c_at alive c_at 256 r_eshape 0
+r:v_iew t
+t := t r:m_ove 5
+r:v_iew t
+r:a_live t
+t := t r:m_ove 5
+r:v_iew t
+r:a_live t
+r:s_tatus t                              # 1: won
+
+# Stepping west into the wreck instead loses (status 2). Read right to
+# left, the parentheses make the wait happen first.
+t0 := 8 8 3 0 0 0 c_at rows c_at cols c_at alive c_at 256 r_eshape 0
+lost := (t0 r:m_ove 5) r:m_ove 4
+r:m_essage lost
+r:s_tatus lost
+
+# The long-range scan of the new game: robots, wrecks and you, summed in
+# 4 by 4 regions (the board as a 4 by 4 by 4 by 4 array).
+r:l_rs s

@@ -1,0 +1,14 @@
+[package]
+name = "robot-chase-web"
+description = "Robot chase in the browser, exactly as X_eTaL runs it: the COR24 BASIC game, every robot moving at once"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+microscope = { path = "../../../shared/microscope" }
+yew = { version = "0.21", features = ["csr"] }
+console_error_panic_hook = "0.1"
+
+[workspace]

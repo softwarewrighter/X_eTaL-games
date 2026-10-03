@@ -12,6 +12,9 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 18:57 `game` Robot chase, live: the COR24 BASIC game with every robot moving at once (a 2 by 12 matrix plus the sign of the difference), crashes by a table of every robot against every other, the scan by summing a 4 by 4 by 4 by 4 array; terminal game, scripted game with a made-up crash, the shared page; tested natively and in headless Chrome.
+- 18:57 `fix` Empty printed lines keep their height in the page's terminal and notebook.
+
 - 17:32 `chore` Saga step accurate-pages completed.
 
 - 17:31 `fix` Pages show only what X_eTaL prints or draws: one shared game page (the game's play.xtl in a terminal, its scripted program as a notebook, the sources); the Rust-drawn tracks, highlights, chips and candidate grid are gone. The horse race's own view now marks the winners.

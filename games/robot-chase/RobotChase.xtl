@@ -1,0 +1,142 @@
+# Robot chase's rules, a library: robot-chase.xtl (scripted), play.xtl
+# (at the terminal) and the web page all use these. A 16 by 16 board,
+# you and 12 robots. Every turn you step (or wait, or teleport), then
+# every robot steps one square toward you, all at once. Robots that
+# land on the same square crash and leave a wreck; a robot that walks
+# into a wreck is destroyed. Clear the board to win; meet a robot or a
+# wreck and you lose. Ported from the COR24 BASIC robot-chase.bas.
+#
+# The game is one flat vector of numbers (so a page can hand it back
+# in): player row and column (0 to 15), teleports left, turn, the last
+# event, the status (0 playing, 1 won, 2 lost), then the robots' rows,
+# their columns, which are alive (12 each), and the wrecks (256 cells).
+
+l:n := 12
+l:head := 6
+
+# -- reading the state -------------------------------------------------
+l:p_os := { s -> 2 t_ake s }
+l:t_ele := { s -> 3 s_elect s }
+l:t_urn := { s -> 4 s_elect s }
+l:e_vent := { s -> 5 s_elect s }
+l:s_tatus := { s -> 6 s_elect s }
+# The robots as a 2 by 12 matrix: row 1 their rows, row 2 their columns.
+l:r_obots := { s -> (2 c_at l:n) r_eshape (2 * l:n) t_ake l:head d_rop s }
+l:a_live := { s -> l:n t_ake (l:head + 2 * l:n) d_rop s }
+l:w_recks := { s -> 16 16 r_eshape -256 t_ake s }
+# A square's number, 1 to 256, from row and column (each may be a vector).
+l:c_ell := { rc -> 1 + (16 * 1 s_elect rc) + 2 s_elect rc }
+
+# -- a new game ----------------------------------------------------------
+# 13 different squares at random (the order of 256 random keys): you on
+# the first, a robot on each of the others.
+l:n_ew := { x ->
+  sq := (l:n + 1) t_ake g_rade r_oll! 256 r_eshape 1000000
+  rows := (sq - 1) d_iv 16
+  cols := (sq - 1) m_od 16
+  R := (2 c_at l:n) r_eshape (1 d_rop rows) c_at 1 d_rop cols
+  (f_irst rows) c_at (f_irst cols) c_at 3 0 0 0 c_at (r_avel R) c_at (l:n r_eshape 1) c_at 256 r_eshape 0
+}
+
+# -- the robots' turn ------------------------------------------------------
+# Every live robot steps toward you at once: the sign of the difference,
+# a 2 by 12 matrix of -1, 0 and 1, added to their positions. Then: any
+# robot on your square catches you; robots on a wreck die; robots
+# sharing a square crash (a table of every robot's square against every
+# other's) and leave a wreck there.
+l:c_hase := { s ->
+  a := l:a_live s
+  W := l:w_recks s
+  P := (l:p_os s) 'l_eft t_able r_ange l:n
+  d := P - l:r_obots s
+  R := (l:r_obots s) + ((2 c_at l:n) r_eshape a) * (d > 0) - d < 0
+  k := l:c_ell R
+  caught := '| r_/ a * k = l:c_ell l:p_os s
+  a1 := a * 1 - k s_elect r_avel W
+  crash := a1 * 1 < '+ r_/_2 (k '= t_able k) * (l:n c_at l:n) r_eshape a1
+  a2 := a1 * 1 - crash
+  W2 := (r_avel W) | '| r_/_2 ((r_ange 256) '= t_able k) * (256 c_at l:n) r_eshape crash
+  caught = 1 ? (4 t_ake s) c_at 8 2 c_at (r_avel R) c_at a c_at r_avel W
+  status := 0 = '+ r_/ a2
+  (4 t_ake s) c_at (l:e_vent s) c_at status c_at (r_avel R) c_at a2 c_at W2
+}
+
+# -- your turn -------------------------------------------------------------
+# The numeric keypad: 7 8 9 up, 4 5 6 (5 waits), 1 2 3 down; the step
+# for each key as a column of a 2 by 9 table (rows, columns).
+l:k_eys := { @ -> 2 9 r_eshape 1 1 1 0 0 0 -1 -1 -1 -1 0 1 -1 0 1 -1 0 1 }
+
+# What is on square q: 2 a wreck, 1 a live robot, 0 nothing.
+l:o_n := { s q ->
+  k := l:c_ell q
+  w := k s_elect r_avel l:w_recks s
+  r := '| r_/ (l:a_live s) * k = l:c_ell l:r_obots s
+  (2 * w) m_ax r
+}
+
+# The state after your move: h is where you are (row, column), the
+# teleports left, the event and the status; the turn counts up.
+l:m_oved := { s h -> (3 t_ake h) c_at (1 + l:t_urn s) c_at (-2 t_ake h) c_at l:head d_rop s }
+
+# A turn: key 1 to 9 steps (5 waits), 0 teleports, 99 resigns; then,
+# unless the game ended, the robots chase. The event says what happened:
+# 0 nothing, 1 blocked by the wall, 2 stepped onto a wreck, 3 walked
+# into a robot, 4 no teleports left, 5 teleported, 6 teleported into a
+# wreck, 7 teleported into a robot, 8 caught, 9 resigned.
+l:m_ove := { s c ->
+  c = 99 ? s l:m_oved (l:p_os s) c_at (l:t_ele s) c_at 9 2
+  c = 0 ? l:c_hase l:t_eleport s
+  q := (l:p_os s) + c s_elect_2 l:k_eys @
+  wall := '| r_/ (q < 0) | q > 15
+  wall = 1 ? l:c_hase s l:m_oved (l:p_os s) c_at (l:t_ele s) c_at 1 0
+  there := s l:o_n q
+  there = 2 ? s l:m_oved q c_at (l:t_ele s) c_at 2 2
+  there = 1 ? s l:m_oved q c_at (l:t_ele s) c_at 3 2
+  l:c_hase s l:m_oved q c_at (l:t_ele s) c_at 0 0
+}
+l:t_eleport := { s ->
+  t := l:t_ele s
+  t <= 0 ? s l:m_oved (l:p_os s) c_at 0 c_at 4 0
+  sq := (r_oll! 256) - 1
+  q := (sq d_iv 16) c_at sq m_od 16
+  there := s l:o_n q
+  there = 2 ? s l:m_oved q c_at (t - 1) c_at 6 2
+  there = 1 ? s l:m_oved q c_at (t - 1) c_at 7 2
+  s l:m_oved q c_at (t - 1) c_at 5 0
+}
+
+# What the last event was, as the BASIC said it.
+l:m_essage := { s ->
+  e := l:e_vent s
+  d_isclose (1 + e) s_elect "" "BLOCKED BY WALL." "YOU STEPPED ONTO WRECKAGE." "YOU WALKED INTO A ROBOT." "NO TELEPORTS LEFT." "*BEEP* TELEPORTED." "TELEPORTED INTO WRECKAGE!" "TELEPORTED INTO A ROBOT!" "A ROBOT CAUGHT YOU!" "*** COMMAND RESIGNED ***"
+}
+
+# -- what you see ------------------------------------------------------------
+# The board: . empty, R robot, * wreck, P you (X where something got
+# you), as a 17 by 35 character matrix with the BASIC's labels. Every
+# square's code is computed at once from three 0/1 boards.
+l:v_iew := { s ->
+  k := l:c_ell l:r_obots s
+  B := '| r_/_2 ((r_ange 256) '= t_able k) * (256 c_at l:n) r_eshape l:a_live s
+  code := 1 + B + 2 * r_avel l:w_recks s
+  kp := l:c_ell l:p_os s
+  me := (r_ange 256) = kp
+  code := (code * 1 - me) + me * 4 + 1 < kp s_elect code
+  dup := 2 r_eplicate_2 16 16 r_eshape code
+  gap := 16 32 r_eshape 0 1
+  chars := ((dup * 1 - gap) + 6 * gap) s_elect ".R*PX "
+  lab := 16 3 r_eshape " 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F "
+  top := 1 35 r_eshape "   0 1 2 3 4 5 6 7 8 9 A B C D E F "
+  top c_at lab c_at_2 chars
+}
+# The long-range scan: the board in 4 by 4 regions, as a 4 by 4 by 4 by
+# 4 array (region row, row, region column, column) summed over the rows
+# and columns inside each region: robots, wrecks, and where you are.
+l:l_rs := { s ->
+  k := l:c_ell l:r_obots s
+  B := '+ r_/_2 ((r_ange 256) '= t_able k) * (256 c_at l:n) r_eshape l:a_live s
+  me := (r_ange 256) = l:c_ell l:p_os s
+  (r_egions B) c_at_2 (r_egions r_avel l:w_recks s) c_at_2 r_egions me
+}
+# The 256 squares as 4 by 4 regions, each summed (private to the library).
+r_egions := { v -> '+ r_/_24 4 4 4 4 r_eshape v }
