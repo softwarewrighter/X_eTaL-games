@@ -1,9 +1,10 @@
 number = 5
 slug = "robot-chase-idioms"
-status = "in-progress"
+status = "completed"
 description = "idioms: rewrite games/robot-chase in idiomatic X_eTaL per docs/style.md: the ..."
 role = "production"
 context_files = []
 created_at = "2026-10-03T12:40:50"
+completed_at = "2026-10-03T15:55:50"
 task_type = "refactor"
-commits = []
+commits = ["6a3d77aad25795d2ece7a13e6128da2fd329a5e3"]

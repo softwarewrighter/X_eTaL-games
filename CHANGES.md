@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 15:55 `chore` Saga step robot-chase-idioms completed.
+
 - 15:54 `refactor` Robot chase in idiomatic X_eTaL: Board for squares and spacing, the sign as a fork, robots per square as one inner product, one code board for text and picture, Play; outputs unchanged; 167/1410 to 149/1192 lines/tokens.
 - 15:54 `fix` lib/Board's l:r_c gives rows over columns (a 2-row matrix), as documented.
 
