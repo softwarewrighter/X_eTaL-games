@@ -16,7 +16,7 @@ echo "ok: shared/microscope"
 "$root/scripts/test-games.sh"
 # The built pages played in a real browser (run just pages after a change).
 "$root/scripts/browser-test.mjs"
-md=(README.md CHANGES.md docs/plan.md docs/xetal-asks.md docs/xetal-terminal-request.md)
+md=(README.md CHANGES.md docs/plan.md docs/style.md docs/xetal-asks.md docs/xetal-terminal-request.md)
 for f in games/*/README.md shared/*/README.md; do [ -e "$f" ] && md+=("$f"); done
 for f in "${md[@]}"; do sw-markdown-checker -f "$f" >/dev/null || { sw-markdown-checker -f "$f"; exit 1; }; done
 echo "gate: ok"

@@ -213,7 +213,7 @@ boards as pictures X_eTaL draws (`[]S_HOW []G_RID`). Learned:
   part of the language. Saga 4 rewrites them in idiomatic X_eTaL, and
   lights out will be written in that style from the start.
 
-## Saga 4 -- idioms: the games rewritten in idiomatic X_eTaL
+## Saga 4 -- idioms: the games rewritten in idiomatic X_eTaL  [ACTIVE]
 
 The user's review (2026-10-03): the games so far are "ported", like C
 written in assembler style or C++ restricted to its C subset. They use
@@ -232,7 +232,7 @@ commit, not an accident).
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
-| 1 | metrics-style | `scripts/size.sh` (`just size`): lines and tokens of X_eTaL per game, recorded in each README and in this plan, before and after; `docs/style.md`: the house style for game code (array first; trains for small point-free pieces, `[f g h]`; libraries for anything two games share; named sub-results over long chains; `# ::` type comments on every export, checked against `xetal type` goldens; status and event codes named as constants; right-to-left traps and how the goldens catch them) |
+| 1 | metrics-style | DONE: `just size` and `docs/style.md`; the sizes before the saga are below. Planned: `scripts/size.sh` (`just size`): lines and tokens of X_eTaL per game, recorded in each README and in this plan, before and after; `docs/style.md`: the house style for game code (array first; trains for small point-free pieces, `[f g h]`; libraries for anything two games share; named sub-results over long chains; `# ::` type comments on every export, checked against `xetal type` goldens; status and event codes named as constants; right-to-left traps and how the goldens catch them) |
 | 2 | shared-libraries | X_eTaL libraries this repo shares across games (in `lib/`, found through `XETAL_PATH` by the scripts and through the page's store, so `GamePage` takes several libraries): `Play` (terminal input: a number, a choice, a yes/no, a list of lines printed; every `play.xtl` copied these), `Board` (cell numbers to row and column and back, bordered neighbourhoods by rotation, a matrix of codes to text with spacing and labels, the same to a `[]G_RID` picture), `Text` (printing a strand of lines, a table of text rows picked by key and condition, as trek adventure does), `State` (a functional update of several items, as trek and trek adventure each wrote) |
 | 3 | horse-race-idioms | trains for the small pieces (`[...]` for the winners, the finish test); `Board`/`Text` for the track |
 | 4 | guess-idioms | `Play` for input; trains |
@@ -245,6 +245,22 @@ commit, not an accident).
 | 11 | minesweeper-idioms | `Board` neighbourhoods (shared with robot chase and lights out); the fill as `p_ower` to a fixed point where it reads better |
 | 12 | 2048-idioms | the move as a train of compress, merge, compress; turning as a table of transforms |
 | 13 | idioms-release | sizes before and after for every game, READMEs explain the idioms used, retrospective, the asks it raised |
+
+Sizes before the saga (`just size`, 2026-10-03: lines not blank or
+comment / X_eTaL tokens):
+
+| Game | Rules (lines / tokens) | Scripted | Terminal | Total |
+| ---- | ---------------------- | -------- | -------- | ----- |
+| horse-race | 15 / 164 | 16 / 63 | 25 / 158 | 56 / 385 |
+| guess | 16 / 164 | 26 / 176 | 17 / 89 | 59 / 429 |
+| robot-chase | 97 / 1023 | 26 / 142 | 44 / 245 | 167 / 1410 |
+| trek-adventure | 288 / 1548 | 31 / 231 | 50 / 241 | 369 / 2020 |
+| trek | 274 / 2260 | 22 / 93 | 34 / 189 | 330 / 2542 |
+| tic-tac-toe | 45 / 444 | 24 / 98 | 23 / 125 | 92 / 667 |
+| shut-the-box | 28 / 228 | 20 / 102 | 29 / 168 | 77 / 498 |
+| minesweeper | 51 / 489 | 24 / 158 | 19 / 127 | 94 / 774 |
+| 2048 | 54 / 389 | 22 / 109 | 25 / 135 | 101 / 633 |
+| all | | | | 1345 / 9358 |
 
 Asks this saga is expected to raise (filed when hit): functional
 update / amend (`l:u_pdate` was written twice), dyadic `f_ormat`

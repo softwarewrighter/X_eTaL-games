@@ -88,6 +88,7 @@ just repl SLUG                       # the X_eTaL REPL in the game's directory; 
 just test-game SLUG                  # check its output against expected/
 just new-game nim "Nim"              # start a new game from games/_template
 just bless SLUG                      # rewrite its expected output (review the diff)
+just size [SLUG]                     # lines and tokens of X_eTaL per game
 just fetch [SLUG]                    # download third-party assets (never committed)
 ```
 
@@ -148,6 +149,7 @@ terminal moves to X_eTaL's own terminal pane when it lands. See [`docs/plan.md`]
 
 - [`docs/plan.md`](docs/plan.md) -- architecture decisions, the
   gallery, the roadmap
+- [`docs/style.md`](docs/style.md) -- how the games' X_eTaL is written
 - [`docs/xetal-asks.md`](docs/xetal-asks.md) -- features and fixes the
   games need from X_eTaL
 - [`CHANGES.md`](CHANGES.md) -- every change, by day

@@ -88,6 +88,10 @@ screenshots *slugs:
 browser-test *slugs:
     scripts/browser-test.mjs "$@"
 
+# How big each game's X_eTaL is: lines and tokens (a markdown table)
+size *slugs:
+    @scripts/size.sh "$@"
+
 # The full pre-commit gate
 gate:
     scripts/gate.sh

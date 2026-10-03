@@ -297,6 +297,7 @@ Read before working:
 
 - `docs/plan.md` -- architecture decisions (A1-A10), the gallery, the
   saga roadmap
+- `docs/style.md` -- how the games' X_eTaL is written (follow it)
 - `docs/xetal-asks.md` -- what the games need from X_eTaL
 - `docs/research.txt` -- the archival idea list, NOT normative
 - `../X_eTaL/docs/reference.md`, `../X_eTaL/docs/lang-choices.md` --
