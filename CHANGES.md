@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 13:34 `chore` Saga step shared-libraries completed.
+
 - 13:31 `feat` Shared X_eTaL libraries in lib/ (Play, Text, Board, State) with their own tests in the gate; XETAL_PATH set by the scripts; game pages can load and show shared libraries.
 
 - 12:44 `chore` Saga step metrics-style completed.
