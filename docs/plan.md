@@ -50,7 +50,7 @@ Rust) one:
 | A3 | Each game is its own sub-project, `games/<slug>/`: `game.toml` (title, summary, lesson, concepts, status, order, provenance, needs), `README.md`, `<slug>.xtl` (the rules and a scripted game), `expected/` goldens, optional `play.xtl` (interactive, `[]R_EAD`), optional `test.sh`, and `web/` (its own Cargo workspace, a Yew app). A game never reaches into another game. | Games evolve independently; one broken game never blocks another. |
 | A4 | **Rules as a library, behind a common protocol.** Each game's rules are one X_eTaL library, `games/<slug>/<Name>.xtl` (exports under `l:`), imported by the scripted game, the terminal game and the page (`"g:" u_se< "Name"`; the page writes the library into the engine's in-memory store with `microscope::run::library`). It defines what applies of: `l:n_ew` (a seed or size -> state), `l:m_ove` (state, move -> state), `l:l_egal` (state -> moves), `l:s_tatus` (0 playing, 1 over or won, 2 lost, 3 draw), `l:v_iew` (state -> a display array); optionally `l:s_core`, `l:a_i` (the computer's move), `l:h_int`. State is a flat numeric array (no records yet) that the page passes back in as a literal each turn; randomness comes from `r_oll!` with a seed the page changes every turn. | The rules are written once; one page pattern for every game; a new game is mostly X_eTaL plus a small renderer. (Decided in the horse-race step, when it turned out the engine's store lets a page use a library.) |
 | A5 | **Goldens with scripted input.** A program with `expected/NAME.in` is run with that file as standard input, so interactive `play.xtl` sessions are tested move by move like any other program. All runs use `--seed 1`. | Interactive games stay tested without a browser. |
-| A6 | The browser shell is copied from X_eTaL-demos' `shared/microscope` into `shared/microscope/` (independent from then on); once three games have pages, the game-specific parts (boards of clickable cells, score panel, move log, new-game/undo controls) are extracted into `shared/arcade/`. | The same "extract from three working pages" approach that worked for the demos. |
+| A6 | The browser shell was copied from X_eTaL-demos' `shared/microscope` into `shared/microscope/` (independent from then on) and became one shared game page (A11). Boards and pictures come from X_eTaL itself (text it prints, `[]G_RID`/`[]S_HOW` pictures), never from page code. | One page for every game; nothing on a page that X_eTaL did not produce. (Revised in saga 2: the planned `shared/arcade` of clickable boards was dropped by A11.) |
 | A7 | The live site is built **locally** into `pages/` (`just pages`): a catalog `pages/index.html` from every `game.toml`, plus `pages/<slug>/` from trunk. `pages/` is committed; `.github/workflows/pages.yml` only uploads it. | Same as the sibling repos: simple, deterministic deploys. |
 | A8 | A missing X_eTaL feature or a bug a game uncovers is **not** fixed here nor hidden: it goes in `docs/xetal-asks.md` (status, kind, games, why, minimal repro, workaround) and in the game's README. A game that cannot be built waits in the deferred saga. | X_eTaL owns its language decisions; this repo is a consumer. |
 | A9 | **Third-party assets are never tracked.** A game that needs a downloaded file (a world map SVG, a star catalog) tracks only a fetch script (`games/<slug>/assets/fetch.sh`, recording the source URL, license and checksum); the fetched files land in a git-ignored `games/<slug>/assets/cache/`. `just fetch SLUG` runs it; builds and tests call it when the cache is empty. | The user's rule: track the scripts that get assets, not the assets. |
@@ -125,7 +125,7 @@ first game published end to end.
 | 4 | pages-pipeline | DONE: shell copied (compiles unchanged against the newer vendored X_eTaL); catalog cards show the lesson; `just pages` fetches assets first; the self-test checks the catalog; Pages enabled (workflow build). Planned: `shared/microscope` copied in; `scripts/build-catalog.py` (cards from `game.toml`: lesson, concepts, status), `scripts/build-pages.sh`, `scripts/serve-pages.sh`, `.github/workflows/pages.yml` (upload only); Pages enabled; the deploy verified |
 | 5 | horse-race | DONE: rules as a library, HorseRace.xtl (A4 revised), used by horse-race.xtl, play.xtl (betting coins; golden from expected/play.in) and the page (`microscope::run::library`, `output_seeded`); the page shows the track X_eTaL draws, each round's rolls and the stage in the rules; green favicon. Planned: the race as one vector: `pos := pos + r_oll! 5 r_eshape 3`; the scripted race and an interactive pick-a-horse `play.xtl` (goldens with `.in`); the APL originals side by side in the README; web page: the track, the roll vector each round, the winner by `w_here pos = 'm_ax r_/ pos`; live |
 
-## Saga 2 -- the COR24 BASIC games
+## Saga 2 -- the COR24 BASIC games  [DONE but the terminal pane]
 
 The user's order (2026-10-02): the APL original first (the horse race,
 saga 1), then the BASIC games of the COR24 live demos
@@ -142,19 +142,52 @@ no attribution sections.
 | 3 | robot-chase | DONE: RobotChase.xtl (state one flat vector; robots a 2 by 12 matrix moved by the sign of P - R; crashes by a 12 by 12 table; new wrecks by a 256 by 12 table; the scan by `'+ r_/_24` on a 4 by 4 by 4 by 4 array; random squares by `g_rade` of random keys); play.xtl as the BASIC plays (keypad, teleport, scan, resign); robot-chase.xtl shows one step and a made-up crash; the shared page. Planned: robot-chase.bas: robots as an N x 2 matrix all moving at once by the sign of the difference; wrecks where positions repeat; teleport; the board page |
 | 4 | trek-adventure | DONE: TrekAdventure.xtl: every line of text one row of a table (text, key, condition item, value; 157 rows), a room or message picked by one mask (`m_ember?`, `w_here`), exits a 9 by 9 table, the state one vector of 12 changed by a table-driven update; play.xtl plays as the BASIC (numeric menus, 30 turns, the Klingon clock, three endings), its golden a full winning session; trek-adventure.xtl plays the walkthrough into a 12 by 12 table of states and shows the losses; the shared page. |
 | 5 | trek | DONE: StarTrek.xtl (galaxy as three 8 by 8 planes made at once; entering a quadrant places everything by a random order and its inverse; courses a 2 by 8 table, paths by `t_able`, first obstacle by `w_here`; phasers one masked subtraction; LRS a 5 by 5 window by one `s_elect_2` from a 3 by 64 matrix, characters by `r_avel_2`; a destroyed Klingon leaves the galaxy too, unlike the BASIC); play.xtl with the BASIC's prompts; trek.xtl shows the planes, a path, a fight and running out of time; the shared page. |
-| 6 | terminal-pane | WAITING on X_eTaL saga 25 (a resumable evaluator: a run returns "waiting for a line" at `[]R_EAD` and continues on Enter, and a shared terminal pane in Rust and Yew modelled on web-sw-tos). Then: vendor it, swap the replay terminal for that pane, keep the browser tests. There will be no WASI build of `xetal` (X_eTaL decided, 2026-10-02): pages keep the engine, `xetal-play`, in Yew. No game uses a browser dialog for input, ever. |
-| 7 | terminal-shell | folded into accurate-pages (the shared page) and terminal-pane |
-| 8 | gallery-1-release | catalog, README, per-game docs, screenshots, retrospective |
+| 6 | gallery-1-release | DONE: catalog intro and summaries match the accurate pages; screenshots for every game; README and plan; this retrospective. |
+| 7 | terminal-pane | WAITING on X_eTaL saga 25 (a resumable evaluator: a run returns "waiting for a line" at `[]R_EAD` and continues on Enter, and a shared terminal pane in Rust and Yew modelled on web-sw-tos). Then: vendor it, swap the replay terminal for that pane, keep the browser tests. There will be no WASI build of `xetal` (X_eTaL decided, 2026-10-02): pages keep the engine, `xetal-play`, in Yew. No game uses a browser dialog for input, ever. |
+| 8 | terminal-shell | folded into accurate-pages (the shared page) and terminal-pane |
 
-## Saga 3 -- grids (P0 and the arcade shell)
+### Saga 2 retrospective
+
+Delivered the four COR24 BASIC games (guess the number, robot chase,
+trek adventure, Star Trek) live, and changed how every page works.
+Learned, mostly from the user:
+
+- A page must show only what X_eTaL prints or draws (A11). The first
+  pages were a Rust UI dressed around X_eTaL (a highlighted track,
+  stage chips, a candidate grid); that misrepresented the language.
+  Now every page is the same shared page: the game's `play.xtl` in a
+  terminal, its scripted program as a notebook, the sources. A fancy
+  UI waits until X_eTaL itself can serve one.
+- Tests prove the browser shows what the command line shows: each
+  page's terminal and notebook reproduce the goldens natively
+  (`tests/page.rs`) and in headless Chrome (`just browser-test`, the
+  DevTools protocol over Node's WebSocket, no packages).
+- The `xetal` binary will not be built for WASI (X_eTaL's decision):
+  input waits on X_eTaL's terminal pane over a resumable evaluator;
+  until then the page replays the typed history on every line.
+- Ports are one-time rewrites in X_eTaL's own style; no copies, links
+  or attribution of the BASIC.
+- A game's rules are one library; on macOS a library named like its
+  game (`Guess.xtl`, `Trek.xtl`) is the same file as the program, so
+  the layout check forbids it.
+- Right-to-left reading without precedence caught every port at least
+  once (`(p - 1 + t_ally v)` is `p - (1 + t_ally v)`); the goldens and
+  the page tests caught each before a commit.
+- Array ideas that carried the games: a random permutation by `g_rade`
+  of random keys, and its inverse by `g_rade` again; paths as `t_able`
+  of steps; collision and membership tables; text as a table of rows
+  picked by one mask; several items of a state vector updated at once
+  by a table.
+
+## Saga 3 -- grids (P0, boards drawn by X_eTaL)
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
-| 1 | tic-tac-toe | the protocol (A4) on a 3 x 3 board; lines as an 8 x 3 index table; random and minimax players; play.xtl; page |
+| 1 | tic-tac-toe | the protocol (A4) on a 3 by 3 board; lines as an 8 by 3 index table; random and minimax players; play.xtl; the shared page |
 | 2 | shut-the-box | open tiles as a mask; every subset of 1..9 by `e_ncode`; the legal moves are the subsets summing to the roll; page |
-| 3 | arcade-shell | `shared/arcade/`: the game parts the three pages share (clickable boards, score and status, move log, new game/undo), extracted with the pages' tests unchanged |
+| 3 | x-pictures | boards as pictures X_eTaL draws (`[]S_HOW []G_RID`) in the shared page's terminal and notebook, for the grid games; an ask if X_eTaL's pictures cannot do what a board needs |
 | 4 | minesweeper | counts by eight rotations; reveal by flood fill to a fixed point; page |
-| 5 | 2048 | a move as compress, merge, pad, oriented by `r_ev`/transposition; page (keyboard and swipe) |
+| 5 | 2048 | a move as compress, merge, pad, oriented by `r_ev` and transposition; played at the terminal (w a s d) |
 | 6 | lights-out | play by XOR with a plus stencil; Solve over GF(2); page |
 | 7 | gallery-2-release | catalog, README, per-game docs, screenshots, retrospective |
 
@@ -169,8 +202,8 @@ no attribution sections.
 | 5 | fifteen | the sliding puzzle; solvability by permutation parity |
 | 6 | nim | heaps, XOR strategy by binary digits |
 | 7 | reversi | the eight rays, captures and flips |
-| 8 | capitals | world map (fetched, not tracked: A9); a dot per capital; click a dot, pick the country from 4 choices (distractors chosen in X_eTaL by distance), feedback, the right answer shown, score and streak |
-| 9 | stargazer | the stargazer-poc quiz in X_eTaL: a bright-star table (fetched, A9) projected by X_eTaL; click a star, name it from the choices, score |
+| 8 | capitals | world map (fetched, not tracked: A9); capitals as a lon/lat table projected by X_eTaL; distractors chosen by distance; scored at the terminal, the map drawn by X_eTaL (`[]P_ATH`/`[]S_HOW`); clicking on the map waits until X_eTaL can take pointer input (an ask) |
+| 9 | stargazer | the stargazer-poc quiz in X_eTaL: a bright-star table (fetched, A9) projected and drawn by X_eTaL; name the star from the choices at the terminal; clicking waits like capitals |
 | 10 | gallery-3-release | catalog, docs, retrospective |
 
 ## Saga 5 -- larger games and deferred

@@ -49,9 +49,9 @@ code { font-family: ui-monospace, "JuliaMono", Menlo, monospace; }
 <header>
 <div class="brand"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL"><h1>Games</h1></div>
 <p class="lede">Small games written in <a href="https://github.com/softwarewrighter/X_eTaL">X_eTaL</a>, a typed array language.
-Each one teaches one array-programming idea and happens to be playable: the rules are
-X_eTaL, run in your browser; the page only turns your move into arrays and draws the
-arrays that come back.</p>
+Each one teaches one array-programming idea and happens to be playable. A game's page runs
+it as X_eTaL runs it, in your browser: the game in a terminal, its scripted program as a
+notebook, and the source; everything on it is X_eTaL's own output.</p>
 </header>
 <section class="grid">
 <article class="card" id="horse-race">
@@ -59,7 +59,7 @@ arrays that come back.</p>
 <span class="status live">Live</span>
 <h2>Horse race</h2>
 <p class="lesson">vectors, random rolls, reduction</p>
-<p>Five horses race to 15, each running 1, 2 or 3 a round, all at once. The field is one vector of positions and a round is one expression; the track is a character matrix drawn by a table. Back a horse and watch.</p>
+<p>Five horses race to 15, each running 1, 2 or 3 a round, all at once. The field is one vector of positions and a round is one expression; the track is a character matrix drawn by a table. Bet on a horse at the terminal.</p>
 <div class="chips"><span class="chip">vectors</span><span class="chip">r_oll!</span><span class="chip">reduce</span><span class="chip">w_here</span><span class="chip">t_able</span><span class="chip">libraries</span></div>
 <div class="links"><a href="horse-race/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/horse-race#readme">How it works</a></div>
 </article>
@@ -68,7 +68,7 @@ arrays that come back.</p>
 <span class="status live">Live</span>
 <h2>Guess the number</h2>
 <p class="lesson">comparison tables, masks, playing every game at once</p>
-<p>The smallest COR24 BASIC game, at a terminal: higher or lower until you have it. Beside it, every candidate from 1 to 100 is checked against every guess at once, and the halving player wins all 100 games in lockstep.</p>
+<p>The smallest COR24 BASIC game, at a terminal: higher or lower until you have it. Its scripted game checks every candidate from 1 to 100 against every guess at once, and plays all 100 games in lockstep.</p>
 <div class="chips"><span class="chip">r_oll!</span><span class="chip">t_able</span><span class="chip">reduce</span><span class="chip">masks</span><span class="chip">[]R_EAD</span><span class="chip">libraries</span></div>
 <div class="links"><a href="guess/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/guess#readme">How it works</a></div>
 </article>
@@ -91,6 +91,7 @@ arrays that come back.</p>
 <div class="links"><a href="trek-adventure/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/trek-adventure#readme">How it works</a></div>
 </article>
 <article class="card" id="trek">
+<a class="shot" href="trek/"><img src="trek/screenshot.png" alt="Star Trek" loading="lazy"></a>
 <span class="status live">Live</span>
 <h2>Star Trek</h2>
 <p class="lesson">planes of a galaxy, paths as matrices, windows, masked updates</p>
@@ -105,7 +106,7 @@ arrays that come back.</p>
 <span>MIT License</span><span class="sep">&middot;</span>
 <a href="https://github.com/softwarewrighter/X_eTaL-games" target="_blank">Repository</a><span class="sep">&middot;</span>
 <span>X_eTaL <a href="https://github.com/softwarewrighter/X_eTaL/commit/39938f3f72f075a327241002f4582afe8d67bc29" target="_blank">39938f3</a></span><span class="sep">&middot;</span>
-<span>build (host max, sha de2091a, 20261003T131552)</span>
+<span>build (host max, sha 9cfc77a, 20261003T140736)</span>
 </footer>
 </body>
 </html>

@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 07:07 `release` Gallery 1: the horse race and the four COR24 BASIC games live; the catalog's intro and summaries describe the accurate pages; every card has its screenshot; saga 2's retrospective; saga 3's plan revised for boards drawn by X_eTaL.
+
 - 06:24 `chore` Saga step trek completed.
 
 - 06:15 `game` Star Trek, live: the galaxy as three 8 by 8 planes made at once, a quadrant entered by a random order and its inverse, courses and torpedo tracks as whole paths, phasers as one masked subtraction, the long-range scan as a window cut by one selection; terminal game, scripted game, the shared page; a destroyed Klingon leaves the galaxy too.

@@ -74,9 +74,9 @@ code {{ font-family: ui-monospace, "JuliaMono", Menlo, monospace; }}
 <header>
 <div class="brand"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL"><h1>Games</h1></div>
 <p class="lede">Small games written in <a href="{xetal}">X_eTaL</a>, a typed array language.
-Each one teaches one array-programming idea and happens to be playable: the rules are
-X_eTaL, run in your browser; the page only turns your move into arrays and draws the
-arrays that come back.</p>
+Each one teaches one array-programming idea and happens to be playable. A game's page runs
+it as X_eTaL runs it, in your browser: the game in a terminal, its scripted program as a
+notebook, and the source; everything on it is X_eTaL's own output.</p>
 </header>
 {body}
 </main>
