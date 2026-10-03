@@ -1,6 +1,6 @@
-number = 8
+number = 7
 slug = "terminal-shell"
-status = "pending"
+status = "in-progress"
 description = "basic step 4: the parts the text pages share (output pane, command line, hist..."
 role = "production"
 context_files = []
