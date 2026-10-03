@@ -7,6 +7,7 @@ l:l_egal : Num a => a -> Int
 l:s_tatus : (Num a, Num b) => a -> b
 l:m_ove : (Num a, Truthy a) => a -> Int -> a
 l:v_iew : Num a => a -> Char
+l:p_icture : Num a => a -> Char
 l:o_n : Truthy a => Unit -> a
 l:a_i : (Num a, Truthy a) => a -> Int
 l:n_ear : (Num a, Truthy a, Num b, Truthy b) => a -> a -> b

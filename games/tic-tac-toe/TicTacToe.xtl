@@ -37,6 +37,11 @@ l:v_iew := { b ->
   ((wide * 1 - gap) + 12 * gap) s_elect "OX123456789 "
 }
 
+# The board as a picture X_eTaL draws (SVG text): the marks and the
+# empty squares' numbers in a 3 by 3 grid. []S_HOW shows it: the
+# command line writes a file, the page shows it beside the text.
+l:p_icture := { b -> []G_RID 3 3 r_eshape ((b = -1) + (2 * b = 1) + (b = 0) * 2 + r_ange 9) s_elect "OX123456789" }
+
 # -- players ------------------------------------------------------------
 # Which squares lie on which lines: a 9 by 8 table (square against line),
 # from a 9 by 8 by 3 table of every square against every entry.

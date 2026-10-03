@@ -24,6 +24,7 @@ u:a_sk := { s ->
 # The board and its header, as the BASIC prints them each turn.
 u:s_how := { s ->
   said := p_rint! ""
+  pic := []S_HOW r:p_icture s
   said := p_rint! "TURN " c_at (f_ormat r:t_urn s) c_at "   ROBOTS " c_at (f_ormat '+ r_/ r:a_live s) c_at "   TELE " c_at f_ormat r:t_ele s
   r:v_iew s
 }

@@ -19,6 +19,7 @@ u:v_erdict := { b -> d_isclose (t:s_tatus b) s_elect "YOU WIN!" "I WIN." "A DRAW
 u:y_ou := { b ->
   said := p_rint! ""
   shown := p_rint! t:v_iew b
+  pic := []S_HOW t:p_icture b
   0 < t:s_tatus b ? u:v_erdict b
   u:m_e b t:m_ove u:a_sk b
 }

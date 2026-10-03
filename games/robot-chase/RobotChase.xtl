@@ -129,6 +129,18 @@ l:v_iew := { s ->
   top := 1 35 r_eshape "   0 1 2 3 4 5 6 7 8 9 A B C D E F "
   top c_at lab c_at_2 chars
 }
+# The board as a picture X_eTaL draws (SVG text): the same codes as
+# l:v_iew, one character per square of a 16 by 16 grid. []S_HOW shows
+# it: the command line writes a file, the page shows it beside the text.
+l:p_icture := { s ->
+  k := l:c_ell l:r_obots s
+  B := '| r_/_2 ((r_ange 256) '= t_able k) * (256 c_at l:n) r_eshape l:a_live s
+  code := 1 + B + 2 * r_avel l:w_recks s
+  kp := l:c_ell l:p_os s
+  me := (r_ange 256) = kp
+  code := (code * 1 - me) + me * 4 + 1 < kp s_elect code
+  []G_RID (16 16 r_eshape code) s_elect ".R*PX"
+}
 # The long-range scan: the board in 4 by 4 regions, as a 4 by 4 by 4 by
 # 4 array (region row, row, region column, column) summed over the rows
 # and columns inside each region: robots, wrecks, and where you are.

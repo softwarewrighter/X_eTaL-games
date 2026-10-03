@@ -13,9 +13,28 @@ workaround in use.
 | Status | Kind | Ask | Games | Workaround |
 | ------ | ---- | --- | ----- | ---------- |
 | filed | feature | A terminal for interactive programs (the request: [`xetal-terminal-request.md`](xetal-terminal-request.md)); X_eTaL is building it as its saga 25 (at 70e129d: a run waits for typed lines and resumes, D50; the pane not yet): a resumable evaluator and a shared terminal pane in Rust and Yew, on the web-sw-tos model, replacing `window.prompt`. No WASI build of `xetal` (decided upstream) | all interactive games | pages run the engine (`xetal-play`) in Yew and replay the typed history on every line |
+| open | feature | `[]G_RID` of numbers: draw the numbers in the cells, and let a program choose the colour scale (logarithmic, or a few fixed colours) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
 | open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (still so at 70e129d) | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
 ## Details
+
+### Numbers on a `[]G_RID` board
+
+`[]G_RID` draws a character matrix with each character in its cell
+and a 0/1 matrix as dark and light cells, which suits boards of marks
+(tic-tac-toe, robot chase) and of lights (lights out). A matrix of
+other numbers is drawn as colours from the least to the greatest, on a
+linear scale and without the numbers:
+
+```
+[]S_HOW []G_RID 4 4 r_eshape 0 2 4 8 16 32 64 128 256 512 1024 2048 0 0 2 4
+```
+
+shows a 2048 board as almost all one dark colour, with no way to read
+the tiles. Ask: an option (a variant or a left argument) to draw each
+number in its cell, and a choice of scale (logarithmic, or a small
+palette indexed by the value). Workaround: numeric boards are printed
+as text, and pictures are used only for character and 0/1 boards.
 
 ### The `xetal` binary for WebAssembly (WASI): withdrawn
 

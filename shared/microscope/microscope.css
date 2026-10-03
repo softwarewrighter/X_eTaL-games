@@ -136,3 +136,5 @@ canvas.pic.mid { width: min(100%, 260px); }
   font: .9rem/1.45 ui-monospace, "JuliaMono", Menlo, monospace; white-space: pre; overflow-x: auto; }
 /* An empty printed line keeps its height, as in a terminal. */
 .term > div:empty, .nb .out > div:empty { min-height: 1.5em; }
+/* Pictures X_eTaL draws ([]S_HOW) are scaled up to read; their content is X_eTaL's. */
+.term .pic svg, .nb .pic svg { width: min(100%, 384px); height: auto; display: block; }
