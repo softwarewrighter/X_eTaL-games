@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 08:55 `chore` Saga step shut-the-box completed.
+
 - 08:51 `game` Shut the box, live: every subset of the tiles at once (a 9 by 512 bit matrix, all sums by one inner product, the moves by one mask); the terminal game lists the moves; the shared page.
 
 - 08:32 `chore` Saga step tic-tac-toe completed.
