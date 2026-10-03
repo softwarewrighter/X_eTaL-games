@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 08:29 `game` Tic-tac-toe, live: the lines as a table of square numbers (every line's sum by one selection and one reduce), a quick player rating every square at once, minimax by recursion; you are X at the terminal; the shared page.
+
 - 07:51 `chore` Saga step vendor-refresh completed.
 
 - 07:50 `vendor` X_eTaL 70e129d vendored (transpose `o_\`, the resumable run of X_eTaL saga 25, kernels for higher-order built-ins); every golden, page test and browser test passes unchanged; pages rebuilt on it.

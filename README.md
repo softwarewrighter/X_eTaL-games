@@ -38,7 +38,7 @@ and is tested by its expected output.
 | [Robot chase](games/robot-chase/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/robot-chase/)) | coordinate matrices, simultaneous motion, collision tables (from COR24 BASIC) | live |
 | [Trek adventure](games/trek-adventure/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/trek-adventure/)) | tables, masks, a state machine as data (from COR24 BASIC) | live |
 | [Star Trek](games/trek/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/trek/)) | planes of a galaxy, paths as matrices, windows, masked updates (from COR24 BASIC) | live |
-| Tic-tac-toe | a 3 x 3 board, line extraction, minimax | planned |
+| [Tic-tac-toe](games/tic-tac-toe/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/tic-tac-toe/)) | a 3 by 3 board, line extraction by indexing, minimax | live |
 | Shut the box | boolean masks, subset sums | planned |
 | Minesweeper | neighbourhoods by rotation, flood fill | planned |
 | 2048 | compress, merge, pad: composition | planned |

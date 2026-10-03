@@ -1,0 +1,41 @@
+#!/usr/bin/env xetal
+# Tic-tac-toe, scripted (seed 1), with the rules of TicTacToe.xtl.
+"t:" u_se< "TicTacToe"
+
+# The eight lines as a table of squares, and a board.
+t:l_ines @
+b := 1 1 0 -1 -1 0 0 0 0
+t:v_iew b
+
+# Used as indices, the lines table picks every line's squares from the
+# board at once (8 by 3); summed along the rows, a 2 says X needs one
+# more there.
+(t:l_ines @) s_elect b
+t:s_ums b
+t:l_egal b
+
+# X to move (two marks each). The quick player rates every empty square
+# at once and completes its line.
+t:a_i b
+b := b t:m_ove t:a_i b
+t:v_iew b
+t:s_tatus b                    # 1: X won
+
+# Which squares lie on which lines: a 9 by 8 table.
+t:o_n @
+
+# Minimax from a position with five empty squares: every legal move's
+# value, by recursion over the moves (1 X wins, -1 O wins, 0 draw).
+p := 1 -1 0 0 1 0 0 0 -1
+t:v_iew p
+'{ t:v_alue p t:m_ove _r } e_ach t:l_egal p
+t:b_est p
+
+# The quick player against itself, from an empty board: a draw.
+u:s_elf := { b ->
+  0 < t:s_tatus b ? b
+  u:s_elf b t:m_ove t:a_i b
+}
+end := u:s_elf t:n_ew 0
+t:v_iew end
+t:s_tatus end                  # 3: a draw
