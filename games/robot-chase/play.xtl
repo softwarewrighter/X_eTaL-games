@@ -1,6 +1,6 @@
 #!/usr/bin/env xetal
 # Robot chase at the terminal, as the COR24 BASIC game plays it
-# (original/robot-chase.bas): move with the numeric keypad (7 8 9 up,
+# (robot-chase.bas in sw-embed/web-sw-cor24-basic): move with the numeric keypad (7 8 9 up,
 # 4 6 sideways, 5 waits, 1 2 3 down), 0 teleports (3 a game), 10 scans
 # the board in 4 by 4 regions, 99 resigns. Make the robots crash into
 # each other or into wrecks; clear them all to win. The rules are those

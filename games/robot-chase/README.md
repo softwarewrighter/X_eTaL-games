@@ -98,9 +98,11 @@ sideways; 5 waits; 1 2 3 down; 0 teleports (three a game); 10 scans;
 
 ## Sources
 
-A port of `robot-chase.bas` from the COR24 BASIC live demos
+A port of
+[`robot-chase.bas`](https://github.com/sw-embed/web-sw-cor24-basic/blob/36569ac624921861122b199a165212710c2f0a2f/examples/robot-chase.bas)
+from the COR24 BASIC live demos
 ([sw-embed/web-sw-cor24-basic](https://github.com/sw-embed/web-sw-cor24-basic),
-MIT), kept in `original/`. The BASIC keeps the board in memory with
+MIT; the link is to the version ported). The BASIC keeps the board in memory with
 `POKE` and `PEEK` and moves robots one at a time:
 
 ```
