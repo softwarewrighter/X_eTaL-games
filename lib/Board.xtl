@@ -8,7 +8,7 @@ l:c_ell := { n rc -> 1 + (n * 1 s_elect rc) + 2 s_elect rc }
 # :: Int -> Int -> Int
 # The row and column of squares k on a board n wide (a 2-row matrix for
 # many squares).
-l:r_c := { n k -> (((k - 1) d_iv n) c_at_1 (k - 1) m_od n) }
+l:r_c := { n k -> (2 c_at s_hape k) r_eshape ((k - 1) d_iv n) c_at (k - 1) m_od n }
 
 # :: Num a => a -> a
 # Every square's count of 1s among its eight neighbours, all at once:

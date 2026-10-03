@@ -13,6 +13,6 @@ pub fn game() -> Game {
         script: include_str!("../../robot-chase.xtl"),
         library_name: "RobotChase",
         library: include_str!("../../RobotChase.xtl"),
-        shared: &[],
+        shared: &[("Board", include_str!("../../../../lib/Board.xtl")), ("Play", include_str!("../../../../lib/Play.xtl"))],
     }
 }

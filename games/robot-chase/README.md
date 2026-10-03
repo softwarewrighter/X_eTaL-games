@@ -40,19 +40,22 @@ event, the status, the robots' rows, columns and which are alive, and
 the 256 squares of wreckage. The robots' turn:
 
 ```
+l:o_nSquares := { k w -> ((r_ange 256) '= t_able k) '+ '* i_nner w }
 l:c_hase := { s ->
   a := l:a_live s
-  W := l:w_recks s
-  P := (l:p_os s) 'l_eft t_able r_ange l:n
-  d := P - l:r_obots s
-  R := (l:r_obots s) + ((2 c_at l:n) r_eshape a) * (d > 0) - d < 0
+  w := r_avel l:w_recks s
+  d := ((l:p_os s) 'l_eft t_able r_ange l:n) - l:r_obots s
+  R := (l:r_obots s) + ((2 c_at l:n) r_eshape a) * d [> - <] 0
   k := l:c_ell R
   caught := '| r_/ a * k = l:c_ell l:p_os s
-  a1 := a * 1 - k s_elect r_avel W
-  crash := a1 * 1 < '+ r_/_2 (k '= t_able k) * (l:n c_at l:n) r_eshape a1
+  a1 := a * n_ot k s_elect w
+  crash := a1 * 1 < k s_elect k l:o_nSquares a1
   ...
 }
 ```
+
+Squares, spacing and neighbours come from the shared `Board` library
+(`lib/`), input from `Play`.
 
 ## How it works
 
@@ -61,21 +64,20 @@ Read each line right to left.
 - `P := (l:p_os s) 'l_eft t_able r_ange l:n`: your position repeated
   into a 2 by 12 matrix, one column per robot, to line up with the
   robots' matrix `R` (row 1 their rows, row 2 their columns).
-- `(d > 0) - d < 0` with `d := P - R`: the sign of every difference,
-  -1, 0 or 1, for every robot and both coordinates at once. Adding it
-  (masked by which robots are alive) moves every robot one step toward
-  you, in one expression.
+- `d [> - <] 0`: a dyadic fork, `(d > 0) - (d < 0)`: the sign of
+  every difference, -1, 0 or 1, for every robot and both coordinates
+  at once. Adding it (masked by which robots are alive) moves every
+  robot one step toward you, in one expression.
 - `k := l:c_ell R`: every robot's square number, 1 to 256.
-- `(k '= t_able k)`: a 12 by 12 table, 1 where two robots share a
-  square; weighted by which are alive and summed along each row, it
-  counts the robots on each robot's square, and a count over 1 is a
-  crash. The BASIC compares every pair in a nested `FOR I`, `FOR J`.
-- New wrecks: a 256 by 12 table of square against robot, kept where a
-  robot crashed, `'| r_/_2`-reduced: a 0/1 board of 256 squares, or-ed
-  into the wreckage.
-- The board you see: three 0/1 boards (robots, wrecks, you) combined
-  into one code per square and indexed into `".R*PX "`;
-  `2 r_eplicate_2` doubles every column to make room for the spaces.
+- `l:o_nSquares`: a 256 by 12 table of square against robot, times a
+  vector with one number per robot (an inner product): how much lands
+  on each square. With the live robots it counts the robots on every
+  square, so a robot whose square counts more than 1 has crashed (the
+  BASIC compares every pair in a nested `FOR I`, `FOR J`); with the
+  crashed robots it gives the new wrecks, or-ed into the wreckage.
+- The board you see: `l:c_odes` combines three 0/1 boards (robots,
+  wrecks, you) into one code per square, indexed into `".R*PX"` for
+  the text (spaced by `Board`'s `l:s_paced`) and for the picture.
 - The long-range scan: the 256 squares reshaped to a 4 by 4 by 4 by 4
   array (region row, row, region column, column) and summed over axes
   2 and 4 (`'+ r_/_24`): the robots, wrecks and you in each region.
