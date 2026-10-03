@@ -1,0 +1,57 @@
+#!/usr/bin/env xetal
+# Trek adventure, scripted, with the rules of TrekAdventure.xtl.
+"t:" u_se< "TrekAdventure"
+
+# The text is one table of 157 lines; its four columns (text, key,
+# condition item, condition value) have one entry per line.
+(t_ally t:t_ext @) c_at (t_ally t:k_eys @) c_at (t_ally t:f_lags @) c_at t_ally t:v_alues @
+
+# A room is the rows whose key it is and whose condition holds: one mask
+# over the whole table. Storage (room 5) at the start, then after the
+# toolkit and the coupler are taken: their rows drop out.
+s := t:n_ew 0
+s := s t:u_pdate 1 5
+s t:l_ines 5
+said := s t:s_ay 5
+taken := s t:u_pdate 5 1 6 1
+taken t:l_ines 5
+said := taken t:s_ay 5
+
+# The exits are a 9 by 9 table: from the corridor (room 3) you can reach
+# rooms 2, 4, 5, 7 and 9.
+t:e_xits @
+w_here 3 s_elect t:e_xits @
+
+# The state is one vector of 12; an update changes several items at once
+# (here: the room to 6 and the event to 0).
+s
+s t:u_pdate 1 6 12 0
+
+# The winning walkthrough as a table of commands (command, argument),
+# played a row at a time: each turn a command, then the clock. Every
+# state is kept, so the whole game is a table: a row per turn, a column
+# per state item.
+moves := 11 2 r_eshape 3 2 3 3 3 5 4 3 4 4 4 5 3 3 3 2 3 6 5 1 5 2
+u:p_lay := { s m ->
+  0 = t_ally m ? (1 c_at t_ally s) r_eshape s
+  next := t:c_lock s t:m_ove f_irst m
+  ((1 c_at t_ally s) r_eshape s) c_at next u:p_lay 1 d_rop m
+}
+game := (t:n_ew 0) u:p_lay moves
+game
+last := r_avel -1 t_ake game
+t:s_tatus last                           # 1: won
+said := last t:s_ay 201
+
+# Two ways to lose: fire the phaser at the boarders in the shuttle bay
+# (2: dead), or let the turns run out (3: too late). Throwing the
+# tribble instead makes the boarders retreat.
+bay := 8 20 1 0 0 0 1 0 1 0 0 0
+t:s_tatus bay t:m_ove 7 0
+said := bay t:s_ay t:s_aid bay t:m_ove 6 0
+9 s_elect bay t:m_ove 6 0                # the boarders: gone
+u:w_ait := { s -> t:c_lock s t:m_ove 1 0 }
+t:s_tatus 30 'u:w_ait p_ower t:n_ew 0
+
+# Nothing carried: the inventory says so.
+said := (t:n_ew 0) t:s_ay t:s_aid (t:n_ew 0) t:m_ove 2 0

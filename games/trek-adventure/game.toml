@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "trek-adventure"
+title = "Trek adventure"
+summary = "Star Trek: Decaying Orbit, a text adventure: restore the Enterprise's engines before its orbit decays, past a locked armory and Klingon boarders. No branching code for the story: every line is a row of a table with a key and a condition, a room is one mask, a turn updates the state vector."
+lesson = "tables, masks, a state machine as data"
+concepts = ["string tables", "masks", "w_here", "m_ember?", "t_able", "functional update", "libraries"]
+status = "live"
+order = 40
+sources = ["the COR24 BASIC trek adventure"]
+needs = []
