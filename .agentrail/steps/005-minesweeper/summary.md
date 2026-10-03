@@ -1,0 +1,1 @@
+minesweeper live: counts by o_-_12 rotations, flood fill to fixed point, flags, text + []G_RID picture; play.xtl; scripted fill steps; tests pass
