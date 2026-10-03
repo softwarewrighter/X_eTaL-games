@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 14:57 `chore` Saga step guess-idioms completed.
+
 - 14:55 `refactor` Guess the number in idiomatic X_eTaL: the answer as a dyadic fork `t [< - >] g`, the range update by a max and a min, Play for input, type comments; outputs unchanged.
 
 - 13:59 `plan` Reprioritized after the ecosystem review (X_eTaL docs/research4.txt): no new games before the launch; idioms first (ending with an idiom -> game table), then a launch saga (X_eTaL's terminal pane in every page, promotion-blocker checks, a performance baseline and regression check, Start Here, an audit and a tag), then macros; enums/tuples/records/signatures/errors/extensions and new games after the launch. Lights out moves to the post-launch games.
