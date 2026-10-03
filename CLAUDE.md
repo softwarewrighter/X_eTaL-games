@@ -331,7 +331,7 @@ Read before working:
    workaround). Do not fix X_eTaL from this repo and do not hide a
    workaround: name it in the ask and in the game's README.
 6. Games that cannot be built with the vendored X_eTaL are deferred
-   (plan saga 5) until their asks land; implementable games first.
+   (plan saga 7) until their asks land; implementable games first.
 7. Third-party assets (map SVGs, star catalogs, ...) are NEVER
    committed: track only `games/<slug>/assets/fetch.sh` (source URL,
    license, checksum); fetched files go to the git-ignored
