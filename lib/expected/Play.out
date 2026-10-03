@@ -1,0 +1,3 @@
+l:n_umbers : a -> Int
+l:n_umber : a -> Int
+l:l_etter : a -> Char -> Int

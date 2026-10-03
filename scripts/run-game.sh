@@ -16,5 +16,6 @@ file="${2:-$slug.xtl}"
 if head -1 "$d/$file" | grep -q -- '--untyped'; then flags+=(--untyped); fi
 if [ -x "$d/assets/fetch.sh" ]; then "$d/assets/fetch.sh" >/dev/null; fi
 xetal="$("$root/scripts/build-xetal.sh")"
+export XETAL_PATH="$root/lib${XETAL_PATH:+:$XETAL_PATH}"
 mkdir -p "$root/work/draw/$slug"
 cd "$d" && exec "$xetal" run ${flags[@]+"${flags[@]}"} --draw "$root/work/draw/$slug" "$file"

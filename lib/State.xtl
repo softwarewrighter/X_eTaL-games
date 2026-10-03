@@ -1,0 +1,19 @@
+# State: changing items of a game's state vector, shared by the games.
+
+# :: Int -> Int -> Int
+# Several items of s changed at once: iv is index, value, index, value,
+# ... A table of every position against every index says which items
+# change; the values spread across it say to what.
+l:u_pdate := { s iv ->
+  k := (t_ally iv) d_iv 2
+  m := (r_ange t_ally s) '= t_able ((2 * r_ange k) - 1) s_elect iv
+  v := ((t_ally s) c_at k) r_eshape (2 * r_ange k) s_elect iv
+  (s * n_ot '| r_/_2 m) + '+ r_/_2 m * v
+}
+# :: Int -> Int -> Int
+# The items of s from position p on replaced by v (pv is p, then v).
+l:p_ut := { s pv ->
+  p := f_irst pv
+  v := 1 d_rop pv
+  ((p - 1) t_ake s) c_at v c_at ((p - 1) + t_ally v) d_rop s
+}

@@ -1,6 +1,6 @@
 number = 2
 slug = "shared-libraries"
-status = "pending"
+status = "in-progress"
 description = "idioms step 2: X_eTaL libraries shared by the games in lib/ (Play: numbers/ch..."
 role = "production"
 context_files = []

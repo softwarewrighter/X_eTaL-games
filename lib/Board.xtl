@@ -1,0 +1,39 @@
+# Board: square boards as arrays, shared by the games. Rows and columns
+# count from 0; a square's number counts from 1, row by row.
+
+# :: Num a => a -> a -> a
+# The number of square rc (row, column) on a board n wide; rc may hold
+# many squares, as a 2-row matrix (rows, then columns).
+l:c_ell := { n rc -> 1 + (n * 1 s_elect rc) + 2 s_elect rc }
+# :: Int -> Int -> Int
+# The row and column of squares k on a board n wide (a 2-row matrix for
+# many squares).
+l:r_c := { n k -> (((k - 1) d_iv n) c_at_1 (k - 1) m_od n) }
+
+# :: Int -> Int
+# Every square's count of 1s among its eight neighbours, all at once:
+# the board in a border of zeros, rotated along both axes by -1, 0 and
+# 1 (nine boards), summed, less the board, the border dropped.
+l:a_round := { b ->
+  p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0
+  t := ('+ r_/_12 -1 0 1 o_-_12 p) - p
+  1 d_rop_2 -1 d_rop_2 1 d_rop -1 d_rop t
+}
+# :: Int -> Int
+# Every square with its four neighbours (up, down, left, right) as 1s:
+# the plus around each 1 of the board, edges not wrapping.
+l:p_lus := { b ->
+  p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0
+  t := ('+ r_/ -1 0 1 o_- p) + ('+ r_/ -1 1 o_-_2 p)
+  1 d_rop_2 -1 d_rop_2 1 d_rop -1 d_rop t
+}
+
+# :: Char -> Char
+# A character board with a space after every character, as the games
+# print boards: the columns 1, c+1, 2, c+1, ... of the board with a
+# column of spaces added.
+l:s_paced := { m ->
+  c := 2 s_elect s_hape m
+  spaces := ((f_irst s_hape m) c_at 1) r_eshape " "
+  (r_avel_2 (2 c_at c) r_eshape (r_ange c) c_at c r_eshape c + 1) s_elect_2 m c_at_2 spaces
+}

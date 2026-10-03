@@ -34,7 +34,8 @@ game's files.
    `Cargo.toml` (microscope, yew, console_error_panic_hook),
    `index.html` (the trunk links: the binary, logo, favicon,
    `microscope.css`), `src/lib.rs` returning the `page::Game` (title,
-   lede, and the three files by `include_str!`), `src/main.rs`
+   lede, the three files by `include_str!`, and the shared `lib/`
+   libraries it imports, in `shared`), `src/main.rs`
    rendering `GamePage` with it, and `tests/page.rs` checking that the
    terminal given `expected/play.in` on seed 1 prints
    `expected/play.out` and the notebook prints `expected/SLUG.out`.
