@@ -131,9 +131,9 @@ The user's order (2026-10-02): the APL original first (the horse race,
 saga 1), then the BASIC games of the COR24 live demos
 (`sw-embed/web-sw-cor24-basic/examples/*.bas`, MIT, the user's own),
 which port quickly and show the contrast between line-numbered scalar
-BASIC and whole-array X_eTaL. A port does not copy the `.bas` file:
-its README links the original, pinned to the commit ported from, and
-quotes the lines it compares.
+BASIC and whole-array X_eTaL. A port is a one-time rewrite of the same
+kind of game in X_eTaL's own style: no copy of the `.bas`, no links,
+no attribution sections.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |

@@ -72,29 +72,6 @@ just show guess          # the scripted games as a notebook
 just test-game guess     # compare with the expected output
 ```
 
-## Sources
-
-A port of
-[`guess.bas`](https://github.com/sw-embed/web-sw-cor24-basic/blob/36569ac624921861122b199a165212710c2f0a2f/examples/guess.bas) and
-[`guess-random.bas`](https://github.com/sw-embed/web-sw-cor24-basic/blob/36569ac624921861122b199a165212710c2f0a2f/examples/guess-random.bas)
-from the COR24 BASIC live demos
-([sw-embed/web-sw-cor24-basic](https://github.com/sw-embed/web-sw-cor24-basic),
-MIT; the links are to the versions ported). The BASIC loops on line numbers:
-
-```
-130 INPUT "YOUR GUESS "; G
-140 IF G = T THEN GOTO 200
-150 IF G < T THEN PRINT "HIGHER!"
-160 IF G > T THEN PRINT "LOWER!"
-170 GOTO 130
-```
-
-The X_eTaL turn is a recursive function; lines 140 to 160 become the
-one answer rule and a table of replies. `guess.bas` fixes the secret
-at 42 and `guess-random.bas` seeds a generator from the time you take
-to press Enter; here the secret is `r_oll! 100`, seeded by the
-command line (`--seed`) or, on the page, by the clock.
-
 ## Assets
 
 None.

@@ -1,6 +1,6 @@
 #!/usr/bin/env xetal
-# Guess the number at the terminal, as the COR24 BASIC game plays
-# (guess.bas in sw-embed/web-sw-cor24-basic): type a number from 1 to 100; you are told to go
+# Guess the number at the terminal, as the COR24 BASIC game plays:
+# type a number from 1 to 100; you are told to go
 # higher or lower until you have it. Anything that is not a number is
 # asked for again. The rules are those of NumberGuess.xtl.
 "g:" u_se< "NumberGuess"

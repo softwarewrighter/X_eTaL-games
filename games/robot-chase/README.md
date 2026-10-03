@@ -64,7 +64,7 @@ Read each line right to left.
 - `(d > 0) - d < 0` with `d := P - R`: the sign of every difference,
   -1, 0 or 1, for every robot and both coordinates at once. Adding it
   (masked by which robots are alive) moves every robot one step toward
-  you: the BASIC's lines 5050 to 5110 in one expression.
+  you, in one expression.
 - `k := l:c_ell R`: every robot's square number, 1 to 256.
 - `(k '= t_able k)`: a 12 by 12 table, 1 where two robots share a
   square; weighted by which are alive and summed along each row, it
@@ -95,32 +95,6 @@ just test-game robot-chase   # compare with the expected output
 Commands, as in the BASIC: 7 8 9 move up-left, up, up-right; 4 and 6
 sideways; 5 waits; 1 2 3 down; 0 teleports (three a game); 10 scans;
 99 resigns.
-
-## Sources
-
-A port of
-[`robot-chase.bas`](https://github.com/sw-embed/web-sw-cor24-basic/blob/36569ac624921861122b199a165212710c2f0a2f/examples/robot-chase.bas)
-from the COR24 BASIC live demos
-([sw-embed/web-sw-cor24-basic](https://github.com/sw-embed/web-sw-cor24-basic),
-MIT; the link is to the version ported). The BASIC keeps the board in memory with
-`POKE` and `PEEK` and moves robots one at a time:
-
-```
-5050 FOR I=0 TO N-1
-5060 IF PEEK(340+I)=0 THEN GOTO 5110
-5070 LET X=PEEK(300+I)
-5071 LET Y=PEEK(320+I)
-5080 IF X<A THEN LET X=X+1
-5081 IF X>A THEN LET X=X-1
-5082 IF Y<B THEN LET Y=Y+1
-5083 IF Y>B THEN LET Y=Y-1
-```
-
-Differences: the BASIC's generator (`R*97+1 MOD 8191`, seed 5237)
-is replaced by `r_oll!`, so boards differ; the scan prints three 4 by
-4 count matrices (robots, wrecks, you) side by side where the BASIC
-printed `K/M/O` per region; the game's state is one vector, not
-memory addresses.
 
 ## Assets
 
