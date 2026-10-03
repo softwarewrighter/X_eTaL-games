@@ -1,0 +1,1 @@
+2048 live: row-wise compress/merge via scans and tables, turning by r_ev_2/o_\; play.xtl with q; corner player; fixed f s = 1 precedence bugs in minesweeper/robot-chase
