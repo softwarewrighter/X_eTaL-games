@@ -1,6 +1,6 @@
-number = 8
+number = 6
 slug = "gallery-1-release"
-status = "pending"
+status = "in-progress"
 description = "basic step 6: release: catalog order and summaries, README game list and stat..."
 role = "production"
 context_files = []

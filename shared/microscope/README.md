@@ -1,12 +1,10 @@
 # The microscope: the game pages' shared shell
 
-Every game page runs the game's X_eTaL program in the browser, reads
-back the arrays it prints, and draws them beside the program's
-decorated source. This crate (`microscope`) is what the pages share.
+Every game page runs the game's X_eTaL programs in the browser and
+shows what they print, beside their decorated source. This crate (`microscope`) is what the pages share.
 It started as a copy of X_eTaL-demos' shell of the same name and is
-maintained here independently; the game-specific parts (clickable
-boards, score, move log, new game) will move into `shared/arcade/`
-once three games have pages.
+maintained here independently; a game's page is `page::GamePage`,
+which shows only what X_eTaL prints or draws.
 
 | Module | What it gives a page |
 | ------ | -------------------- |

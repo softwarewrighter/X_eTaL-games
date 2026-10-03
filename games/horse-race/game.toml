@@ -2,7 +2,7 @@
 # README's game list and the live catalog (pages/index.html).
 slug = "horse-race"
 title = "Horse race"
-summary = "Five horses race to 15, each running 1, 2 or 3 a round, all at once. The field is one vector of positions and a round is one expression; the track is a character matrix drawn by a table. Back a horse and watch."
+summary = "Five horses race to 15, each running 1, 2 or 3 a round, all at once. The field is one vector of positions and a round is one expression; the track is a character matrix drawn by a table. Bet on a horse at the terminal."
 lesson = "vectors, random rolls, reduction"
 concepts = ["vectors", "r_oll!", "reduce", "w_here", "t_able", "libraries"]
 status = "live"
