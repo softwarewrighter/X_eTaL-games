@@ -1,9 +1,10 @@
 number = 4
 slug = "x-pictures"
-status = "in-progress"
+status = "completed"
 description = "grids step 4: boards as pictures X_eTaL draws: check []G_RID/[]S_HOW in the s..."
 role = "production"
 context_files = []
 created_at = "2026-10-03T07:16:23"
+completed_at = "2026-10-03T09:05:01"
 task_type = "feature"
-commits = []
+commits = ["6753e68c47d40e4ab2d86c119a6b7598ff221b38"]

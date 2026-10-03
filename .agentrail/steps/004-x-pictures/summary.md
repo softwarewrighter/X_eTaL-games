@@ -1,0 +1,1 @@
+Boards as []S_HOW []G_RID pictures in tic-tac-toe and robot chase; CSS scaling; runner ignores drawn-path stderr; page + browser tests check pictures; ask filed for numbers in grid cells
