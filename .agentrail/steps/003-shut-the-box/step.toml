@@ -1,0 +1,9 @@
+number = 3
+slug = "shut-the-box"
+status = "pending"
+description = "grids step 3: games/shut-the-box. Tiles 1-9 open as a mask; roll two dice (on..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T07:16:23"
+task_type = "game"
+commits = []

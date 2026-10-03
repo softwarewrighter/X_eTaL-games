@@ -1,0 +1,1 @@
+grids step 4: boards as pictures X_eTaL draws: check []G_RID/[]S_HOW in the shared page (terminal and notebook) for a board with marks (characters drawn in cells, colors for numbers); use them where they read better than text; file asks for what a board needs that []G_RID cannot do. Tests that pictures appear in the page.

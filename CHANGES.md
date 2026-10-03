@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 07:16 `chore` Saga basic archived (terminal-pane carried over); saga grids started.
+
 - 07:14 `chore` Saga step terminal-shell completed.
 
 - 07:14 `plan` Step terminal-shell closed: its work (the text games' shared page) was done by accurate-pages; only terminal-pane, waiting on X_eTaL, remains in saga 2.

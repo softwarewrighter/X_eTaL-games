@@ -1,0 +1,9 @@
+number = 7
+slug = "lights-out"
+status = "pending"
+description = "grids step 7: games/lights-out. A 5 by 5 0/1 board; pressing a light toggles ..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T07:16:23"
+task_type = "game"
+commits = []

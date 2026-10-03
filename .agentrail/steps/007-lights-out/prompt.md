@@ -1,0 +1,1 @@
+grids step 7: games/lights-out. A 5 by 5 0/1 board; pressing a light toggles it and its four neighbours (XOR with a plus stencil made by rotations); a puzzle by random presses; a solver: the 25 by 25 toggle matrix and Gaussian elimination over GF(2) in X_eTaL (if it can be expressed; an ask if not). play.xtl (row col), scripted game with the solver, shared page, tests.

@@ -1,0 +1,1 @@
+grids step 1: just vendor (HEAD of ../X_eTaL) in its own commit; rebuild; re-run every golden, page test and browser test; if outputs change, review and bless with an explanation; update docs/xetal-asks.md for anything that landed (transpose; the resumable run; the program-with-l: ask); pages rebuilt.

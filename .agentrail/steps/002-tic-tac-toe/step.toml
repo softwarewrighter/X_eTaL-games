@@ -1,0 +1,9 @@
+number = 2
+slug = "tic-tac-toe"
+status = "pending"
+description = "grids step 2: games/tic-tac-toe. TicTacToe.xtl: a 3 by 3 board as a vector of..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T07:16:23"
+task_type = "game"
+commits = []

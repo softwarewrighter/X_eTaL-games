@@ -1,0 +1,1 @@
+grids step 5: games/minesweeper. Mines as a 0/1 matrix (random by g_rade), neighbour counts by the eight rotations summed (as Life), reveal by flood fill: the revealed region grown by rotations to a fixed point (p_ower or recursion) through zero-count cells; flags; win when every safe cell is open, lose on a mine. play.xtl (row col commands), scripted game, shared page, tests.
