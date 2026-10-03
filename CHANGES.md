@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 19:19 `docs` Ports are one-time rewrites: the links to and quotes of the BASIC originals are gone from the game READMEs.
+
 - 19:17 `docs` The BASIC originals are no longer copied into games/*/original/: each README links the .bas file in web-sw-cor24-basic, pinned to the commit ported from.
 
 - 19:02 `chore` Saga step robot-chase completed.
