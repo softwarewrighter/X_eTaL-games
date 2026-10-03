@@ -1,6 +1,6 @@
 number = 2
 slug = "tic-tac-toe"
-status = "pending"
+status = "in-progress"
 description = "grids step 2: games/tic-tac-toe. TicTacToe.xtl: a 3 by 3 board as a vector of..."
 role = "production"
 context_files = []

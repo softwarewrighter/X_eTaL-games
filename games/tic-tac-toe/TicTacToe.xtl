@@ -1,0 +1,74 @@
+# Tic-tac-toe's rules, a library: tic-tac-toe.xtl (scripted), play.xtl
+# (at the terminal) and the web page all use these. The board is a
+# vector of 9 squares, numbered row by row: 0 empty, 1 X, -1 O. X moves
+# first.
+
+# The eight lines (three rows, three columns, two diagonals) as an 8 by
+# 3 table of square numbers.
+l:l_ines := { @ -> 8 3 r_eshape 1 2 3 4 5 6 7 8 9 1 4 7 2 5 8 3 6 9 1 5 9 3 5 7 }
+# Every line's sum at once: the table used as indices into the board
+# (an 8 by 3 matrix of squares), summed along each row. 3 is a line of
+# X, -3 a line of O.
+l:s_ums := { b -> '+ r_/_2 (l:l_ines @) s_elect b }
+l:w_inner := { b ->
+  s := l:s_ums b
+  (3 m_ember? s) - -3 m_ember? s
+}
+# Whose turn: X (1) when the board has as many X as O, else O (-1).
+l:t_urn := { b -> 1 - 2 * 0 != '+ r_/ b }
+l:n_ew := { x -> 9 r_eshape 0 }
+l:l_egal := { b -> w_here b = 0 }
+# 0 playing, 1 X won, 2 O won, 3 a draw.
+l:s_tatus := { b ->
+  w := l:w_inner b
+  w = 1 ? 1
+  w = -1 ? 2
+  0 = t_ally l:l_egal b ? 3
+  0
+}
+# The player to move takes square k.
+l:m_ove := { b k -> b + (l:t_urn b) * k = r_ange 9 }
+
+# The board as text: X and O, and each empty square's number (to type).
+l:v_iew := { b ->
+  code := (b = -1) + (2 * b = 1) + (b = 0) * 2 + r_ange 9
+  wide := 2 r_eplicate_2 3 3 r_eshape code
+  gap := 3 6 r_eshape 0 1
+  ((wide * 1 - gap) + 12 * gap) s_elect "OX123456789 "
+}
+
+# -- players ------------------------------------------------------------
+# Which squares lie on which lines: a 9 by 8 table (square against line),
+# from a 9 by 8 by 3 table of every square against every entry.
+l:o_n := { @ -> '| r_/_3 (r_ange 9) '= t_able l:l_ines @ }
+# A quick player that rates every empty square at once: completing a
+# line of its own wins, then blocking one of the other's, then the
+# centre, then a corner. A line through a square with sum 2 (or -2) has
+# two marks and one empty square, which must be that one.
+l:a_i := { b ->
+  p := l:t_urn b
+  r := 1 + (1000 * b l:n_ear 2 * p) + (100 * b l:n_ear -2 * p) + (10 * 5 = r_ange 9) + 5 * (r_ange 9) m_ember? 1 3 7 9
+  r := r * b = 0
+  f_irst w_here r = 'm_ax r_/ r
+}
+# For every square, whether a line through it sums to t.
+l:n_ear := { b t -> '| r_/_2 (l:o_n @) * 9 8 r_eshape t = l:s_ums b }
+
+# A perfect player: minimax. A board's value with best play from both
+# sides (1 X wins, -1 O wins, 0 a draw) is the winner if there is one,
+# 0 when the board is full, else the best of its moves' values for the
+# player to move: every legal move tried, by recursion.
+l:v_alue := { b ->
+  w := l:w_inner b
+  w != 0 ? w
+  e := l:l_egal b
+  0 = t_ally e ? 0
+  v := '{ l:v_alue b l:m_ove _r } e_ach e
+  1 = l:t_urn b ? 'm_ax r_/ v; 'm_in r_/ v
+}
+# Its move: the first legal square with the best value for the mover.
+l:b_est := { b ->
+  e := l:l_egal b
+  v := (l:t_urn b) * '{ l:v_alue b l:m_ove _r } e_ach e
+  f_irst (v = 'm_ax r_/ v) r_eplicate e
+}

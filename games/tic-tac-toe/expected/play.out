@@ -1,0 +1,27 @@
+TIC-TAC-TOE: YOU ARE X.
+
+1 2 3 
+4 5 6 
+7 8 9 
+YOUR MOVE (1-9) ?
+I TAKE 5
+
+X 2 3 
+4 O 6 
+7 8 9 
+YOUR MOVE (1-9) ?
+YOUR MOVE (1-9) ?
+YOUR MOVE (1-9) ?
+I TAKE 3
+
+X 2 O 
+4 O 6 
+7 8 X 
+YOUR MOVE (1-9) ?
+YOUR MOVE (1-9) ?
+I TAKE 7
+
+X 2 O 
+X O 6 
+O 8 X 
+I WIN.
