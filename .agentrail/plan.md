@@ -1,27 +1,28 @@
-# basic
+# grids
 
-Saga 2 of X_eTaL-games (docs/plan.md): the COR24 BASIC games
-(sw-embed/web-sw-cor24-basic/examples/*.bas, MIT, the user's own),
-ported to X_eTaL. The user's order: the APL original first (done),
-then these, before the grid games.
+Saga 3 of X_eTaL-games (docs/plan.md): the grid games, P0 first, each
+a library of rules plus a terminal game and a scripted game on the
+shared page, which shows only what X_eTaL prints or draws (A11):
+boards are text X_eTaL prints or pictures it draws (`[]S_HOW
+[]G_RID`), never page code. Ports and new games are written in
+X_eTaL's own style.
 
-Each port: the original .bas kept in games/<slug>/original/; the rules
-as one library (<Name>.xtl, docs/plan.md A4) imported by the scripted
-game, play.xtl (goldens with expected/play.in) and the page; arrays
-where the BASIC had loops; the README reads the two side by side.
-Text games share a terminal page: an output pane and a command line;
-the program re-run with the whole typed history as input and a fixed
-seed per game.
+Opens with a refresh of the vendored X_eTaL (transpose landed; the
+resumable run, the first part of X_eTaL saga 25). terminal-pane, from
+saga 2, waits on the rest of X_eTaL saga 25.
 
-Every step: `just gate` passes, docs (README, CHANGES.md, plan, asks)
-updated, .gitignore sane, a detailed commit to main including
-.agentrail/, `agentrail complete`, push.
+Every step: `just gate` (goldens, page tests, headless Chrome), docs
+(README, CHANGES.md, plan, asks), .gitignore sane, a detailed commit
+to main including .agentrail/, `agentrail complete`, push.
 
 ## Steps
 
-1. guess -- guess the number; the terminal page pattern.
-2. robot-chase -- robots as an N x 2 matrix moving at once; board page.
-3. trek-adventure -- tables and a state machine; terminal page.
-4. terminal-shell -- the text pages' shared parts moved to shared/.
-5. trek -- Star Trek: galaxy and sectors as arrays.
-6. gallery-1-release -- catalog, docs, screenshots, retrospective.
+1. vendor-refresh -- `just vendor`, goldens re-run, asks updated.
+2. tic-tac-toe -- 3 by 3 board, lines table, random and minimax.
+3. shut-the-box -- masks, subset sums.
+4. x-pictures -- boards as pictures X_eTaL draws; asks if needed.
+5. minesweeper -- counts by rotation, flood fill.
+6. 2048 -- compress, merge, pad, transpose.
+7. lights-out -- XOR stencil, GF(2) solve.
+8. terminal-pane -- X_eTaL's terminal pane replaces the replay.
+9. gallery-2-release -- catalog, docs, retrospective.

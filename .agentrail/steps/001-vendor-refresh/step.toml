@@ -1,0 +1,9 @@
+number = 1
+slug = "vendor-refresh"
+status = "in-progress"
+description = "grids step 1: just vendor (HEAD of ../X_eTaL) in its own commit; rebuild; re-..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T07:16:23"
+task_type = "vendor"
+commits = []

@@ -1,0 +1,1 @@
+grids step 3: games/shut-the-box. Tiles 1-9 open as a mask; roll two dice (one when the open tiles sum to 6 or less); the legal moves are the subsets of the open tiles summing to the roll: all 512 subsets at once by e_ncode, their sums by one inner product, kept by a mask; game over when none; score the open tiles. play.xtl, scripted game, shared page, tests.

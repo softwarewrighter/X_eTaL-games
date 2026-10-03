@@ -1,0 +1,1 @@
+grids step 6: games/2048. A 4 by 4 board; a move left is, for every row at once, compress (drop zeros), merge equal neighbours, pad; the other moves by reversing and transposing (transpose from the refreshed vendor); a new 2 or 4 on a random empty cell; score; game over when no move changes the board. play.xtl (w a s d), scripted game, shared page, tests.

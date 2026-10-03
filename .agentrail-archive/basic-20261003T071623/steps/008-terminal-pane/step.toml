@@ -1,0 +1,9 @@
+number = 8
+slug = "terminal-pane"
+status = "blocked"
+description = "basic step 2 (inserted at the user's request): the pages run the REAL vendore..."
+role = "production"
+context_files = []
+created_at = "2026-10-02T14:55:59"
+task_type = "build"
+commits = []

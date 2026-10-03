@@ -1,0 +1,9 @@
+number = 6
+slug = "2048"
+status = "pending"
+description = "grids step 6: games/2048. A 4 by 4 board; a move left is, for every row at on..."
+role = "production"
+context_files = []
+created_at = "2026-10-03T07:16:23"
+task_type = "game"
+commits = []
