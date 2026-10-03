@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 12:44 `docs` docs/style.md, the house style for the games' X_eTaL (arrays first, trains, shared libraries, type comments, right-to-left traps, what waits on X_eTaL); `just size` measures each game (lines and tokens); the sizes before the idioms saga are in the plan.
+
 - 12:40 `chore` Saga grids archived; saga idioms started (13 steps).
 
 - 12:02 `chore` Saga step gallery-2-release completed.
