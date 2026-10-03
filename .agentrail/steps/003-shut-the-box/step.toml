@@ -1,6 +1,6 @@
 number = 3
 slug = "shut-the-box"
-status = "pending"
+status = "in-progress"
 description = "grids step 3: games/shut-the-box. Tiles 1-9 open as a mask; roll two dice (on..."
 role = "production"
 context_files = []

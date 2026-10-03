@@ -1,0 +1,11 @@
+l:n_ew : Num b => a -> b
+l:s_core : Int -> Int
+l:s_ubsets : Unit -> Int
+l:s_ums : Unit -> Int
+l:r_oll : Int -> Int
+l:m_oves : Int -> Int -> Int
+l:s_hut : (Num a, Truthy a, Truthy b) => a -> b -> a
+l:s_tatus : Num a => Int -> Int -> a
+l:v_iew : Int -> Char
+l:t_iles : Truthy a => a -> Char
+l:h_igh : Int -> Int -> Int
