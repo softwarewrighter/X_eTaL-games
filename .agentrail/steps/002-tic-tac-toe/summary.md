@@ -1,0 +1,1 @@
+tic-tac-toe live: lines index table + one reduce, quick array player, minimax (mid-game), play.xtl, shared page; tests pass
