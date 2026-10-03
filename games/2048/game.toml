@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "2048"
+title = "2048"
+summary = "Slide the tiles of a 4 by 4 board; equal tiles merge; make 2048. A move left slides and merges every row at once: compress by running counts and a table, merge by each tile's place in its run, found by a max-scan; the other moves turn the board with reverse and transpose."
+lesson = "compress, merge, pad: composition; turning the board"
+concepts = ["s_\\ scans", "t_able", "masks", "o_\\ transpose", "r_ev_2", "m_atch", "libraries"]
+status = "live"
+order = 90
+sources = []
+needs = ["[]G_RID numbers"]

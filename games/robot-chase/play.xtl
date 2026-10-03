@@ -50,9 +50,9 @@ u:s_can := { s ->
 }
 # The end: (unless you resigned) the board once more, then the verdict.
 u:e_nd := { s ->
-  r:e_vent s = 9 ? "GAME OVER"
+  9 = r:e_vent s ? "GAME OVER"
   shown := p_rint! u:s_how s
   said := p_rint! ""
-  r:s_tatus s = 1 ? "*** YOU WIN IN " c_at (f_ormat r:t_urn s) c_at " TURNS! ***"; "*** YOU WERE CAUGHT. ***"
+  1 = r:s_tatus s ? "*** YOU WIN IN " c_at (f_ormat r:t_urn s) c_at " TURNS! ***"; "*** YOU WERE CAUGHT. ***"
 }
 u:t_urn r:n_ew 0

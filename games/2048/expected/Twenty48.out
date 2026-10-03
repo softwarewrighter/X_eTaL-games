@@ -1,0 +1,15 @@
+l:s_core : a -> a
+l:b_oard : a -> a
+l:c_ompress : (Num a, Truthy a) => a -> a
+l:p_lace : Num a => a -> Int
+l:d_oubles : (Num a, Truthy b) => a -> b
+l:m_erge : (Num a, Truthy a) => a -> a
+l:l_eft : (Num a, Truthy a) => a -> a
+l:t_urn : Num b => a -> b -> a
+l:b_ack : Num b => a -> b -> a
+l:s_lide : (Num a, Truthy a, Num b) => a -> b -> a
+l:g_ain : (Num a, Truthy a, Num b) => a -> b -> a
+l:s_pawn : (Num a, Truthy a) => a -> a
+l:n_ew : (Num b, Truthy b) => a -> b
+l:m_ove : (Num a, Truthy a, Num b) => a -> b -> a
+l:s_tatus : (Num a, Truthy a, Num b) => a -> b
