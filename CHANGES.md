@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 07:11 `chore` Saga step gallery-1-release completed.
+
 - 07:07 `release` Gallery 1: the horse race and the four COR24 BASIC games live; the catalog's intro and summaries describe the accurate pages; every card has its screenshot; saga 2's retrospective; saga 3's plan revised for boards drawn by X_eTaL.
 
 - 06:24 `chore` Saga step trek completed.

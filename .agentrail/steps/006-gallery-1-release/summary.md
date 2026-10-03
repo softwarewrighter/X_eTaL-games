@@ -1,0 +1,1 @@
+Gallery 1: five games live; catalog intro/summaries match accurate pages; screenshots on all cards; plan retrospective for saga 2; saga 3 revised for A11
