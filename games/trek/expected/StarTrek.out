@@ -1,0 +1,50 @@
+l:e_nergy : a -> a
+l:t_orps : a -> a
+l:s_hields : a -> a
+l:d_ate : a -> a
+l:q_uad : a -> a
+l:s_ector : a -> a
+l:s_tatus : a -> a
+l:g_alaxy : a -> Int -> a
+l:g_rid : a -> a
+l:k_lingons : Num a => a -> a
+l:h_ere : (Num a, Num b, Truthy b) => a -> b
+l:u_pdate : Int -> Int -> Int
+l:p_ut : Int -> Int -> Int
+l:w_ithGrid : Int -> Int -> Int
+l:w_ithPlane : Int -> Int -> Int
+l:h_ome : Num a => a -> a
+l:a_t : Int -> Char
+l:c_ourses : Num a => Unit -> a
+l:n_ew : a -> Int
+l:e_nter : Int -> Int
+l:s_rs : Int -> Int
+l:l_rs : Int -> Int
+l:s_ay : a -> b -> a
+l:i_nsufficient : a -> a
+l:c_ell : Num a => a -> a
+l:m_oveTo : Int -> Int -> Int
+l:p_ath : Int -> Int -> Int
+l:i_nside : (Num a, Truthy b) => a -> b
+l:c_ells : Num a => a -> a
+l:t_rack : Num a => Int -> a
+l:f_ire : Int -> Int
+l:w_arp : Int -> Int -> Int
+l:c_lamped : (Num a, Truthy a, Num b) => a -> b
+l:i_mpulse : Int -> Int -> Int
+l:c_ross : Int -> Int -> Int
+l:h_alt : Int -> Int -> Int
+l:p_hasers : Int -> Int -> Int
+l:h_its : Num a => Int -> a
+l:p_hp : Int -> Char
+l:t_orpedo : Int -> Int -> Int
+l:s_trike : Int -> Int -> Int
+l:s_hieldsTo : Int -> Int -> Int
+l:r_eport : Int -> Int
+l:h_elp : a -> a
+l:l_ines : Num a => Box Char -> a
+l:c_ommand : Int -> Int -> Int
+l:d_o : Int -> Int -> Int
+l:j_udge : Int -> Int
+l:e_nd : Int -> Char
+l:m_ission : Int -> Char

@@ -1,0 +1,145 @@
+0 0 0 0 0 0 1 0
+0 2 0 0 0 0 0 0
+1 3 0 0 0 0 0 3
+0 0 2 0 0 0 0 0
+0 0 1 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 3 0 0 0 0 0 2
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0
+0 1 0 0 0 1 0 0
+0 0 0 0 0 0 0 0
+0 0 0 1 0 0 0 0
+1 0 0 0 0 0 0 0
+1 0 0 0 0 1 0 0
+0 1 0 0 1 1 1 0
+1 1 3 1 2 4 2 3
+2 2 5 3 1 4 1 5
+5 3 4 4 2 1 1 3
+4 5 4 5 3 4 3 2
+4 5 2 1 4 3 2 3
+2 4 5 5 5 1 2 4
+1 2 1 3 5 2 4 4
+4 5 5 5 5 4 2 4
+18
+
+QUADRANT D-2 SECTOR G-3
+   1 2 3 4 5 6 7 8
+A . * . . . . . . 
+B . . . . . * . . 
+C . . . . . . . . 
+D . . . . . . . . 
+E . . . . . . . . 
+F . . * * . . . * 
+G . . E . . . . . 
+H . . . . . . . . 
+STARDATE 2300 ENERGY 3000 SHIELDS 0 TORP 10
+QUADRANT D-2 KLINGONS LEFT 18
+
+LONG RANGE SCAN AT QUADRANT D-2
+LEGEND: K B S   K=KLINGONS B=BASES S=STARS   ***=VOID
+ *** 002 202 005 003
+ *** 105 313 004 004
+ *** 004 005 204 005
+ *** 004 005 102 011
+ *** 012 004 005 005
+-1 -1 0 1 1  1  0 -1
+ 0  1 1 1 0 -1 -1 -1
+6 6 6 6 6
+3 4 5 6 7
+1 1 1 1 1
+0 0 0 0 0
+
+*** RED ALERT *** RED ALERT *** RED ALERT ***
+*** 2 KLINGON(S) IN QUADRANT D-3 ***
+*** RED ALERT *** RED ALERT *** RED ALERT ***
+
+QUADRANT D-3 SECTOR A-2
+   1 2 3 4 5 6 7 8
+A . E . . . * . . 
+B . * . K . . . . 
+C . . . . . . . . 
+D . . . . . . . . 
+E . . . . . . . . 
+F . . . * . . . * 
+G . . . . . . . K 
+H . . . . . . . . 
+STARDATE 2301 ENERGY 2992 SHIELDS 0 TORP 10
+QUADRANT D-3 KLINGONS LEFT 18
+TORPEDO TRACK:
+  B-1
+TORPEDO MISSED - LEFT QUADRANT
+HIT - SHIELDS 0 ENERGY 2934
+KLINGON AT B-4 HIT - HP LEFT 0
+KLINGON AT G-8 HIT - HP LEFT 0
+HIT - SHIELDS 0 ENERGY 2869
+
+STARDATE 2301 / 2330
+ENERGY   2869
+SHIELDS  0
+TORP     9
+KLINGONS 18
+QUADRANT D-3
+SECTOR   A-2
+0
+OUT OF GALAXY - CLAMPED
+
+QUADRANT H-3 SECTOR B-2
+   1 2 3 4 5 6 7 8
+A . * . . . . . . 
+B . E . . . . . . 
+C . . . . . * . . 
+D . . . . . * . . 
+E . . . . . . . . 
+F . * . . . . . . 
+G . . . . . . . . 
+H . . . . * . . . 
+STARDATE 2309 ENERGY 2805 SHIELDS 0 TORP 9
+QUADRANT H-3 KLINGONS LEFT 18
+OUT OF GALAXY - CLAMPED
+
+QUADRANT H-3 SECTOR C-6
+   1 2 3 4 5 6 7 8
+A . . * * . . . * 
+B . . . . . . . . 
+C . . . . . E . . 
+D . . . . . . . . 
+E . . . . . . . . 
+F . . . . . . . . 
+G . . . * . . . * 
+H . . . . . . . . 
+STARDATE 2317 ENERGY 2741 SHIELDS 0 TORP 9
+QUADRANT H-3 KLINGONS LEFT 18
+OUT OF GALAXY - CLAMPED
+
+QUADRANT H-3 SECTOR A-1
+   1 2 3 4 5 6 7 8
+A E . . * . . . . 
+B * . . . . . . . 
+C . . . . . . * . 
+D . . . . . * . . 
+E . . * . . . . . 
+F . . . . . . . . 
+G . . . . . . . . 
+H . . . . . . . . 
+STARDATE 2325 ENERGY 2677 SHIELDS 0 TORP 9
+QUADRANT H-3 KLINGONS LEFT 18
+OUT OF GALAXY - CLAMPED
+
+QUADRANT H-3 SECTOR B-7
+   1 2 3 4 5 6 7 8
+A . . * . . . . . 
+B . . . . . . E . 
+C . . . . . . . . 
+D . . . . . * . . 
+E * . . . . . . . 
+F . . . * . . . . 
+G . * . . . . . . 
+H . . . . . . . . 
+STARDATE 2333 ENERGY 2613 SHIELDS 0 TORP 9
+QUADRANT H-3 KLINGONS LEFT 18
+2
+
+*** STARDATE EXPIRED ***
+KLINGONS REMAINING 18

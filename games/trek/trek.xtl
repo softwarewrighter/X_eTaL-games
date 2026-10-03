@@ -1,0 +1,36 @@
+#!/usr/bin/env xetal
+# Star Trek, scripted (seed 1), with the rules of StarTrek.xtl.
+"t:" u_se< "StarTrek"
+
+# A new game. The galaxy was made all at once: three 8 by 8 planes, the
+# Klingons, the bases and the stars in every quadrant.
+s := t:n_ew 0
+s t:g_alaxy 1
+s t:g_alaxy 2
+s t:g_alaxy 3
+t:k_lingons s
+s := t:s_rs s
+s := t:l_rs s
+
+# A course is a step from the compass table; a path is every step at
+# once: course 3 (east) for 5 sectors from where the Enterprise is.
+t:c_ourses @
+P := s t:p_ath 3 5
+P
+t:i_nside P
+(t:c_ells P) s_elect r_avel t:g_rid s          # what lies on each step
+
+# Warp east into the next quadrant, then fight: phasers hit every
+# Klingon at once, a torpedo flies its whole track at once.
+s := s t:c_ommand 3 3 1
+s := s t:c_ommand 6 6
+s := s t:c_ommand 5 10
+s := s t:c_ommand 8
+t:s_tatus s
+
+# The game ends when the stardate runs out: warp is one stardate a
+# factor.
+u:f_ar := { s -> s t:c_ommand 3 5 8 }
+s := 4 'u:f_ar p_ower s
+t:s_tatus s                                   # 2: out of time
+t:e_nd s

@@ -1,0 +1,365 @@
+# Star Trek's rules, a library: trek.xtl (scripted), play.xtl (at the
+# terminal) and the web page all use these. The classic Star Trek game
+# as the COR24 BASIC demo plays it: an 8 by 8 galaxy of quadrants, each
+# an 8 by 8 grid of sectors; find and destroy every Klingon before the
+# stardate runs out, with warp and impulse drive, phasers, photon
+# torpedoes and shields.
+#
+# The game is one vector: 1 energy, 2 torpedoes, 3 shields, 4 stardate,
+# 5 deadline, 6 and 7 the quadrant (row, column, 0 to 7), 8 and 9 the
+# sector, 10 the status (0 playing, 1 won, 2 out of time, 3 ship lost,
+# 4 resigned); then the galaxy as three planes of 64 (Klingons, bases,
+# stars per quadrant) and the current quadrant's 64 sectors (0 empty,
+# 1 the Enterprise, 2 a star, 3 a base, 4 and more a Klingon: its hit
+# points plus 4).
+
+# -- reading the state -------------------------------------------------
+l:e_nergy := { s -> 1 s_elect s }
+l:t_orps := { s -> 2 s_elect s }
+l:s_hields := { s -> 3 s_elect s }
+l:d_ate := { s -> 4 s_elect s }
+l:q_uad := { s -> 6 7 s_elect s }
+l:s_ector := { s -> 8 9 s_elect s }
+l:s_tatus := { s -> 10 s_elect s }
+# Plane p of the galaxy (1 Klingons, 2 bases, 3 stars), an 8 by 8 matrix.
+l:g_alaxy := { s p -> 8 8 r_eshape 64 t_ake (10 + 64 * p - 1) d_rop s }
+l:g_rid := { s -> 8 8 r_eshape -64 t_ake s }
+# Klingons in the galaxy and in this quadrant.
+l:k_lingons := { s -> '+ r_/ r_avel s l:g_alaxy 1 }
+l:h_ere := { s -> '+ r_/ r_avel 4 <= l:g_rid s }
+
+# -- changing it -------------------------------------------------------
+# Several items changed at once: iv is index, value, index, value, ...
+l:u_pdate := { s iv ->
+  k := (t_ally iv) d_iv 2
+  m := (r_ange t_ally s) '= t_able ((2 * r_ange k) - 1) s_elect iv
+  v := ((t_ally s) c_at k) r_eshape (2 * r_ange k) s_elect iv
+  (s * n_ot '| r_/_2 m) + '+ r_/_2 m * v
+}
+# The items from position p on replaced by v (pv is p then v).
+l:p_ut := { s pv ->
+  p := f_irst pv
+  v := 1 d_rop pv
+  ((p - 1) t_ake s) c_at v c_at ((p - 1) + t_ally v) d_rop s
+}
+l:w_ithGrid := { s g -> s l:p_ut ((t_ally s) - 63) c_at r_avel g }
+l:w_ithPlane := { s pg -> s l:p_ut (11 + 64 * (f_irst pg) - 1) c_at 1 d_rop pg }
+# The quadrant's square in a galaxy plane, 1 to 64.
+l:h_ome := { s -> 1 + (8 * 6 s_elect s) + 7 s_elect s }
+
+# -- where things are, said as the BASIC said it ------------------------
+# A row and column (0 to 7) as "C-5".
+l:a_t := { rc -> ((1 + f_irst rc) s_elect "ABCDEFGH") c_at "-" c_at f_ormat 1 + 2 s_elect rc }
+
+# The eight courses of the compass, 1 north, clockwise: the step in rows
+# and columns for each, as a 2 by 8 table.
+l:c_ourses := { @ -> 2 8 r_eshape -1 -1 0 1 1 1 0 -1 0 1 1 1 0 -1 -1 -1 }
+
+# -- a new game and a new quadrant --------------------------------------
+# Every quadrant at once: Klingons in about 15 of each 100 (1 to 3 of
+# them), a base in 2 of 10, 1 to 5 stars. A galaxy without Klingons is
+# rolled again.
+l:n_ew := { x ->
+  kl := (85 < r_oll! 64 r_eshape 100) * r_oll! 64 r_eshape 3
+  0 = '+ r_/ kl ? l:n_ew x
+  bases := 2 >= r_oll! 64 r_eshape 10
+  stars := r_oll! 64 r_eshape 5
+  q := (r_oll! 8 8) - 1
+  l:e_nter (3000 10 0 2300 2330 c_at q c_at 0 0 0) c_at kl c_at bases c_at stars c_at 64 r_eshape 0
+}
+# Entering a quadrant: the Enterprise, its Klingons (5 hit points
+# each), base and stars on different sectors at random, all placed at
+# once: the codes in a row, put into the sectors of a random order (the
+# order's own order is its inverse).
+l:e_nter := { s ->
+  c := l:h_ome s
+  n := c s_elect r_avel s l:g_alaxy 1
+  b := c s_elect r_avel s l:g_alaxy 2
+  i := c s_elect r_avel s l:g_alaxy 3
+  order := g_rade r_oll! 64 r_eshape 1000000
+  codes := 1 c_at (n r_eshape 9) c_at (b r_eshape 3) c_at (i r_eshape 2) c_at (63 - n + b + i) r_eshape 0
+  e := (f_irst order) - 1
+  t := (s l:u_pdate 8 c_at (e d_iv 8) c_at 9 c_at e m_od 8) l:w_ithGrid (g_rade order) s_elect codes
+  0 = n ? t
+  said := p_rint! ""
+  said := p_rint! "*** RED ALERT *** RED ALERT *** RED ALERT ***"
+  said := p_rint! "*** " c_at (f_ormat n) c_at " KLINGON(S) IN QUADRANT " c_at (l:a_t l:q_uad s) c_at " ***"
+  said := p_rint! "*** RED ALERT *** RED ALERT *** RED ALERT ***"
+  t
+}
+
+# -- scans --------------------------------------------------------------
+# The short-range scan: the sector grid as characters, every sector at
+# once (a Klingon's code, 4 or more, is cut to 4 and read as K).
+l:s_rs := { s ->
+  said := p_rint! ""
+  said := p_rint! "QUADRANT " c_at (l:a_t l:q_uad s) c_at " SECTOR " c_at l:a_t l:s_ector s
+  said := p_rint! "   1 2 3 4 5 6 7 8"
+  code := 1 + 4 m_in l:g_rid s
+  wide := 2 r_eplicate_2 code
+  gap := 8 16 r_eshape 0 1
+  shown := p_rint! (8 2 r_eshape "A B C D E F G H ") c_at_2 ((wide * 1 - gap) + 6 * gap) s_elect ".E*BK "
+  said := p_rint! "STARDATE " c_at (f_ormat l:d_ate s) c_at " ENERGY " c_at (f_ormat l:e_nergy s) c_at " SHIELDS " c_at (f_ormat l:s_hields s) c_at " TORP " c_at f_ormat l:t_orps s
+  said := p_rint! "QUADRANT " c_at (l:a_t l:q_uad s) c_at " KLINGONS LEFT " c_at f_ormat l:k_lingons s
+  s
+}
+# The long-range scan: the 5 by 5 quadrants around this one, each as its
+# Klingons, bases and stars in three digits, "***" off the galaxy. The
+# window's rows and columns are a table; the three planes' values for
+# the 25 quadrants are one selection from a 3 by 64 matrix, and every
+# cell's four characters are picked at once from " *0123456789".
+l:l_rs := { s ->
+  said := p_rint! ""
+  said := p_rint! "LONG RANGE SCAN AT QUADRANT " c_at l:a_t l:q_uad s
+  said := p_rint! "LEGEND: K B S   K=KLINGONS B=BASES S=STARS   ***=VOID"
+  r := (f_irst l:q_uad s) + -2 -1 0 1 2
+  c := (2 s_elect l:q_uad s) + -2 -1 0 1 2
+  in := r_avel ((r >= 0) & r <= 7) '& t_able (c >= 0) & c <= 7
+  cell := r_avel 1 + (8 * 0 m_ax 7 m_in r) '+ t_able 0 m_ax 7 m_in c
+  planes := cell s_elect_2 3 64 r_eshape 192 t_ake 10 d_rop s
+  digits := ((3 + planes) * 3 25 r_eshape in) + 2 * 3 25 r_eshape n_ot in
+  shown := p_rint! (5 20 r_eshape r_avel_2 (25 r_eshape 1) c_at digits) s_elect " *0123456789"
+  s
+}
+
+# -- small helpers ------------------------------------------------------------
+# Say t and give s back.
+l:s_ay := { s t ->
+  said := p_rint! t
+  s
+}
+l:i_nsufficient := { s -> s l:s_ay "INSUFFICIENT ENERGY" }
+# A sector's number, 1 to 64, from its row and column.
+l:c_ell := { rc -> 1 + (8 * f_irst rc) + 2 s_elect rc }
+# The Enterprise moved to sector rc: its old sector emptied, the new one
+# marked, both in one expression over the 64 sectors.
+l:m_oveTo := { s rc ->
+  g := r_avel l:g_rid s
+  all := r_ange 64
+  g := g * all != l:c_ell l:s_ector s
+  g := (g * all != l:c_ell rc) + all = l:c_ell rc
+  (s l:u_pdate 8 c_at (f_irst rc) c_at 9 c_at 2 s_elect rc) l:w_ithGrid g
+}
+# A path from the Enterprise along course c for k steps: a 2 by k matrix
+# of rows and columns, every step at once; and which steps are inside
+# the quadrant, and their sectors (clamped, for looking them up).
+l:p_ath := { s ck ->
+  d := (f_irst ck) s_elect_2 l:c_ourses @
+  k := r_ange 2 s_elect ck
+  ((l:s_ector s) 'l_eft t_able k) + d '* t_able k
+}
+l:i_nside := { P -> '& r_/ (P >= 0) & P <= 7 }
+l:c_ells := { P -> 1 + (8 * 0 m_ax 7 m_in 1 s_elect P) + 0 m_ax 7 m_in 2 s_elect P }
+# Print each sector of a flat list of rows and columns, "  C-5".
+l:t_rack := { v ->
+  0 = t_ally v ? 0
+  said := p_rint! "  " c_at l:a_t 2 t_ake v
+  1 + l:t_rack 2 d_rop v
+}
+
+# -- the Klingons fire back -------------------------------------------------------
+# 30 to 60 units: the shields take them first, the rest comes off the
+# energy.
+l:f_ire := { s ->
+  0 = l:h_ere s ? s
+  u := 29 + r_oll! 31
+  h := l:s_hields s
+  e := (l:e_nergy s) - 0 m_ax u - h
+  h := 0 m_ax h - u
+  said := p_rint! "HIT - SHIELDS " c_at (f_ormat h) c_at " ENERGY " c_at f_ormat e
+  s l:u_pdate 1 c_at e c_at 3 c_at h
+}
+
+# -- moving -------------------------------------------------------------------------
+# Warp: course c, factor p (1 to 8) quadrants; 8 energy and one stardate
+# a factor; clamped at the galaxy's edge; a new quadrant, then a scan.
+l:w_arp := { s cp ->
+  c := f_irst cp
+  p := 2 s_elect cp
+  (c < 1) | (c > 8) | (p < 1) | p > 8 ? s
+  (l:e_nergy s) < 8 * p ? l:i_nsufficient s
+  q := (l:q_uad s) + p * c s_elect_2 l:c_ourses @
+  said := (q < 0) | q > 7
+  told := l:c_lamped '+ r_/ said
+  q := 0 m_ax 7 m_in q
+  l:s_rs l:e_nter s l:u_pdate 1 c_at ((l:e_nergy s) - 8 * p) c_at 4 c_at ((l:d_ate s) + p) c_at 6 c_at (f_irst q) c_at 7 c_at 2 s_elect q
+}
+l:c_lamped := { n ->
+  0 = n ? 0
+  said := p_rint! "OUT OF GALAXY - CLAMPED"
+  1 + l:c_lamped n - 1
+}
+# Impulse: course c, p (1 to 8) sectors, a unit of energy each. The
+# whole path at once; the first step that leaves the quadrant or meets
+# something decides: through to the end, into the next quadrant, or
+# halted just before the obstacle.
+l:i_mpulse := { s cp ->
+  c := f_irst cp
+  p := 2 s_elect cp
+  (c < 1) | (c > 8) | (p < 1) | p > 8 ? s
+  (l:e_nergy s) < p ? l:i_nsufficient s
+  t := s l:u_pdate 1 c_at (l:e_nergy s) - p
+  P := s l:p_ath c c_at p
+  in := l:i_nside P
+  busy := in & 0 != (l:c_ells P) s_elect r_avel l:g_rid s
+  j := f_irst (w_here (n_ot in) | busy) c_at p + 1
+  j > p ? l:s_rs t l:m_oveTo p s_elect_2 P
+  0 = j s_elect in ? l:s_rs t l:c_ross c
+  l:s_rs t l:h_alt j s_elect_2 (l:s_ector s) c_at_2 P
+}
+l:c_ross := { s c ->
+  q := 0 m_ax 7 m_in (l:q_uad s) + c s_elect_2 l:c_ourses @
+  l:e_nter s l:u_pdate 6 c_at (f_irst q) c_at 7 c_at 2 s_elect q
+}
+l:h_alt := { s rc ->
+  said := p_rint! "OBSTRUCTED - HALTED AT SECTOR " c_at l:a_t rc
+  s l:m_oveTo rc
+}
+
+# -- fighting -----------------------------------------------------------------------
+# Phasers: p energy split over the Klingons here; every Klingon is hit
+# at once (its code less the share); those below 4 are destroyed. One
+# line per Klingon, in sector order; then they fire back.
+l:p_hasers := { s p ->
+  n := l:h_ere s
+  0 = n ? s l:s_ay "NO KLINGONS HERE"
+  p <= 0 ? s
+  p > l:e_nergy s ? l:i_nsufficient s
+  g := r_avel l:g_rid s
+  hit := g >= 4
+  v := g - hit * p d_iv n
+  dead := hit & v < 4
+  said := l:h_its r_avel_2 (2 c_at '+ r_/ hit) r_eshape ((w_here hit) c_at hit r_eplicate v)
+  kl := (r_avel s l:g_alaxy 1) - ('+ r_/ dead) * (r_ange 64) = l:h_ome s
+  l:f_ire ((s l:u_pdate 1 c_at (l:e_nergy s) - p) l:w_ithGrid v * n_ot dead) l:w_ithPlane 1 c_at kl
+}
+# The phaser report from pairs of a sector and what is left of its
+# Klingon.
+l:h_its := { v ->
+  0 = t_ally v ? 0
+  k := (f_irst v) - 1
+  rc := (k d_iv 8) c_at k m_od 8
+  hp := (2 s_elect v) - 4
+  said := p_rint! "KLINGON AT " c_at (l:a_t rc) c_at l:p_hp hp
+  1 + l:h_its 2 d_rop v
+}
+l:p_hp := { hp ->
+  hp < 0 ? " DESTROYED"
+  " HIT - HP LEFT " c_at f_ormat hp
+}
+# A photon torpedo along course c: the whole track at once, to the first
+# thing it meets or the quadrant's edge; a Klingon or a base there is
+# destroyed, a star absorbs it. Then the Klingons fire back.
+l:t_orpedo := { s c ->
+  0 >= l:t_orps s ? s l:s_ay "NO TORPEDOES REMAINING"
+  (c < 1) | c > 8 ? s
+  said := p_rint! "TORPEDO TRACK:"
+  t := s l:u_pdate 2 c_at (l:t_orps s) - 1
+  P := s l:p_ath c c_at 7
+  in := l:i_nside P
+  what := in * (l:c_ells P) s_elect r_avel l:g_rid s
+  j := f_irst (w_here (n_ot in) | what != 0) c_at 8
+  hits := j s_elect in c_at 0
+  shown := l:t_rack r_avel_2 ((j - 1) + hits) t_ake_2 P
+  0 = hits ? l:f_ire t l:s_ay "TORPEDO MISSED - LEFT QUADRANT"
+  l:f_ire t l:s_trike (j s_elect what) c_at j s_elect_2 P
+}
+# What a torpedo did on sector rc (the thing's code first).
+l:s_trike := { s wrc ->
+  w := f_irst wrc
+  rc := 1 d_rop wrc
+  at := l:a_t rc
+  k := l:c_ell rc
+  w = 2 ? s l:s_ay "TORPEDO ABSORBED BY STAR AT " c_at at
+  g := (r_avel l:g_rid s) * k != r_ange 64
+  w = 3 ? (s l:w_ithGrid g) l:w_ithPlane 2 c_at (r_avel s l:g_alaxy 2) * (l:h_ome s) != r_ange 64
+  said := p_rint! "*** KLINGON DESTROYED AT " c_at at c_at " ***"
+  (s l:w_ithGrid g) l:w_ithPlane 1 c_at (r_avel s l:g_alaxy 1) - (l:h_ome s) = r_ange 64
+}
+# Shields: p energy into the shields (negative drains them back).
+l:s_hieldsTo := { s p ->
+  0 > (l:e_nergy s) - p ? l:i_nsufficient s
+  s l:u_pdate 1 c_at ((l:e_nergy s) - p) c_at 3 c_at (l:s_hields s) + p
+}
+
+# -- reports ---------------------------------------------------------------------------
+l:r_eport := { s ->
+  said := p_rint! ""
+  said := p_rint! "STARDATE " c_at (f_ormat l:d_ate s) c_at " / " c_at f_ormat 5 s_elect s
+  said := p_rint! "ENERGY   " c_at f_ormat l:e_nergy s
+  said := p_rint! "SHIELDS  " c_at f_ormat l:s_hields s
+  said := p_rint! "TORP     " c_at f_ormat l:t_orps s
+  said := p_rint! "KLINGONS " c_at f_ormat l:k_lingons s
+  said := p_rint! "QUADRANT " c_at l:a_t l:q_uad s
+  said := p_rint! "SECTOR   " c_at l:a_t l:s_ector s
+  s
+}
+l:h_elp := { s ->
+  said := p_rint! ""
+  shown := l:l_ines (
+    "1 SRS  SHORT RANGE SCAN"
+    "2 LRS  LONG RANGE SCAN"
+    "3 WAR  WARP DRIVE"
+    "4 IMP  IMPULSE DRIVE"
+    "5 PHA  PHASERS"
+    "6 TOR  TORPEDOES"
+    "7 SHE  SHIELD CONTROL"
+    "8 STA  STATUS"
+    "9 HEL  THIS HELP"
+    "0 QUI  RESIGN"
+    ""
+    "COURSE COMPASS (FOR WARP/IMPULSE/TORPEDO):"
+    "  8 1 2     1=N  2=NE  3=E  4=SE"
+    "  7 + 3     5=S  6=SW  7=W  8=NW"
+    "  6 5 4"
+    "COORDS: ROWS A-H DOWN, COLS 1-8 ACROSS (E.G. C-5)")
+  s
+}
+# Print each string of a list of strings.
+l:l_ines := { v ->
+  0 = t_ally v ? 0
+  said := p_rint! d_isclose f_irst v
+  1 + l:l_ines 1 d_rop v
+}
+
+# -- the game's course --------------------------------------------------------------------
+# A command and its arguments: 1 SRS, 2 LRS, 3 warp (course, factor),
+# 4 impulse (course, sectors), 5 phasers (energy), 6 torpedo (course),
+# 7 shields (energy), 8 status, 9 help, 0 resign; then the verdict.
+l:c_ommand := { s v ->
+  l:j_udge s l:d_o v
+}
+l:d_o := { s v ->
+  c := f_irst v
+  a := 1 d_rop v
+  c = 1 ? l:s_rs s
+  c = 2 ? l:l_rs s
+  c = 3 ? s l:w_arp a
+  c = 4 ? s l:i_mpulse a
+  c = 5 ? s l:p_hasers f_irst a
+  c = 6 ? s l:t_orpedo f_irst a
+  c = 7 ? s l:s_hieldsTo f_irst a
+  c = 8 ? l:r_eport s
+  c = 9 ? l:h_elp s
+  c = 0 ? s l:u_pdate 10 4
+  s l:s_ay "?WHAT"
+}
+# The status: out of time first, then the ship lost, then the mission
+# complete (as the BASIC checks them); a resignation stands.
+l:j_udge := { s ->
+  4 = l:s_tatus s ? s
+  over := ((l:d_ate s) > 5 s_elect s) c_at (0 >= l:e_nergy s) c_at 0 = l:k_lingons s
+  s l:u_pdate 10 c_at f_irst (over r_eplicate 2 3 1) c_at 0
+}
+l:e_nd := { s ->
+  st := l:s_tatus s
+  said := p_rint! ""
+  st = 1 ? l:m_ission s
+  said := p_rint! d_isclose (st - 1) s_elect "*** STARDATE EXPIRED ***" "*** ENTERPRISE LOST ***" "*** COMMAND RESIGNED ***"
+  "KLINGONS REMAINING " c_at f_ormat l:k_lingons s
+}
+l:m_ission := { s ->
+  said := p_rint! "*** MISSION COMPLETE ***"
+  said := p_rint! "STARDATE " c_at f_ormat l:d_ate s
+  "ENERGY   " c_at f_ormat l:e_nergy s
+}
