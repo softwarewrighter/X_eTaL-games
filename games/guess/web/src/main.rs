@@ -1,4 +1,5 @@
 fn main() {
     console_error_panic_hook::set_once();
-    yew::Renderer::<guess_web::app::App>::new().render();
+    let game = guess_web::game();
+    yew::Renderer::<microscope::page::GamePage>::with_props(game).render();
 }

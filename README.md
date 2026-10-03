@@ -18,8 +18,10 @@ playable. A horse race is one vector of positions advanced by one
 expression; robots chasing you all move at once because the move is a
 single matrix operation; a Minesweeper count is eight rotations of the
 mine board added together; a 2048 move is compress, merge, pad. The
-game's rules live in X_eTaL; the page only turns a click into a move
-and draws the arrays that come back.
+game's rules live in X_eTaL, and a game's page shows only what X_eTaL
+prints or draws: the game running in a terminal, its scripted program
+as a notebook, and the source. Nothing on a page is a user interface
+written in another language.
 
 It is a sibling of
 [X_eTaL-demos](https://github.com/softwarewrighter/X_eTaL-demos) and
@@ -108,12 +110,14 @@ The rules are written once, as a library with a small protocol
 needs to know little about each game: it turns a click into a move, runs the game's X_eTaL
 and draws the arrays that come back.
 
-The web apps share one shell, `shared/microscope/` (copied from
-X_eTaL-demos): running X_eTaL and reading arrays back, the decorated
-source with the current stage highlighted, canvases, clickable cells,
-panels, header and footer. Its
+Every game's page is the same shared page, `shared/microscope/`
+(`page::GamePage`): the game's `play.xtl` in a terminal (what you type
+is its keyboard), its scripted program as a notebook, and the sources,
+all run by the X_eTaL engine compiled to WebAssembly. Its
 [README](shared/microscope/README.md) walks through adding a game's
-web app.
+web app. `just browser-test` plays every built page in headless Chrome
+and checks that the terminal and the notebook show exactly the
+command line's expected output.
 
 ## The live site
 

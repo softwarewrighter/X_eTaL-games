@@ -304,10 +304,13 @@ Read before working:
 
 ## Rules
 
-1. Game rules live in X_eTaL. If a rule can reasonably be expressed in
-   X_eTaL it MUST NOT be implemented in the page (Rust/JS): the page
-   turns input into a move, runs the game's X_eTaL, draws the arrays
-   that come back. Pages may re-check rules only in tests.
+1. Game rules live in X_eTaL, and a page shows ONLY what X_eTaL
+   prints or draws (docs/plan.md A11): the game's `play.xtl`
+   unmodified in a terminal, the scripted `<slug>.xtl` as a notebook,
+   pictures only from `[]S_HOW`, the sources. No board, highlight,
+   chip, verdict or panel computed from game data in Rust: demoing a
+   Rust WASM UI would be misleading. Pages may re-check rules only in
+   tests. No browser dialogs (alert/prompt) for input, ever.
 2. Each game is its own sub-project, `games/<slug>/` (game.toml,
    README.md, `*.xtl`, expected/ goldens with optional `.in` stdin
    scripts, optional test.sh, web/ its own Cargo workspace). A game

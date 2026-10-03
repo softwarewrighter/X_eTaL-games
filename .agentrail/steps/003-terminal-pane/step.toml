@@ -1,5 +1,5 @@
-number = 2
-slug = "xetal-wasm"
+number = 3
+slug = "terminal-pane"
 status = "in-progress"
 description = "basic step 2 (inserted at the user's request): the pages run the REAL vendore..."
 role = "production"

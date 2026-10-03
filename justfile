@@ -84,6 +84,10 @@ serve slug port="8095":
 screenshots *slugs:
     scripts/screenshots.sh "$@"
 
+# Play every game in headless Chrome (from the built pages/) and compare with the goldens
+browser-test *slugs:
+    scripts/browser-test.mjs "$@"
+
 # The full pre-commit gate
 gate:
     scripts/gate.sh

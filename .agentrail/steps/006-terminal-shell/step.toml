@@ -1,4 +1,4 @@
-number = 5
+number = 6
 slug = "terminal-shell"
 status = "pending"
 description = "basic step 4: the parts the text pages share (output pane, command line, hist..."
