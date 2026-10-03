@@ -74,10 +74,12 @@ just test-game guess     # compare with the expected output
 
 ## Sources
 
-A port of `guess.bas` and `guess-random.bas` from the COR24 BASIC live
-demos
+A port of
+[`guess.bas`](https://github.com/sw-embed/web-sw-cor24-basic/blob/36569ac624921861122b199a165212710c2f0a2f/examples/guess.bas) and
+[`guess-random.bas`](https://github.com/sw-embed/web-sw-cor24-basic/blob/36569ac624921861122b199a165212710c2f0a2f/examples/guess-random.bas)
+from the COR24 BASIC live demos
 ([sw-embed/web-sw-cor24-basic](https://github.com/sw-embed/web-sw-cor24-basic),
-MIT), kept in `original/`. The BASIC loops on line numbers:
+MIT; the links are to the versions ported). The BASIC loops on line numbers:
 
 ```
 130 INPUT "YOUR GUESS "; G

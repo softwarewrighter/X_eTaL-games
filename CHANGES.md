@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 19:17 `docs` The BASIC originals are no longer copied into games/*/original/: each README links the .bas file in web-sw-cor24-basic, pinned to the commit ported from.
+
 - 19:02 `chore` Saga step robot-chase completed.
 
 - 18:57 `game` Robot chase, live: the COR24 BASIC game with every robot moving at once (a 2 by 12 matrix plus the sign of the difference), crashes by a table of every robot against every other, the scan by summing a 4 by 4 by 4 by 4 array; terminal game, scripted game with a made-up crash, the shared page; tested natively and in headless Chrome.
