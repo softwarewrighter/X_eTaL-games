@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 07:14 `chore` Saga step terminal-shell completed.
+
 - 07:14 `plan` Step terminal-shell closed: its work (the text games' shared page) was done by accurate-pages; only terminal-pane, waiting on X_eTaL, remains in saga 2.
 
 - 07:11 `chore` Saga step gallery-1-release completed.
