@@ -12,6 +12,10 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-02
 
+- 17:31 `fix` Pages show only what X_eTaL prints or draws: one shared game page (the game's play.xtl in a terminal, its scripted program as a notebook, the sources); the Rust-drawn tracks, highlights, chips and candidate grid are gone. The horse race's own view now marks the winners.
+- 17:31 `test` `just browser-test`: headless Chrome types each game's play.in into its built page and requires the terminal and notebook to match the goldens; in the gate.
+- 17:31 `plan` No WASI build of `xetal` (X_eTaL's decision): the request is updated, the asks entry is filed as X_eTaL's saga 25 (a resumable evaluator and a Rust/Yew terminal pane), and the step waiting on it is terminal-pane.
+
 - 15:23 `docs` A request to X_eTaL for a terminal: a `[]TE` interface, a sw-tos-style browser terminal replacing `window.prompt` for input, and a cargo feature so the `xetal` binary builds for wasm32-wasip1 (docs/xetal-terminal-request.md).
 
 - 15:06 `docs` Ask filed: the `xetal` CLI cannot be built for wasm32-wasip1 (ratatui/crossterm via the editor and line editor); pages keep the engine library until a feature lets the real binary run in the browser.

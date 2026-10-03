@@ -7,6 +7,7 @@
 //! - `canvas`, `colour`: large arrays as pixels
 //! - `cells`: small boards as clickable cells
 //! - `chrome`: header, stage chips, panels, notices, footer
+//! - `page`: a game's page (terminal, notebook, sources: only X_eTaL's output)
 //! - `terminal`: a text game's terminal program replayed from what was typed
 //!
 //! Pages also link `microscope.css` (trunk: `rel="css"`).
@@ -16,5 +17,6 @@ pub mod cells;
 pub mod chrome;
 pub mod colour;
 pub mod run;
+pub mod page;
 pub mod source;
 pub mod terminal;

@@ -120,3 +120,17 @@ canvas.pic.mid { width: min(100%, 260px); }
   .line { font-size: 1rem; }
   .gen { margin-left: 0; width: 100%; }
 }
+/* A game page: the terminal, the notebook (shared/microscope/src/page.rs). */
+.term { margin: 0; padding: 12px 14px; background: #10141a; color: #c9f7c9; border-radius: 8px;
+  font: .95rem/1.5 ui-monospace, "JuliaMono", Menlo, monospace; min-height: 16em; max-height: 34em;
+  overflow: auto; white-space: pre; }
+.term .in { color: #ffd479; }
+.term form { display: flex; gap: 6px; margin: 4px 0 0; }
+.term input { flex: 1; font: inherit; background: transparent; color: #ffd479; border: 0;
+  border-bottom: 1px solid #3a4a3a; outline: none; }
+.term .done { color: #8fb0ff; white-space: normal; }
+.term .err, .nb .err { color: #ff8787; white-space: pre-wrap; }
+.term .pic, .nb .pic { white-space: normal; margin: 6px 0; }
+.nb .cell { margin: 0 0 10px; }
+.nb .out { margin: 4px 0 0; padding: 6px 10px; background: #10141a; color: #c9f7c9; border-radius: 6px;
+  font: .9rem/1.45 ui-monospace, "JuliaMono", Menlo, monospace; white-space: pre; overflow-x: auto; }

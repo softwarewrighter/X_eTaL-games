@@ -8,8 +8,9 @@ number of guesses, or checks every candidate from 1 to 100 against
 every guess at once, or plays all 100 possible games in lockstep.
 
 Live: [the guess-the-number page](https://softwarewrighter.github.io/X_eTaL-games/guess/)
--- a terminal running the same `play.xtl` as the command line, and
-beside it the hundred candidates, the ones still possible in green.
+-- a terminal running the same `play.xtl` as the command line, the
+scripted games (`guess.xtl`) as a notebook, and the sources:
+everything on the page is X_eTaL's own output, run in your browser.
 
 ![The guess-the-number page](screenshot.png)
 
@@ -54,8 +55,8 @@ l:p_ossible := { t gs ->
   answers each candidate would have got. A second table repeats the
   answers the real secret got down all 100 rows; `=` compares the two
   tables cell by cell, and `'& r_/_2` keeps a row only if all of its
-  cells agree. The result is a 0/1 mask of the secrets still possible:
-  the page's green cells.
+  cells agree. The result is a 0/1 mask of the secrets still possible
+  (`guess.xtl` prints them with `w_here`).
 - The scripted `guess.xtl` also plays every game at once: the halving
   player's state is a 3 by 100 matrix (each secret's low and high ends
   and its count of wrong guesses), narrowed seven times by

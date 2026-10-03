@@ -39,3 +39,22 @@ fn the_same_seed_replays_the_same_game() {
     assert_ne!(a, session(&[], src, &typed(&["go"]), 10));
 }
 
+
+#[test]
+fn a_notebook_gives_each_statement_then_its_output() {
+    let src = "# two numbers\nx := 1 2\nx + 1\n# and a sum\n'+ r_/ x\n";
+    let nb = microscope::terminal::notebook(&[], src, 1);
+    assert!(nb.error.is_none());
+    let outs: Vec<Vec<Line>> = nb.cells.iter().map(|c| c.output.clone()).collect();
+    assert_eq!(nb.cells.len(), 3, "{:?}", nb.cells);
+    assert!(nb.cells[1].source.contains("x + 1"));
+    assert_eq!(outs[1], vec![Line::Out("2 3".into())]);
+    assert!(nb.cells[2].source.starts_with("# and a sum"));
+    assert_eq!(outs[2], vec![Line::Out("3".into())]);
+}
+
+#[test]
+fn pictures_come_from_the_program() {
+    let t = session(&[], "x := []S_HOW []G_RID 1 0\n", &[], 1);
+    assert!(matches!(t.lines.first(), Some(Line::Picture(svg)) if svg.starts_with("<svg")));
+}

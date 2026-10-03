@@ -8,8 +8,9 @@ round is one expression, `p + r_oll! 5 r_eshape 3`, whether there are
 five horses or five thousand: no loop over horses anywhere.
 
 Live: [the horse race page](https://softwarewrighter.github.io/X_eTaL-games/horse-race/)
--- back a horse, start the race, and step through each round's rolls,
-moves and the finish check, highlighted in the rules.
+-- the betting game (`play.xtl`) in a terminal, the scripted race
+(`horse-race.xtl`) as a notebook, and the sources: everything on the
+page is X_eTaL's own output, run in your browser.
 
 ![The horse race page](screenshot.png)
 
@@ -70,8 +71,9 @@ Read each line right to left.
 - `l:v_iew`: `t_able` compares every position with every column
   number (a 5 by 20 table of 0s and 1s, the bars); a second table
   marks the finish column; 1 + bar + 2 * line picks " ", "#" or ":"
-  for every cell at once, and `c_at_2` joins the names, the rail and
-  the bars side by side: a 5 by 28 character matrix.
+  for every cell at once; once the race is over a third table marks
+  the winners' rows; and `c_at_2` joins the names, the rail, the bars
+  and the marks side by side: a 5 by 38 character matrix.
 
 ## Play it
 

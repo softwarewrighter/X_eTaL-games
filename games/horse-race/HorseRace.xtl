@@ -21,10 +21,13 @@ l:s_tatus := { p -> '| r_/ p >= l:finish }
 # The winners: every horse as far along as the leader.
 l:w_inners := { p -> w_here p = 'm_ax r_/ p }
 # The track: each horse's name, a rail, a bar as long as its position,
-# and the finish line where no horse has reached it yet.
+# the finish line where no horse has reached it yet, and, once the race
+# is over, a mark on every winner's row.
 l:v_iew := { p ->
   cols := r_ange l:finish + 5
   bar := (p m_in l:finish + 5) '>= t_able cols
   line := (0 * p) '+ t_able 1 * cols = l:finish
-  (l:n_ames @) c_at_2 (f_irst "|") c_at_2 (1 + bar + 2 * line * 1 - bar) s_elect " #:"
+  won := (l:s_tatus p) * p = 'm_ax r_/ p
+  mark := (1 + won) s_elect 2 10 r_eshape "           <- WINNER"
+  (l:n_ames @) c_at_2 (f_irst "|") c_at_2 ((1 + bar + 2 * line * 1 - bar) s_elect " #:") c_at_2 mark
 }

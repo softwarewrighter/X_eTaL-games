@@ -1,7 +1,10 @@
-//! A text game in the page: its terminal program (`play.xtl`) run with
-//! everything typed so far as its keyboard, so the page is a terminal
-//! that replays the session from the start on every line typed. The
-//! same seed every time makes the replay the same game.
+//! A game in the page, exactly as X_eTaL runs it: its terminal program
+//! (`play.xtl`) run with everything typed so far as its keyboard (the
+//! page is a terminal that replays the session from the start on every
+//! line typed; the same seed makes the replay the same game), and its
+//! scripted program run as a notebook, each statement then its output,
+//! as `just show` lays it out. Pictures are only those the program
+//! shows (`[]S_HOW`, SVG drawn by X_eTaL).
 
 use std::collections::{BTreeMap, VecDeque};
 use std::io::Write;
@@ -9,11 +12,13 @@ use std::sync::{Arc, Mutex};
 
 use xetal_store::Store;
 
-/// A line of the transcript: printed by the program, or typed.
+/// A line of the transcript: printed by the program, typed, or a
+/// picture the program showed (an SVG document drawn by X_eTaL).
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Line {
     Out(String),
     In(String),
+    Picture(String),
 }
 
 /// A session replayed: the transcript, whether the program is waiting
@@ -70,6 +75,14 @@ impl Store for Session {
         }
         Ok(line)
     }
+
+    fn show(&self, svg: &str) -> Result<(), String> {
+        if let Ok(mut s) = self.shared.lock() {
+            s.flush();
+            s.lines.push(Line::Picture(svg.to_string()));
+        }
+        Ok(())
+    }
 }
 
 const NO_INPUT: &str = "no more input";
@@ -89,28 +102,82 @@ impl Write for Out {
     }
 }
 
-/// Run `src` with `libraries` (name, text) where `u_se<` finds them,
-/// `typed` as the keyboard, rolling from `seed`. Sessions take turns
-/// (the store is global), so tests may run them in parallel.
-pub fn session(libraries: &[(&str, &str)], src: &str, typed: &[String], seed: u64) -> Transcript {
-    static TURN: Mutex<()> = Mutex::new(());
-    let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
-    let shared = Arc::new(Mutex::new(Shared::default()));
+/// Runs take turns: the store is global, so tests may run in parallel.
+static TURN: Mutex<()> = Mutex::new(());
+
+/// Install a store holding `libraries` and `typed`, writing into `shared`.
+fn install(libraries: &[(&str, &str)], typed: &[String], shared: &Arc<Mutex<Shared>>) {
     let store = Session {
         files: libraries.iter().map(|(n, t)| (format!("{n}.xtl"), t.to_string())).collect(),
         typed: Mutex::new(typed.iter().cloned().collect()),
         shared: shared.clone(),
     };
     xetal_store::install(Arc::new(store));
-    let run = xetal_play::run_to(src, seed, &mut Out(shared.clone()));
+}
+
+/// What was printed since the last take, as lines (an unfinished last
+/// line ended).
+fn take(shared: &Arc<Mutex<Shared>>) -> Vec<Line> {
     let mut s = shared.lock().unwrap_or_else(|e| e.into_inner());
-    s.pending.push(b'\n');
     s.flush();
-    let mut lines = std::mem::take(&mut s.lines);
-    if lines.last() == Some(&Line::Out(String::new())) {
-        lines.pop();
+    if !s.pending.is_empty() {
+        s.pending.push(b'\n');
+        s.flush();
     }
+    std::mem::take(&mut s.lines)
+}
+
+/// Run `src` with `libraries` (name, text) where `u_se<` finds them,
+/// `typed` as the keyboard, rolling from `seed`.
+pub fn session(libraries: &[(&str, &str)], src: &str, typed: &[String], seed: u64) -> Transcript {
+    let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
+    let shared = Arc::new(Mutex::new(Shared::default()));
+    install(libraries, typed, &shared);
+    let run = xetal_play::run_to(src, seed, &mut Out(shared.clone()));
+    let lines = take(&shared);
     let err = run.err.trim().to_string();
     let waiting = err.contains(NO_INPUT) && err.contains("[]R_EAD");
     Transcript { lines, waiting, error: (!err.is_empty() && !waiting).then_some(err) }
+}
+
+/// One statement of a notebook (with the comments above it) and what it
+/// printed.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Cell {
+    pub source: String,
+    pub output: Vec<Line>,
+}
+
+/// A program run as a notebook: its cells, and the X_eTaL error if it
+/// stopped on one.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Notebook {
+    pub cells: Vec<Cell>,
+    pub error: Option<String>,
+}
+
+/// Run `src` as a notebook (as `just show` does) with `libraries`,
+/// rolling from `seed`, nothing typed.
+pub fn notebook(libraries: &[(&str, &str)], src: &str, seed: u64) -> Notebook {
+    let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
+    let shared = Arc::new(Mutex::new(Shared::default()));
+    install(libraries, &[], &shared);
+    let cells: Arc<Mutex<Vec<Cell>>> = Arc::new(Mutex::new(Vec::new()));
+    let (c, sh) = (cells.clone(), shared.clone());
+    let mut start = move |source: &str| {
+        let printed = take(&sh);
+        let mut cells = c.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some(last) = cells.last_mut() {
+            last.output.extend(printed);
+        }
+        cells.push(Cell { source: source.to_string(), output: vec![] });
+    };
+    let run = xetal_play::notebook_to(src, seed, None, &mut start, &mut Out(shared.clone()));
+    let printed = take(&shared);
+    let mut cells = std::mem::take(&mut *cells.lock().unwrap_or_else(|e| e.into_inner()));
+    if let Some(last) = cells.last_mut() {
+        last.output.extend(printed);
+    }
+    let err = run.err.trim().to_string();
+    Notebook { cells, error: (!err.is_empty()).then_some(err) }
 }

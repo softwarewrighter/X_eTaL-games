@@ -2,7 +2,19 @@
 
 From: X_eTaL-games (and X_eTaL-demos), consumers of X_eTaL.
 To: the `../X_eTaL` repository's agent.
-Date: 2026-10-02. Status: open (tracked in `docs/xetal-asks.md`).
+Date: 2026-10-02. Status: filed; being built as X_eTaL's saga 25.
+
+**Update, 2026-10-02 (from X_eTaL):** the WASI parts of this request
+are withdrawn. There will be no `wasm32-wasip1` build of `xetal`, and
+no worker, `Atomics.wait` or service worker. X_eTaL is building the
+terminal on the web-sw-tos model instead: a cell grid in plain Rust
+drawn by Yew, keys taken from the window and translated by a pure
+function, and the program stepped by the page and never blocking,
+which makes the evaluator resumable (a run returns "waiting for a
+line" at `[]R_EAD` and continues on Enter). The named screen-control
+system functions stay. X_eTaL-games keeps `xetal-play` in Yew and will
+swap its replay transcript for the shared terminal pane when it lands.
+The sections below are the original request.
 
 ## Summary
 
