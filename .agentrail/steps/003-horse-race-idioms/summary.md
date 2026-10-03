@@ -1,0 +1,1 @@
+horse race: trains for leaders/winners, simpler track, Play, type comments; check-types.py in gate; outputs unchanged

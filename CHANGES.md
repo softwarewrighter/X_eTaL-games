@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 13:58 `chore` Saga step horse-race-idioms completed.
+
 - 13:56 `refactor` Horse race in idiomatic X_eTaL: the leaders and winners as trains, a simpler track table, Play for input, type comments on every export; outputs unchanged.
 - 13:56 `test` scripts/check-types.py (in the gate): a library's type comments must cover every export and equal the inferred types.
 
