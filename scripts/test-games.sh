@@ -6,7 +6,8 @@
 #     pictures to work/draw/<slug>/, standard input from
 #     expected/<name>.in when there is one, else empty) and its stdout
 #     must equal expected/<name>.out and its stderr expected/<name>.err
-#     (empty when there is no .err file);
+#     (empty when there is no .err file; "drawn PATH" lines from []S_HOW
+#     are left out);
 #   - web/ (a Cargo workspace), when present: cargo test, and cargo
 #     check for wasm32 (the browser build);
 #   - test.sh, when present and executable: run it.
@@ -49,7 +50,10 @@ for slug in ${slugs[@]+"${slugs[@]}"}; do
     input=/dev/null; [ -f "$exp.in" ] && input="$exp.in"
     mkdir -p "$root/work/draw/$slug"
     (cd "$d" && "$xetal" run --seed 1 --draw "$root/work/draw/$slug" "$prog" \
-      <"$input" >"$tmp/out" 2>"$tmp/err") || true
+      <"$input" >"$tmp/out" 2>"$tmp/err.raw") || true
+    # A picture shown ([]S_HOW) is reported as "drawn PATH" on stderr; the
+    # path is this machine's, so those lines are not part of the golden.
+    grep -v '^drawn .*\.svg$' "$tmp/err.raw" > "$tmp/err" || true
     if [ "${XETAL_BLESS:-}" = 1 ]; then
       mkdir -p "$d/expected"; cp "$tmp/out" "$exp.out"
       if [ -s "$tmp/err" ]; then cp "$tmp/err" "$exp.err"; else rm -f "$exp.err"; fi

@@ -47,7 +47,9 @@ same seed; `?seed=N` in the address replays game N), the notebook
 (`SLUG.xtl` on seed 1, as `just show`), and the program and library
 sources, decorated by X_eTaL's renderer. Its only controls are New
 game and Restart. Pictures appear only when the program shows them
-(`[]S_HOW`). The other modules (`canvas`, `cells`, `colour`, stage
+(`[]S_HOW`, typically `[]S_HOW []G_RID board`): the command line writes
+them to `work/draw/<slug>/` (the tests ignore its "drawn PATH" lines),
+the page shows them in the terminal or the notebook, scaled up to read. The other modules (`canvas`, `cells`, `colour`, stage
 chips and panels in `chrome`) came from X_eTaL-demos; a game page must
 not use them to draw what the game computes.
 

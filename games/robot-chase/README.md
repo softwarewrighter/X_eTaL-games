@@ -82,6 +82,10 @@ Read each line right to left.
 - A new game: 13 different random squares are the first 13 of the
   order (`g_rade`) of 256 random keys.
 
+The board is also a picture X_eTaL draws (`l:p_icture`, `[]G_RID` of
+the 16 by 16 character board), shown with `[]S_HOW` each turn: in the
+page's terminal, or as files in `work/draw/robot-chase/`.
+
 ## Play it
 
 ```bash

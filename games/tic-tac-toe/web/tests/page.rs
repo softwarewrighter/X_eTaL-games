@@ -39,3 +39,13 @@ fn a_new_game_waits_for_its_first_line() {
     let t = session(&[(g.library_name, g.library)], g.play, &[], 7);
     assert!(t.waiting && t.error.is_none());
 }
+
+#[test]
+fn the_board_is_also_a_picture_x_etal_draws() {
+    let g = game();
+    let typed: Vec<String> = include_str!("../../expected/play.in").lines().map(str::to_string).collect();
+    let t = session(&[(g.library_name, g.library)], g.play, &typed, 1);
+    let pictures: Vec<&String> = t.lines.iter().filter_map(|l| match l { Line::Picture(svg) => Some(svg), _ => None }).collect();
+    assert!(!pictures.is_empty(), "play.xtl shows the board with []S_HOW");
+    assert!(pictures.iter().all(|svg| svg.starts_with("<svg") && svg.contains("<text")), "a grid of characters");
+}

@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 09:04 `feat` Boards as pictures X_eTaL draws: tic-tac-toe and robot chase show `[]S_HOW []G_RID` of their boards each turn (the page scales them up; the runner ignores the CLI's "drawn PATH" lines); tests check they appear; ask filed for numbers in `[]G_RID` cells and a colour scale.
+
 - 08:55 `chore` Saga step shut-the-box completed.
 
 - 08:51 `game` Shut the box, live: every subset of the tiles at once (a 9 by 512 bit matrix, all sums by one inner product, the moves by one mask); the terminal game lists the moves; the shared page.

@@ -79,7 +79,8 @@ const PLAY = (lines) => `(async () => {
   const out = [...document.querySelector(".term").children].filter((d) => d.tagName === "DIV" && !d.classList.length).map((d) => d.textContent + "\\n").join("");
   const err = document.querySelector(".term .err")?.textContent || "";
   const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
-  return { out, err, nb };
+  const pics = document.querySelectorAll(".term .pic svg").length;
+  return { out, err, nb, pics };
 })()`;
 
 let failed = 0;
@@ -96,7 +97,8 @@ try {
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
       else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): the terminal differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
-      else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens)`);
+      else if (readFileSync(join(dir, "play.xtl"), "utf8").includes("[]S_HOW") && !got.pics) { console.log(`FAIL: ${slug} (browser): play.xtl shows pictures but none appeared`); failed++; }
+      else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""})`);
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }
     page.close();
   }

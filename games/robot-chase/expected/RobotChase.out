@@ -18,4 +18,5 @@ l:m_ove : Int -> Int -> Int
 l:t_eleport : Int -> Int
 l:m_essage : Int -> Char
 l:v_iew : Int -> Char
+l:p_icture : Int -> Char
 l:l_rs : Int -> Int

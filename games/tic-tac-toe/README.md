@@ -65,6 +65,11 @@ l:v_alue := { b ->
   natively), so the terminal game uses the quick player and the
   scripted game shows minimax on a position with five empty squares.
 
+The board is also shown as a picture X_eTaL draws: `l:p_icture` is
+`[]G_RID` of the 3 by 3 character board, and `play.xtl` shows it with
+`[]S_HOW` each turn (the page draws it in the terminal; the command
+line writes it to `work/draw/tic-tac-toe/`).
+
 ## Play it
 
 ```bash

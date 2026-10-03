@@ -38,4 +38,5 @@ u:s_elf := { b ->
 }
 end := u:s_elf t:n_ew 0
 t:v_iew end
+pic := []S_HOW t:p_icture end
 t:s_tatus end                  # 3: a draw

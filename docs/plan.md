@@ -189,7 +189,7 @@ saga 25); every golden, page test and browser test passed unchanged.
 | - | --------- | -------- |
 | 1 | tic-tac-toe | DONE: TicTacToe.xtl (board a vector of 9; the lines an 8 by 3 index table, every line's sum by one selection and one reduce; the quick player rates all squares at once through a 9 by 8 square-line table; minimax by recursion with `e_ach`, too slow from an empty board for the browser (17 s natively), so shown mid-game); play.xtl (you are X); the shared page. |
 | 2 | shut-the-box | DONE: ShutTheBox.xtl (all 512 subsets a 9 by 512 bit matrix by `e_ncode`, their sums one inner product, moves the columns that fit and make the roll, rows by `o_\`; a high-tiles player); play.xtl lists the moves and asks for tiles; the scripted game's high-tiles player shuts the box; the shared page. |
-| 3 | x-pictures | boards as pictures X_eTaL draws (`[]S_HOW []G_RID`) in the shared page's terminal and notebook, for the grid games; an ask if X_eTaL's pictures cannot do what a board needs |
+| 3 | x-pictures | DONE: `[]S_HOW []G_RID` boards on the shared page: tic-tac-toe and robot chase show their boards as pictures X_eTaL draws beside the text (`l:p_icture`); the page scales them up (CSS only); the runner leaves out the command line's "drawn PATH" stderr lines; page tests and the browser test check that the pictures appear. Ask filed: numbers in `[]G_RID` cells and a colour scale (2048, counts). |
 | 4 | minesweeper | counts by eight rotations; reveal by flood fill to a fixed point; page |
 | 5 | 2048 | a move as compress, merge, pad, oriented by `r_ev` and transposition; played at the terminal (w a s d) |
 | 6 | lights-out | play by XOR with a plus stencil; Solve over GF(2); page |
