@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 07:50 `vendor` X_eTaL 70e129d vendored (transpose `o_\`, the resumable run of X_eTaL saga 25, kernels for higher-order built-ins); every golden, page test and browser test passes unchanged; pages rebuilt on it.
+
 - 07:16 `chore` Saga basic archived (terminal-pane carried over); saga grids started.
 
 - 07:14 `chore` Saga step terminal-shell completed.

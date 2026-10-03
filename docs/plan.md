@@ -179,7 +179,11 @@ Learned, mostly from the user:
   picked by one mask; several items of a state vector updated at once
   by a table.
 
-## Saga 3 -- grids (P0, boards drawn by X_eTaL)
+## Saga 3 -- grids (P0, boards drawn by X_eTaL)  [ACTIVE]
+
+Opens with a vendor refresh: X_eTaL 70e129d (transpose is `o_\`; a
+run that waits for typed lines and resumes, the first part of X_eTaL
+saga 25); every golden, page test and browser test passed unchanged.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
