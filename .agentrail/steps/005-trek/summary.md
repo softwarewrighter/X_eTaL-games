@@ -1,0 +1,1 @@
+trek live: StarTrek.xtl (galaxy planes at once, placement by random order + inverse, paths by t_able with first obstacle by w_here, phasers masked subtraction, LRS window by s_elect_2 + r_avel_2), play.xtl, scripted game, shared page; native + browser tests
