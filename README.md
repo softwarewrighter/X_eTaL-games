@@ -141,13 +141,13 @@ the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
 
 ## Status
 
-Early. The project process, plan and build scaffolding are in place,
-the bundled X_eTaL builds and is checked by the gate, the game layout
-and its test runner (with scripted terminal input) and the live catalog
-are in place; the horse race and the four COR24 BASIC games (guess
-the number, robot chase, trek adventure, Star Trek) are live, each
-page showing only X_eTaL's own output. Next: the grid games; the browser
-terminal moves to X_eTaL's own terminal pane when it lands. See [`docs/plan.md`](docs/plan.md).
+Nine games are live: the horse race, the four COR24 BASIC games
+(guess the number, robot chase, trek adventure, Star Trek) and four
+grid games (tic-tac-toe, shut the box, minesweeper, 2048), each page
+showing only X_eTaL's own output. Now: rewriting them in idiomatic
+X_eTaL on shared libraries (`lib/`), then the launch work (X_eTaL's
+terminal pane in every page, a performance baseline, a Start Here
+page); new games come after that. See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation
 

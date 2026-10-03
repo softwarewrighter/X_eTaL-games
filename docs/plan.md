@@ -83,7 +83,7 @@ at run time (licence and CORS permitting).
 Order: the APL original first, then the COR24 BASIC games (the user's
 choice), then implementable games, cheapest lesson first; a game whose
 feasibility check (the first thing its step does) finds a blocking
-X_eTaL gap is moved to saga 7 with its asks filed.
+X_eTaL gap is moved to saga 9 with its asks filed.
 
 | Pri | Game (slug) | X_eTaL concepts | Est. X_eTaL LOC | Saga |
 | --- | ----------- | --------------- | --------------- | ---- |
@@ -93,23 +93,48 @@ X_eTaL gap is moved to saga 7 with its asks filed.
 | P0 | shut-the-box | masks, subset sums via `e_ncode` of 0..511, filtering | 60-100 | 3 |
 | P0 | minesweeper | neighbour counts by eight rotations, flood fill by `p_ower` to a fixed point | 70-130 | 3 |
 | P0 | 2048 | compress, merge pairs, pad, rotate/reverse to orient | 60-110 | 3 |
-| P1 | lights-out | XOR by a plus-shaped stencil; solve over GF(2) | 40-80 | 3 |
-| P1 | connect-four | 6 x 7 board, column drop, windows in four directions | 70-130 | 4 |
-| P1 | mastermind | equality masks, colour histograms by `t_able` | 40-80 | 4 |
-| P1 | sudoku | 9 x 9 x 9 candidate tensor, eliminations by broadcasting | 150-300 | 4 |
-| P2 | flood-it | connected region by iterated masks | 70-130 | 4 |
-| P2 | fifteen | permutation, `i_ndexOf`, parity of solvability | 35-70 | 4 |
-| P2 | nim | XOR of heaps by `e_ncode`/`d_ecode` | 25-50 | 4 |
-| P2 | reversi | eight directional rays, bounded runs, bulk flips | 120-220 | 4 |
-| P2 | capitals | lon/lat -> map projection of a capitals table, distractors by distance, score | 40-80 | 4 |
-| P2 | stargazer | RA/Dec projection of a bright-star table, magnitude masks, nearest-star distractors | 50-100 | 4 |
-| P2 | battleship | ship placement masks, probability map | 100-180 | 5 |
+| P1 | lights-out | XOR by a plus-shaped stencil; solve over GF(2) | 40-80 | 8 |
+| P1 | connect-four | 6 x 7 board, column drop, windows in four directions | 70-130 | 8 |
+| P1 | mastermind | equality masks, colour histograms by `t_able` | 40-80 | 8 |
+| P1 | sudoku | 9 x 9 x 9 candidate tensor, eliminations by broadcasting | 150-300 | 8 |
+| P2 | flood-it | connected region by iterated masks | 70-130 | 8 |
+| P2 | fifteen | permutation, `i_ndexOf`, parity of solvability | 35-70 | 8 |
+| P2 | nim | XOR of heaps by `e_ncode`/`d_ecode` | 25-50 | 8 |
+| P2 | reversi | eight directional rays, bounded runs, bulk flips | 120-220 | 8 |
+| P2 | capitals | lon/lat -> map projection of a capitals table, distractors by distance, score | 40-80 | 8 |
+| P2 | stargazer | RA/Dec projection of a bright-star table, magnitude masks, nearest-star distractors | 50-100 | 8 |
+| P2 | battleship | ship placement masks, probability map | 100-180 | 9 |
 | P2 | trek | 8 x 8 galaxy of 8 x 8 sectors, scans, distances, combat | 250-450 | 2 |
 | P3 | trek-adventure | tables, a state machine, inventory vectors | 200-400 | 2 |
 | P3 | guess | RNG, comparison (a smoke test of input) | 10-20 | 2 |
 
 Not planned: real-time games (Pong, Breakout, platformers): their work
 is frame timing and collision geometry, not arrays.
+
+## Priorities (2026-10-03)
+
+Reprioritized after the ecosystem review in `../X_eTaL/docs/research4.txt`:
+stop adding breadth; stabilize, synchronize, explain, and give people
+one obvious path. Nine live games are enough before a wider launch;
+what matters now is showing that different games collapse onto the
+same few array idioms. In order:
+
+1. Saga 4, idioms: every game rewritten in idiomatic X_eTaL on the
+   shared libraries, ending with an "array idiom -> game" table as the
+   games' front door. No new games in it (lights out moves after the
+   launch).
+2. Saga 5, launch: X_eTaL's terminal pane in every game as soon as it
+   lands (the replay workaround gone); the promotion-blocker bugs that
+   touch the games; a downstream performance baseline and regression
+   check (for X_eTaL's `t_able`/`i_nner` fix, saga 30); the Start Here
+   page; a cross-repo status audit and a tagged, known-compatible
+   snapshot.
+3. Saga 6, macros: `.xtlm` macro libraries (Test/Assert, Control) in
+   the games as soon as X_eTaL ships them: "Extensible" is in the name.
+4. Post-launch: saga 7 (enums, tuples, records, signatures, typed
+   errors, extensions, amend, local functions, screen control beyond
+   the terminal pane), saga 8 (new games: opponents, puzzles,
+   quizzes, lights out) and saga 9 (larger games).
 
 ## Saga 1 -- foundation  [DONE]
 
@@ -241,10 +266,9 @@ commit, not an accident).
 | 7 | trek-idioms | `Board`, `State`, `Play`; paths and scans tightened; the long-range scan by `Board` |
 | 8 | tic-tac-toe-idioms | lines and ratings as trains; `Board` |
 | 9 | shut-the-box-idioms | `Play`; the moves as one expression |
-| 10 | lights-out | the new game, in the new style from the start: `Board` neighbourhoods, XOR by a plus stencil, a solver over GF(2) |
-| 11 | minesweeper-idioms | `Board` neighbourhoods (shared with robot chase and lights out); the fill as `p_ower` to a fixed point where it reads better |
-| 12 | 2048-idioms | the move as a train of compress, merge, compress; turning as a table of transforms |
-| 13 | idioms-release | sizes before and after for every game, READMEs explain the idioms used, retrospective, the asks it raised |
+| 10 | minesweeper-idioms | `Board` neighbourhoods (shared with robot chase and lights out); the fill as `p_ower` to a fixed point where it reads better |
+| 11 | 2048-idioms | the move as a train of compress, merge, compress; turning as a table of transforms |
+| 12 | idioms-release | sizes before and after for every game; the "array idiom -> game" table (README and catalog): neighbourhood by rotate and reduce (minesweeper), masks over all subsets (shut the box), compress -> merge -> pad (2048), a coordinate matrix moving at once (robot chase), windows and paths (trek), lines by indexing and minimax (tic-tac-toe), text as a table picked by masks (trek adventure), every candidate against every guess (guess), a vector of racers (horse race); READMEs explain the idioms used; retrospective; the asks it raised |
 
 Sizes before the saga (`just size`, 2026-10-03: lines not blank or
 comment / X_eTaL tokens):
@@ -266,27 +290,42 @@ Asks this saga is expected to raise (filed when hit): functional
 update / amend (`l:u_pdate` was written twice), dyadic `f_ormat`
 (aligned numbers), key/group.
 
-## Saga 5 -- the language's new features, as they land
+## Saga 5 -- launch: stabilize, synchronize, explain
 
-Steps open when the X_eTaL saga they need is vendored (each starts
-with `just vendor` and a feasibility check). The aim is to showcase
-each feature where it makes a game clearer, not to use it everywhere.
+What must be true before a deliberate wider launch (research4's
+promotion gate, as it touches the games).
 
 | # | Step slug | Delivers | Waits on |
 | - | --------- | -------- | -------- |
-| 1 | terminal-pane | the shared page uses X_eTaL's terminal pane (no replay; carried from saga 2 and 3) | X_eTaL saga 25 |
-| 2 | screen-control | boards redrawn in place with cursor positioning and colours (`r c []A_T`, `[]C_LS`, `[]F_G`), single keys for 2048 and robot chase (`[]K_EY` and the `Key` enum), on the command line and in the page | X_eTaL saga 25 step 7 |
-| 3 | macros | macro libraries where they clarify: assertions in the scripted games (an Assert library), control macros if they read better than guards | X_eTaL saga 19 |
-| 4 | enums-tuples-records | game state as records with named fields and functional update instead of packed vectors and index accessors; statuses, events, commands and directions as enums (sum types) with exhaustive matching; tuples for (row, column) and multiple results (a move and its score) | X_eTaL saga 29 |
-| 5 | type-signatures | checked `::` signatures on every library export (the `# ::` comments become code) | X_eTaL's planned signatures |
-| 6 | errors | invalid input as a typed error or a `Result`, not a sentinel -1 | X_eTaL saga 21 |
-| 7 | extensions | a native extension where it helps (a clock-seeded random game in the terminal; others as they appear) | X_eTaL saga 23 |
-| 8 | features-release | catalog and READMEs say which features each game shows; retrospective | |
+| 1 | terminal-pane | every game's page on X_eTaL's terminal pane (a run that waits at `[]R_EAD` and resumes; no replay of the typed history); the page and browser tests kept; the docs no longer describe a workaround | X_eTaL saga 25 |
+| 2 | promotion-blockers | re-check the asks that make the games look like a prototype (the program-with-`l:` misclassification, `--draw`, provenance) on the latest X_eTaL; vendor fixes as they land; remove their workarounds | X_eTaL fixes |
+| 3 | bench | `just bench`: each game's scripted program and a page session timed natively (and in headless Chrome), a committed baseline, and a check that fails on a slowdown above 15 % without an explicit re-baseline; the numbers sent to X_eTaL for saga 30 (`t_able`, `i_nner`) | |
+| 4 | start-here | the catalog's first screen: what you are looking at, why it is an array expression, the X_eTaL that did it; the idiom table; links to the ecosystem's front door (X_eTaL's site) and the sibling repos | |
+| 5 | audit-tag | a cross-repo status audit (asks, vendored commit, sibling links); a version tag of a known-compatible snapshot | the other repos |
 
-## Saga 6 -- algorithms as opponents, puzzles and quizzes
+## Saga 6 -- macros
+
+| # | Step slug | Delivers | Waits on |
+| - | --------- | -------- | -------- |
+| 1 | test-macros | the scripted games' checks written with a Test/Assert macro library (`.xtlm`), so a game's expectations are stated in X_eTaL, not only in goldens | X_eTaL saga 19 |
+| 2 | control-macros | Control macros where they read better than guards (the terminal loops) | X_eTaL saga 19, X_eTaL-libraries |
+
+## Saga 7 -- the language's new features (post-launch)
+
+| # | Step slug | Delivers | Waits on |
+| - | --------- | -------- | -------- |
+| 1 | screen-control | boards redrawn in place, colours, single keys (`[]A_T`, `[]C_LS`, `[]F_G`, `[]K_EY`, the `Key` enum) | X_eTaL saga 25 step 7 |
+| 2 | enums-tuples-records | state as records, statuses/events/moves as enums with matching, tuples for (row, column) and a move with its score | X_eTaL saga 29 |
+| 3 | type-signatures | checked `::` signatures (the `# ::` comments become code) | X_eTaL's planned signatures |
+| 4 | errors | invalid input as a typed error or a `Result` | X_eTaL saga 21 |
+| 5 | extensions | a native extension where it helps | X_eTaL saga 23 |
+| 6 | amend-locals | amend and local functions where they shorten the games | asks filed |
+
+## Saga 8 -- new games: opponents, puzzles and quizzes (post-launch)
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
+| 0 | lights-out | a 5 by 5 0/1 board, presses as XOR with `Board`'s plus, a solver over GF(2); written in the house style (moved from saga 4) |
 | 1 | connect-four | drop by column; wins by windows in four directions; heuristic and minimax players |
 | 2 | mastermind | the code-breaking game; the player that keeps every consistent code (from X_eTaL's classic) |
 | 3 | sudoku | candidates as a 9 x 9 x 9 tensor; singles and hidden singles by broadcasting; a candidate microscope |
@@ -298,7 +337,7 @@ each feature where it makes a game clearer, not to use it everywhere.
 | 9 | stargazer | the stargazer-poc quiz in X_eTaL: a bright-star table (fetched, A9) projected and drawn by X_eTaL; name the star from the choices at the terminal; clicking waits like capitals |
 | 10 | gallery-3-release | catalog, docs, retrospective |
 
-## Saga 7 -- larger games and deferred
+## Saga 9 -- larger games and deferred (post-launch)
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |

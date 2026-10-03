@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 13:59 `plan` Reprioritized after the ecosystem review (X_eTaL docs/research4.txt): no new games before the launch; idioms first (ending with an idiom -> game table), then a launch saga (X_eTaL's terminal pane in every page, promotion-blocker checks, a performance baseline and regression check, Start Here, an audit and a tag), then macros; enums/tuples/records/signatures/errors/extensions and new games after the launch. Lights out moves to the post-launch games.
+
 - 13:58 `chore` Saga step horse-race-idioms completed.
 
 - 13:56 `refactor` Horse race in idiomatic X_eTaL: the leaders and winners as trains, a simpler track table, Play for input, type comments on every export; outputs unchanged.
