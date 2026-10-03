@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 11:50 `plan` Two refactoring sagas after the user's review ("ported" code, a narrow subset of the language): saga 4 rewrites every game in idiomatic X_eTaL with what exists now (metrics and a style guide, shared libraries Play/Board/Text/State, trains, tables over branches), saga 5 adopts X_eTaL's coming features as they land (terminal pane and screen control, macros, enums/tuples/records, signatures, errors, extensions). Asks filed: amend, local functions.
+
 - 10:09 `chore` Saga step 2048 completed.
 
 - 10:07 `game` 2048, live: every row slid and merged at once (running counts, a table, places in runs by a max-scan), the moves by turning the board; the shared page.

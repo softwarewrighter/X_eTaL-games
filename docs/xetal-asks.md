@@ -14,9 +14,40 @@ workaround in use.
 | ------ | ---- | --- | ----- | ---------- |
 | filed | feature | A terminal for interactive programs (the request: [`xetal-terminal-request.md`](xetal-terminal-request.md)); X_eTaL is building it as its saga 25 (at 70e129d: a run waits for typed lines and resumes, D50; the pane not yet): a resumable evaluator and a shared terminal pane in Rust and Yew, on the web-sw-tos model, replacing `window.prompt`. No WASI build of `xetal` (decided upstream) | all interactive games | pages run the engine (`xetal-play`) in Yew and replay the typed history on every line |
 | open | feature | `[]G_RID` of numbers: draw the numbers in the cells, and let a program choose the colour scale (logarithmic, or a few fixed colours) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
+| open | feature | A functional update (amend / "at"): items of an array replaced at given positions, returning a new array | trek adventure, Star Trek (each wrote `l:u_pdate`), minesweeper, robot chase | a table of positions against indices (`l:u_pdate`) |
+| open | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there | tic-tac-toe, Star Trek | top-level (`l:` or private) helpers that take the extra values as arguments |
 | open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (still so at 70e129d) | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
 ## Details
+
+### A functional update (amend)
+
+Games keep their state as arrays and change a few items each turn.
+Without an amend, two games wrote the same helper, an update of
+several items at once by a table of every position against every
+index:
+
+```
+l:u_pdate := { s iv ->
+  k := (t_ally iv) d_iv 2
+  m := (r_ange t_ally s) '= t_able ((2 * r_ange k) - 1) s_elect iv
+  v := ((t_ally s) c_at k) r_eshape (2 * r_ange k) s_elect iv
+  (s * n_ot '| r_/_2 m) + '+ r_/_2 m * v
+}
+```
+
+Ask: APL's amend or an "at" operator (`v 3 7 a_t s`: s with items 3
+and 7 replaced by v), along an axis too. Already on X_eTaL's wish list
+(priority 1, unplanned).
+
+### Local functions
+
+Inside a function, a helper that uses the function's locals cannot be
+defined and applied: `n_ear := { t -> ... }` inside a lambda is not a
+function binding there, and a plain name (`dig := { p -> ... }`) is a
+variable that cannot be applied. Workaround: top-level helpers that
+take the values as arguments (`b l:n_ear t`). Ask: local function
+bindings in a lambda's body, closing over its parameters.
 
 ### Numbers on a `[]G_RID` board
 

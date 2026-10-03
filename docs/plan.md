@@ -83,7 +83,7 @@ at run time (licence and CORS permitting).
 Order: the APL original first, then the COR24 BASIC games (the user's
 choice), then implementable games, cheapest lesson first; a game whose
 feasibility check (the first thing its step does) finds a blocking
-X_eTaL gap is moved to saga 5 with its asks filed.
+X_eTaL gap is moved to saga 7 with its asks filed.
 
 | Pri | Game (slug) | X_eTaL concepts | Est. X_eTaL LOC | Saga |
 | --- | ----------- | --------------- | --------------- | ---- |
@@ -195,7 +195,60 @@ saga 25); every golden, page test and browser test passed unchanged.
 | 6 | lights-out | play by XOR with a plus stencil; Solve over GF(2); page |
 | 7 | gallery-2-release | catalog, README, per-game docs, screenshots, retrospective |
 
-## Saga 4 -- algorithms as opponents, puzzles and quizzes
+## Saga 4 -- idioms: the games rewritten in idiomatic X_eTaL
+
+The user's review (2026-10-03): the games so far are "ported", like C
+written in assembler style or C++ restricted to its C subset. They use
+a narrow, scalar-ish part of X_eTaL: hand-packed state vectors read by
+index accessors, long `c_at` chains, recursion where a table or a
+scan would do, helpers copied from game to game, comments in place of
+types. This saga rewrites every game with the features X_eTaL has
+today (vendored 70e129d); saga 5 adopts the features still to come.
+
+Goals for every game: smaller (lines of X_eTaL, measured before and
+after), array-style solutions first, small named pieces composed
+(trains), shared libraries instead of copied helpers, and the same
+outputs: the goldens, page tests and browser tests guard every
+refactor (an output that changes is a decision, explained in the
+commit, not an accident).
+
+| # | Step slug | Delivers |
+| - | --------- | -------- |
+| 1 | metrics-style | `scripts/size.sh` (`just size`): lines and tokens of X_eTaL per game, recorded in each README and in this plan, before and after; `docs/style.md`: the house style for game code (array first; trains for small point-free pieces, `[f g h]`; libraries for anything two games share; named sub-results over long chains; `# ::` type comments on every export, checked against `xetal type` goldens; status and event codes named as constants; right-to-left traps and how the goldens catch them) |
+| 2 | shared-libraries | X_eTaL libraries this repo shares across games (in `lib/`, found through `XETAL_PATH` by the scripts and through the page's store, so `GamePage` takes several libraries): `Play` (terminal input: a number, a choice, a yes/no, a list of lines printed; every `play.xtl` copied these), `Board` (cell numbers to row and column and back, bordered neighbourhoods by rotation, a matrix of codes to text with spacing and labels, the same to a `[]G_RID` picture), `Text` (printing a strand of lines, a table of text rows picked by key and condition, as trek adventure does), `State` (a functional update of several items, as trek and trek adventure each wrote) |
+| 3 | horse-race-idioms | trains for the small pieces (`[...]` for the winners, the finish test); `Board`/`Text` for the track |
+| 4 | guess-idioms | `Play` for input; trains |
+| 5 | robot-chase-idioms | `Board` for cells, neighbours, view and picture; the state's parts named; fewer index accessors |
+| 6 | trek-adventure-idioms | `Text` for the table of lines (key, condition) and its printer; `State` for updates; the command dispatch as a table, not a chain of guards |
+| 7 | trek-idioms | `Board`, `State`, `Play`; paths and scans tightened; the long-range scan by `Board` |
+| 8 | tic-tac-toe-idioms | lines and ratings as trains; `Board` |
+| 9 | shut-the-box-idioms | `Play`; the moves as one expression |
+| 10 | minesweeper-idioms | `Board` neighbourhoods (shared with robot chase and lights out); the fill as `p_ower` to a fixed point where it reads better |
+| 11 | 2048-idioms | the move as a train of compress, merge, compress; turning as a table of transforms |
+| 12 | idioms-release | sizes before and after for every game, READMEs explain the idioms used, retrospective, the asks it raised |
+
+Asks this saga is expected to raise (filed when hit): functional
+update / amend (`l:u_pdate` was written twice), dyadic `f_ormat`
+(aligned numbers), key/group.
+
+## Saga 5 -- the language's new features, as they land
+
+Steps open when the X_eTaL saga they need is vendored (each starts
+with `just vendor` and a feasibility check). The aim is to showcase
+each feature where it makes a game clearer, not to use it everywhere.
+
+| # | Step slug | Delivers | Waits on |
+| - | --------- | -------- | -------- |
+| 1 | terminal-pane | the shared page uses X_eTaL's terminal pane (no replay; carried from saga 2 and 3) | X_eTaL saga 25 |
+| 2 | screen-control | boards redrawn in place with cursor positioning and colours (`r c []A_T`, `[]C_LS`, `[]F_G`), single keys for 2048 and robot chase (`[]K_EY` and the `Key` enum), on the command line and in the page | X_eTaL saga 25 step 7 |
+| 3 | macros | macro libraries where they clarify: assertions in the scripted games (an Assert library), control macros if they read better than guards | X_eTaL saga 19 |
+| 4 | enums-tuples-records | game state as records with named fields and functional update instead of packed vectors and index accessors; statuses, events, commands and directions as enums (sum types) with exhaustive matching; tuples for (row, column) and multiple results (a move and its score) | X_eTaL saga 29 |
+| 5 | type-signatures | checked `::` signatures on every library export (the `# ::` comments become code) | X_eTaL's planned signatures |
+| 6 | errors | invalid input as a typed error or a `Result`, not a sentinel -1 | X_eTaL saga 21 |
+| 7 | extensions | a native extension where it helps (a clock-seeded random game in the terminal; others as they appear) | X_eTaL saga 23 |
+| 8 | features-release | catalog and READMEs say which features each game shows; retrospective | |
+
+## Saga 6 -- algorithms as opponents, puzzles and quizzes
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
@@ -210,7 +263,7 @@ saga 25); every golden, page test and browser test passed unchanged.
 | 9 | stargazer | the stargazer-poc quiz in X_eTaL: a bright-star table (fetched, A9) projected and drawn by X_eTaL; name the star from the choices at the terminal; clicking waits like capitals |
 | 10 | gallery-3-release | catalog, docs, retrospective |
 
-## Saga 5 -- larger games and deferred
+## Saga 7 -- larger games and deferred
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
