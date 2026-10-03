@@ -28,8 +28,8 @@ u:t_urn := { n ->
 }
 ```
 
-(`u:a_sk` reads a line with `[]R_EAD` and asks again until it holds a
-number.)
+(`u:a_sk` reads a number with the shared `Play` library's
+`p:n_umber` and asks again until there is one.)
 
 ## The rules: a library
 
@@ -37,7 +37,7 @@ number.)
 
 ```
 l:n_ew := { n -> r_oll! n }
-l:m_ove := { t g -> (g > t) - g < t }
+l:m_ove := { t g -> t [< - >] g }
 l:p_ossible := { t gs ->
   m := (r_ange l:top) 'l:m_ove t_able gs
   '& r_/_2 m = (s_hape m) r_eshape l:top 'r_ight t_able t l:m_ove gs
@@ -46,10 +46,10 @@ l:p_ossible := { t gs ->
 
 ## How it works
 
-- `(g > t) - g < t`: read right to left, `g < t` is 1 when the secret
-  is higher; `g > t` is 1 when it is lower; their difference is -1, 0
-  or 1. Nothing in it is scalar-only: `t g:m_ove 10 50 90` answers
-  three guesses at once.
+- `t [< - >] g`: a dyadic fork, `(t < g) - (t > g)`: 1 when the
+  guess is above the secret, -1 below, 0 right; the sign of the
+  difference. Nothing in it is scalar-only: `t g:m_ove 10 50 90`
+  answers three guesses at once.
 - `l:p_ossible`: `t_able` applies the answer rule to every candidate
   (rows, 100) and every guess (columns): a 100 by k table of the
   answers each candidate would have got. A second table repeats the

@@ -3,29 +3,39 @@
 # computer thinks of a number from 1 to 100; each guess is answered
 # higher, lower or correct.
 
+# :: Int
 l:top := 100
+# :: Int -> Int
 # A new game: the secret, 1 to n.
 l:n_ew := { n -> r_oll! n }
-# A guess against the secret: -1 the secret is higher, 1 lower, 0
-# right. Item by item, so it answers many guesses (or games) at once.
-l:m_ove := { t g -> (g > t) - g < t }
+# :: (Ord a, Num b, Truthy b) => a -> a -> b
+# The answer to guess g for secret t: -1 the secret is higher, 1 lower,
+# 0 right; the sign of the difference as a fork, (t < g) - (t > g).
+# Item by item, so it answers many guesses (or games) at once.
+l:m_ove := { t g -> t [< - >] g }
+# :: (Eq a, Truthy b) => a -> a -> b
 # 1 once the guess is right.
 l:s_tatus := { t g -> t = g }
+# :: Int -> Char
 # The answer as the BASIC printed it.
 l:r_eply := { r -> d_isclose (2 + r) s_elect "HIGHER!" "CORRECT! YOU GUESSED IT." "LOWER!" }
 
+# :: Int -> Int
 # The halving player: the range still possible, low and high, as a
 # 2-row matrix with a column per game; its guess is the middle.
 l:g_uess := { b -> ('+ r_/ b) d_iv 2 }
+# :: Num a => Int -> a -> Int
 # Narrow every range by the answers to its guess: a higher answer
-# raises the low end past the guess, a lower one drops the high end.
+# raises the low end past the guess, a lower one drops the high end
+# below it (a max and a min that leave the other answers alone).
 l:n_arrow := { b r ->
   g := l:g_uess b
-  lo := (1 s_elect b) m_ax (r = -1) * g + 1
-  hi := (2 s_elect b) m_in (l:top * r != 1) + (r = 1) * g - 1
+  lo := (1 s_elect b) m_ax (g + 1) * r = -1
+  hi := (2 s_elect b) m_in (g - 1) + l:top * r != 1
   (2 c_at s_hape lo) r_eshape lo c_at hi
 }
 
+# :: Truthy a => Int -> Int -> a
 # The secrets still possible after guesses gs were answered for secret
 # t: every candidate 1 to 100 against every guess at once (a table of
 # answers, candidates by guesses), kept where its whole row agrees with

@@ -1,6 +1,6 @@
 number = 4
 slug = "guess-idioms"
-status = "pending"
+status = "in-progress"
 description = "idioms: rewrite games/guess in idiomatic X_eTaL per docs/style.md: the shared..."
 role = "production"
 context_files = []

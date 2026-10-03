@@ -4,17 +4,15 @@
 # higher or lower until you have it. Anything that is not a number is
 # asked for again. The rules are those of NumberGuess.xtl.
 "g:" u_se< "NumberGuess"
+"p:" u_se< "Play"
 said := p_rint! "--- GUESS THE NUMBER ---"
 said := p_rint! "I AM THINKING OF A NUMBER BETWEEN 1 AND 100."
 t := g:n_ew g:top
 
-# Guess n: the first number on the line typed (other characters are
-# dropped first, as n_umbers takes only numbers).
+# A guess: the first number typed, or it asks again.
 u:a_sk := { n ->
-  shown := p_rint! "YOUR GUESS ?"
-  line := []R_EAD @
-  v := n_umbers (line m_ember? "0123456789 ") r_eplicate line
-  0 < t_ally v ? f_loor f_irst v; u:a_sk n
+  g := p:n_umber "YOUR GUESS ?"
+  g >= 0 ? g; u:a_sk n
 }
 # Answer each guess until one is right; how many it took.
 u:t_urn := { n ->
