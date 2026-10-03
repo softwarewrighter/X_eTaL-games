@@ -1,0 +1,1 @@
+guess: answer as dyadic fork, simpler narrowing, Play, type comments; outputs unchanged
