@@ -1,9 +1,10 @@
 number = 5
 slug = "trek"
-status = "in-progress"
+status = "completed"
 description = "basic step 5: games/trek from startrek.bas (original/ kept): an 8 x 8 galaxy ..."
 role = "production"
 context_files = []
 created_at = "2026-10-02T12:32:00"
+completed_at = "2026-10-03T06:24:34"
 task_type = "game"
-commits = []
+commits = ["1e5385b670fb9fb9348061446bc39111300f079b"]
