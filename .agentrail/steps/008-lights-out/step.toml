@@ -1,4 +1,4 @@
-number = 7
+number = 8
 slug = "lights-out"
 status = "pending"
 description = "grids step 7: games/lights-out. A 5 by 5 0/1 board; pressing a light toggles ..."

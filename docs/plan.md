@@ -179,7 +179,7 @@ Learned, mostly from the user:
   picked by one mask; several items of a state vector updated at once
   by a table.
 
-## Saga 3 -- grids (P0, boards drawn by X_eTaL)  [ACTIVE]
+## Saga 3 -- grids (P0, boards drawn by X_eTaL)  [DONE]
 
 Opens with a vendor refresh: X_eTaL 70e129d (transpose is `o_\`; a
 run that waits for typed lines and resumes, the first part of X_eTaL
@@ -192,8 +192,26 @@ saga 25); every golden, page test and browser test passed unchanged.
 | 3 | x-pictures | DONE: `[]S_HOW []G_RID` boards on the shared page: tic-tac-toe and robot chase show their boards as pictures X_eTaL draws beside the text (`l:p_icture`); the page scales them up (CSS only); the runner leaves out the command line's "drawn PATH" stderr lines; page tests and the browser test check that the pictures appear. Ask filed: numbers in `[]G_RID` cells and a colour scale (2048, counts). |
 | 4 | minesweeper | DONE: Mines.xtl (counts by `o_-_12` rotations of the bordered mine board summed, as Life; reveal by a flood fill grown to a fixed point by `m_atch`; flags by `!=`; codes for text and the `[]G_RID` picture); play.xtl (open, f to flag); the scripted game shows the fill growing and clears the field; the shared page. |
 | 5 | 2048 | DONE: Twenty48.xtl (compress by running counts and a 4 by 4 by 4 table, merge by places in runs from a max-scan, the moves by turning the board with `r_ev_2` and `o_\`, score, spawn, status); play.xtl (a d w s, q); the scripted corner player; the shared page. Found and fixed `f s = 1 ?` (reads `f (s = 1)`) in minesweeper and robot chase, right only by coincidence. |
-| 6 | lights-out | play by XOR with a plus stencil; Solve over GF(2); page |
-| 7 | gallery-2-release | catalog, README, per-game docs, screenshots, retrospective |
+| 6 | lights-out | MOVED to saga 4 (written in the new style, after the shared libraries) |
+| 7 | gallery-2-release | DONE: nine games live; catalog and README current; this retrospective. The terminal pane moved to saga 5. |
+
+### Saga 3 retrospective
+
+Delivered tic-tac-toe, shut the box, minesweeper and 2048 live, the
+vendored X_eTaL refreshed to 70e129d (every output unchanged), and
+boards as pictures X_eTaL draws (`[]S_HOW []G_RID`). Learned:
+
+- `[]G_RID` suits boards of characters and of 0/1 values; boards of
+  numbers need digits in cells (asked for).
+- Right to left without precedence struck again, worst where it was
+  silent: `f s = 1 ?` reads `f (s = 1)` and two games were right only
+  by coincidence. A new rule of thumb: put the constant on the left
+  (`1 = f s ?`).
+- The page test that every typed line is read caught a scripted
+  session with lines left over.
+- The user's review closed the saga early: the games use too small a
+  part of the language. Saga 4 rewrites them in idiomatic X_eTaL, and
+  lights out will be written in that style from the start.
 
 ## Saga 4 -- idioms: the games rewritten in idiomatic X_eTaL
 
@@ -223,9 +241,10 @@ commit, not an accident).
 | 7 | trek-idioms | `Board`, `State`, `Play`; paths and scans tightened; the long-range scan by `Board` |
 | 8 | tic-tac-toe-idioms | lines and ratings as trains; `Board` |
 | 9 | shut-the-box-idioms | `Play`; the moves as one expression |
-| 10 | minesweeper-idioms | `Board` neighbourhoods (shared with robot chase and lights out); the fill as `p_ower` to a fixed point where it reads better |
-| 11 | 2048-idioms | the move as a train of compress, merge, compress; turning as a table of transforms |
-| 12 | idioms-release | sizes before and after for every game, READMEs explain the idioms used, retrospective, the asks it raised |
+| 10 | lights-out | the new game, in the new style from the start: `Board` neighbourhoods, XOR by a plus stencil, a solver over GF(2) |
+| 11 | minesweeper-idioms | `Board` neighbourhoods (shared with robot chase and lights out); the fill as `p_ower` to a fixed point where it reads better |
+| 12 | 2048-idioms | the move as a train of compress, merge, compress; turning as a table of transforms |
+| 13 | idioms-release | sizes before and after for every game, READMEs explain the idioms used, retrospective, the asks it raised |
 
 Asks this saga is expected to raise (filed when hit): functional
 update / amend (`l:u_pdate` was written twice), dyadic `f_ormat`
