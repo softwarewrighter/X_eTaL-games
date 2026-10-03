@@ -1,0 +1,5 @@
+l:c_ell : Num a => a -> a -> a
+l:r_c : Int -> Int -> Int
+l:a_round : Num a => a -> a
+l:p_lus : Num a => a -> a
+l:s_paced : Char -> Char

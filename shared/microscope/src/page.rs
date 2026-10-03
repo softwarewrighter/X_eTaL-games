@@ -26,11 +26,16 @@ pub struct Game {
     /// The rules library's name (as `u_se<` names it) and text.
     pub library_name: &'static str,
     pub library: &'static str,
+    /// The shared libraries (lib/) the game uses, by name and text.
+    pub shared: &'static [(&'static str, &'static str)],
 }
 
 impl Game {
-    fn libraries(&self) -> [(&'static str, &'static str); 1] {
-        [(self.library_name, self.library)]
+    /// Every library the game's programs may import.
+    pub fn libraries(&self) -> Vec<(&'static str, &'static str)> {
+        let mut all = vec![(self.library_name, self.library)];
+        all.extend_from_slice(self.shared);
+        all
     }
 }
 
@@ -194,6 +199,13 @@ pub fn game_page(g: &Game) -> Html {
                         <p class="note">{format!("The rules, written once. A library names its exports l: (\"this library\"); a program that imports it with \"{alias}:\" u_se< \"{}\" calls them as {alias}:.", g.library_name)}</p>
                         { block(g.library, NONE) }
                     </section>
+                    { for g.shared.iter().map(|(name, text)| html! {
+                        <section class="panel code">
+                            <h2>{format!("A shared library: {name}.xtl")}</h2>
+                            <p class="note">{"Used by several games; the games' programs import it with u_se<."}</p>
+                            { block(text, NONE) }
+                        </section>
+                    }) }
                 </div>
             </div>
         </main>

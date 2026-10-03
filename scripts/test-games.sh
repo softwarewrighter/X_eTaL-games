@@ -19,6 +19,8 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 "$root/scripts/games.py" check
 xetal="$("$root/scripts/build-xetal.sh")"
+# The shared libraries (lib/) are found by u_se< through XETAL_PATH.
+export XETAL_PATH="$root/lib${XETAL_PATH:+:$XETAL_PATH}"
 if [ $# -gt 0 ]; then slugs=("$@"); else
   slugs=(); while IFS= read -r s; do [ -n "$s" ] && slugs+=("$s"); done < <("$root/scripts/games.py" list)
 fi

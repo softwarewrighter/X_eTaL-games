@@ -13,5 +13,6 @@ pub fn game() -> Game {
         script: include_str!("../../minesweeper.xtl"),
         library_name: "Mines",
         library: include_str!("../../Mines.xtl"),
+        shared: &[],
     }
 }

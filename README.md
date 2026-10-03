@@ -106,6 +106,10 @@ Each game is a sub-project, `games/<slug>/`:
 | `web/` | its browser app (a Cargo workspace), when it has one |
 | `test.sh` | any further tests, when it has them |
 
+Helpers several games need are shared X_eTaL libraries in
+[`lib/`](lib/README.md) (`Play`, `Text`, `Board`, `State`), found
+through `XETAL_PATH`.
+
 The rules are written once, as a library with a small protocol
 (`l:n_ew`, `l:m_ove`, `l:l_egal`, `l:s_tatus`, `l:v_iew`), so a page
 needs to know little about each game: it turns a click into a move, runs the game's X_eTaL

@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 13:31 `feat` Shared X_eTaL libraries in lib/ (Play, Text, Board, State) with their own tests in the gate; XETAL_PATH set by the scripts; game pages can load and show shared libraries.
+
 - 12:44 `chore` Saga step metrics-style completed.
 
 - 12:44 `docs` docs/style.md, the house style for the games' X_eTaL (arrays first, trains, shared libraries, type comments, right-to-left traps, what waits on X_eTaL); `just size` measures each game (lines and tokens); the sizes before the idioms saga are in the plan.
