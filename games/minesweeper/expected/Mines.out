@@ -1,0 +1,16 @@
+l:n : Int
+l:m_ines : a -> a
+l:o_pen : a -> a
+l:f_lags : a -> a
+l:s_tatus : a -> a
+l:s_tate : a -> a -> a
+l:n_ew : (Num b, Truthy b) => a -> b
+l:a_round : Num a => a -> a
+l:c_ounts : Num a => a -> a
+l:w_ith : a -> a -> a
+l:r_eveal : (Num a, Truthy a) => a -> Int -> a
+l:g_row : (Num a, Truthy a) => a -> a -> a
+l:f_lag : (Num a, Truthy a) => a -> Int -> a
+l:c_odes : (Num a, Truthy a) => a -> a
+l:v_iew : Int -> Char
+l:p_icture : Int -> Char

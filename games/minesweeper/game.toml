@@ -1,0 +1,11 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "minesweeper"
+title = "Minesweeper"
+summary = "Open a 9 by 9 field without touching its 10 mines. Every square's count of neighbouring mines is computed at once, as Life counts neighbours, and opening an empty square floods: the opened region grows ring by ring until it stops."
+lesson = "neighbourhoods by rotation, flood fill to a fixed point"
+concepts = ["o_-_12 rotations", "reduce", "masks", "fixed point", "g_rade", "[]G_RID", "libraries"]
+status = "live"
+order = 80
+sources = []
+needs = []

@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 09:52 `game` Minesweeper, live: every square's count at once by rotations (as Life), opening by a flood fill grown to a fixed point, the field also as a picture X_eTaL draws; the shared page.
+
 - 09:05 `chore` Saga step x-pictures completed.
 
 - 09:04 `feat` Boards as pictures X_eTaL draws: tic-tac-toe and robot chase show `[]S_HOW []G_RID` of their boards each turn (the page scales them up; the runner ignores the CLI's "drawn PATH" lines); tests check they appear; ask filed for numbers in `[]G_RID` cells and a colour scale.

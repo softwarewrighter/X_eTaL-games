@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minesweeper</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/minesweeper/minesweeper-web-afb053be6c7730b3.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/minesweeper/minesweeper-web-afb053be6c7730b3_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/minesweeper/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/minesweeper/microscope-caad11706ef8b527.css" integrity="sha384-thxxUBKZ44QkjfpsK7lpqkHaQoXLG9VeWGOWxrXAVKHKX+7shZ+FNhMgu3ocwVeN"/>
+<link rel="modulepreload" href="/X_eTaL-games/minesweeper/minesweeper-web-afb053be6c7730b3.js" crossorigin="anonymous" integrity="sha384-FOePIHA2Fe7K/b7YhjwZjqvvIdvBEy3HMEVnWLXMNuJt/7DVZuYFF6qd3BHBpiCz"><link rel="preload" href="/X_eTaL-games/minesweeper/minesweeper-web-afb053be6c7730b3_bg.wasm" crossorigin="anonymous" integrity="sha384-+EjkBunjEm1XOZqT59RCCufdn7yz3jWsdYiODVLliVvd4BqV2CQ9R2qZaGuX2UsY" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>
