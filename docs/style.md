@@ -49,9 +49,10 @@ better when it is clearer, never when it is cryptic.
 ## Types and names
 
 - Every export has a type comment above it, `# :: Int -> Int -> Int`,
-  matching what `xetal type` infers; the library's golden
-  (`expected/<Name>.out`) lists the inferred types, so a change shows
-  up in review.
+  exactly what X_eTaL infers: the library's golden
+  (`expected/<Name>.out`) lists the inferred types, and
+  `scripts/check-types.py` (in the gate) checks every comment against
+  it, in any library that has type comments.
 - Status, event and command codes are named once as constants
   (`l:won := 1`) and compared by name, until X_eTaL has enums.
 - Game state that is more than one array is a flat vector read by

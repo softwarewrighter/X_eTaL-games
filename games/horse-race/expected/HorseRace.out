@@ -4,5 +4,6 @@ l:n_ew : Num a => Int -> a
 l:r_oll : a -> Int
 l:m_ove : Num a => a -> a -> a
 l:s_tatus : Truthy a => Int -> a
+l:l_eaders : (Num a, Truthy b) => a -> b
 l:w_inners : Num a => a -> Int
 l:v_iew : Int -> Char
