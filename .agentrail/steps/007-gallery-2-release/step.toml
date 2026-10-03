@@ -1,6 +1,6 @@
-number = 9
+number = 7
 slug = "gallery-2-release"
-status = "pending"
+status = "in-progress"
 description = "grids step 9: release: catalog order and summaries, README, per-game READMEs ..."
 role = "production"
 context_files = []
