@@ -65,6 +65,10 @@ l:m_oves := { s r ->
 - The moves: `w_here` the columns that fit and make the roll, picked
   with `s_elect_2` and turned to one move per row with transpose
   (`o_\`).
+- The moves are listed by mapping a function over their row numbers
+  (`m_ap`) into a strand of lines, printed by the shared `Text`
+  library; the score is an inner product of the open tiles with 1 to
+  9; the box's row is spaced by `Board`; tiles are read with `Play`.
 - The high-tiles player (`l:h_igh`) reads each move as a binary number
   with tile 9 worth most and takes the largest; in the scripted game it
   shuts the box.
