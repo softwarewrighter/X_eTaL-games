@@ -92,6 +92,10 @@ browser-test *slugs:
 size *slugs:
     @scripts/size.sh "$@"
 
+# Time every game (scripted, terminal, page) and compare with bench/baseline.json; --baseline rewrites it
+bench *args:
+    scripts/bench.py "$@"
+
 # The full pre-commit gate
 gate:
     scripts/gate.sh

@@ -1,6 +1,6 @@
 number = 2
 slug = "bench"
-status = "pending"
+status = "in-progress"
 description = "launch step 2: scripts/bench.sh (just bench): each game's scripted program an..."
 role = "production"
 context_files = []

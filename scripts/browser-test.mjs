@@ -137,6 +137,8 @@ async function aboutProblems(page, sel, wiki) {
 }
 
 let failed = 0;
+// BENCH_OUT=FILE: also write each page's scripted session time (ms) as JSON.
+const timings = {};
 try {
   await json("/json/version");
   for (const slug of games) {
@@ -144,7 +146,9 @@ try {
     const typed = readFileSync(join(dir, "expected/play.in"), "utf8").split("\n").filter((l, i, a) => i < a.length - 1 || l);
     const page = await open(`http://127.0.0.1:${webPort}/X_eTaL-games/${slug}/?seed=1`);
     try {
+      const t0 = performance.now();
       const got = await page.evaluate(PLAY(typed));
+      timings[slug] = Math.round(performance.now() - t0);
       const want = readFileSync(join(dir, "expected/play.out"), "utf8");
       const wantNb = readFileSync(join(dir, `expected/${slug}.out`), "utf8");
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
@@ -173,5 +177,6 @@ try {
   if (!catProblems) console.log(`ok: catalog (${slugs.length} titles: Wikipedia links and about dialogs)`);
   cat.close();
 } catch (e) { console.log(`FAIL: browser test: ${e.message}`); failed++; }
+if (process.env.BENCH_OUT) (await import("node:fs")).writeFileSync(process.env.BENCH_OUT, JSON.stringify(timings, null, 2));
 console.log(`browser-test: ${games.length} game(s)${failed ? ", FAILURES" : ", all passed"}`);
 await done(failed ? 1 : 0);

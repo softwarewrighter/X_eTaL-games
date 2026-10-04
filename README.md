@@ -106,6 +106,7 @@ just test-game SLUG                  # check its output against expected/
 just new-game nim "Nim"              # start a new game from games/_template
 just bless SLUG                      # rewrite its expected output (review the diff)
 just size [SLUG]                     # lines and tokens of X_eTaL per game
+just bench                           # time every game; fails if one got more than 15 % slower
 just fetch [SLUG]                    # download third-party assets (never committed)
 ```
 

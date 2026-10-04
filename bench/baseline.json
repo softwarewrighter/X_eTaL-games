@@ -1,0 +1,53 @@
+{
+  "host": "max",
+  "xetal": "70e129d",
+  "runs": 7,
+  "date": "2026-10-04",
+  "results": {
+    "horse-race": {
+      "script_ms": 5,
+      "play_ms": 6,
+      "page_ms": 221
+    },
+    "guess": {
+      "script_ms": 6,
+      "play_ms": 5,
+      "page_ms": 369
+    },
+    "robot-chase": {
+      "script_ms": 43,
+      "play_ms": 79,
+      "page_ms": 704
+    },
+    "trek-adventure": {
+      "script_ms": 13,
+      "play_ms": 25,
+      "page_ms": 1404
+    },
+    "trek": {
+      "script_ms": 19,
+      "play_ms": 17,
+      "page_ms": 1057
+    },
+    "tic-tac-toe": {
+      "script_ms": 27,
+      "play_ms": 8,
+      "page_ms": 321
+    },
+    "shut-the-box": {
+      "script_ms": 142,
+      "play_ms": 38,
+      "page_ms": 433
+    },
+    "minesweeper": {
+      "script_ms": 38,
+      "play_ms": 13,
+      "page_ms": 320
+    },
+    "2048": {
+      "script_ms": 686,
+      "play_ms": 26,
+      "page_ms": 553
+    }
+  }
+}

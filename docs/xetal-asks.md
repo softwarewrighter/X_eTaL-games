@@ -18,6 +18,7 @@ workaround in use.
 | open | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there | tic-tac-toe, Star Trek | top-level (`l:` or private) helpers that take the extra values as arguments |
 | open | feature | Named dyadic trains: `u:s_ign := [> - <]` is monadic only, so a dyadic fork must be written inline in a lambda (`{ t g -> t [< - >] g }`) | guess, robot chase | the fork written inline |
 | open | feature | `p_ower` with a Bool count (a 0/1 condition), as other numeric places accept Truthy values | 2048 | `1 *` before the condition |
+| filed | bug | `t_able` and `i_nner` slower since the higher-order built-ins became kernels (X_eTaL saga 30): robot chase 1.7 times slower (26 to 44 ms) between 39938f3 and 70e129d; numbers in [`bench.md`](bench.md) | robot chase, Star Trek, tic-tac-toe | none: the games keep the array form; `just bench` watches for further slowdowns |
 | open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (still so at 70e129d) | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
 ## Details
