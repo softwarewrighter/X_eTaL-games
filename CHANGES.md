@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 14:52 `fix` The browser test and the screenshots pick free ports: a fixed port collided with a sibling repository's server, so the gate failed against the wrong site (and the about step was pushed on that failed run; its content is verified by this run).
+
 - 13:56 `chore` Saga step about completed.
 
 - 13:52 `feat` Game titles, on each page and in the catalog, link to the game's Wikipedia article (a page glyph, a new tab) or open a dialog on its history and play (closed by Escape, a click outside, or its X); wikipedia or about in game.toml; tested in headless Chrome.

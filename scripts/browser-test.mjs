@@ -10,6 +10,7 @@
 // packages.
 //   scripts/browser-test.mjs [SLUG...]      (run `just pages` first)
 import { spawn, execFileSync } from "node:child_process";
+import { createServer } from "node:net";
 import { readFileSync, existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -17,7 +18,10 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const chrome = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const webPort = 8098, cdpPort = 9334;
+// Free ports for the web server and Chrome's DevTools (fixed ones
+// collided with a sibling repository's server).
+const freePort = () => new Promise((r) => { const s = createServer(); s.listen(0, "127.0.0.1", () => { const p = s.address().port; s.close(() => r(p)); }); });
+const webPort = await freePort(), cdpPort = await freePort();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const slugs = process.argv.slice(2).length ? process.argv.slice(2)
