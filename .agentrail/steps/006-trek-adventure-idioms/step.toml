@@ -1,6 +1,6 @@
 number = 6
 slug = "trek-adventure-idioms"
-status = "pending"
+status = "in-progress"
 description = "idioms: rewrite games/trek-adventure in idiomatic X_eTaL per docs/style.md: t..."
 role = "production"
 context_files = []

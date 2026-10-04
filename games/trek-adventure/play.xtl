@@ -5,15 +5,7 @@
 # takes a turn; fix the engines before the 30 turns run out. The rules
 # and all the text are in TrekAdventure.xtl.
 "t:" u_se< "TrekAdventure"
-
-# A number typed (the first on the line; other characters dropped), or
-# -1 when there is none.
-u:n_um := { prompt ->
-  shown := p_rint! prompt
-  line := []R_EAD @
-  v := n_umbers (line m_ember? "0123456789 ") r_eplicate line
-  f_loor f_irst v c_at -1
-}
+"p:" u_se< "Play"
 
 # The items here as the TAKE menu lists them, "  3=TOOLKIT".
 u:l_ist := { v ->
@@ -25,7 +17,7 @@ u:l_ist := { v ->
 # The argument a command asks for: a room for GO, an item for TAKE (0
 # when there is nothing to take) and USE, else none.
 u:a_rg := { s c ->
-  c = 3 ? u:n_um "GO TO ROOM# ?"
+  c = 3 ? p:n_umber "GO TO ROOM# ?"
   c = 4 ? u:t_akeWhat s
   c = 5 ? u:u_seWhat s
   0
@@ -35,12 +27,12 @@ u:t_akeWhat := { s ->
   here := t:p_resent s
   0 = t_ally here ? 0
   listed := u:l_ist here
-  u:n_um "ITEM# ?"
+  p:n_umber "ITEM# ?"
 }
 u:u_seWhat := { s ->
   said := p_rint! "USE WHAT?"
   said := p_rint! "1=TOOLKIT 2=COUPLER 3=COMPUTER"
-  u:n_um "ITEM# ?"
+  p:n_umber "ITEM# ?"
 }
 
 # A turn: the room, the menu, a command, what it says, the clock.
@@ -53,7 +45,7 @@ u:t_urn := { s ->
   said := p_rint! ""
   said := p_rint! "1=LOOK 2=INV  3=GO    4=TAKE"
   said := p_rint! "5=USE  6=THROW 7=FIRE 8=HELP 0=QUIT"
-  c := u:n_um "COMMAND ?"
+  c := p:n_umber "COMMAND ?"
   c = 0 ? s t:s_ay 204
   next := s t:m_ove c c_at s u:a_rg c
   said := next t:s_ay t:s_aid next

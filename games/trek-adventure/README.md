@@ -53,26 +53,30 @@ table of 157 lines in four columns: `l:t_ext` (the lines), `l:k_eys`,
 value v). Printing is one mask:
 
 ```
-l:l_ines := { s k ->
-  f := l:f_lags @
-  held := (1 + f) s_elect -1 c_at s
-  w_here ((l:k_eys @) m_ember? k) & (f = 0) | held = l:v_alues @
+l:k_fv := { @ -> (3 c_at t_ally l:k_eys @) r_eshape (l:k_eys @) c_at (l:f_lags @) c_at l:v_alues @ }
+l:l_ines := { s k -> w_here ((l:k_eys @) m_ember? k) & (l:k_fv @) x:h_olds s }
+```
+
+`x:h_olds` is the shared `Text` library's (`lib/`): a row's condition
+item looked up in the state, compared with its value, or "always".
+
+The state is one vector of 12 (room, turns left, the five items
+carried, relay prepped, boarders aboard, won, dead, the last event),
+its positions named (`l:relay`, `l:boarders`, ...). An action states
+the checks that would refuse it and the message for each; the first
+that fails is said, else the action happens:
+
+```
+l:r_efusal := { fails events -> f_irst (fails r_eplicate events) c_at 0 }
+l:t_oolkit := { s ->
+  e := ((0 = l:toolkit s_elect s) c_at (0 = l:coupler s_elect s) c_at 1 = l:relay s_elect s) l:r_efusal 31 32 33
+  0 < e ? s l:s_aying e
+  s l:u_pdate l:relay c_at 1 c_at l:event c_at 34
 }
 ```
 
-The state is one vector of 12: room, turns left, the five items
-carried, relay prepped, boarders aboard, won, dead, and the last
-event (the key of what to say). A command returns the new state;
-several items change at once by a table:
-
-```
-l:u_pdate := { s iv ->
-  k := (t_ally iv) d_iv 2
-  m := (r_ange t_ally s) '= t_able ((2 * r_ange k) - 1) s_elect iv
-  v := ((t_ally s) c_at k) r_eshape (2 * r_ange k) s_elect iv
-  (s * n_ot '| r_/_2 m) + '+ r_/_2 m * v
-}
-```
+Updates of several items at once are the shared `State` library's
+`l:u_pdate` (a table of positions against indices).
 
 ## How it works
 
@@ -86,10 +90,14 @@ l:u_pdate := { s iv ->
 - `l:g_o`: a move is allowed when row `room`, column `x` of the exits
   table is 1 (`x s_elect r s_elect l:e_xits @`); the armory also wants
   the ID card.
-- `l:u_pdate`: a table of every state position against every index
-  being changed, reduced with "or" along the rows to say which items
-  change, and the values spread across the same table and summed: an
-  update of several items in one expression, no loop and no mutation.
+- `l:r_efusal`: the checks as a 0/1 vector and the messages as a
+  vector; `r_eplicate` keeps the messages of the failed checks and the
+  first is said (0 when none failed): a chain of "if this, say that"
+  branches as data.
+- `l:u_pdate` (lib/State): a table of every state position against
+  every index being changed, reduced with "or" along the rows to say
+  which items change, and the values spread across the same table and
+  summed: an update of several items in one expression.
 - The scripted game plays the winning walkthrough from a table of
   commands and keeps every state: the whole game becomes a 12 by 12
   table, a row per turn and a column per state item, where you can
