@@ -1,3 +1,12 @@
+l:energy : Int
+l:torpedoes : Int
+l:shieldsAt : Int
+l:stardate : Int
+l:quadRow : Int
+l:quadCol : Int
+l:sectRow : Int
+l:sectCol : Int
+l:status : Int
 l:e_nergy : a -> a
 l:t_orps : a -> a
 l:s_hields : a -> a
@@ -30,7 +39,7 @@ l:c_ells : Num a => a -> a
 l:t_rack : Num a => Int -> a
 l:f_ire : Int -> Int
 l:w_arp : Int -> Int -> Int
-l:c_lamped : (Num a, Truthy a, Num b) => a -> b
+l:c_lamped : Num a => Int -> a
 l:i_mpulse : Int -> Int -> Int
 l:c_ross : Int -> Int -> Int
 l:h_alt : Int -> Int -> Int
