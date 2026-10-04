@@ -9,3 +9,4 @@ status = "live"
 order = 20
 sources = ["sw-embed/web-sw-cor24-basic (examples/guess.bas, examples/guess-random.bas)"]
 needs = []
+about = "Guess the number is one of the oldest computer games and often the first program a beginner writes: the computer thinks of a number from 1 to 100 and answers each guess with higher or lower. It is also the classic first lesson in searching: always guessing the middle of what is still possible (a binary search) finds any number in at most seven guesses. Type a number and press Enter."   # no Wikipedia article: the title opens this

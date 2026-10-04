@@ -60,6 +60,19 @@ h1 {{ font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.01em; }}
 .links {{ margin-top:auto; display:flex; gap:16px; font-weight:600; }}
 .links a {{ color:var(--accent); text-decoration:none; }}
 .links a:hover {{ text-decoration:underline; }}
+.card h2 a.wiki {{ color: inherit; text-decoration: none; }}
+.card h2 a.wiki:hover {{ text-decoration: underline; }}
+.card h2 .glyph {{ color: var(--muted); vertical-align: 0.05em; }}
+.card h2 button.about-open {{ font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+  text-align: left; text-decoration: underline dotted; text-underline-offset: 0.2em; }}
+dialog.about {{ border: 1px solid var(--line); border-radius: 12px; padding: 0; max-width: min(36rem, 92vw);
+  background: var(--card); color: var(--fg); }}
+dialog.about::backdrop {{ background: rgba(0, 0, 0, 0.45); }}
+dialog.about .about-box {{ position: relative; padding: 18px 22px 14px; }}
+dialog.about h2 {{ margin: 0 0 8px; font-size: 1.15rem; }}
+dialog.about p {{ margin: 0 0 6px; line-height: 1.55; color: var(--fg); }}
+dialog.about .close {{ position: absolute; top: 6px; right: 8px; font: 1.4rem/1 system-ui, sans-serif;
+  background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; }}
 .empty {{ color:var(--muted); padding: 24px 0 48px; }}
 .idioms {{ padding: 0 0 24px; }}
 .idioms h2 {{ font-size: 1.2rem; margin: 0 0 6px; }}
@@ -93,9 +106,37 @@ notebook, and the source; everything on it is X_eTaL's own output.</p>
 <span>X_eTaL <a href="{xetal}/commit/{xsha}" target="_blank">{xshort}</a></span><span class="sep">&middot;</span>
 <span>build (host {host}, sha {commit}, {stamp})</span>
 </footer>
+<script>
+// A title without a Wikipedia article opens a dialog: Escape closes it
+// (the browser does), as do a click outside it and its X.
+for (const b of document.querySelectorAll("button.about-open")) {{
+  const d = document.getElementById(b.dataset.dialog);
+  b.addEventListener("click", () => d.showModal());
+  d.addEventListener("click", (e) => {{ if (e.target === d) d.close(); }});
+  d.querySelector(".close").addEventListener("click", () => d.close());
+}}
+</script>
 </body>
 </html>
 """
+
+
+GLYPH = ('<svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">'
+         '<path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>'
+         '<path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg>')
+
+
+def title(m):
+    """A game's title: a link to its Wikipedia article (new tab, page
+    glyph), or a button opening a dialog on its history and play."""
+    t = html.escape(m["title"])
+    if m.get("wikipedia"):
+        return (f'<a class="wiki" href="{html.escape(m["wikipedia"])}" target="_blank" '
+                f'rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">{t} {GLYPH}</a>')
+    return (f'<button class="about-open" data-dialog="about-{html.escape(m["slug"])}" title="About this game">{t}</button>'
+            f'<dialog class="about" id="about-{html.escape(m["slug"])}"><div class="about-box">'
+            f'<button class="close" aria-label="Close">&times;</button><h2>{t}</h2>'
+            f'<p>{html.escape(m.get("about", ""))}</p></div></dialog>')
 
 
 def card(m):
@@ -112,7 +153,7 @@ def card(m):
         pic = f'<a class="shot" href="{slug}/"><img src="{slug}/screenshot.png" alt="{alt}" loading="lazy"></a>\n'
     return (f'<article class="card" id="{slug}">\n{pic}'
             f'<span class="status {st}">{STATUS[st]}</span>\n'
-            f'<h2>{html.escape(m["title"])}</h2>\n'
+            f'<h2>{title(m)}</h2>\n'
             f'<p class="lesson">{html.escape(m["lesson"])}</p>\n'
             f'<p>{html.escape(m["summary"])}</p>\n'
             f'<div class="chips">{chips}</div>\n'

@@ -34,8 +34,8 @@ game's files.
    `Cargo.toml` (microscope, yew, console_error_panic_hook),
    `index.html` (the trunk links: the binary, logo, favicon,
    `microscope.css`), `src/lib.rs` returning the `page::Game` (title,
-   lede, the three files by `include_str!`, and the shared `lib/`
-   libraries it imports, in `shared`), `src/main.rs`
+   lede, the three files by `include_str!`, the shared `lib/`
+   libraries it imports, in `shared`, and its `game.toml`, in `toml`), `src/main.rs`
    rendering `GamePage` with it, and `tests/page.rs` checking that the
    terminal given `expected/play.in` on seed 1 prints
    `expected/play.out` and the notebook prints `expected/SLUG.out`.
@@ -43,7 +43,10 @@ game's files.
    pages`; `just browser-test SLUG` (headless Chrome plays the built
    page); set `status = "live"` in `game.toml`.
 
-The page: the terminal (`play.xtl`, everything typed replayed on the
+The page: the title (a link to the game's Wikipedia article with a
+page glyph, opening a new tab, or a button opening a dialog on its
+history and play, from `wikipedia` or `about` in its `game.toml`,
+closed by Escape, a click outside or its X), the terminal (`play.xtl`, everything typed replayed on the
 same seed; `?seed=N` in the address replays game N), the notebook
 (`SLUG.xtl` on seed 1, as `just show`), and the program and library
 sources, decorated by X_eTaL's renderer. Its only controls are New

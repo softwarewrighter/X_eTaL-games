@@ -9,3 +9,4 @@ status = "draft"             # draft | live | deferred
 order = 100                  # position in the catalog (lower first)
 sources = []                 # where the game comes from (repos, files, URLs)
 needs = []                   # asks in docs/xetal-asks.md it waits on or works around
+about = "A few sentences: where the game comes from, and how to play it."   # or wikipedia = "https://en.wikipedia.org/wiki/..."

@@ -6,10 +6,11 @@
 //! verdicts of its own. Its only controls start a new game or restart
 //! this one.
 
-use web_sys::{Element, HtmlInputElement};
+use wasm_bindgen::JsCast;
+use web_sys::{Element, HtmlDialogElement, HtmlInputElement};
 use yew::prelude::*;
 
-use crate::chrome::{footer, header};
+use crate::chrome::footer;
 use crate::source::{block, NONE};
 use crate::terminal::{notebook, session, Line};
 
@@ -28,6 +29,93 @@ pub struct Game {
     pub library: &'static str,
     /// The shared libraries (lib/) the game uses, by name and text.
     pub shared: &'static [(&'static str, &'static str)],
+    /// The game's game.toml: its `wikipedia` link or its `about` text
+    /// (what the title opens).
+    pub toml: &'static str,
+}
+
+/// A string field of a game.toml (`key = "value"` on one line, with \"
+/// and \\ escapes), if it is there.
+pub fn field(toml: &str, key: &str) -> Option<String> {
+    toml.lines().find_map(|line| {
+        let rest = line.trim_start().strip_prefix(key)?.trim_start().strip_prefix('=')?.trim_start();
+        let mut chars = rest.strip_prefix('"')?.chars();
+        let mut out = String::new();
+        while let Some(c) = chars.next() {
+            match c {
+                '\\' => out.push(chars.next()?),
+                '"' => return Some(out),
+                c => out.push(c),
+            }
+        }
+        None
+    })
+}
+
+/// A small page glyph (a sheet with a folded corner) marking a link to
+/// an article elsewhere.
+fn page_glyph() -> Html {
+    html! {
+        <svg class="glyph" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/>
+        </svg>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct TitleProps {
+    title: &'static str,
+    wikipedia: Option<String>,
+    about: Option<String>,
+}
+
+/// The game's title: a link to its Wikipedia article (new tab, page
+/// glyph) when it has one, else a button opening a dialog on its
+/// history and play, closed by Escape, a click outside it, or its X.
+#[function_component(Title)]
+fn title(p: &TitleProps) -> Html {
+    let dialog = use_node_ref();
+    if let Some(url) = &p.wikipedia {
+        return html! {
+            <h1><a class="wiki" href={url.clone()} target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">{p.title}{" "}{page_glyph()}</a></h1>
+        };
+    }
+    let open = {
+        let dialog = dialog.clone();
+        Callback::from(move |_: MouseEvent| {
+            if let Some(d) = dialog.cast::<HtmlDialogElement>() {
+                let _ = d.show_modal();
+            }
+        })
+    };
+    let close = {
+        let dialog = dialog.clone();
+        Callback::from(move |_: MouseEvent| {
+            if let Some(d) = dialog.cast::<HtmlDialogElement>() {
+                d.close();
+            }
+        })
+    };
+    let outside = {
+        let dialog = dialog.clone();
+        Callback::from(move |e: MouseEvent| {
+            let on_backdrop = e.target().and_then(|t| t.dyn_into::<Element>().ok()).is_some_and(|t| t.tag_name() == "DIALOG");
+            if let Some(d) = dialog.cast::<HtmlDialogElement>().filter(|_| on_backdrop) {
+                d.close();
+            }
+        })
+    };
+    html! { <>
+        <h1><button class="about-open" onclick={open} title="About this game">{p.title}</button></h1>
+        <dialog class="about" ref={dialog} onclick={outside}>
+            <div class="about-box">
+                <button class="close" aria-label="Close" onclick={close}>{"\u{00d7}"}</button>
+                <h2>{p.title}</h2>
+                <p>{p.about.clone().unwrap_or_default()}</p>
+            </div>
+        </dialog>
+    </> }
 }
 
 impl Game {
@@ -168,7 +256,11 @@ pub fn game_page(g: &Game) -> Html {
     html! {
         <>
         <header>
-            { header(g.title, g.lede) }
+            <div class="brand">
+                <a href="../" title="All games"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL" /></a>
+                <Title title={g.title} wikipedia={field(g.toml, "wikipedia")} about={field(g.toml, "about")} />
+            </div>
+            <p class="lede">{g.lede}</p>
             <div class="controls">
                 <button onclick={new_game}>{"New game"}</button>
                 <button onclick={restart}>{"Restart this game"}</button>

@@ -9,3 +9,4 @@ status = "live"
 order = 90
 sources = []
 needs = ["[]G_RID numbers"]
+wikipedia = "https://en.wikipedia.org/wiki/2048_(video_game)"   # the title links here (opens in a new tab)

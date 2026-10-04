@@ -138,3 +138,19 @@ canvas.pic.mid { width: min(100%, 260px); }
 .term > div:empty, .nb .out > div:empty { min-height: 1.5em; }
 /* Pictures X_eTaL draws ([]S_HOW) are scaled up to read; their content is X_eTaL's. */
 .term .pic svg, .nb .pic svg { width: min(100%, 384px); height: auto; display: block; }
+/* A game's title: a link to its Wikipedia article, or a button opening
+   a dialog on its history and play (shared/microscope/src/page.rs). */
+.brand h1 a.wiki { color: inherit; text-decoration: none; }
+.brand h1 a.wiki:hover { text-decoration: underline; }
+.brand h1 .glyph { vertical-align: 0.1em; color: var(--muted); }
+.brand h1 button.about-open { font: inherit; color: inherit; background: none; border: 0; padding: 0;
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: 0.2em; }
+dialog.about { border: 1px solid var(--line); border-radius: 12px; padding: 0; max-width: min(36rem, 92vw);
+  background: var(--card); color: var(--fg); }
+dialog.about::backdrop { background: rgba(0, 0, 0, 0.45); }
+dialog.about .about-box { position: relative; padding: 18px 22px 14px; }
+dialog.about h2 { margin: 0 0 8px; font-size: 1.15rem; }
+dialog.about p { margin: 0 0 6px; line-height: 1.55; }
+dialog.about .close { position: absolute; top: 6px; right: 8px; font: 1.4rem/1 system-ui, sans-serif;
+  background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+dialog.about .close:hover { color: var(--fg); }

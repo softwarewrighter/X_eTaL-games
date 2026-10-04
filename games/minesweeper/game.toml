@@ -9,3 +9,4 @@ status = "live"
 order = 80
 sources = []
 needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Minesweeper_(video_game)"   # the title links here (opens in a new tab)

@@ -9,3 +9,4 @@ status = "live"
 order = 50
 sources = ["the COR24 BASIC Star Trek"]
 needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Star_Trek_(1971_video_game)"   # the title links here (opens in a new tab)

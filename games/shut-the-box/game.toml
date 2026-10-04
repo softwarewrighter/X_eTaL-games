@@ -9,3 +9,4 @@ status = "live"
 order = 70
 sources = []
 needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Shut_the_box"   # the title links here (opens in a new tab)

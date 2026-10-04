@@ -38,7 +38,7 @@ expect pass "scripted input from expected/probe.in"
 printf 'goodbye\n' > "$g/expected/probe.in"
 expect fail "different scripted input"
 "$root/scripts/build-catalog.py" "$XETAL_GAMES_DIR/index.html" >/dev/null
-grep -q '<h2>Probe &amp; Co</h2>' "$XETAL_GAMES_DIR/index.html" \
+grep -q 'about-open[^>]*>Probe &amp; Co</button>' "$XETAL_GAMES_DIR/index.html" \
   || { echo "selftest: the catalog has no card for the game" >&2; exit 1; }
 grep -q '<p class="lesson">' "$XETAL_GAMES_DIR/index.html" \
   || { echo "selftest: the catalog card has no lesson" >&2; exit 1; }

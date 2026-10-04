@@ -113,7 +113,7 @@ Each game is a sub-project, `games/<slug>/`:
 
 | File | What it is |
 | ---- | ---------- |
-| `game.toml` | title, one-line summary, the lesson, concepts, status (draft, live, deferred), catalog order, sources, the X_eTaL asks it needs |
+| `game.toml` | title, one-line summary, the lesson (its array idiom), concepts, status (draft, live, deferred), catalog order, sources, the X_eTaL asks it needs, and its `wikipedia` link or, without an article, `about` (a short history and how to play) |
 | `README.md` | the game's own page: how to play, the program, how it works |
 | `<Name>.xtl` | the rules, a library (`l:n_ew`, `l:m_ove`, ...) that the scripted game, the terminal game and the page all import |
 | `<slug>.xtl` | a scripted game using the rules; run by the tests (seed 1) |

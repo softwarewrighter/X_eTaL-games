@@ -59,7 +59,10 @@ async function open(url) {
     if (r.result?.exceptionDetails) throw new Error(r.result.exceptionDetails.exception?.description || "page error");
     return r.result?.result?.value;
   };
-  return { evaluate, close: () => ws.close() };
+  const key = async (k, code) => {
+    for (const type of ["rawKeyDown", "keyUp"]) await send("Input.dispatchKeyEvent", { type, key: k, code: k, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code });
+  };
+  return { evaluate, key, close: () => ws.close() };
 }
 
 // Runs in the page: type each line, waiting for the program to read it.
@@ -83,6 +86,40 @@ const PLAY = (lines) => `(async () => {
   return { out, err, nb, pics };
 })()`;
 
+// Runs in the page: the title's about link or dialog. For a dialog, the
+// three ways to close it are tried by the caller (Escape is a real key
+// press, sent over the DevTools protocol).
+const ABOUT = (sel) => `(() => {
+  const t = document.querySelector(${JSON.stringify(sel)});
+  if (!t) return { kind: "none" };
+  if (t.tagName === "A") return { kind: "wiki", href: t.href, target: t.target, glyph: !!t.querySelector("svg.glyph") };
+  const d = t.closest("h1, h2").parentElement.querySelector("dialog.about") || document.getElementById(t.dataset.dialog);
+  return { kind: "dialog", text: d ? d.textContent.trim().length : 0 };
+})()`;
+const OPEN = (sel) => `(() => { const t = document.querySelector(${JSON.stringify(sel)}); t.click();
+  const d = document.querySelector("dialog.about[open]"); return !!d; })()`;
+const IS_OPEN = `!!document.querySelector("dialog.about[open]")`;
+const BACKDROP = `(() => { const d = document.querySelector("dialog.about[open]"); d.click(); return true; })()`;
+const XBUTTON = `(() => { document.querySelector("dialog.about[open] .close").click(); return true; })()`;
+
+// The title of a page (sel) against game.toml: a Wikipedia link in a new
+// tab with the glyph, or a dialog that Escape, the backdrop and the X
+// each close. Returns a problem, or "" when all is well.
+async function aboutProblems(page, sel, wiki) {
+  const a = await page.evaluate(ABOUT(sel));
+  if (wiki) {
+    if (a.kind !== "wiki" || a.href !== wiki || a.target !== "_blank" || !a.glyph) return `title should link to ${wiki} in a new tab with a glyph (got ${JSON.stringify(a)})`;
+    return "";
+  }
+  if (a.kind !== "dialog" || a.text < 40) return `title should open an about dialog (got ${JSON.stringify(a)})`;
+  for (const [how, close] of [["Escape", null], ["a click outside", BACKDROP], ["the X", XBUTTON]]) {
+    if (!(await page.evaluate(OPEN(sel)))) return "the dialog did not open";
+    if (close) await page.evaluate(close); else { await page.key("Escape", 27); await sleep(50); }
+    if (await page.evaluate(IS_OPEN)) return `${how} did not close the dialog`;
+  }
+  return "";
+}
+
 let failed = 0;
 try {
   await json("/json/version");
@@ -98,10 +135,27 @@ try {
       else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): the terminal differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
       else if (readFileSync(join(dir, "play.xtl"), "utf8").includes("[]S_HOW") && !got.pics) { console.log(`FAIL: ${slug} (browser): play.xtl shows pictures but none appeared`); failed++; }
-      else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""})`);
+      else {
+        const toml = readFileSync(join(dir, "game.toml"), "utf8");
+        const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
+        const problem = await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
+        if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
+        else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${wiki ? "Wikipedia link" : "about dialog"})`);
+      }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }
     page.close();
   }
+  // The catalog: every card's title, the same way.
+  const cat = await open(`http://127.0.0.1:${webPort}/X_eTaL-games/`);
+  let catProblems = 0;
+  for (const slug of slugs) {
+    const toml = readFileSync(join(root, "games", slug, "game.toml"), "utf8");
+    const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
+    const problem = await aboutProblems(cat, `[id="${slug}"] h2 a.wiki, [id="${slug}"] h2 button.about-open`, wiki);
+    if (problem) { console.log(`FAIL: catalog ${slug}: ${problem}`); failed++; catProblems++; }
+  }
+  if (!catProblems) console.log(`ok: catalog (${slugs.length} titles: Wikipedia links and about dialogs)`);
+  cat.close();
 } catch (e) { console.log(`FAIL: browser test: ${e.message}`); failed++; }
 console.log(`browser-test: ${games.length} game(s)${failed ? ", FAILURES" : ", all passed"}`);
 await done(failed ? 1 : 0);

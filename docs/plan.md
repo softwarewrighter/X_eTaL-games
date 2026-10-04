@@ -340,6 +340,7 @@ promotion gate, as it touches the games).
 
 | # | Step slug | Delivers | Waits on |
 | - | --------- | -------- | -------- |
+| 0 | about | DONE (the user's request): a game's title, on its page and its catalog card, links to its Wikipedia article (page glyph, new tab) or opens a dialog on its history and play (Escape, a click outside, the X); `wikipedia` or `about` in game.toml, required by the layout check; the browser test checks links and all three ways to close, on every page and the catalog. |
 | 1 | terminal-pane | every game's page on X_eTaL's terminal pane (a run that waits at `[]R_EAD` and resumes; no replay of the typed history); the page and browser tests kept; the docs no longer describe a workaround | X_eTaL saga 25 |
 | 2 | promotion-blockers | re-check the asks that make the games look like a prototype (the program-with-`l:` misclassification, `--draw`, provenance) on the latest X_eTaL; vendor fixes as they land; remove their workarounds | X_eTaL fixes |
 | 3 | bench | `just bench`: each game's scripted program and a page session timed natively (and in headless Chrome), a committed baseline, and a check that fails on a slowdown above 15 % without an explicit re-baseline; the numbers sent to X_eTaL for saga 30 (`t_able`, `i_nner`) | |

@@ -54,3 +54,12 @@ fn seeds_change_the_rolls_and_repeat_them() {
     assert_eq!(roll(7), roll(7));
     assert_ne!(roll(7), roll(8));
 }
+
+#[test]
+fn game_toml_fields_are_read() {
+    use microscope::page::field;
+    let toml = "slug = \"x\"\nabout = \"An \\\"old\\\" game.\"   # comment\nwikipedia = \"https://en.wikipedia.org/wiki/X\"\n";
+    assert_eq!(field(toml, "about").as_deref(), Some("An \"old\" game."));
+    assert_eq!(field(toml, "wikipedia").as_deref(), Some("https://en.wikipedia.org/wiki/X"));
+    assert_eq!(field(toml, "summary"), None);
+}

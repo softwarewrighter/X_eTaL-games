@@ -42,6 +42,8 @@ def problems(d, meta):
         out.append(f"{d.name}: slug {meta.get('slug')!r} is not the directory name")
     if meta.get("status") not in STATUSES:
         out.append(f"{d.name}: status must be one of {sorted(STATUSES)}")
+    if not (isinstance(meta.get("wikipedia"), str) or isinstance(meta.get("about"), str)):
+        out.append(f"{d.name}: needs wikipedia (a URL) or about (a short history and how to play)")
     if not (d / "README.md").is_file():
         out.append(f"{d.name}: no README.md")
     return out

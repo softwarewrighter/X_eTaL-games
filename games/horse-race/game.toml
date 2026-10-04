@@ -9,3 +9,4 @@ status = "live"
 order = 10
 sources = ["sw-comp-history/apl-horse-race (src/race.apl, src/idiomatic-race.apl)", "sw-embed/sw-cor24-apl (samples/25-horse-race-simple.apl, samples/26-horse-race.apl)"]
 needs = []
+about = "Horse races were among the first games people wrote for computers: a row of horses, each moved forward by a random amount every round, until one crosses the finish line. They were natural programs for the time-sharing terminals of the 1970s, in BASIC and in APL, where the whole field fits in one vector. Here five horses run to 15, each moving 1, 2 or 3 a round; at the terminal you start with 10 coins, back a horse for a coin each race, and win 4 back if it wins."   # no Wikipedia article: the title opens this

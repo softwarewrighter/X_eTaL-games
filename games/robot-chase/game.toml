@@ -9,3 +9,4 @@ status = "live"
 order = 30
 sources = ["sw-embed/web-sw-cor24-basic (examples/robot-chase.bas)"]
 needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Chase_(video_game)"   # the title links here (opens in a new tab)

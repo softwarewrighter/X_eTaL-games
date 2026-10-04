@@ -14,5 +14,6 @@ pub fn game() -> Game {
         library_name: "RobotChase",
         library: include_str!("../../RobotChase.xtl"),
         shared: &[("Board", include_str!("../../../../lib/Board.xtl")), ("Play", include_str!("../../../../lib/Play.xtl"))],
+        toml: include_str!("../../game.toml"),
     }
 }

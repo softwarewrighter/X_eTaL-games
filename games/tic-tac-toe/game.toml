@@ -9,3 +9,4 @@ status = "live"
 order = 60
 sources = []
 needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Tic-tac-toe"   # the title links here (opens in a new tab)

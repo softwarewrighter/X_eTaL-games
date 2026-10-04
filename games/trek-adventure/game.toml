@@ -9,3 +9,4 @@ status = "live"
 order = 40
 sources = ["the COR24 BASIC trek adventure"]
 needs = []
+about = "Star Trek: Decaying Orbit is a short text adventure in the style of the type-in listings that computer magazines printed for home computers: rooms, a few items and a clock, played by picking numbered commands. You wake alone on the bridge of the Enterprise with the ship falling out of orbit; find the toolkit and the engine coupler, prep the relay in engineering and install the coupler within 30 turns, while Klingon boarders roam the ship. Pick a command by number (8 is help); GO, TAKE and USE then ask for a room or an item."   # no Wikipedia article: the title opens this
