@@ -1,0 +1,9 @@
+number = 1
+slug = "about"
+status = "in-progress"
+description = "launch step 1 (the user's request): each game's title, on its page and its ca..."
+role = "production"
+context_files = []
+created_at = "2026-10-04T11:46:35"
+task_type = "chrome"
+commits = []

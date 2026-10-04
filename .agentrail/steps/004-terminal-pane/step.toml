@@ -1,0 +1,9 @@
+number = 4
+slug = "terminal-pane"
+status = "pending"
+description = "launch step 4: when X_eTaL saga 25 lands, vendor it and replace microscope::t..."
+role = "production"
+context_files = []
+created_at = "2026-10-04T11:46:35"
+task_type = "refactor"
+commits = []

@@ -1,0 +1,1 @@
+launch step 4: when X_eTaL saga 25 lands, vendor it and replace microscope::terminal's replay with X_eTaL's terminal pane in the shared page; tests/page.rs and the browser test kept; docs no longer describe a workaround.

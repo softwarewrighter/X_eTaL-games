@@ -1,0 +1,1 @@
+launch step 5: re-check the asks that make the games look like a prototype on the latest X_eTaL (program with l: names, named dyadic trains, p_ower Bool counts, numbers in []G_RID); vendor fixes as they land and remove their workarounds.

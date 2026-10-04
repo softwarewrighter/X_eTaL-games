@@ -1,0 +1,9 @@
+number = 6
+slug = "audit-tag"
+status = "pending"
+description = "launch step 6: a cross-repo status audit (asks, vendored commit, sibling link..."
+role = "production"
+context_files = []
+created_at = "2026-10-04T11:46:35"
+task_type = "release"
+commits = []

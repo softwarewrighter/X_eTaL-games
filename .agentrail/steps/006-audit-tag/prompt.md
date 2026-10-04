@@ -1,0 +1,1 @@
+launch step 6: a cross-repo status audit (asks, vendored commit, sibling links, CHANGES), a version tag of a known-compatible snapshot, release notes.

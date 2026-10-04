@@ -1,0 +1,1 @@
+launch step 3: the catalog's first screen: what you are looking at, why it is an array expression, the X_eTaL that did it (one small snippet), the idiom table, links to X_eTaL's site (the ecosystem's front door) and the sibling repos; README opening to match.
