@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 21:47 `chore` Saga step minesweeper-idioms completed.
+
 - 21:45 `refactor` Minesweeper in idiomatic X_eTaL: neighbour counts, squares and spacing from Board, input by Play; outputs unchanged; 94/774 to 88/688.
 - 21:45 `feat` lib/Play: l:l_ine (the line typed) and l:n_umbersIn (the numbers in a line); l:n_umbers and l:l_etter built on them.
 
