@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 13:56 `chore` Saga step about completed.
+
 - 13:52 `feat` Game titles, on each page and in the catalog, link to the game's Wikipedia article (a page glyph, a new tab) or open a dialog on its history and play (closed by Escape, a click outside, or its X); wikipedia or about in game.toml; tested in headless Chrome.
 
 - 11:46 `chore` Saga idioms archived; saga launch started (about, bench, start-here, terminal-pane, promotion-blockers, audit-tag).

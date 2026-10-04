@@ -1,0 +1,1 @@
+Titles link to Wikipedia (glyph, new tab) or open a history/play dialog (Escape, outside click, X) on pages and catalog; game.toml wikipedia/about; browser-tested
