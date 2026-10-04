@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 15:38 `chore` Saga step bench completed.
+
 - 15:33 `test` `just bench` (in the gate): every game's scripted, terminal and page times against a committed baseline, failing above 15 % slower; docs/bench.md, with the games timed before and after X_eTaL's table/inner-product slowdown (robot chase 1.7 times slower) for X_eTaL saga 30.
 
 - 15:06 `fix` The browser test waits for each page to load and retries an evaluation lost to a page reload (an intermittent failure in the gate run of the port change, which was committed despite it; the gate passes on the same content).

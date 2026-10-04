@@ -1,0 +1,1 @@
+just bench: baseline + 15% regression check in gate; docs/bench.md with old/new X_eTaL comparison (robot chase 1.7x slower) for saga 30
