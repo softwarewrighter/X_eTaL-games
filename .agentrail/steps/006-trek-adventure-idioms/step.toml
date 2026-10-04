@@ -1,9 +1,10 @@
 number = 6
 slug = "trek-adventure-idioms"
-status = "in-progress"
+status = "completed"
 description = "idioms: rewrite games/trek-adventure in idiomatic X_eTaL per docs/style.md: t..."
 role = "production"
 context_files = []
 created_at = "2026-10-03T12:40:50"
+completed_at = "2026-10-03T17:15:50"
 task_type = "refactor"
-commits = []
+commits = ["4fa36e0814f2c317b80bb77a7959e14afd4841b6"]
