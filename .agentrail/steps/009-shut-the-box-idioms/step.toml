@@ -1,6 +1,6 @@
 number = 9
 slug = "shut-the-box-idioms"
-status = "pending"
+status = "in-progress"
 description = "idioms: rewrite games/shut-the-box in idiomatic X_eTaL per docs/style.md: the..."
 role = "production"
 context_files = []

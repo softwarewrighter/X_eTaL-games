@@ -7,18 +7,27 @@
 #
 # The state is the open tiles as a 0/1 vector of 9.
 
-l:n_ew := { x -> 9 r_eshape 1 }
-l:s_core := { s -> '+ r_/ s * r_ange 9 }
+"b:" u_se< "Board"
 
+# :: Num b => a -> b
+l:n_ew := { x -> 9 r_eshape 1 }
+# :: Int -> Int
+# The open tiles' sum: the tiles times the 0/1 vector, an inner product.
+l:s_core := { s -> s '+ '* i_nner r_ange 9 }
+
+# :: Unit -> Int
 # Every set of tiles at once: the 512 subsets of 1 to 9 as the columns
 # of a 9 by 512 matrix of bits (the binary digits of 0 to 511), and all
 # their sums by one inner product.
 l:s_ubsets := { @ -> 2 2 2 2 2 2 2 2 2 e_ncode o_ffsets 512 }
+# :: Unit -> Int
 l:s_ums := { @ -> (r_ange 9) '+ '* i_nner l:s_ubsets @ }
 
+# :: Int -> Int
 # The roll: two dice, or one when the open tiles add up to 6 or less.
 l:r_oll := { s -> r_oll! (1 + 6 < l:s_core s) r_eshape 6 }
 
+# :: Int -> Int -> Int
 # The moves for roll r: the subsets that use only open tiles (every bit
 # at most the tile's 0 or 1) and add up to r, one per row.
 l:m_oves := { s r ->
@@ -26,25 +35,26 @@ l:m_oves := { s r ->
   fits := '& r_/ M <= s 'l_eft t_able o_ffsets 512
   o_\ (w_here fits & r = l:s_ums @) s_elect_2 M
 }
+# :: (Num a, Truthy a, Truthy b) => a -> b -> a
 # Shut the tiles of a move (a 0/1 vector of 9).
 l:s_hut := { s m -> s * n_ot m }
+# :: Num a => Int -> Int -> a
 # 0 playing, 1 the box shut, 2 stuck (the score stands).
-l:s_tatus := { s r ->
-  0 = l:s_core s ? 1
-  0 = t_ally s l:m_oves r ? 2
-  0
-}
+l:s_tatus := { s r -> f_irst (((0 = l:s_core s) c_at 0 = t_ally s l:m_oves r) r_eplicate 1 2) c_at 0 }
 
-# The tiles as the box shows them: open ones by number, shut ones as .
-l:v_iew := { s ->
-  code := 1 + s * r_ange 9
-  wide := 2 r_eplicate code
-  gap := 18 r_eshape 0 1
-  ((wide * 1 - gap) + 11 * gap) s_elect ".123456789 "
-}
+# :: Int -> Char
+# The tiles as the box shows them: open ones by number, shut ones as .,
+# spaced (lib/Board).
+l:v_iew := { s -> r_avel b:s_paced (1 9 r_eshape 1 + s * r_ange 9) s_elect ".123456789" }
+# :: Truthy a => a -> Char
 # A move as its tiles, "1 2 4".
 l:t_iles := { m -> f_ormat w_here m }
+# :: Truthy a => a -> Box Char
+# The moves as a strand of lines, "  1 2 4", one per move (a function
+# mapped over the moves' row numbers).
+l:l_isted := { m -> '{ "  " c_at l:t_iles _r s_elect m } m_ap r_ange t_ally m }
 
+# :: Int -> Int -> Int
 # A player that shuts the highest tiles it can: of the moves, the one
 # whose tiles, read as a number from 9 down, is largest.
 l:h_igh := { s r ->
