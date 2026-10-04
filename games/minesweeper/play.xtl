@@ -4,14 +4,14 @@
 # flag one ("f 4 4"). Open every safe square to win. The rules are
 # those of Mines.xtl.
 "m:" u_se< "Mines"
+"p:" u_se< "Play"
 said := p_rint! "MINESWEEPER: 9 BY 9, 10 MINES"
 
 # A command: f (flag) or not, then a row and a column from 1 to 9;
 # anything else is asked for again.
 u:a_sk := { s ->
-  said := p_rint! "OPEN ROW COL, OR F ROW COL ?"
-  line := []R_EAD @
-  v := f_loor n_umbers (line m_ember? "0123456789 ") r_eplicate line
+  line := p:l_ine "OPEN ROW COL, OR F ROW COL ?"
+  v := p:n_umbersIn line
   ok := (2 = t_ally v) & '& r_/ (v >= 1) & v <= 9
   ok ? (('| r_/ line m_ember? "fF") c_at v); u:a_sk s
 }

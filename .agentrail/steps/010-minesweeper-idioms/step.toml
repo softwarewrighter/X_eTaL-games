@@ -1,6 +1,6 @@
 number = 10
 slug = "minesweeper-idioms"
-status = "pending"
+status = "in-progress"
 description = "idioms: rewrite games/minesweeper in idiomatic X_eTaL per docs/style.md: the ..."
 role = "production"
 context_files = []

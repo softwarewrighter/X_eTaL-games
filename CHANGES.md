@@ -12,6 +12,9 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 21:45 `refactor` Minesweeper in idiomatic X_eTaL: neighbour counts, squares and spacing from Board, input by Play; outputs unchanged; 94/774 to 88/688.
+- 21:45 `feat` lib/Play: l:l_ine (the line typed) and l:n_umbersIn (the numbers in a line); l:n_umbers and l:l_etter built on them.
+
 - 19:54 `chore` Saga step shut-the-box-idioms completed.
 
 - 19:52 `refactor` Shut the box in idiomatic X_eTaL: the moves as a mapped strand printed by Text, the score as an inner product, the status as the first condition, Board and Play; outputs unchanged; 77/498 to 64/473.
