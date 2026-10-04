@@ -7,9 +7,12 @@
 # The state is one vector: the score, then the 16 squares row by row
 # (0 empty).
 
+# :: a -> a
 l:s_core := { s -> f_irst s }
+# :: a -> a
 l:b_oard := { s -> 4 4 r_eshape 1 d_rop s }
 
+# :: (Num a, Truthy a) => a -> a
 # Every row at once, its tiles slid left: each tile's new column is the
 # count of tiles up to it in its row (a running sum); a 4 by 4 by 4
 # table of each square against each column (row, old column, new
@@ -18,6 +21,7 @@ l:c_ompress := { b ->
   c := (b != 0) * '+ s_\_2 b != 0
   '+ r_/_2 (b 'l_eft t_able r_ange 4) * c '= t_able r_ange 4
 }
+# :: Num a => a -> Int
 # Every row at once, which tiles double when equal neighbours merge,
 # left to right: a run of equal tiles starts where a tile differs from
 # the one before; each tile's place in its run is its column less the
@@ -29,36 +33,36 @@ l:p_lace := { b ->
   prev := 0 c_at_2 -1 d_rop_2 b
   1 + j - 'm_ax s_\_2 j * b != prev
 }
+# :: (Num a, Truthy b) => a -> b
 l:d_oubles := { b ->
   next := (1 d_rop_2 b) c_at_2 0
   (b != 0) & (1 = (l:p_lace b) m_od 2) & b = next
 }
+# :: (Num a, Truthy a) => a -> a
 l:m_erge := { b -> (b * 1 = (l:p_lace b) m_od 2) + b * l:d_oubles b }
-# A move left: compress, merge, compress.
-l:l_eft := { b -> l:c_ompress l:m_erge l:c_ompress b }
+# :: (Num a, Truthy a) => a -> a
+# A move left: compress, merge, compress, composed as a train of atops
+# (each applied to the result of the one on its right).
+l:l_eft := [l:c_ompress [l:m_erge l:c_ompress]]
 
+# :: Num b => a -> b -> a
 # The other moves turn the board so that the move is left, and turn it
-# back: d is 1 left, 2 right (reverse the rows), 3 up (transpose),
-# 4 down (transpose, then reverse).
-l:t_urn := { b d ->
-  d = 1 ? b
-  d = 2 ? r_ev_2 b
-  d = 3 ? o_\ b
-  r_ev_2 o_\ b
-}
-l:b_ack := { b d ->
-  d = 1 ? b
-  d = 2 ? r_ev_2 b
-  d = 3 ? o_\ b
-  o_\ r_ev_2 b
-}
+# back: d is 1 left, 2 right, 3 up, 4 down. Up and down transpose the
+# board (o_\) once, right and down reverse its rows once: each a power
+# of 0 or 1. Turning back undoes them in the other order.
+l:t_urn := { b d -> (1 * d m_ember? 2 4) 'r_ev_2 p_ower (1 * d m_ember? 3 4) 'o_\ p_ower b }
+# :: Num b => a -> b -> a
+l:b_ack := { b d -> (1 * d m_ember? 3 4) 'o_\ p_ower (1 * d m_ember? 2 4) 'r_ev_2 p_ower b }
+# :: (Num a, Truthy a, Num b) => a -> b -> a
 l:s_lide := { b d -> (l:l_eft b l:t_urn d) l:b_ack d }
+# :: (Num a, Truthy a, Num b) => a -> b -> a
 # What a move scores: the value of every tile it makes by merging.
 l:g_ain := { b d ->
   c := l:c_ompress b l:t_urn d
   '+ r_/ r_avel 2 * c * l:d_oubles c
 }
 
+# :: (Num a, Truthy a) => a -> a
 # A 2 (or, one time in ten, a 4) on a random empty square.
 l:s_pawn := { b ->
   e := w_here 0 = r_avel b
@@ -67,8 +71,10 @@ l:s_pawn := { b ->
   v := 2 + 2 * 10 = r_oll! 10
   4 4 r_eshape (r_avel b) + v * k = r_ange 16
 }
+# :: (Num b, Truthy b) => a -> b
 l:n_ew := { x -> 0 c_at r_avel l:s_pawn l:s_pawn 4 4 r_eshape 0 }
 
+# :: (Num a, Truthy a, Num b) => a -> b -> a
 # A move d: the board slides; if anything moved, the score gains the
 # merged tiles and a new tile appears; if not, nothing happens.
 l:m_ove := { s d ->
@@ -77,10 +83,10 @@ l:m_ove := { s d ->
   n m_atch b ? s
   ((l:s_core s) + b l:g_ain d) c_at r_avel l:s_pawn n
 }
+# :: (Num a, Truthy a, Num b) => a -> b
 # 0 playing, 1 a 2048 tile made, 2 no move changes the board.
 l:s_tatus := { s ->
   b := l:b_oard s
-  2048 m_ember? r_avel b ? 1
-  '& r_/ '{ (b l:s_lide _r) m_atch b } e_ach 1 2 3 4 ? 2
-  0
+  stuck := '& r_/ '{ (b l:s_lide _r) m_atch b } e_ach 1 2 3 4
+  f_irst (((2048 m_ember? r_avel b) c_at stuck) r_eplicate 1 2) c_at 0
 }

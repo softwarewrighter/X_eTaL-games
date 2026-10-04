@@ -1,6 +1,6 @@
 number = 11
 slug = "2048-idioms"
-status = "pending"
+status = "in-progress"
 description = "idioms: rewrite games/2048 in idiomatic X_eTaL per docs/style.md: the shared ..."
 role = "production"
 context_files = []

@@ -50,7 +50,8 @@ l:p_lace := { b ->
   prev := 0 c_at_2 -1 d_rop_2 b
   1 + j - 'm_ax s_\_2 j * b != prev
 }
-l:l_eft := { b -> l:c_ompress l:m_erge l:c_ompress b }
+l:l_eft := [l:c_ompress [l:m_erge l:c_ompress]]
+l:t_urn := { b d -> (1 * d m_ember? 2 4) 'r_ev_2 p_ower (1 * d m_ember? 3 4) 'o_\ p_ower b }
 l:s_lide := { b d -> (l:l_eft b l:t_urn d) l:b_ack d }
 ```
 
@@ -66,8 +67,12 @@ l:s_lide := { b d -> (l:l_eft b l:t_urn d) l:b_ack d }
   every tile's place in its run is one subtraction. A tile in an odd
   place doubles when the next tile is equal; one in an even place was
   absorbed. `[2 2 2 2]` gives places 1 2 3 4: 4 4.
-- The other moves: `r_ev_2` (right), transpose `o_\` (up), both
-  (down), then move left and turn back.
+- A move left is a train of atops, `[l:c_ompress [l:m_erge
+  l:c_ompress]]`: compress, then merge, then compress.
+- The other moves turn the board: up and down transpose it (`o_\`)
+  once, right and down reverse its rows (`r_ev_2`) once, each written
+  as a power of 0 or 1 (`p_ower`); move left; turn back in the other
+  order.
 - The score gains every tile made by merging; a game ends when none of
   the four moves changes the board (`m_atch`).
 - The board is text: `[]G_RID` cannot yet draw numbers in its cells

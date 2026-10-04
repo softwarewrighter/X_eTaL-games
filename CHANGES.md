@@ -10,6 +10,10 @@ documentation, `plan` saga planning and reordering, `release`
 milestone release, `chore` agentrail bookkeeping (step complete, saga
 archive), `vendor` a refresh of the vendored X_eTaL.
 
+## 2026-10-04
+
+- 09:45 `refactor` 2048 in idiomatic X_eTaL: the move left as a train of atops, turning the board as transpose and reverse to a power of 0 or 1, the status as the first condition, Play; outputs unchanged; 101/633 to 89/641.
+
 ## 2026-10-03
 
 - 21:47 `chore` Saga step minesweeper-idioms completed.
