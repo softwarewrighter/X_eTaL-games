@@ -144,10 +144,14 @@ command line's expected output.
 ## The live site
 
 ```bash
-just serve SLUG       # one game's web app at http://127.0.0.1:8095/, rebuilt on change
+just serve SLUG       # one game's web app at http://127.0.0.1:8473/, rebuilt on change
 just pages            # build the whole site into pages/
-just serve-pages      # preview pages/ at http://127.0.0.1:8096/X_eTaL-games/
+just serve-pages      # preview pages/ at http://127.0.0.1:8473/X_eTaL-games/
 ```
+
+Port 8473 is this repository's own (each X_eTaL repository has its
+own port, so one demo from each can run at the same time); the
+automated browser test and the screenshots pick free ports instead.
 
 The site is built locally: `just pages` fetches any third-party
 assets, builds every game that has a web app into `pages/<slug>/` and

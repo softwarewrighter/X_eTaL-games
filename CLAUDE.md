@@ -349,7 +349,10 @@ Read before working:
 11. `CHANGES.md` gets a line for every commit (newest first, grouped by
     day, Pacific time, a category), as in `../X_eTaL`.
 12. NEVER run `sw-install` unless the user explicitly asks.
-13. Work is committed directly to `main` and pushed (the user's
+13. This repository's local port is 8473 (`just serve`, `just
+    serve-pages`); each X_eTaL repository has its own, so a demo from
+    each can run at once. Automated tests pick free ports.
+14. Work is committed directly to `main` and pushed (the user's
     choice); the feat/ -> pr/ branch handoff in the briefing applies
     only to a parallel lane on its own branch.
 

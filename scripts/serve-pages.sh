@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Serve the built pages/ locally as GitHub Pages will, under
-# /X_eTaL-games/: http://127.0.0.1:PORT/X_eTaL-games/ (default 8096).
+# /X_eTaL-games/: http://127.0.0.1:PORT/X_eTaL-games/ (default 8473, this repository's port).
 #   scripts/serve-pages.sh [PORT]
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-port="${1:-8096}"
+port="${1:-8473}"
 site="$root/target/serve-pages"
 mkdir -p "$site"
 ln -sfn "$root/pages" "$site/X_eTaL-games"

@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 14:58 `build` This repository's local port is 8473 (`just serve`, `just serve-pages`), unique among the X_eTaL repositories so a demo from each can run at once; automated tests keep picking free ports.
+
 - 14:52 `fix` The browser test and the screenshots pick free ports: a fixed port collided with a sibling repository's server, so the gate failed against the wrong site (and the about step was pushed on that failed run; its content is verified by this run).
 
 - 13:56 `chore` Saga step about completed.
