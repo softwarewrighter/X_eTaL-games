@@ -3,22 +3,23 @@
 # line ([]R_EAD) and returns what it found; it never asks again itself
 # (a game decides what is acceptable and asks again).
 
-# :: a -> Int
-# The numbers typed (whole numbers; other characters dropped first), a
-# vector that may be empty.
-l:n_umbers := { prompt ->
+# :: a -> Char
+# The line typed, as it was typed.
+l:l_ine := { prompt ->
   shown := p_rint! prompt
-  line := []R_EAD @
-  f_loor n_umbers (line m_ember? "0123456789 -") r_eplicate line
+  []R_EAD @
 }
+# :: Char -> Int
+# The whole numbers in a line (other characters dropped first), a
+# vector that may be empty.
+l:n_umbersIn := { line -> f_loor n_umbers (line m_ember? "0123456789 -") r_eplicate line }
+# :: a -> Int
+# The numbers typed, a vector that may be empty.
+l:n_umbers := { prompt -> l:n_umbersIn l:l_ine prompt }
 # :: a -> Int
 # The first number typed, or -1 when there is none.
 l:n_umber := { prompt -> f_irst (l:n_umbers prompt) c_at -1 }
 # :: a -> Char -> Int
 # Which of the letters the line starts with, 1 to the number of letters
 # (one more when it is none of them): "MOVE ?" p:l_etter "adws".
-l:l_etter := { prompt letters ->
-  shown := p_rint! prompt
-  line := []R_EAD @
-  letters i_ndexOf f_irst line c_at " "
-}
+l:l_etter := { prompt letters -> letters i_ndexOf f_irst (l:l_ine prompt) c_at " " }

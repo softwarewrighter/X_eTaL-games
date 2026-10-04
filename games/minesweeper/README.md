@@ -40,6 +40,9 @@ u:t_urn := { s ->
 `Mines.xtl` (exports named `l:`, seen as `m:`). The state is the
 status and three 9 by 9 0/1 boards: mines, opened, flags.
 
+The neighbour count is the shared `Board` library's (`lib/`), the
+same one the shared library offers every grid game:
+
 ```
 l:a_round := { b ->
   p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0

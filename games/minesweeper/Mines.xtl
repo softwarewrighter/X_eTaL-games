@@ -6,76 +6,87 @@
 # The state is one vector: the status (0 playing, 1 won, 2 lost), then
 # the mines, the opened squares and the flags, three 9 by 9 0/1 boards.
 
+"b:" u_se< "Board"
+
+# :: Int
 l:n := 9
+# :: a -> a
 l:m_ines := { s -> (l:n c_at l:n) r_eshape 81 t_ake 1 d_rop s }
+# :: a -> a
 l:o_pen := { s -> (l:n c_at l:n) r_eshape 81 t_ake 82 d_rop s }
+# :: a -> a
 l:f_lags := { s -> (l:n c_at l:n) r_eshape -81 t_ake s }
+# :: a -> a
 l:s_tatus := { s -> f_irst s }
+# :: a -> a -> a
 l:s_tate := { st m -> st c_at r_avel m }
 
+# :: (Num b, Truthy b) => a -> b
 # A new field: 10 mines on the first 10 squares of a random order.
 l:n_ew := { x ->
   m := (r_ange 81) m_ember? 10 t_ake g_rade r_oll! 81 r_eshape 1000000
   0 c_at m c_at 162 r_eshape 0
 }
 
-# The eight neighbours of every square at once, as in Life: the board
-# inside a border of zeros, rotated along both axes by -1, 0 and 1 (nine
-# boards), summed, less the board itself, and the border dropped
-# (rotation alone would wrap around the edges).
-l:a_round := { b ->
-  p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0
-  t := ('+ r_/_12 -1 0 1 o_-_12 p) - p
-  1 d_rop_2 -1 d_rop_2 1 d_rop -1 d_rop t
-}
+# :: Num a => a -> a
+# The eight neighbours of every square at once, as Life counts them
+# (lib/Board: the board in a border of zeros rotated by every offset and
+# summed, less itself).
+l:a_round := { b -> b:a_round b }
+# :: Num a => a -> a
 # How many mines touch each square.
 l:c_ounts := { s -> l:a_round l:m_ines s }
 
+# :: a -> a -> a
 # The state again from a status and the three boards' parts.
 l:w_ith := { s so -> (f_irst so) c_at (r_avel l:m_ines s) c_at 1 d_rop so }
 
+# :: (Num a, Truthy a) => a -> Int -> a
 # Opening square rc (row, column from 1): a mine loses; otherwise the
 # opened region grows by flood fill: every opened square with no mine
 # around it opens its neighbours, again and again until nothing
 # changes. Squares next to a mine have a count, so the fill never
 # reaches a mine. Opened squares lose their flags.
 l:r_eveal := { s rc ->
-  k := (l:n * (f_irst rc) - 1) + 2 s_elect rc
+  k := l:n b:c_ell rc - 1
   1 = k s_elect r_avel l:m_ines s ? s l:w_ith 2 c_at (r_avel (l:o_pen s) | l:m_ines s) c_at r_avel l:f_lags s
   start := (l:o_pen s) | (l:n c_at l:n) r_eshape k = r_ange 81
   o := s l:g_row start
   won := 0 = '+ r_/ r_avel (n_ot o) & n_ot l:m_ines s
   s l:w_ith won c_at (r_avel o) c_at r_avel (l:f_lags s) & n_ot o
 }
+# :: (Num a, Truthy a) => a -> a -> a
 l:g_row := { s o ->
   zero := o & 0 = l:c_ounts s
   more := (o | 0 < l:a_round zero) & n_ot l:m_ines s
   more m_atch o ? o
   s l:g_row more
 }
+# :: (Num a, Truthy a) => a -> Int -> a
 # Flag (or unflag) square rc, if it is not open.
 l:f_lag := { s rc ->
-  k := (l:n * (f_irst rc) - 1) + 2 s_elect rc
+  k := l:n b:c_ell rc - 1
   1 = k s_elect r_avel l:o_pen s ? s
   f := (r_avel l:f_lags s) != k = r_ange 81
   s l:w_ith (l:s_tatus s) c_at (r_avel l:o_pen s) c_at f
 }
 
+# :: (Num a, Truthy a) => a -> a
 # The field as text: # unopened, F flagged, . an opened square with no
 # mine around, 1 to 8 its count, * a mine (shown once the game is
-# lost); row and column numbers around it. Every square's code at once.
+# lost); row and column numbers around it, spaced (lib/Board). Every
+# square's code at once.
 l:c_odes := { s ->
   o := l:o_pen s
   shown := o & n_ot l:m_ines s
   boom := o & l:m_ines s
   1 + ((n_ot o) & l:f_lags s) + (2 * boom) + shown * 3 + l:c_ounts s
 }
+# :: Int -> Char
 l:v_iew := { s ->
-  wide := 2 r_eplicate_2 l:c_odes s
-  gap := (l:n c_at 2 * l:n) r_eshape 0 1
-  chars := ((wide * 1 - gap) + 13 * gap) s_elect "#F*.12345678 "
   lab := (l:n c_at 2) r_eshape "1 2 3 4 5 6 7 8 9 "
-  (1 20 r_eshape "  1 2 3 4 5 6 7 8 9 ") c_at lab c_at_2 chars
+  (1 20 r_eshape "  1 2 3 4 5 6 7 8 9 ") c_at lab c_at_2 b:s_paced (l:c_odes s) s_elect "#F*.12345678"
 }
+# :: Int -> Char
 # The field as a picture X_eTaL draws: the same characters in a grid.
 l:p_icture := { s -> []G_RID (l:c_odes s) s_elect "#F*.12345678" }
