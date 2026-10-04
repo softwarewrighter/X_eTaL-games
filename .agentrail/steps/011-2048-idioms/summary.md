@@ -1,0 +1,1 @@
+2048: move as train of atops, turning by p_ower 0/1, first-condition status, Play; outputs unchanged; 101/633 -> 89/641

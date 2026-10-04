@@ -1,9 +1,10 @@
 number = 11
 slug = "2048-idioms"
-status = "in-progress"
+status = "completed"
 description = "idioms: rewrite games/2048 in idiomatic X_eTaL per docs/style.md: the shared ..."
 role = "production"
 context_files = []
 created_at = "2026-10-03T12:40:51"
+completed_at = "2026-10-04T09:46:56"
 task_type = "refactor"
-commits = []
+commits = ["2221a11b940e17924e185ce404c7008f2c681ba2"]
