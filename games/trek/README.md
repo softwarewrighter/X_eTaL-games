@@ -57,6 +57,12 @@ l:p_ath := { s ck ->
 }
 ```
 
+Shared pieces come from `lib/`: `Board` (sector numbers, the spaced
+short-range scan), `State` (updates of several items at once, a
+stretch replaced), `Text` (lines printed), `Play` (numbers typed). The
+state's positions are named (`l:energy`, `l:shieldsAt`, `l:quadRow`,
+...), so an update reads as what it changes.
+
 ## How it works
 
 - A new galaxy: 64 random numbers decide which quadrants hold
