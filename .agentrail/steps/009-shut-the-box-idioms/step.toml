@@ -1,9 +1,10 @@
 number = 9
 slug = "shut-the-box-idioms"
-status = "in-progress"
+status = "completed"
 description = "idioms: rewrite games/shut-the-box in idiomatic X_eTaL per docs/style.md: the..."
 role = "production"
 context_files = []
 created_at = "2026-10-03T12:40:50"
+completed_at = "2026-10-03T19:54:07"
 task_type = "refactor"
-commits = []
+commits = ["e260e9f2d3d7815a7b27d3dd4a966d72311495f2"]

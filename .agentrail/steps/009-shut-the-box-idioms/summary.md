@@ -1,0 +1,1 @@
+shut the box: mapped move list via Text, inner-product score, first-condition status, Board/Play; outputs unchanged; 77/498 -> 64/473

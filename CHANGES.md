@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 19:54 `chore` Saga step shut-the-box-idioms completed.
+
 - 19:52 `refactor` Shut the box in idiomatic X_eTaL: the moves as a mapped strand printed by Text, the score as an inner product, the status as the first condition, Board and Play; outputs unchanged; 77/498 to 64/473.
 
 - 19:14 `chore` Saga step tic-tac-toe-idioms completed.
