@@ -1,0 +1,11 @@
+{
+  "task_type": "release",
+  "state": {
+    "number": 12,
+    "step": "idioms-release"
+  },
+  "action": "docs, catalog",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-04T11:42:29"
+}

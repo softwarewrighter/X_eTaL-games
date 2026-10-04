@@ -1,0 +1,1 @@
+Idioms release: idiom table in README and catalog, style idioms, sizes after, retrospective, asks

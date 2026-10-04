@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 11:42 `chore` Saga step idioms-release completed.
+
 - 11:41 `release` Idioms: all nine games in idiomatic X_eTaL on lib/ with outputs unchanged; the "one array idea per game" table in the README and the catalog (from each game's lesson); the style guide's idioms; asks for named dyadic trains and Bool power counts; saga 4's retrospective.
 
 - 09:46 `chore` Saga step 2048-idioms completed.
