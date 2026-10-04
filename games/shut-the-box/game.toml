@@ -3,7 +3,7 @@
 slug = "shut-the-box"
 title = "Shut the box"
 summary = "Roll the dice and shut tiles adding up to the roll; shut all nine to win. All 512 subsets of the tiles are one 9 by 512 matrix of bits, their sums one inner product, and the legal moves are the columns that fit the open tiles and add up to the roll."
-lesson = "boolean masks, every subset at once, subset sums"
+lesson = "masks over all 512 subsets at once; sums by one inner product"
 concepts = ["e_ncode", "i_nner", "masks", "o_\\ transpose", "s_elect_2", "libraries"]
 status = "live"
 order = 70

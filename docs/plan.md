@@ -238,7 +238,7 @@ boards as pictures X_eTaL draws (`[]S_HOW []G_RID`). Learned:
   part of the language. Saga 4 rewrites them in idiomatic X_eTaL, and
   lights out will be written in that style from the start.
 
-## Saga 4 -- idioms: the games rewritten in idiomatic X_eTaL  [ACTIVE]
+## Saga 4 -- idioms: the games rewritten in idiomatic X_eTaL  [DONE]
 
 The user's review (2026-10-03): the games so far are "ported", like C
 written in assembler style or C++ restricted to its C subset. They use
@@ -268,7 +268,7 @@ commit, not an accident).
 | 9 | shut-the-box-idioms | DONE: the moves listed by `m_ap` over their row numbers and printed by `Text`; the score an inner product; the status as the first condition; the row spaced by `Board`; tiles read by `Play`; outputs unchanged; 77/498 to 64/473. |
 | 10 | minesweeper-idioms | DONE: neighbour counts, squares and spacing from `Board`; input by `Play`'s new `l:l_ine` and `l:n_umbersIn`; type comments; the fill kept as recursion to a fixed point (it reads as one); outputs and types unchanged; 94/774 to 88/688. |
 | 11 | 2048-idioms | DONE: the move left as a train of atops `[l:c_ompress [l:m_erge l:c_ompress]]`; turning as transpose and reverse each to a power of 0 or 1 (no cases); the status as the first condition; `Play`; type comments; outputs and types unchanged; 101/633 to 89/641. |
-| 12 | idioms-release | sizes before and after for every game; the "array idiom -> game" table (README and catalog): neighbourhood by rotate and reduce (minesweeper), masks over all subsets (shut the box), compress -> merge -> pad (2048), a coordinate matrix moving at once (robot chase), windows and paths (trek), lines by indexing and minimax (tic-tac-toe), text as a table picked by masks (trek adventure), every candidate against every guess (guess), a vector of racers (horse race); READMEs explain the idioms used; retrospective; the asks it raised |
+| 12 | idioms-release | DONE: the sizes after (below), the idiom table in the README and the catalog, the style guide's idioms, the asks, this retrospective. Planned: sizes before and after for every game; the "array idiom -> game" table (README and catalog): neighbourhood by rotate and reduce (minesweeper), masks over all subsets (shut the box), compress -> merge -> pad (2048), a coordinate matrix moving at once (robot chase), windows and paths (trek), lines by indexing and minimax (tic-tac-toe), text as a table picked by masks (trek adventure), every candidate against every guess (guess), a vector of racers (horse race); READMEs explain the idioms used; retrospective; the asks it raised |
 
 Sizes before the saga (`just size`, 2026-10-03: lines not blank or
 comment / X_eTaL tokens):
@@ -285,6 +285,49 @@ comment / X_eTaL tokens):
 | minesweeper | 51 / 489 | 24 / 158 | 19 / 127 | 94 / 774 |
 | 2048 | 54 / 389 | 22 / 109 | 25 / 135 | 101 / 633 |
 | all | | | | 1345 / 9358 |
+
+Sizes after the saga (`just size`, 2026-10-04):
+
+| Game | Rules (lines / tokens) | Scripted | Terminal | Total |
+| ---- | ---------------------- | -------- | -------- | ----- |
+| horse-race | 15 / 155 | 16 / 63 | 24 / 152 | 55 / 370 |
+| guess | 16 / 156 | 26 / 176 | 16 / 75 | 58 / 407 |
+| robot-chase | 81 / 823 | 26 / 142 | 42 / 227 | 149 / 1192 |
+| trek-adventure | 289 / 1585 | 31 / 231 | 45 / 215 | 365 / 2031 |
+| trek | 266 / 2146 | 22 / 93 | 29 / 163 | 317 / 2402 |
+| tic-tac-toe | 39 / 417 | 24 / 98 | 22 / 117 | 85 / 632 |
+| shut-the-box | 21 / 240 | 20 / 102 | 23 / 131 | 64 / 473 |
+| minesweeper | 45 / 411 | 24 / 158 | 19 / 119 | 88 / 688 |
+| 2048 | 43 / 405 | 22 / 109 | 24 / 127 | 89 / 641 |
+| (lib/, shared) | 67 / 576 | | | 67 / 576 |
+| all | | | | 1337 / 9412 |
+
+### Saga 4 retrospective
+
+Every game was rewritten with the X_eTaL of 70e129d, its outputs
+unchanged throughout (each refactor checked by the goldens, the page
+tests and headless Chrome; only the libraries' type lists changed, as
+new named pieces appeared). The games' own code shrank about 6 % (1345
+to 1270 lines, 9358 to 8836 tokens) while 67 lines of shared, tested
+library (`lib/`: Play, Text, Board, State) replaced helpers six games
+had copied; the total is flat. The gain is in what the code says:
+
+- Branches became data: the first condition that holds picks a
+  status or a refusal (`f_irst (conds r_eplicate codes) c_at 0`), in
+  trek adventure, tic-tac-toe, shut the box and 2048.
+- Small rules became trains: the leaders `['m_ax r_/ = i_d]`, the sign
+  `d [> - <] 0` and the answer `t [< - >] g` (dyadic forks, written
+  inline: a named train is monadic), the 2048 move as a train of
+  atops.
+- Loops of weighting became inner products: tic-tac-toe's ratings,
+  robot chase's robots per square, shut the box's score.
+- Cases became arithmetic: 2048 turns its board by transpose and
+  reverse each to a power of 0 or 1.
+- Every library export carries its inferred type as a checked comment.
+
+Learned: trains read well for two- or three-part rules and badly
+beyond; named state positions cost tokens but make updates
+self-explanatory; `m_ap` maps items, not rows (map over row numbers).
 
 Asks this saga is expected to raise (filed when hit): functional
 update / amend (`l:u_pdate` was written twice), dyadic `f_ormat`

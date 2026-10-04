@@ -35,6 +35,22 @@ better when it is clearer, never when it is cryptic.
 - A function does one thing of the game; the rules library reads as a
   list of the game's rules.
 
+## Idioms the games use
+
+- The first condition that holds, as data: `f_irst (conds r_eplicate
+  codes) c_at 0` picks a status, a refusal or a message, instead of a
+  chain of guards.
+- A weighted rating or a count per place is an inner product:
+  `weights '+ '* i_nner features`, `((r_ange 256) '= t_able k) '+ '*
+  i_nner w`.
+- A sign is a dyadic fork, `d [> - <] 0`; a dyadic fork is written
+  inline (a named train is monadic).
+- A sequence of steps is a train of atops, `[f [g h]]` (f of g of h).
+- An optional transform is a power of 0 or 1, `(1 * cond) 'f p_ower x`
+  (a power count must be a number, not a Bool).
+- A function over the rows of a matrix: `m_ap` over the row numbers
+  (`'{ f _r s_elect m } m_ap r_ange t_ally m`); `m_ap` alone maps items.
+
 ## Libraries
 
 - Anything two games need is in a shared library in `lib/` (`Play`

@@ -53,6 +53,23 @@ exists.
 What a game needs from X_eTaL that it does not have yet is listed in
 [`docs/xetal-asks.md`](docs/xetal-asks.md).
 
+## Array idioms, one per game
+
+Different games, the same few array ideas. Each game's README shows
+its idiom in the code.
+
+| The array idiom | Where it carries a game |
+| --------------- | ----------------------- |
+| a vector of racers moved by one expression; the leaders by a fork | [Horse race](games/horse-race/README.md) |
+| every candidate against every guess by one table; all games played at once | [Guess the number](games/guess/README.md) |
+| a coordinate matrix moving at once (the sign as a fork); collisions as an inner product | [Robot chase](games/robot-chase/README.md) |
+| text as a table of rows picked by masks; refusals as data | [Trek adventure](games/trek-adventure/README.md) |
+| a galaxy of planes; paths as tables of steps; windows by selection | [Star Trek](games/trek/README.md) |
+| lines by indexing; ratings as one inner product; minimax as negamax | [Tic-tac-toe](games/tic-tac-toe/README.md) |
+| masks over all 512 subsets at once; sums by one inner product | [Shut the box](games/shut-the-box/README.md) |
+| neighbourhoods by rotate and reduce; flood fill to a fixed point | [Minesweeper](games/minesweeper/README.md) |
+| compress, merge, compress as a train; turning the board by powers of 0 or 1 | [2048](games/2048/README.md) |
+
 ## Build
 
 Prerequisites: [Rust](https://rustup.rs) (stable) and
@@ -141,13 +158,12 @@ the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
 
 ## Status
 
-Nine games are live: the horse race, the four COR24 BASIC games
-(guess the number, robot chase, trek adventure, Star Trek) and four
-grid games (tic-tac-toe, shut the box, minesweeper, 2048), each page
-showing only X_eTaL's own output. Now: rewriting them in idiomatic
-X_eTaL on shared libraries (`lib/`), then the launch work (X_eTaL's
-terminal pane in every page, a performance baseline, a Start Here
-page); new games come after that. See [`docs/plan.md`](docs/plan.md).
+Nine games are live, each page showing only X_eTaL's own output, and
+all nine are written in idiomatic X_eTaL on shared libraries (`lib/`):
+trains, tables and inner products over branches, named parts, checked
+type comments. Next: the launch work (X_eTaL's terminal pane in every
+page, a performance baseline, a Start Here page); new games come after
+that. See [`docs/plan.md`](docs/plan.md).
 
 ## Documentation
 

@@ -3,7 +3,7 @@
 slug = "2048"
 title = "2048"
 summary = "Slide the tiles of a 4 by 4 board; equal tiles merge; make 2048. A move left slides and merges every row at once: compress by running counts and a table, merge by each tile's place in its run, found by a max-scan; the other moves turn the board with reverse and transpose."
-lesson = "compress, merge, pad: composition; turning the board"
+lesson = "compress, merge, compress as a train; turning by powers of 0 or 1"
 concepts = ["s_\\ scans", "t_able", "masks", "o_\\ transpose", "r_ev_2", "m_atch", "libraries"]
 status = "live"
 order = 90

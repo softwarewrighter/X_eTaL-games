@@ -61,6 +61,12 @@ h1 {{ font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.01em; }}
 .links a {{ color:var(--accent); text-decoration:none; }}
 .links a:hover {{ text-decoration:underline; }}
 .empty {{ color:var(--muted); padding: 24px 0 48px; }}
+.idioms {{ padding: 0 0 24px; }}
+.idioms h2 {{ font-size: 1.2rem; margin: 0 0 6px; }}
+.idioms table {{ border-collapse: collapse; width: 100%; margin-top: 10px; font-size: .95rem; }}
+.idioms th, .idioms td {{ text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }}
+.idioms th {{ color: var(--muted); font-weight: 600; }}
+.idioms a {{ color: var(--accent); }}
 footer {{ border-top:1px solid var(--line); padding-top:16px; padding-bottom:32px; color:var(--muted); font-size:.85rem; }}
 footer .sep {{ margin: 0 8px; }}
 .brand {{ display:flex; align-items:center; gap:16px; margin-bottom: 8px; }}
@@ -124,7 +130,12 @@ def main():
                                       capture_output=True, text=True, check=True).stdout)
     vend = tomllib.loads((ROOT / "vendor" / "xetal" / "VENDORED").read_text())
     if games:
-        body = '<section class="grid">\n' + "\n".join(card(m) for m in games) + "\n</section>"
+        rows = "".join(f'<tr><td>{html.escape(m["lesson"])}</td><td><a href="#{html.escape(m["slug"])}">{html.escape(m["title"])}</a></td></tr>'
+                       for m in games if m["status"] == "live")
+        idioms = ('<section class="idioms"><h2>One array idea per game</h2>\n'
+                  '<p class="lede">Different games, the same few array ideas: each game is written around one.</p>\n'
+                  f'<table><thead><tr><th>The array idiom</th><th>Game</th></tr></thead><tbody>{rows}</tbody></table></section>\n')
+        body = idioms + '<section class="grid">\n' + "\n".join(card(m) for m in games) + "\n</section>"
     else:
         body = '<p class="empty">The first game is on its way.</p>'
     out.parent.mkdir(parents=True, exist_ok=True)

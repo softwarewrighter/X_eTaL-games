@@ -3,7 +3,7 @@
 slug = "tic-tac-toe"
 title = "Tic-tac-toe"
 summary = "Three in a row against the computer. The eight lines are a table of square numbers: used as indices into the board it gives every line at once, and a reduce gives every line's sum. The computer rates every empty square at once; a minimax player searches by recursion."
-lesson = "a 3 by 3 board, line extraction by indexing, minimax"
+lesson = "lines by indexing; ratings as one inner product; minimax as negamax"
 concepts = ["index tables", "reduce", "m_ember?", "t_able", "recursion", "e_ach", "libraries"]
 status = "live"
 order = 60

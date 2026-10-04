@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 11:41 `release` Idioms: all nine games in idiomatic X_eTaL on lib/ with outputs unchanged; the "one array idea per game" table in the README and the catalog (from each game's lesson); the style guide's idioms; asks for named dyadic trains and Bool power counts; saga 4's retrospective.
+
 - 09:46 `chore` Saga step 2048-idioms completed.
 
 - 09:45 `refactor` 2048 in idiomatic X_eTaL: the move left as a train of atops, turning the board as transpose and reverse to a power of 0 or 1, the status as the first condition, Play; outputs unchanged; 101/633 to 89/641.

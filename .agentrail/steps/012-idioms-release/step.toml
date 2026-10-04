@@ -1,6 +1,6 @@
 number = 12
 slug = "idioms-release"
-status = "pending"
+status = "in-progress"
 description = "idioms step 13: sizes before and after for every game in the plan and READMEs..."
 role = "production"
 context_files = []

@@ -16,6 +16,8 @@ workaround in use.
 | open | feature | `[]G_RID` of numbers: draw the numbers in the cells, and let a program choose the colour scale (logarithmic, or a few fixed colours) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
 | open | feature | A functional update (amend / "at"): items of an array replaced at given positions, returning a new array | trek adventure, Star Trek (each wrote `l:u_pdate`), minesweeper, robot chase | a table of positions against indices (`l:u_pdate`) |
 | open | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there | tic-tac-toe, Star Trek | top-level (`l:` or private) helpers that take the extra values as arguments |
+| open | feature | Named dyadic trains: `u:s_ign := [> - <]` is monadic only, so a dyadic fork must be written inline in a lambda (`{ t g -> t [< - >] g }`) | guess, robot chase | the fork written inline |
+| open | feature | `p_ower` with a Bool count (a 0/1 condition), as other numeric places accept Truthy values | 2048 | `1 *` before the condition |
 | open | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (still so at 70e129d) | all | `scripts/games.py check` rejects `l:` definitions in programs |
 
 ## Details

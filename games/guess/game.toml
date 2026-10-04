@@ -3,7 +3,7 @@
 slug = "guess"
 title = "Guess the number"
 summary = "The smallest COR24 BASIC game, at a terminal: higher or lower until you have it. Its scripted game checks every candidate from 1 to 100 against every guess at once, and plays all 100 games in lockstep."
-lesson = "comparison tables, masks, playing every game at once"
+lesson = "every candidate against every guess by one table; all games played at once"
 concepts = ["r_oll!", "t_able", "reduce", "masks", "[]R_EAD", "libraries"]
 status = "live"
 order = 20

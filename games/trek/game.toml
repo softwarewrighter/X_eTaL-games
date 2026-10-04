@@ -3,7 +3,7 @@
 slug = "trek"
 title = "Star Trek"
 summary = "The classic: destroy every Klingon in an 8 by 8 galaxy of 8 by 8 sectors before the stardate runs out, with warp, impulse, phasers, torpedoes and shields. The galaxy is three planes made at once, a course is a whole path at once, and phasers hit every Klingon in one subtraction."
-lesson = "planes of a galaxy, paths as matrices, windows, masked updates"
+lesson = "a galaxy of planes; paths as tables of steps; windows by selection"
 concepts = ["8 by 8 planes", "t_able paths", "w_here first hit", "windows by index", "g_rade permutations", "r_avel_2", "libraries"]
 status = "live"
 order = 50
