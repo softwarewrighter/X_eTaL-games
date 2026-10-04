@@ -58,11 +58,23 @@ async function open(url) {
   let id = 0; const waiting = new Map();
   ws.onmessage = (m) => { const msg = JSON.parse(m.data); waiting.get(msg.id)?.(msg); waiting.delete(msg.id); };
   const send = (method, params = {}) => new Promise((r) => { waiting.set(++id, r); ws.send(JSON.stringify({ id, method, params })); });
+  // An evaluation can be lost while the page is still loading (its
+  // context replaced): try again, a few times, before giving up.
   const evaluate = async (expression) => {
-    const r = await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
-    if (r.result?.exceptionDetails) throw new Error(r.result.exceptionDetails.exception?.description || "page error");
-    return r.result?.result?.value;
+    for (let tries = 0; ; tries++) {
+      const r = await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
+      if (r.result?.exceptionDetails) throw new Error(r.result.exceptionDetails.exception?.description || "page error");
+      if (!r.error && r.result?.result) return r.result.result.value;
+      if (tries >= 5) throw new Error(r.error?.message || "the page gave no result");
+      await sleep(300);
+    }
   };
+  // Wait until the page has loaded and its app has drawn something.
+  for (let i = 0; i < 100; i++) {
+    const r = await send("Runtime.evaluate", { expression: 'document.readyState === "complete" && !!document.querySelector("header, main")', returnByValue: true });
+    if (r.result?.result?.value === true) break;
+    await sleep(100);
+  }
   const key = async (k, code) => {
     for (const type of ["rawKeyDown", "keyUp"]) await send("Input.dispatchKeyEvent", { type, key: k, code: k, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code });
   };
