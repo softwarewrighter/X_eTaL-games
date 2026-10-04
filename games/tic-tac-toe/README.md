@@ -36,13 +36,19 @@ l:l_ines := { @ -> 8 3 r_eshape 1 2 3 4 5 6 7 8 9 1 4 7 2 5 8 3 6 9 1 5 9 3 5 7 
 l:s_ums := { b -> '+ r_/_2 (l:l_ines @) s_elect b }
 l:t_urn := { b -> 1 - 2 * 0 != '+ r_/ b }
 l:m_ove := { b k -> b + (l:t_urn b) * k = r_ange 9 }
+l:a_i := { b ->
+  p := l:t_urn b
+  f := (b l:n_ear 2 * p) c_at (b l:n_ear -2 * p) c_at (5 = r_ange 9) c_at (r_ange 9) m_ember? 1 3 7 9
+  r := (b = 0) * 1 + 1000 100 10 5 '+ '* i_nner 4 9 r_eshape f
+  f_irst w_here r = 'm_ax r_/ r
+}
 l:v_alue := { b ->
   w := l:w_inner b
   w != 0 ? w
   e := l:l_egal b
   0 = t_ally e ? 0
-  v := '{ l:v_alue b l:m_ove _r } e_ach e
-  1 = l:t_urn b ? 'm_ax r_/ v; 'm_in r_/ v
+  p := l:t_urn b
+  p * 'm_ax r_/ p * '{ l:v_alue b l:m_ove _r } e_ach e
 }
 ```
 
@@ -57,10 +63,14 @@ l:v_alue := { b ->
   against every entry). A line whose sum is 2 (or -2) has two marks
   and one empty square; or-ing that over the lines through each
   square says, for all nine squares at once, where a move wins or
-  blocks. Each square's rating adds wins, blocks, the centre and the
-  corners, and the best empty square is played.
+  blocks. With the centre and the corners that makes four features
+  per square, a 4 by 9 matrix; one inner product with the weights
+  1000, 100, 10 and 5 rates all nine squares, and the best empty
+  square is played.
 - The perfect player, `l:v_alue` and `l:b_est`: minimax by recursion,
-  every legal move's value with `e_ach`. From an empty board it finds
+  every legal move's value with `e_ach`, written as negamax (the mover
+  times the largest of the mover times each value, so one formula
+  serves both players). From an empty board it finds
   the draw, but searches half a million positions (about 17 seconds
   natively), so the terminal game uses the quick player and the
   scripted game shows minimax on a position with five empty squares.

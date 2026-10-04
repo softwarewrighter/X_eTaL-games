@@ -4,13 +4,12 @@
 # TicTacToe.xtl (it wins when it can, blocks, takes the centre, then a
 # corner; a fork can beat it).
 "t:" u_se< "TicTacToe"
+"p:" u_se< "Play"
 said := p_rint! "TIC-TAC-TOE: YOU ARE X."
 
 # Your move: the number of an empty square, or it asks again.
 u:a_sk := { b ->
-  said := p_rint! "YOUR MOVE (1-9) ?"
-  line := []R_EAD @
-  k := "123456789" i_ndexOf f_irst line c_at " "
+  k := "YOUR MOVE (1-9) ?" p:l_etter "123456789"
   (k <= 9) & 0 = k s_elect b c_at 1 ? k; u:a_sk b
 }
 u:v_erdict := { b -> d_isclose (t:s_tatus b) s_elect "YOU WIN!" "I WIN." "A DRAW." }
