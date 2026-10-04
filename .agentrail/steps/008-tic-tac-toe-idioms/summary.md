@@ -1,0 +1,1 @@
+tic-tac-toe: inner-product ratings, negamax, status by first condition, shared codes, Board/Play; outputs unchanged; 92/667 -> 85/632
