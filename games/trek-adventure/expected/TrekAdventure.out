@@ -2,18 +2,33 @@ l:t_ext : Unit -> Box Char
 l:k_eys : Num a => Unit -> a
 l:f_lags : Num a => Unit -> a
 l:v_alues : Num a => Unit -> a
-l:l_ines : (Num a, Num b) => a -> b -> Int
-l:s_ay : (Num a, Num b, Num c) => a -> b -> c
+l:k_fv : Num a => Unit -> a
+l:l_ines : Num a => Int -> a -> Int
+l:s_ay : (Num a, Num b) => Int -> a -> b
 l:e_xits : Num a => Unit -> a
 l:i_tems : Unit -> Box Char
 l:h_omes : Num a => Unit -> a
+l:room : Int
+l:turns : Int
+l:phaser : Int
+l:card : Int
+l:toolkit : Int
+l:coupler : Int
+l:tribble : Int
+l:relay : Int
+l:boarders : Int
+l:won : Int
+l:dead : Int
+l:event : Int
 l:n_ew : Num b => a -> b
 l:r_oom : a -> a
 l:t_urns : a -> a
 l:e_vent : a -> a
 l:s_tatus : (Num a, Truthy a) => a -> a
 l:u_pdate : Int -> Int -> Int
+l:s_aying : Int -> Int -> Int
 l:p_resent : Num a => a -> Int
+l:r_efusal : (Truthy a, Num b) => a -> b -> b
 l:m_ove : Int -> Int -> Int
 l:g_o : Int -> Int -> Int
 l:t_ake : Int -> Int -> Int
