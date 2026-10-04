@@ -1,9 +1,10 @@
 number = 3
 slug = "start-here"
-status = "in-progress"
+status = "completed"
 description = "launch step 3: the catalog's first screen: what you are looking at, why it is..."
 role = "production"
 context_files = []
 created_at = "2026-10-04T11:46:35"
+completed_at = "2026-10-04T16:24:09"
 task_type = "docs"
-commits = []
+commits = ["3c779891a59422414a9df01aa5e7078beedcac32"]
