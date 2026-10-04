@@ -1,6 +1,6 @@
 number = 8
 slug = "tic-tac-toe-idioms"
-status = "pending"
+status = "in-progress"
 description = "idioms: rewrite games/tic-tac-toe in idiomatic X_eTaL per docs/style.md: the ..."
 role = "production"
 context_files = []

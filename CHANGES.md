@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 19:12 `refactor` Tic-tac-toe in idiomatic X_eTaL: the quick player's rating as one inner product (four features, four weights), minimax as negamax, the status as the first condition that holds, one code board for text and picture, Board and Play; outputs unchanged; 92/667 to 85/632.
+
 - 18:36 `chore` Saga step trek-idioms completed.
 
 - 18:28 `refactor` Star Trek in idiomatic X_eTaL: Board, State, Text and Play from lib/, the state's positions named; outputs unchanged; 330/2542 to 317/2402.
