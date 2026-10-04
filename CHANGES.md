@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-03
 
+- 17:15 `chore` Saga step trek-adventure-idioms completed.
+
 - 17:14 `refactor` Trek adventure in idiomatic X_eTaL: the text table read by Text, updates by State, named state positions, every action's refusals as data (failed checks pick the message), Play; outputs unchanged.
 
 - 15:55 `chore` Saga step robot-chase-idioms completed.

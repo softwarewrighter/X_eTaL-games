@@ -1,0 +1,1 @@
+trek adventure: Text table + printing, State updates, named positions, refusals as data, Play; outputs unchanged
