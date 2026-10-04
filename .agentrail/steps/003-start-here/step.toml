@@ -1,6 +1,6 @@
 number = 3
 slug = "start-here"
-status = "pending"
+status = "in-progress"
 description = "launch step 3: the catalog's first screen: what you are looking at, why it is..."
 role = "production"
 context_files = []

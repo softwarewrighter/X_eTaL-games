@@ -196,6 +196,15 @@ and a push.
 - [X_eTaL-demos](https://github.com/softwarewrighter/X_eTaL-demos) --
   visual demos in X_eTaL
   ([live](https://softwarewrighter.github.io/X_eTaL-demos/))
+- [X_eTaL-ML](https://github.com/softwarewrighter/X_eTaL-ML) -- machine
+  learning in X_eTaL
+  ([live](https://softwarewrighter.github.io/X_eTaL-ML/))
+- [X_eTaL-libraries](https://github.com/softwarewrighter/X_eTaL-libraries)
+  -- libraries that extend the vocabulary
+  ([live](https://softwarewrighter.github.io/X_eTaL-libraries/))
+- [X_eTaL-extensions](https://github.com/softwarewrighter/X_eTaL-extensions)
+  -- native extensions that extend the machine
+  ([live](https://softwarewrighter.github.io/X_eTaL-extensions/))
 
 ## Links
 

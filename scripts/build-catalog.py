@@ -74,6 +74,22 @@ dialog.about p {{ margin: 0 0 6px; line-height: 1.55; color: var(--fg); }}
 dialog.about .close {{ position: absolute; top: 6px; right: 8px; font: 1.4rem/1 system-ui, sans-serif;
   background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; }}
 .empty {{ color:var(--muted); padding: 24px 0 48px; }}
+.start {{ padding: 0 0 24px; }}
+.start h2 {{ font-size: 1.3rem; margin: 0 0 8px; }}
+.steps {{ margin: 0; padding-left: 1.3em; max-width: 50rem; }}
+.steps li {{ margin: 0 0 12px; }}
+.steps a {{ color: var(--accent); }}
+.examples {{ display: grid; gap: 10px; margin: 10px 0 0; }}
+.examples figure {{ margin: 0; padding: 10px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }}
+.examples code.xtl {{ font-size: 1.15rem; display: block; margin-bottom: 4px; }}
+.examples figcaption {{ color: var(--muted); font-size: .9rem; }}
+code.xtl .c-builtin {{ color: var(--accent); }} code.xtl .c-number {{ color: #b7791f; }}
+code.xtl .c-symbol {{ color: #0b7285; }} code.xtl .c-libfunc, code.xtl .c-user {{ color: #2b8a3e; }}
+.family {{ margin: 8px 0 0; }}
+.family h3 {{ font-size: 1rem; margin: 0 0 6px; }}
+.family ul {{ list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }}
+.family span {{ color: var(--muted); font-size: .85rem; }}
+.family a {{ color: var(--accent); font-weight: 600; }}
 .idioms {{ padding: 0 0 24px; }}
 .idioms h2 {{ font-size: 1.2rem; margin: 0 0 6px; }}
 .idioms table {{ border-collapse: collapse; width: 100%; margin-top: 10px; font-size: .95rem; }}
@@ -92,10 +108,8 @@ code {{ font-family: ui-monospace, "JuliaMono", Menlo, monospace; }}
 <main>
 <header>
 <div class="brand"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL"><h1>Games</h1></div>
-<p class="lede">Small games written in <a href="{xetal}">X_eTaL</a>, a typed array language.
-Each one teaches one array-programming idea and happens to be playable. A game's page runs
-it as X_eTaL runs it, in your browser: the game in a terminal, its scripted program as a
-notebook, and the source; everything on it is X_eTaL's own output.</p>
+<p class="lede">Small games written in <a href="{xetal}">X_eTaL</a>, a typed array language: each one
+is written around one array idea and happens to be playable.</p>
 </header>
 {body}
 </main>
@@ -160,6 +174,54 @@ def card(m):
             f'<div class="links">{" ".join(links)}</div>\n</article>')
 
 
+# Three lines from the games, drawn by X_eTaL's own renderer (xetal
+# render --html) when the catalog is built: what the start screen shows.
+EXAMPLES = [
+    ("p + r_oll! 5 r_eshape 3",
+     "Every horse moves at once: one roll per horse, added to the vector of positions (horse race)."),
+    ("('+ r_/_12 -1 0 1 o_-_12 p) - p",
+     "Every square's count of neighbouring mines at once: the board rotated by every offset and summed, less itself (minesweeper)."),
+    ("(r_ange 9) '+ '* i_nner 2 2 2 2 2 2 2 2 2 e_ncode o_ffsets 512",
+     "Every set of tiles at once: the 512 subsets of 1 to 9 as bits, and all their sums by one inner product (shut the box)."),
+]
+FAMILY = [
+    ("X_eTaL", "https://softwarewrighter.github.io/X_eTaL/", "the language: try it live"),
+    ("Demos", "https://softwarewrighter.github.io/X_eTaL-demos/", "visual demos: Life, fractals, waves"),
+    ("ML", "https://softwarewrighter.github.io/X_eTaL-ML/", "machine learning, one array at a time"),
+    ("Libraries", "https://softwarewrighter.github.io/X_eTaL-libraries/", "libraries extend the vocabulary"),
+    ("Extensions", "https://softwarewrighter.github.io/X_eTaL-extensions/", "native extensions extend the machine"),
+]
+
+
+def rendered(expr):
+    """An expression drawn by X_eTaL's renderer, as HTML spans."""
+    xetal = subprocess.run([str(ROOT / "scripts" / "build-xetal.sh")], capture_output=True, text=True, check=True).stdout.strip()
+    return subprocess.run([xetal, "render", "--html", "-e", expr], capture_output=True, text=True, check=True).stdout.strip()
+
+
+def start():
+    """The first screen: what this is, why arrays, how to try it, and the family."""
+    examples = "".join(f'<figure><code class="xtl">{rendered(e)}</code><figcaption>{html.escape(c)}</figcaption></figure>'
+                       for e, c in EXAMPLES)
+    family = "".join(f'<li><a href="{u}">{html.escape(n)}</a> <span>{html.escape(d)}</span></li>' for n, u, d in FAMILY)
+    return f"""<section class="start">
+<h2>Start here</h2>
+<ol class="steps">
+<li><b>What you are looking at.</b> Small games written in X_eTaL, each running in your browser. A game's
+page plays it in a terminal (type and press Enter), runs its scripted program as a notebook, and shows
+its source: everything on the page is X_eTaL's own output. Every game also runs at the command line
+(<a href="{REPO}#readme">the README</a> says how).</li>
+<li><b>Why an array language.</b> These games are about whole boards, all the pieces or every possible
+move at once, and X_eTaL says them that way, with no loop over squares or pieces:
+<div class="examples">{examples}</div></li>
+<li><b>Try one.</b> Pick a game below; the table says which array idea each one is written around.
+A title links to the game's history.</li>
+</ol>
+<nav class="family"><h3>The X_eTaL family</h3><ul>{family}</ul></nav>
+</section>
+"""
+
+
 def git(*args):
     r = subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
     return r.stdout.strip() or "unknown"
@@ -176,7 +238,7 @@ def main():
         idioms = ('<section class="idioms"><h2>One array idea per game</h2>\n'
                   '<p class="lede">Different games, the same few array ideas: each game is written around one.</p>\n'
                   f'<table><thead><tr><th>The array idiom</th><th>Game</th></tr></thead><tbody>{rows}</tbody></table></section>\n')
-        body = idioms + '<section class="grid">\n' + "\n".join(card(m) for m in games) + "\n</section>"
+        body = start() + idioms + '<section class="grid">\n' + "\n".join(card(m) for m in games) + "\n</section>"
     else:
         body = '<p class="empty">The first game is on its way.</p>'
     out.parent.mkdir(parents=True, exist_ok=True)

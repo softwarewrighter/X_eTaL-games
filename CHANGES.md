@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 16:22 `docs` The catalog opens with Start here: what you are looking at, why an array language (three lines from the games drawn by X_eTaL's renderer), how to try one, and the X_eTaL family's sites; the README lists the whole family.
+
 - 15:38 `chore` Saga step bench completed.
 
 - 15:33 `test` `just bench` (in the gate): every game's scripted, terminal and page times against a committed baseline, failing above 15 % slower; docs/bench.md, with the games timed before and after X_eTaL's table/inner-product slowdown (robot chase 1.7 times slower) for X_eTaL saga 30.
