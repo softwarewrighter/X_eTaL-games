@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 21:50 `chore` Saga step promotion-blockers completed.
+
 - 21:28 `vendor` X_eTaL f823212 vendored: macros, typed screen control, d_ecode on any numbers, and the fix for this repo's program-with-l: ask; every output unchanged; the games 1.6 to 4 times faster (robot chase 43 to 14 ms); a new timing baseline; asks updated.
 
 - 16:24 `chore` Saga step start-here completed.

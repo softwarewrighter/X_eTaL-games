@@ -1,0 +1,11 @@
+{
+  "task_type": "fix",
+  "state": {
+    "number": 4,
+    "step": "promotion-blockers"
+  },
+  "action": "vendor, recheck asks, bench",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-04T21:50:34"
+}
