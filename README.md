@@ -148,6 +148,8 @@ command line's expected output.
 just serve SLUG       # one game's web app at http://127.0.0.1:8473/, rebuilt on change
 just pages            # build the whole site into pages/
 just serve-pages      # preview pages/ at http://127.0.0.1:8473/X_eTaL-games/
+just publish          # publish pages/ as the gh-pages branch (the live site)
+just verify-live      # play every game on the live site in headless Chrome
 ```
 
 Port 8473 is this repository's own (each X_eTaL repository has its

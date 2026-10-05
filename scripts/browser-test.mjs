@@ -9,6 +9,8 @@
 // driven over the DevTools protocol with Node's built-in WebSocket: no
 // packages.
 //   scripts/browser-test.mjs [SLUG...]      (run `just pages` first)
+//   scripts/browser-test.mjs --url https://softwarewrighter.github.io/X_eTaL-games/ [SLUG...]
+//                                            (the deployed site instead of pages/)
 import { spawn, execFileSync } from "node:child_process";
 import { createServer } from "node:net";
 import { readFileSync, existsSync, mkdtempSync, rmSync } from "node:fs";
@@ -24,12 +26,17 @@ const freePort = () => new Promise((r) => { const s = createServer(); s.listen(0
 const webPort = await freePort(), cdpPort = await freePort();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const slugs = process.argv.slice(2).length ? process.argv.slice(2)
+// --url BASE: test a deployed site (no local server) instead of pages/.
+const argv = process.argv.slice(2);
+const urlAt = argv.indexOf("--url");
+const live = urlAt >= 0 ? argv.splice(urlAt, 2)[1].replace(/\/?$/, "/") : null;
+const slugs = argv.length ? argv
   : execFileSync(join(root, "scripts/games.py"), ["list"], { encoding: "utf8" }).split("\n").filter(Boolean);
 const games = slugs.filter((s) => existsSync(join(root, "games", s, "web/Cargo.toml"))
   && existsSync(join(root, "games", s, "expected/play.in")));
 
-const server = spawn(join(root, "scripts/serve-pages.sh"), [String(webPort)], { stdio: "ignore" });
+const server = live ? { kill() {} } : spawn(join(root, "scripts/serve-pages.sh"), [String(webPort)], { stdio: "ignore" });
+const base = live || `http://127.0.0.1:${webPort}/X_eTaL-games/`;
 const profile = mkdtempSync(join(tmpdir(), "xetal-games-chrome-"));
 const browser = spawn(chrome, ["--headless=new", "--disable-gpu", `--remote-debugging-port=${cdpPort}`,
   `--user-data-dir=${profile}`, "about:blank"], { stdio: "ignore" });
@@ -44,7 +51,7 @@ const done = async (code) => {
 
 async function json(path, method = "GET") {
   for (let i = 0; i < 100; i++) {
-    try { return await (await fetch(`http://127.0.0.1:${cdpPort}${path}`, { method })).json(); }
+    try { return await (await fetch(`http://127.0.0.1:${cdpPort}${path}`, { method, signal: AbortSignal.timeout(10000) })).json(); }
     catch { await sleep(100); }
   }
   throw new Error("Chrome did not answer on the DevTools port");
@@ -52,12 +59,27 @@ async function json(path, method = "GET") {
 
 // One page: a DevTools session with a promise per command.
 async function open(url) {
-  const target = await json(`/json/new?${encodeURIComponent(url)}`, "PUT");
+  // A blank tab first, then an explicit navigation, waiting for the load
+  // event: an evaluation sent while a tab is still switching from its
+  // first page could be dropped without an answer.
+  const target = await json(`/json/new?about:blank`, "PUT");
   const ws = new WebSocket(target.webSocketDebuggerUrl);
-  await new Promise((r, e) => { ws.onopen = r; ws.onerror = e; });
-  let id = 0; const waiting = new Map();
-  ws.onmessage = (m) => { const msg = JSON.parse(m.data); waiting.get(msg.id)?.(msg); waiting.delete(msg.id); };
-  const send = (method, params = {}) => new Promise((r) => { waiting.set(++id, r); ws.send(JSON.stringify({ id, method, params })); });
+  await new Promise((r, e) => { ws.onopen = r; ws.onerror = e; setTimeout(() => e(new Error("DevTools did not connect")), 15000); });
+  let id = 0; const waiting = new Map(); const events = [];
+  ws.onmessage = (m) => {
+    const msg = JSON.parse(m.data);
+    if (msg.id) { waiting.get(msg.id)?.(msg); waiting.delete(msg.id); } else events.push(msg.method);
+  };
+  // Every command answers within a minute or fails (a stuck page must fail the test, not hang it).
+  const send = (method, params = {}) => new Promise((r, e) => {
+    const n = ++id;
+    const timer = setTimeout(() => { waiting.delete(n); e(new Error(`DevTools ${method} gave no answer`)); }, 60000);
+    waiting.set(n, (msg) => { clearTimeout(timer); r(msg); });
+    ws.send(JSON.stringify({ id: n, method, params }));
+  });
+  await send("Page.enable");
+  await send("Page.navigate", { url });
+  for (let i = 0; i < 300 && !events.includes("Page.loadEventFired"); i++) await sleep(100);
   // An evaluation can be lost while the page is still loading (its
   // context replaced): try again, a few times, before giving up.
   const evaluate = async (expression) => {
@@ -78,7 +100,10 @@ async function open(url) {
   const key = async (k, code) => {
     for (const type of ["rawKeyDown", "keyUp"]) await send("Input.dispatchKeyEvent", { type, key: k, code: k, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code });
   };
-  return { evaluate, key, close: () => ws.close() };
+  // Closing a page closes its tab too (open tabs would otherwise pile up,
+  // one running game each, for the rest of the run).
+  const close = async () => { ws.close(); await json(`/json/close/${target.id}`).catch(() => {}); };
+  return { evaluate, key, close };
 }
 
 // Runs in the page: type each line, waiting for the program to read it.
@@ -121,7 +146,9 @@ const XBUTTON = `(() => { document.querySelector("dialog.about[open] .close").cl
 // The title of a page (sel) against game.toml: a Wikipedia link in a new
 // tab with the glyph, or a dialog that Escape, the backdrop and the X
 // each close. Returns a problem, or "" when all is well.
+const debug = (...m) => { if (process.env.BT_DEBUG) console.error("debug:", ...m); };
 async function aboutProblems(page, sel, wiki) {
+  debug("about", sel);
   const a = await page.evaluate(ABOUT(sel));
   if (wiki) {
     if (a.kind !== "wiki" || a.href !== wiki || a.target !== "_blank" || !a.glyph) return `title should link to ${wiki} in a new tab with a glyph (got ${JSON.stringify(a)})`;
@@ -129,7 +156,9 @@ async function aboutProblems(page, sel, wiki) {
   }
   if (a.kind !== "dialog" || a.text < 40) return `title should open an about dialog (got ${JSON.stringify(a)})`;
   for (const [how, close] of [["Escape", null], ["a click outside", BACKDROP], ["the X", XBUTTON]]) {
+    debug("open for", how);
     if (!(await page.evaluate(OPEN(sel)))) return "the dialog did not open";
+    debug("close by", how);
     if (close) await page.evaluate(close); else { await page.key("Escape", 27); await sleep(50); }
     if (await page.evaluate(IS_OPEN)) return `${how} did not close the dialog`;
   }
@@ -141,10 +170,21 @@ let failed = 0;
 const timings = {};
 try {
   await json("/json/version");
+  // The catalog first: every card's title, as the game pages are checked below.
+  const cat = await open(base);
+  let catProblems = 0;
+  for (const slug of slugs) {
+    const toml = readFileSync(join(root, "games", slug, "game.toml"), "utf8");
+    const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
+    const problem = await aboutProblems(cat, `[id="${slug}"] h2 a.wiki, [id="${slug}"] h2 button.about-open`, wiki);
+    if (problem) { console.log(`FAIL: catalog ${slug}: ${problem}`); failed++; catProblems++; }
+  }
+  if (!catProblems) console.log(`ok: catalog (${slugs.length} titles: Wikipedia links and about dialogs)`);
+  await cat.close();
   for (const slug of games) {
     const dir = join(root, "games", slug);
     const typed = readFileSync(join(dir, "expected/play.in"), "utf8").split("\n").filter((l, i, a) => i < a.length - 1 || l);
-    const page = await open(`http://127.0.0.1:${webPort}/X_eTaL-games/${slug}/?seed=1`);
+    const page = await open(`${base}${slug}/?seed=1`);
     try {
       const t0 = performance.now();
       const got = await page.evaluate(PLAY(typed));
@@ -163,20 +203,9 @@ try {
         else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }
-    page.close();
+    await page.close();
   }
-  // The catalog: every card's title, the same way.
-  const cat = await open(`http://127.0.0.1:${webPort}/X_eTaL-games/`);
-  let catProblems = 0;
-  for (const slug of slugs) {
-    const toml = readFileSync(join(root, "games", slug, "game.toml"), "utf8");
-    const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
-    const problem = await aboutProblems(cat, `[id="${slug}"] h2 a.wiki, [id="${slug}"] h2 button.about-open`, wiki);
-    if (problem) { console.log(`FAIL: catalog ${slug}: ${problem}`); failed++; catProblems++; }
-  }
-  if (!catProblems) console.log(`ok: catalog (${slugs.length} titles: Wikipedia links and about dialogs)`);
-  cat.close();
 } catch (e) { console.log(`FAIL: browser test: ${e.message}`); failed++; }
 if (process.env.BENCH_OUT) (await import("node:fs")).writeFileSync(process.env.BENCH_OUT, JSON.stringify(timings, null, 2));
-console.log(`browser-test: ${games.length} game(s)${failed ? ", FAILURES" : ", all passed"}`);
+console.log(`browser-test: ${games.length} game(s)${live ? ` at ${live}` : ""}${failed ? ", FAILURES" : ", all passed"}`);
 await done(failed ? 1 : 0);

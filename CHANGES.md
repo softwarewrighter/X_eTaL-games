@@ -12,6 +12,10 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 09:42 `fix` The browser test opens each tab blank and navigates it explicitly (an evaluation caught in a tab's first navigation could go unanswered and hang the run), gives every DevTools call a time limit, closes each tab when done, and checks the catalog first.
+
+- 01:45 `test` `just verify-live`: the browser test against the deployed site (scripts/browser-test.mjs --url); v0.1.0's site verified live: all nine games, their notebooks, pictures, title links and dialogs, and the catalog.
+
 - 01:15 `chore` Saga step audit-tag completed.
 
 - 01:05 `release` v0.1.0: nine games live, written in idiomatic X_eTaL on shared libraries, X_eTaL pinned at f823212; docs/audit.md records the state at the tag (games, the gate, timings, asks, the linked repositories, the saga record, known limits); every outside link checked; the audit's unclaimed work commits recorded in a retroactive step.

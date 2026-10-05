@@ -100,6 +100,10 @@ bench *args:
 publish:
     scripts/publish-pages.sh
 
+# Play every game on the deployed site (after just publish) and compare with the goldens
+verify-live:
+    scripts/browser-test.mjs --url https://softwarewrighter.github.io/X_eTaL-games/
+
 # The full pre-commit gate
 gate:
     scripts/gate.sh
