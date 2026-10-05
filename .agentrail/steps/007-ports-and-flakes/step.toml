@@ -1,0 +1,15 @@
+number = 7
+slug = "ports-and-flakes"
+status = "completed"
+description = "launch (retroactive, from the audit): the browser test and screenshots on fre..."
+role = "production"
+context_files = []
+created_at = "2026-10-05T00:55:22"
+completed_at = "2026-10-05T00:56:02"
+task_type = "fix"
+commits = [
+    "e50fbedf9019877e1790a079faf5d710767572db",
+    "61b9d137a251622e4531119455389576c50c67c2",
+    "9d23ef1bea3e7db029b9516a416a8bc4979762aa",
+    "60607eafa2376ece830356be2d4d782c41493cd5",
+]

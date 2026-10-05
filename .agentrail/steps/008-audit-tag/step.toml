@@ -1,6 +1,6 @@
 number = 8
 slug = "audit-tag"
-status = "pending"
+status = "in-progress"
 description = "launch step 6: a cross-repo status audit (asks, vendored commit, sibling link..."
 role = "production"
 context_files = []

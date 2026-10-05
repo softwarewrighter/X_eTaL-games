@@ -1,0 +1,1 @@
+launch (retroactive, from the audit): the browser test and screenshots on free ports (a fixed port collided with X_eTaL-ML's server), this repository's port 8473 (the user's choice), and the browser test waiting for page load and retrying lost evaluations.

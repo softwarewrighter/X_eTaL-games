@@ -1,0 +1,1 @@
+Retroactive (from the audit): free ports for the browser test and screenshots, this repository's port 8473, the browser test waiting for page load (commits e50fbed, 61b9d13, 9d23ef1)

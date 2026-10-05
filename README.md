@@ -175,6 +175,7 @@ that. See [`docs/plan.md`](docs/plan.md).
 
 - [`docs/plan.md`](docs/plan.md) -- architecture decisions, the
   gallery, the roadmap
+- [`docs/audit.md`](docs/audit.md) -- the state at the v0.1.0 tag
 - [`docs/style.md`](docs/style.md) -- how the games' X_eTaL is written
 - [`docs/xetal-asks.md`](docs/xetal-asks.md) -- features and fixes the
   games need from X_eTaL
