@@ -1,6 +1,6 @@
-number = 5
+number = 4
 slug = "promotion-blockers"
-status = "pending"
+status = "in-progress"
 description = "launch step 5: re-check the asks that make the games look like a prototype on..."
 role = "production"
 context_files = []

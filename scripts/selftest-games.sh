@@ -44,8 +44,9 @@ grep -q '<p class="lesson">' "$XETAL_GAMES_DIR/index.html" \
   || { echo "selftest: the catalog card has no lesson" >&2; exit 1; }
 ! grep -q 'href="probe/"' "$XETAL_GAMES_DIR/index.html" \
   || { echo "selftest: the catalog links a game with no web app" >&2; exit 1; }
-# The program/library split: a program defining l: names is rejected,
-# as is a library without exports or one named like the game.
+# The program/library split: a program defining l: names fails (X_eTaL
+# itself rejects it), as does a library without exports or one named
+# like the game (the layout check).
 printf '#!/usr/bin/env xetal\nl:finish := 15\n' > "$g/probe.xtl"
 expect fail "a program defining l: names"
 printf '#!/usr/bin/env xetal\n"r:" u_se< "Rules"\nr:finish + 1\n' > "$g/probe.xtl"

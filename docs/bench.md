@@ -10,24 +10,25 @@ that is meant to cost time (a new X_eTaL, a bigger game), write a new
 baseline with `just bench --baseline` and say why in the commit.
 
 The page times include the test's own pauses between typed lines and
-the page's replay of everything typed so far, so they compare runs,
-not machines.
+the page's replay of everything typed so far, and are one run each:
+they are shown for information, and only the native times (scripted
+and terminal) can fail the check.
 
 ## The baseline
 
-Host max (M1 Max), X_eTaL 70e129d, 2026-10-04:
+Host max (M1 Max), X_eTaL f823212, 2026-10-04:
 
 | Game | Scripted (ms) | Terminal (ms) | Page (ms) |
 | ---- | ------------- | ------------- | --------- |
-| horse-race | 5 | 6 | 221 |
-| guess | 6 | 5 | 369 |
-| robot-chase | 43 | 79 | 704 |
-| trek-adventure | 13 | 25 | 1404 |
-| trek | 19 | 17 | 1057 |
-| tic-tac-toe | 27 | 8 | 321 |
-| shut-the-box | 142 | 38 | 433 |
-| minesweeper | 38 | 13 | 320 |
-| 2048 | 686 | 26 | 553 |
+| horse-race | 6 | 7 | 218 |
+| guess | 7 | 6 | 373 |
+| robot-chase | 15 | 25 | 409 |
+| trek-adventure | 15 | 34 | 1396 |
+| trek | 15 | 16 | 1059 |
+| tic-tac-toe | 45 | 17 | 320 |
+| shut-the-box | 34 | 14 | 372 |
+| minesweeper | 38 | 14 | 319 |
+| 2048 | 419 | 16 | 529 |
 
 ## X_eTaL's table and inner product slowdown
 
@@ -36,17 +37,24 @@ built-ins (`t_able`, `i_nner`) slower (X_eTaL saga 30 is fixing it).
 The games, timed on 39938f3 (before) and 70e129d (after), same host,
 same programs (`scripts/bench.py --xetal PATH --out FILE`):
 
-| Game | 39938f3 scripted / terminal (ms) | 70e129d scripted / terminal (ms) |
-| ---- | -------------------------------- | -------------------------------- |
-| robot-chase | 26 / 46 | 44 / 80 |
-| trek | 14 / 14 | 19 / 18 |
-| tic-tac-toe | 22 / 8 | 26 / 8 |
-| minesweeper | 36 / 13 | 38 / 13 |
-| trek-adventure | 13 / 23 | 14 / 25 |
-| horse-race | 5 / 6 | 6 / 6 |
-| guess | 6 / 5 | 6 / 5 |
+| Game | 39938f3 (ms) | 70e129d (ms) | f823212 (ms) |
+| ---- | ------------ | ------------ | ------------ |
+| robot-chase | 26 / 46 | 44 / 80 | 16 / 26 |
+| trek | 14 / 14 | 19 / 18 | 14 / 14 |
+| tic-tac-toe | 22 / 8 | 26 / 8 | 27 / 8 |
+| minesweeper | 36 / 13 | 38 / 13 | 40 / 16 |
+| trek-adventure | 13 / 23 | 14 / 25 | 15 / 31 |
+| horse-race | 5 / 6 | 6 / 6 | 9 / 8 |
+| guess | 6 / 5 | 6 / 5 | 8 / 6 |
+| shut-the-box | (no transpose) | 142 / 38 | 33 / 14 |
+| 2048 | (no transpose) | 686 / 26 | 422 / 17 |
 
-Robot chase is the clearest case, 1.7 times slower: each turn counts
+(scripted / terminal, the fastest of 7 runs.)
+
+At f823212 the games are as fast as before the slowdown or faster:
+robot chase three times faster than at 70e129d, shut the box four
+times, 2048 1.6 times. Robot chase had been the clearest case, 1.7
+times slower: each turn counts
 the robots on every square as one inner product of a 256 by 12 table
 (`((r_ange 256) '= t_able k) '+ '* i_nner w`). Shut the box and 2048
 use transpose, which 39938f3 does not have.

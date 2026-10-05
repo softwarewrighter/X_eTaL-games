@@ -11,8 +11,10 @@ session in headless Chrome (scripts/browser-test.mjs, BENCH_OUT).
   scripts/bench.py --baseline      # measure and write bench/baseline.json
   scripts/bench.py --xetal PATH --out FILE   # measure another xetal build (no pages)
 
-The comparison fails (exit 1) when a measure is more than 15 % and
-more than 25 ms slower than the baseline; it is skipped, with a note,
+The comparison fails (exit 1) when a native measure (scripted or
+terminal) is more than 15 % and more than 25 ms slower than the
+baseline (page times are one run each, with the test's own pauses:
+shown, not judged); it is skipped, with a note,
 on a host other than the baseline's (timings are per machine).
 """
 import json
@@ -30,6 +32,7 @@ ROOT = Path(__file__).resolve().parent.parent
 BASELINE = ROOT / "bench" / "baseline.json"
 RUNS = 7
 SLOWER, FLOOR = 1.15, 25
+GATED = ("script_ms", "play_ms")
 
 
 def games():
@@ -105,9 +108,13 @@ def main(args):
     if base["host"] != host:
         print(f"bench: baseline is from {base['host']}, this is {host}: not compared")
         return 0
+    # Only the native times (the fastest of several runs) can fail: a page
+    # time is one run that includes the test's own pauses, so it is shown
+    # for information.
     slow = [f"{slug} {k}: {v} ms (baseline {base['results'][slug][k]} ms)"
             for slug, r in results.items() for k, v in r.items()
-            if k in base["results"].get(slug, {}) and v > base["results"][slug][k] * SLOWER and v - base["results"][slug][k] > FLOOR]
+            if k in GATED and k in base["results"].get(slug, {})
+            and v > base["results"][slug][k] * SLOWER and v - base["results"][slug][k] > FLOOR]
     if slow:
         print("bench: slower than the baseline by more than 15 %:\n  " + "\n  ".join(slow))
         print("bench: if this is expected (a new X_eTaL, a bigger game), rewrite it: just bench --baseline")

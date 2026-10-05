@@ -8,9 +8,8 @@
 Directories starting with "_" (the template) are not games.
 
 `check` also enforces the program/library split (docs/plan.md A4):
-a program is a lowercase <name>.xtl starting with a shebang and must
-not define l: names (only libraries may: X_eTaL would quietly take
-such a file for a library); a library is a capitalized <Name>.xtl,
+a program is a lowercase <name>.xtl starting with a shebang (X_eTaL
+itself rejects l: names in a program); a library is a capitalized <Name>.xtl,
 without a shebang, exporting at least one l: name; and no library may
 share the game's slug ignoring case (on a case-insensitive file system
 Guess.xtl and guess.xtl are one file).
@@ -67,8 +66,6 @@ def xtl_problems(d):
         else:
             if not shebang:
                 out.append(f"{d.name}/{f.name}: a program (lowercase) must start with #!/usr/bin/env xetal")
-            if DEFINES_L.search(text):
-                out.append(f"{d.name}/{f.name}: a program defines l: names (only a library may)")
     return out
 
 
