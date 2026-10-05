@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 00:28 `chore` Saga step clone-and-publish completed.
+
 - 00:08 `build` X_eTaL is no longer vendored: XETAL_COMMIT (one tracked line) and scripts/xetal.sh clone it into work/xetal and link bin/xetal (X_eTaL's docs/vendoring.md); just xetal-bump moves it; vendor/xetal (3.3 MB of X_eTaL's source) removed. The site is no longer tracked: the gate builds pages/, just publish makes it the only commit of the gh-pages branch, and GitHub Pages serves that branch (the upload workflow removed).
 
 ## 2026-10-04

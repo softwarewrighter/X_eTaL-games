@@ -1,0 +1,1 @@
+XETAL_COMMIT + scripts/xetal.sh (work/xetal clone, bin/xetal) replace vendor/xetal; pages/ untracked, built by gate, just publish -> gh-pages single commit; Pages serves gh-pages (legacy), workflow removed; live site verified
