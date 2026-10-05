@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 01:15 `chore` Saga step audit-tag completed.
+
 - 01:05 `release` v0.1.0: nine games live, written in idiomatic X_eTaL on shared libraries, X_eTaL pinned at f823212; docs/audit.md records the state at the tag (games, the gate, timings, asks, the linked repositories, the saga record, known limits); every outside link checked; the audit's unclaimed work commits recorded in a retroactive step.
 
 - 00:42 `chore` History rewritten (the user's decision, before the launch): every past commit's pages/ and vendor/ purged with git filter-repo (95 commits to 92; the three that only touched them dropped), commit hashes in messages and in the saga records mapped to the new ones; force-pushed.

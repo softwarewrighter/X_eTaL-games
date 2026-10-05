@@ -1,0 +1,11 @@
+{
+  "task_type": "release",
+  "state": {
+    "number": 8,
+    "step": "audit-tag"
+  },
+  "action": "audit, docs, tag",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-05T01:15:17"
+}
