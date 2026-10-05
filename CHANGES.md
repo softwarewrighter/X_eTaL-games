@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 23:23 `chore` Saga step american-spelling completed.
+
 - 22:15 `fix` American spellings only: scripts/check-spelling.py (with its self-test) in the gate; 60 British forms fixed in docs, comments, game text and identifiers (the page shell's module renamed to color); CLAUDE.md says so.
 
 - 21:50 `chore` Saga step promotion-blockers completed.

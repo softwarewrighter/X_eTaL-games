@@ -1,0 +1,1 @@
+check-spelling.py + self-test in gate; 60 British forms fixed (color module renamed); CLAUDE rule; pages rebuilt
