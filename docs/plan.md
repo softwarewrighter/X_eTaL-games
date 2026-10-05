@@ -111,7 +111,14 @@ X_eTaL gap is moved to saga 9 with its asks filed.
 Not planned: real-time games (Pong, Breakout, platformers): their work
 is frame timing and collision geometry, not arrays.
 
-## Priorities (2026-10-03)
+## Priorities (2026-10-03, revised 2026-10-05)
+
+Revised 2026-10-05 (the user): "launch is delayed, do not delay
+games." The launch waits only on X_eTaL's terminal pane, with no date,
+so new games go ahead now: sudoku first (a solver, then a playable
+game), then the remaining macros step, then the other saga 8 games;
+the terminal pane goes in whenever X_eTaL releases it. The record of
+2026-10-03 follows.
 
 Reprioritized after the ecosystem review in `../X_eTaL/docs/research4.txt`:
 stop adding breadth; stabilize, synchronize, explain, and give people
@@ -376,7 +383,11 @@ X_eTaL-libraries', which the games do not use.
 | 5 | extensions | a native extension where it helps | X_eTaL saga 23 |
 | 6 | amend-locals | amend and local functions where they shorten the games | asks filed |
 
-## Saga 8 -- new games: opponents, puzzles and quizzes (post-launch)
+## Saga 8 -- new games: opponents, puzzles and quizzes
+
+No longer after the launch (2026-10-05). Sudoku goes first, recorded as
+launch steps 10 (sudoku-solver) and 11 (sudoku-play) while the
+terminal pane waits.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |

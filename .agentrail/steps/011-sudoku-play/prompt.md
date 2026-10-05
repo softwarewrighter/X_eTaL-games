@@ -1,0 +1,1 @@
+sudoku, playable: play.xtl in the terminal (row column digit, h for a hint from the candidate tensor, c to show a cell's candidates, s to solve), refusing moves that clash with a peer; goldens with expected/play.in; the page's terminal; README; the catalog.

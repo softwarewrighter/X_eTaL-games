@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 15:05 `plan` New games no longer wait for the launch (the user: "launch is delayed, do not delay games"): sudoku-solver and sudoku-play inserted as steps 10 and 11, before assert-macros and the terminal pane; CLAUDE.md rule 6 and the plan's priorities revised.
+
 - 14:28 `chore` Saga step format-macros completed.
 
 - 14:25 `refactor` Messages written with X_eTaL's system macro `f_ormat<` (`@ f_ormat< "SCORE {t:s_core s}"`, the template checked when the program is compiled) instead of `c_at`/`f_ormat` chains: 39 lines in the terminal games, the scripted guess and Star Trek's library; every golden unchanged; docs/style.md says when; an ask filed: a library that fails to parse is reported as missing its exports.

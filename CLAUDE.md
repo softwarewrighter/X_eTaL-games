@@ -333,9 +333,10 @@ Read before working:
    workaround). Do not fix X_eTaL from this repo and do not hide a
    workaround: name it in the ask and in the game's README.
 6. Games that cannot be built with the vendored X_eTaL are deferred
-   (plan saga 9) until their asks land. No new games before the
-   launch (plan, Priorities): idioms, the terminal, and the start page
-   come first.
+   (plan saga 9) until their asks land. New games no longer wait for
+   the launch (the user, 2026-10-05: "launch is delayed, do not delay
+   games"): sudoku first, then the other saga 8 games (plan,
+   Priorities).
 7. Third-party assets (map SVGs, star catalogs, ...) are NEVER
    committed: track only `games/<slug>/assets/fetch.sh` (source URL,
    license, checksum); fetched files go to the git-ignored
