@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 10:05 `vendor` X_eTaL pinned at its v0.1.0 (512b3ee); every output, type and timing check unchanged.
+
 - 09:42 `fix` The browser test opens each tab blank and navigates it explicitly (an evaluation caught in a tab's first navigation could go unanswered and hang the run), gives every DevTools call a time limit, closes each tab when done, and checks the catalog first.
 
 - 01:45 `test` `just verify-live`: the browser test against the deployed site (scripts/browser-test.mjs --url); v0.1.0's site verified live: all nine games, their notebooks, pictures, title links and dialogs, and the catalog.
