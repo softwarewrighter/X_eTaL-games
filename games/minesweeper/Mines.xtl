@@ -29,7 +29,7 @@ l:n_ew := { x ->
 }
 
 # :: Num a => a -> a
-# The eight neighbours of every square at once, as Life counts them
+# The eight neighbors of every square at once, as Life counts them
 # (lib/Board: the board in a border of zeros rotated by every offset and
 # summed, less itself).
 l:a_round := { b -> b:a_round b }
@@ -44,7 +44,7 @@ l:w_ith := { s so -> (f_irst so) c_at (r_avel l:m_ines s) c_at 1 d_rop so }
 # :: (Num a, Truthy a) => a -> Int -> a
 # Opening square rc (row, column from 1): a mine loses; otherwise the
 # opened region grows by flood fill: every opened square with no mine
-# around it opens its neighbours, again and again until nothing
+# around it opens its neighbors, again and again until nothing
 # changes. Squares next to a mine have a count, so the fill never
 # reaches a mine. Opened squares lose their flags.
 l:r_eveal := { s rc ->

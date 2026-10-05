@@ -54,7 +54,7 @@ l:c_hase := { s ->
 }
 ```
 
-Squares, spacing and neighbours come from the shared `Board` library
+Squares, spacing and neighbors come from the shared `Board` library
 (`lib/`), input from `Play`.
 
 ## How it works

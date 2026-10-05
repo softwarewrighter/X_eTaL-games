@@ -22,7 +22,7 @@ l:c_ompress := { b ->
   '+ r_/_2 (b 'l_eft t_able r_ange 4) * c '= t_able r_ange 4
 }
 # :: Num a => a -> Int
-# Every row at once, which tiles double when equal neighbours merge,
+# Every row at once, which tiles double when equal neighbors merge,
 # left to right: a run of equal tiles starts where a tile differs from
 # the one before; each tile's place in its run is its column less the
 # run's start (the latest start so far, by a max-scan). A tile in an

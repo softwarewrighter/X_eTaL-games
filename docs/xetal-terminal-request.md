@@ -26,7 +26,7 @@ built for WebAssembly at all. Please add:
    below): standard input, standard output, standard error shown in
    color, and later a small set of screen controls (cursor moves,
    clearing, colors, single keys) for text-UI programs.
-2. **A browser terminal emulator** for running those programs, modelled
+2. **A browser terminal emulator** for running those programs, modeled
    on `../../sw-embed/web-sw-tos` (a character grid drawn by Rust
    compiled to WebAssembly, keys taken from the window, no `ratatui`,
    no `crossterm`), replacing the `window.prompt` dialogs the live demo

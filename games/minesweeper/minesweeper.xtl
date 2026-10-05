@@ -15,7 +15,7 @@ s_hape -1 0 1 o_-_12 p
 m:c_ounts s
 
 # Opening a square with no mine around it floods: watch the opened
-# region grow, one ring of neighbours at a time, until it stops.
+# region grow, one ring of neighbors at a time, until it stops.
 u:s_teps := { o ->
   said := p_rint! '+ r_/ r_avel o
   more := 1 * (o | 0 < m:a_round o & 0 = m:c_ounts s) & n_ot m:m_ines s

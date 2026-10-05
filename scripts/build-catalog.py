@@ -180,7 +180,7 @@ EXAMPLES = [
     ("p + r_oll! 5 r_eshape 3",
      "Every horse moves at once: one roll per horse, added to the vector of positions (horse race)."),
     ("('+ r_/_12 -1 0 1 o_-_12 p) - p",
-     "Every square's count of neighbouring mines at once: the board rotated by every offset and summed, less itself (minesweeper)."),
+     "Every square's count of neighboring mines at once: the board rotated by every offset and summed, less itself (minesweeper)."),
     ("(r_ange 9) '+ '* i_nner 2 2 2 2 2 2 2 2 2 e_ncode o_ffsets 512",
      "Every set of tiles at once: the 512 subsets of 1 to 9 as bits, and all their sums by one inner product (shut the box)."),
 ]

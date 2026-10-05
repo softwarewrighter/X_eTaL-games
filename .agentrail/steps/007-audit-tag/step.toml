@@ -1,4 +1,4 @@
-number = 6
+number = 7
 slug = "audit-tag"
 status = "pending"
 description = "launch step 6: a cross-repo status audit (asks, vendored commit, sibling link..."

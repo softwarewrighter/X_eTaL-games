@@ -11,7 +11,7 @@ l:c_ell := { n rc -> 1 + (n * 1 s_elect rc) + 2 s_elect rc }
 l:r_c := { n k -> (2 c_at s_hape k) r_eshape ((k - 1) d_iv n) c_at (k - 1) m_od n }
 
 # :: Num a => a -> a
-# Every square's count of 1s among its eight neighbours, all at once:
+# Every square's count of 1s among its eight neighbors, all at once:
 # the board in a border of zeros, rotated along both axes by -1, 0 and
 # 1 (nine boards), summed, less the board, the border dropped.
 l:a_round := { b ->
@@ -20,7 +20,7 @@ l:a_round := { b ->
   1 d_rop_2 -1 d_rop_2 1 d_rop -1 d_rop t
 }
 # :: Num a => a -> a
-# Every square with its four neighbours (up, down, left, right) as 1s:
+# Every square with its four neighbors (up, down, left, right) as 1s:
 # the plus around each 1 of the board, edges not wrapping.
 l:p_lus := { b ->
   p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0

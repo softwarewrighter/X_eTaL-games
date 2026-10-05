@@ -63,7 +63,7 @@ l:v_alue := { b ->
   against every entry). A line whose sum is 2 (or -2) has two marks
   and one empty square; or-ing that over the lines through each
   square says, for all nine squares at once, where a move wins or
-  blocks. With the centre and the corners that makes four features
+  blocks. With the center and the corners that makes four features
   per square, a 4 by 9 matrix; one inner product with the weights
   1000, 100, 10 and 5 rates all nine squares, and the best empty
   square is played.

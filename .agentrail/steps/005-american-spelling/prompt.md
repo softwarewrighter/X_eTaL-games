@@ -1,0 +1,1 @@
+launch step 5 (the user's request): American spellings only, everywhere (docs, comments, identifiers, page text, commit messages): scripts/check-spelling.py (from X_eTaL-demos, with its self-test) in the gate; audit and fix every British form (colour -> color including the microscope module, neighbour, centre, grey, catalogue, -ise...); CLAUDE.md rule; rebuild pages.

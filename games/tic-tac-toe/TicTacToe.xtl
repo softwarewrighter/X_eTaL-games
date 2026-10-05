@@ -60,7 +60,7 @@ l:n_ear := { b t -> '| r_/_2 (l:o_n @) * 9 8 r_eshape t = l:s_ums b }
 # :: (Num a, Truthy a) => a -> Int
 # A quick player that rates every empty square at once: four features
 # per square (it completes a line of the mover's, it blocks one of the
-# other's, the centre, a corner), a 4 by 9 matrix, weighted 1000, 100,
+# other's, the center, a corner), a 4 by 9 matrix, weighted 1000, 100,
 # 10 and 5 by one inner product. A line through a square with sum 2 (or
 # -2) has two marks and one empty square, which must be that one.
 l:a_i := { b ->

@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-04
 
+- 22:15 `fix` American spellings only: scripts/check-spelling.py (with its self-test) in the gate; 60 British forms fixed in docs, comments, game text and identifiers (the page shell's module renamed to color); CLAUDE.md says so.
+
 - 21:50 `chore` Saga step promotion-blockers completed.
 
 - 21:28 `vendor` X_eTaL f823212 vendored: macros, typed screen control, d_ecode on any numbers, and the fix for this repo's program-with-l: ask; every output unchanged; the games 1.6 to 4 times faster (robot chase 43 to 14 ms); a new timing baseline; asks updated.
@@ -48,7 +50,7 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 - 21:47 `chore` Saga step minesweeper-idioms completed.
 
-- 21:45 `refactor` Minesweeper in idiomatic X_eTaL: neighbour counts, squares and spacing from Board, input by Play; outputs unchanged; 94/774 to 88/688.
+- 21:45 `refactor` Minesweeper in idiomatic X_eTaL: neighbor counts, squares and spacing from Board, input by Play; outputs unchanged; 94/774 to 88/688.
 - 21:45 `feat` lib/Play: l:l_ine (the line typed) and l:n_umbersIn (the numbers in a line); l:n_umbers and l:l_etter built on them.
 
 - 19:54 `chore` Saga step shut-the-box-idioms completed.
@@ -109,7 +111,7 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 - 09:05 `chore` Saga step x-pictures completed.
 
-- 09:04 `feat` Boards as pictures X_eTaL draws: tic-tac-toe and robot chase show `[]S_HOW []G_RID` of their boards each turn (the page scales them up; the runner ignores the CLI's "drawn PATH" lines); tests check they appear; ask filed for numbers in `[]G_RID` cells and a colour scale.
+- 09:04 `feat` Boards as pictures X_eTaL draws: tic-tac-toe and robot chase show `[]S_HOW []G_RID` of their boards each turn (the page scales them up; the runner ignores the CLI's "drawn PATH" lines); tests check they appear; ask filed for numbers in `[]G_RID` cells and a color scale.
 
 - 08:55 `chore` Saga step shut-the-box completed.
 

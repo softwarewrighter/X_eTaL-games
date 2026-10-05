@@ -6,7 +6,7 @@ on an empty square. Make a 2048 tile; the game ends when no move
 changes the board.
 
 In X_eTaL a move left is three steps applied to every row at once:
-compress (slide the tiles together), merge (equal neighbours, left to
+compress (slide the tiles together), merge (equal neighbors, left to
 right), compress again. The other three moves turn the board so that
 the move is left (reverse the rows, transpose), move left, and turn
 it back.
@@ -95,4 +95,4 @@ None.
 ## Workarounds
 
 Boards of numbers are printed as text: `[]G_RID` draws numbers as
-colours without the numbers (see `docs/xetal-asks.md`).
+colors without the numbers (see `docs/xetal-asks.md`).

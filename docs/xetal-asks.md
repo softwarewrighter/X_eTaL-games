@@ -13,7 +13,7 @@ workaround in use.
 | Status | Kind | Ask | Games | Workaround |
 | ------ | ---- | --- | ----- | ---------- |
 | filed | feature | A terminal for interactive programs (the request: [`xetal-terminal-request.md`](xetal-terminal-request.md)); X_eTaL is building it as its saga 25 (at 70e129d: a run waits for typed lines and resumes, D50; the pane not yet): a resumable evaluator and a shared terminal pane in Rust and Yew, on the web-sw-tos model, replacing `window.prompt`. No WASI build of `xetal` (decided upstream) | all interactive games | pages run the engine (`xetal-play`) in Yew and replay the typed history on every line |
-| open | feature | `[]G_RID` of numbers (still so at f823212): draw the numbers in the cells, and let a program choose the colour scale (logarithmic, or a few fixed colours) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
+| open | feature | `[]G_RID` of numbers (still so at f823212): draw the numbers in the cells, and let a program choose the color scale (logarithmic, or a few fixed colors) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
 | open | feature | A functional update (amend / "at"; still none at f823212): items of an array replaced at given positions, returning a new array | trek adventure, Star Trek (each wrote `l:u_pdate`), minesweeper, robot chase | a table of positions against indices (`l:u_pdate`) |
 | open | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there | tic-tac-toe, Star Trek | top-level (`l:` or private) helpers that take the extra values as arguments |
 | open | feature | Named dyadic trains (still so at f823212): `u:s_ign := [> - <]` is monadic only, so a dyadic fork must be written inline in a lambda (`{ t g -> t [< - >] g }`) | guess, robot chase | the fork written inline |
@@ -57,14 +57,14 @@ bindings in a lambda's body, closing over its parameters.
 `[]G_RID` draws a character matrix with each character in its cell
 and a 0/1 matrix as dark and light cells, which suits boards of marks
 (tic-tac-toe, robot chase) and of lights (lights out). A matrix of
-other numbers is drawn as colours from the least to the greatest, on a
+other numbers is drawn as colors from the least to the greatest, on a
 linear scale and without the numbers:
 
 ```
 []S_HOW []G_RID 4 4 r_eshape 0 2 4 8 16 32 64 128 256 512 1024 2048 0 0 2 4
 ```
 
-shows a 2048 board as almost all one dark colour, with no way to read
+shows a 2048 board as almost all one dark color, with no way to read
 the tiles. Ask: an option (a variant or a left argument) to draw each
 number in its cell, and a choice of scale (logarithmic, or a small
 palette indexed by the value). Workaround: numeric boards are printed
@@ -74,7 +74,7 @@ as text, and pictures are used only for character and 0/1 boards.
 
 This repo first asked for a `wasm32-wasip1` build of `xetal-cli` so
 pages could run the binary; it fails in `crossterm`, which `ratatui`
-brings in. X_eTaL declined it (2026-10-02) in favour of a terminal
+brings in. X_eTaL declined it (2026-10-02) in favor of a terminal
 pane in Rust and Yew over a resumable evaluator (its saga 25, from the
 terminal request), and pages keep the engine library, `xetal-play`.
 

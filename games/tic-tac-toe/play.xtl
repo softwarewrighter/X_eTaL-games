@@ -1,7 +1,7 @@
 #!/usr/bin/env xetal
 # Tic-tac-toe at the terminal: you are X and move first; type the number
 # of an empty square. The computer plays O with the quick player of
-# TicTacToe.xtl (it wins when it can, blocks, takes the centre, then a
+# TicTacToe.xtl (it wins when it can, blocks, takes the center, then a
 # corner; a fork can beat it).
 "t:" u_se< "TicTacToe"
 "p:" u_se< "Play"

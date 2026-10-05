@@ -8,6 +8,9 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 "$root/scripts/check-vendor.sh"
+# American spellings only (the checker tested first).
+"$root/scripts/check-spelling.py" --self-test
+"$root/scripts/check-spelling.py"
 "$root/scripts/selftest-games.sh"
 # The shared shell of the game pages (shared/microscope).
 (cd "$root/shared/microscope" && cargo test -q >/dev/null 2>&1 && cargo check -q --target wasm32-unknown-unknown) \

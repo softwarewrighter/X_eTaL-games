@@ -5,10 +5,10 @@ touch it, flag the squares you think are mines, and open every safe
 square to win; open a mine and you lose.
 
 Two array ideas make the whole game: every square's count of
-neighbouring mines is computed at once, the way Life counts
-neighbours (the mine board rotated by every offset and summed), and
+neighboring mines is computed at once, the way Life counts
+neighbors (the mine board rotated by every offset and summed), and
 opening a square with no mines around floods: the opened region grows
-by its neighbours, ring after ring, until it stops changing.
+by its neighbors, ring after ring, until it stops changing.
 
 Live: [the minesweeper page](https://softwarewrighter.github.io/X_eTaL-games/minesweeper/)
 -- the game (`play.xtl`) in a terminal, the field also drawn by X_eTaL
@@ -40,7 +40,7 @@ u:t_urn := { s ->
 `Mines.xtl` (exports named `l:`, seen as `m:`). The state is the
 status and three 9 by 9 0/1 boards: mines, opened, flags.
 
-The neighbour count is the shared `Board` library's (`lib/`), the
+The neighbor count is the shared `Board` library's (`lib/`), the
 same one the shared library offers every grid game:
 
 ```
@@ -66,7 +66,7 @@ l:g_row := { s o ->
   border is dropped. Applied to the mines it gives every square's
   count.
 - `l:g_row`: the opened squares with a count of 0 open their
-  neighbours (`l:a_round` of those squares, above 0), never a mine;
+  neighbors (`l:a_round` of those squares, above 0), never a mine;
   the step repeats until the region matches itself (`m_atch`), a fixed
   point. The scripted game prints the region's size at each step.
 - `l:c_odes`: one code per square from the boards at once (unopened,

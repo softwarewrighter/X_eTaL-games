@@ -40,7 +40,7 @@ and is tested by its expected output.
 | [Star Trek](games/trek/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/trek/)) | planes of a galaxy, paths as matrices, windows, masked updates (from COR24 BASIC) | live |
 | [Tic-tac-toe](games/tic-tac-toe/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/tic-tac-toe/)) | a 3 by 3 board, line extraction by indexing, minimax | live |
 | [Shut the box](games/shut-the-box/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/shut-the-box/)) | boolean masks, every subset at once, subset sums | live |
-| [Minesweeper](games/minesweeper/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/minesweeper/)) | neighbourhoods by rotation, flood fill to a fixed point | live |
+| [Minesweeper](games/minesweeper/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/minesweeper/)) | neighborhoods by rotation, flood fill to a fixed point | live |
 | [2048](games/2048/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/2048/)) | compress, merge, pad: composition; turning the board | live |
 | Lights out | boolean matrices, XOR, GF(2) | planned |
 | Connect four, Mastermind, Sudoku, Flood-it, Fifteen, Nim, Reversi | windows, histograms, candidate tensors, regions, permutations, binary digits, rays | planned |
@@ -67,7 +67,7 @@ its idiom in the code.
 | a galaxy of planes; paths as tables of steps; windows by selection | [Star Trek](games/trek/README.md) |
 | lines by indexing; ratings as one inner product; minimax as negamax | [Tic-tac-toe](games/tic-tac-toe/README.md) |
 | masks over all 512 subsets at once; sums by one inner product | [Shut the box](games/shut-the-box/README.md) |
-| neighbourhoods by rotate and reduce; flood fill to a fixed point | [Minesweeper](games/minesweeper/README.md) |
+| neighborhoods by rotate and reduce; flood fill to a fixed point | [Minesweeper](games/minesweeper/README.md) |
 | compress, merge, compress as a train; turning the board by powers of 0 or 1 | [2048](games/2048/README.md) |
 
 ## Build

@@ -289,7 +289,7 @@ A gallery of small games written in X_eTaL (the eXperimental
 Extensible Typed Array Language, developed in `../X_eTaL`), each
 playable from the command line and live in the browser via GitHub
 Pages. Every game teaches one array-programming lesson (vectors,
-masks, neighbourhoods, composition, constraint tensors) and happens to
+masks, neighborhoods, composition, constraint tensors) and happens to
 be playable. Sibling of `../X_eTaL-demos`, whose layout and scripts it
 follows.
 
@@ -343,7 +343,11 @@ Read before working:
    get a recipe.
 9. The live site is built locally into `pages/` (`just pages`) and
    committed; `.github/workflows/pages.yml` only uploads it.
-10. Docs are ASCII-only markdown (`sw-markdown-checker`). User-facing
+10. American spellings only, everywhere (docs, comments, code
+    identifiers, page text, game text, commit messages): color, center,
+    neighbor, gray, modeled, license, -ize. The user is American;
+    `scripts/check-spelling.py` (in the gate, with its self-test) fails
+    on British forms. Docs are ASCII-only markdown (`sw-markdown-checker`). User-facing
     docs (README, per-game READMEs) say what and how; saga/step talk
     lives only in `docs/plan.md`.
 11. `CHANGES.md` gets a line for every commit (newest first, grouped by
