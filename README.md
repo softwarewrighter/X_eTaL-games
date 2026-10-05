@@ -85,14 +85,14 @@ just eval "'+ r_/_2 2 3 r_eshape r_ange 6"   # try it: row sums, 6 15
 just gate                            # the pre-commit gate
 ```
 
-The games run a copy of X_eTaL kept in this repository under
-`vendor/xetal/` (a snapshot of a known-good commit, recorded in
-`vendor/xetal/VENDORED`), so they do not change under you as X_eTaL
-develops. `just xetal-version` shows which commit it is. Maintainers
-refresh it from a sibling checkout with `just vendor` (the latest
-commit of `../X_eTaL`) or `just vendor REF`; only committed X_eTaL
-work is ever copied, and the refresh is committed on its own after
-`just gate` passes.
+The games run a known-good X_eTaL, recorded as one commit in
+`XETAL_COMMIT`: `just xetal` clones X_eTaL into `work/xetal` (not
+tracked), checks that commit out, builds it and links the binary as
+`bin/xetal`, which every recipe uses (never a `xetal` on your `PATH`),
+so the games do not change under you as X_eTaL develops. `just
+xetal-version` shows the commit. Maintainers move to a newer X_eTaL
+with `just xetal-bump [REF]` (default the latest on GitHub), run
+`just gate`, and commit `XETAL_COMMIT`.
 
 ## Playing and adding games
 
@@ -154,12 +154,13 @@ Port 8473 is this repository's own (each X_eTaL repository has its
 own port, so one demo from each can run at the same time); the
 automated browser test and the screenshots pick free ports instead.
 
-The site is built locally: `just pages` fetches any third-party
-assets, builds every game that has a web app into `pages/<slug>/` and
-writes the catalog, `pages/index.html`, from the games' `game.toml`
-files. `pages/` is committed, and pushing it to `main` runs a GitHub
-Actions workflow (`.github/workflows/pages.yml`) that only publishes
-the folder, at <https://softwarewrighter.github.io/X_eTaL-games/>.
+The site is built locally: `just pages` builds every game that has a
+web app into `pages/<slug>/` and writes the catalog, `pages/index.html`,
+from the games' `game.toml` files (the gate does this too, then plays
+every page in headless Chrome). `pages/` is not tracked: `just publish`
+pushes it to the `gh-pages` branch as that branch's only commit,
+replaced on every publish, and GitHub Pages serves it at
+<https://softwarewrighter.github.io/X_eTaL-games/>.
 
 ## Status
 

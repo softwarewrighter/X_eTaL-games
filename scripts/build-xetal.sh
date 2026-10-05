@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
-# Build the vendored xetal CLI (optimized) into target/xetal/, and print
-# its path. Cargo only rebuilds when a vendored source changed. The
-# build reports the vendored X_eTaL commit (XETAL_BUILD_SHA), not this
-# repository's.
-#   scripts/build-xetal.sh           # quiet; prints the binary's path
+# Build xetal at the known-good commit (scripts/xetal.sh: the clone in
+# work/xetal, the binary linked as bin/xetal), quietly, and print the
+# binary's path. Every script runs that binary, never one on PATH.
+#   scripts/build-xetal.sh
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-[ -f "$root/vendor/xetal/VENDORED" ] || { echo "no vendor/xetal: run just vendor" >&2; exit 1; }
-export CARGO_TARGET_DIR="$root/target/xetal"
-XETAL_BUILD_SHA="$(sed -n 's/^commit = "\(.......\).*/\1/p' "$root/vendor/xetal/VENDORED")"
-export XETAL_BUILD_SHA
-(cd "$root/vendor/xetal/components/cli" && cargo build -q --release -p xetal-cli >&2)
-echo "$CARGO_TARGET_DIR/release/xetal"
+"$root/scripts/xetal.sh" 2>/dev/null || "$root/scripts/xetal.sh"
+echo "$root/bin/xetal"

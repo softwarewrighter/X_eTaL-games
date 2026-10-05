@@ -231,7 +231,7 @@ def main():
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "pages" / "index.html"
     games = json.loads(subprocess.run([str(ROOT / "scripts" / "games.py"), "json"],
                                       capture_output=True, text=True, check=True).stdout)
-    vend = tomllib.loads((ROOT / "vendor" / "xetal" / "VENDORED").read_text())
+    vend = {"commit": (ROOT / "XETAL_COMMIT").read_text().strip()}
     if games:
         rows = "".join(f'<tr><td>{html.escape(m["lesson"])}</td><td><a href="#{html.escape(m["slug"])}">{html.escape(m["title"])}</a></td></tr>'
                        for m in games if m["status"] == "live")

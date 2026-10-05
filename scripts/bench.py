@@ -94,7 +94,7 @@ def main(args):
         out.write_text(json.dumps(measure(xetal, pages=False), indent=2) + "\n")
         print(f"bench: wrote {out}")
         return 0
-    vendored = tomllib.loads((ROOT / "vendor/xetal/VENDORED").read_text())["commit"][:7]
+    vendored = (ROOT / "XETAL_COMMIT").read_text().strip()[:7]
     results = measure(xetal_build(), pages=True)
     host = socket.gethostname().split(".")[0]
     if "--baseline" in args:

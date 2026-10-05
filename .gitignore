@@ -27,3 +27,9 @@ games/*/assets/cache/
 # local scratch and game output
 /tmp/
 work/
+
+# X_eTaL is cloned into work/xetal (above) and its binary linked here (scripts/xetal.sh)
+bin/xetal
+
+# the built site: published as the gh-pages branch (just publish), never tracked on main
+/pages/

@@ -322,11 +322,12 @@ Read before working:
    follow the protocol in `docs/plan.md` A4 (`l:n_ew`, `l:m_ove`,
    `l:l_egal`, `l:s_tatus`, `l:v_iew`, optional `l:s_core`, `l:a_i`,
    `l:h_int`) as far as it fits the game.
-4. X_eTaL is used only through the vendored snapshot in
-   `vendor/xetal/` (`just vendor [REF]` from a COMMITTED ref of
-   `../X_eTaL`, at a saga start or when an ask has landed, never
-   mid-step, always in its own commit with the goldens re-run). Never
-   edit files under `vendor/`.
+4. X_eTaL is used only at the known-good commit in `XETAL_COMMIT`
+   (X_eTaL's docs/vendoring.md): `just xetal` clones it into
+   `work/xetal` (not tracked) and links `bin/xetal`; every script uses
+   that binary and the clone's crates. Move with `just xetal-bump
+   [REF]`, at a saga start or when an ask has landed, never mid-step,
+   in its own commit with the goldens re-run. Never edit the clone.
 5. Missing X_eTaL features and X_eTaL bugs a game uncovers go in
    `docs/xetal-asks.md` (status, kind, games, why, minimal repro,
    workaround). Do not fix X_eTaL from this repo and do not hide a
@@ -341,8 +342,9 @@ Read before working:
    `games/<slug>/assets/cache/`.
 8. `just` is the entry point (recipes call `scripts/*.sh`). New tasks
    get a recipe.
-9. The live site is built locally into `pages/` (`just pages`) and
-   committed; `.github/workflows/pages.yml` only uploads it.
+9. The live site is built locally into `pages/` (`just pages`, also
+   run by the gate), never tracked on main: `just publish` pushes it as
+   the only commit of the `gh-pages` branch, which GitHub Pages serves.
 10. American spellings only, everywhere (docs, comments, code
     identifiers, page text, game text, commit messages): color, center,
     neighbor, gray, modeled, license, -ize. The user is American;

@@ -1,0 +1,9 @@
+number = 6
+slug = "clone-and-publish"
+status = "in-progress"
+description = "launch step 6 (the user's request, X_eTaL docs/vendoring.md and option A): st..."
+role = "production"
+context_files = []
+created_at = "2026-10-04T23:41:26"
+task_type = "build"
+commits = []

@@ -3,7 +3,7 @@
 The house style for game code in this repository: how a game's X_eTaL
 should read. It applies to every game's rules library, scripted game
 and terminal game, and to the shared libraries in `lib/`. It is about
-the X_eTaL of the vendored snapshot (`vendor/xetal/VENDORED`); features
+the X_eTaL at the known-good commit (`XETAL_COMMIT`); features
 X_eTaL has not shipped yet are listed at the end, with what to do in
 the meantime.
 

@@ -7,24 +7,24 @@ set positional-arguments
 default:
     @just --list
 
-# Snapshot a committed ref of ../X_eTaL into vendor/xetal/ (default HEAD); commit it on its own
-vendor ref="HEAD":
-    scripts/vendor-xetal.sh "$1"
-
-# Build the vendored xetal CLI into target/xetal/
+# Get and build xetal at the known-good commit in XETAL_COMMIT (work/xetal, bin/xetal)
 xetal:
-    @scripts/build-xetal.sh
+    scripts/xetal.sh
 
-# The vendored X_eTaL: what was vendored (VENDORED) and the binary's version
+# Move to another X_eTaL (default origin/main): writes XETAL_COMMIT and builds it; then the gate
+xetal-bump ref="origin/main":
+    scripts/xetal-bump.sh "$1"
+
+# The known-good X_eTaL: XETAL_COMMIT and the binary's version
 xetal-version:
-    @cat vendor/xetal/VENDORED
+    @cat XETAL_COMMIT
     @"$(scripts/build-xetal.sh)" --version | head -1
 
 # Evaluate an expression with the vendored xetal: just eval "'+ r_/ 1 2 3"
 eval expr:
     @"$(scripts/build-xetal.sh)" eval -e "$1"
 
-# Check the vendored X_eTaL: CLI builds and answers; xetal-play usable natively and for wasm32
+# Check X_eTaL: the CLI builds and answers; xetal-play usable natively and for wasm32
 check-vendor:
     scripts/check-vendor.sh
 
@@ -68,7 +68,7 @@ bless slug:
 fetch *slugs:
     scripts/fetch-assets.sh "$@"
 
-# Build the live site into pages/ (committed; the Pages workflow publishes it)
+# Build the live site into pages/ (not tracked; the gate builds it too)
 pages:
     scripts/build-pages.sh
 
@@ -95,6 +95,10 @@ size *slugs:
 # Time every game (scripted, terminal, page) and compare with bench/baseline.json; --baseline rewrites it
 bench *args:
     scripts/bench.py "$@"
+
+# Publish pages/ as the gh-pages branch's only commit (the live site); needs a clean work tree
+publish:
+    scripts/publish-pages.sh
 
 # The full pre-commit gate
 gate:
