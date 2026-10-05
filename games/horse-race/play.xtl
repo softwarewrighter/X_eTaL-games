@@ -16,18 +16,18 @@ u:r_ace := { p ->
 
 # Your pick: 1 to 5, 0 to stop, or it asks again.
 u:a_sk := { c ->
-  k := ("you have " c_at (f_ormat c) c_at " coins; your horse (1 to 5, q to stop):") p:l_etter "12345q"
+  k := (@ f_ormat< "you have {c} coins; your horse (1 to 5, q to stop):") p:l_etter "12345q"
   k <= 5 ? k; k = 6 ? 0; u:a_sk c
 }
 
 # One race on your pick, then the next, until you stop or run out.
 u:b_et := { c ->
   k := u:a_sk c
-  k = 0 ? "you leave with " c_at f_ormat c
-  shown := p_rint! "THE RACE IS ON! you are on " c_at k s_elect h:n_ames @
+  k = 0 ? @ f_ormat< "you leave with {c}"
+  shown := p_rint! @ f_ormat< "THE RACE IS ON! you are on {k s_elect h:n_ames @}"
   w := h:w_inners u:r_ace h:n_ew 5
   won := f_irst k m_ember? w
-  said := p_rint! "WINNER: " c_at r_avel w s_elect h:n_ames @
+  said := p_rint! @ f_ormat< "WINNER: {r_avel w s_elect h:n_ames @}"
   c := c + (4 * won) - 1
   told := p_rint! d_isclose (1 + won) s_elect "you lose a coin" "you win 4 coins"
   c = 0 ? "out of coins"; u:b_et c

@@ -129,8 +129,11 @@ same few array idioms. In order:
    check (for X_eTaL's `t_able`/`i_nner` fix, saga 30); the Start Here
    page; a cross-repo status audit and a tagged, known-compatible
    snapshot.
-3. Saga 6, macros: `.xtlm` macro libraries (Test/Assert, Control) in
-   the games as soon as X_eTaL ships them: "Extensible" is in the name.
+3. Saga 6, macros: X_eTaL's system macros (`f_ormat<`, `a_ssert<`,
+   shipped in v0.1.0) in the games: "Extensible" is in the name. Run
+   as steps of the launch saga's record (steps 9 and 10) while the
+   terminal pane waits on X_eTaL's release of it (the user's go,
+   2026-10-05).
 4. Post-launch: saga 7 (enums, tuples, records, signatures, typed
    errors, extensions, amend, local functions, screen control beyond
    the terminal pane), saga 8 (new games: opponents, puzzles,
@@ -353,8 +356,14 @@ promotion gate, as it touches the games).
 
 | # | Step slug | Delivers | Waits on |
 | - | --------- | -------- | -------- |
-| 1 | test-macros | the scripted games' checks written with a Test/Assert macro library (`.xtlm`), so a game's expectations are stated in X_eTaL, not only in goldens | X_eTaL saga 19 |
-| 2 | control-macros | Control macros where they read better than guards (the terminal loops) | X_eTaL saga 19, X_eTaL-libraries |
+| 1 | format-macros | DONE: 39 messages in the terminal games, the scripted guess and Star Trek's library written with `@ f_ormat< "... {expr} ..."` instead of `c_at`/`f_ormat` chains; every golden unchanged; docs/style.md; an ask filed (a library that fails to parse reported as missing its exports). Planned: the checks, Test/Assert, as a `.xtlm` library | X_eTaL saga 19 (landed in v0.1.0) |
+| 2 | assert-macros | each scripted game states its expectations with `a_ssert<` (the condition as written, silent when it holds); the game tests fail on any assertion; control macros (`i_f<`, `u_nless<`) only where a guard cannot do the job (X_eTaL-libraries' rule: a macro only where a function or a guard cannot) | |
+
+The saga record runs these as launch steps 9 and 10 (agentrail keeps
+one active saga; the terminal pane, step 11, still waits). The
+macros left out: `i_f<` and `u_nless<` are what guards already do,
+and the domain macros (dates, polynomials, graphs) are
+X_eTaL-libraries', which the games do not use.
 
 ## Saga 7 -- the language's new features (post-launch)
 

@@ -27,10 +27,10 @@ the board (as X_eTaL prints a matrix, 0 an empty square) and moves:
 "t:" u_se< "Twenty48"
 u:t_urn := { s ->
   shown := p_rint! t:b_oard s
-  1 = t:s_tatus s ? "2048! YOU WIN WITH " c_at f_ormat t:s_core s
-  2 = t:s_tatus s ? "NO MOVES LEFT. SCORE " c_at f_ormat t:s_core s
+  1 = t:s_tatus s ? @ f_ormat< "2048! YOU WIN WITH {t:s_core s}"
+  2 = t:s_tatus s ? @ f_ormat< "NO MOVES LEFT. SCORE {t:s_core s}"
   d := u:a_sk s
-  0 = d ? "STOPPED WITH SCORE " c_at f_ormat t:s_core s
+  0 = d ? @ f_ormat< "STOPPED WITH SCORE {t:s_core s}"
   next := s t:m_ove d
   next m_atch s ? u:t_urn u:s_tuck s; u:t_urn next
 }

@@ -37,5 +37,5 @@ u:t_urn := { s ->
   u:t_urn s t:c_ommand c c_at s u:a_rgs c
 }
 s := t:n_ew 0
-said := p_rint! "STARDATE " c_at (f_ormat t:d_ate s) c_at " - YOU HAVE 30 DAYS TO DESTROY " c_at (f_ormat t:k_lingons s) c_at " KLINGONS."
+said := p_rint! @ f_ormat< "STARDATE {t:d_ate s} - YOU HAVE 30 DAYS TO DESTROY {t:k_lingons s} KLINGONS."
 done := u:t_urn s

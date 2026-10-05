@@ -23,7 +23,7 @@ u:a_sk := { s ->
 u:s_how := { s ->
   said := p_rint! ""
   pic := []S_HOW r:p_icture s
-  said := p_rint! "TURN " c_at (f_ormat r:t_urn s) c_at "   ROBOTS " c_at (f_ormat '+ r_/ r:a_live s) c_at "   TELE " c_at f_ormat r:t_ele s
+  said := p_rint! @ f_ormat< "TURN {r:t_urn s}   ROBOTS {'+ r_/ r:a_live s}   TELE {r:t_ele s}"
   r:v_iew s
 }
 
@@ -51,6 +51,6 @@ u:e_nd := { s ->
   9 = r:e_vent s ? "GAME OVER"
   shown := p_rint! u:s_how s
   said := p_rint! ""
-  1 = r:s_tatus s ? "*** YOU WIN IN " c_at (f_ormat r:t_urn s) c_at " TURNS! ***"; "*** YOU WERE CAUGHT. ***"
+  1 = r:s_tatus s ? @ f_ormat< "*** YOU WIN IN {r:t_urn s} TURNS! ***"; "*** YOU WERE CAUGHT. ***"
 }
 u:t_urn r:n_ew 0

@@ -50,6 +50,11 @@ better when it is clearer, never when it is cryptic.
   (a power count must be a number, not a Bool).
 - A function over the rows of a matrix: `m_ap` over the row numbers
   (`'{ f _r s_elect m } m_ap r_ange t_ally m`); `m_ap` alone maps items.
+- A message with values in it is a format string, `@ f_ormat< "SCORE
+  {t:s_core s}"`: X_eTaL's system macro, whose template is checked when
+  the program is compiled (an unclosed `{` stops it), not a chain of
+  `"..." c_at (f_ormat x) c_at "..."`. Text inside `{}` is written as
+  it is; `{{` and `}}` are braces. `c_at` stays for joining arrays.
 
 ## Libraries
 

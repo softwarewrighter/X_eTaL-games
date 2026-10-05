@@ -13,7 +13,7 @@ g:r_eply t g:m_ove 50
 u:p_lay := { t b ->
   k := f_irst r_avel g:g_uess b
   r := t g:m_ove k
-  shown := p_rint! (f_ormat k) c_at "  " c_at g:r_eply r
+  shown := p_rint! @ f_ormat< "{k}  {g:r_eply r}"
   r = 0 ? 1; 1 + t u:p_lay b g:n_arrow r
 }
 start := 2 1 r_eshape 1 c_at g:top

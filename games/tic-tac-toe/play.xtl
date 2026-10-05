@@ -25,7 +25,7 @@ u:y_ou := { b ->
 u:m_e := { b ->
   0 < t:s_tatus b ? u:y_ou b
   k := t:a_i b
-  said := p_rint! "I TAKE " c_at f_ormat k
+  said := p_rint! @ f_ormat< "I TAKE {k}"
   u:y_ou b t:m_ove k
 }
 u:y_ou t:n_ew 0

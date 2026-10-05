@@ -21,4 +21,4 @@ u:t_urn := { n ->
   r = 0 ? n; u:t_urn n + 1
 }
 n := u:t_urn 1
-"YOU TOOK " c_at (f_ormat n) c_at " GUESSES."
+@ f_ormat< "YOU TOOK {n} GUESSES."

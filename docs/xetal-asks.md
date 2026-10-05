@@ -18,6 +18,7 @@ workaround in use.
 | open | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there | tic-tac-toe, Star Trek | top-level (`l:` or private) helpers that take the extra values as arguments |
 | open | feature | Named dyadic trains (still so at f823212): `u:s_ign := [> - <]` is monadic only, so a dyadic fork must be written inline in a lambda (`{ t g -> t [< - >] g }`) | guess, robot chase | the fork written inline |
 | open | feature | `p_ower` with a Bool count (still so at f823212) (a 0/1 condition), as other numeric places accept Truthy values | 2048 | `1 *` before the condition |
+| open | bug | A library that fails to parse is reported at the import as `error[not-exported]: x:m_sg is not defined by that library; it defines` (an empty list) instead of the library's own parse error (found at 512b3ee; repro in [Details](#a-library-that-does-not-parse)) | all (found writing the format macros) | `xetal FILE.xtl` on the library itself shows the real error |
 | landed | bug | `t_able` and `i_nner` slower since the higher-order built-ins became kernels (X_eTaL saga 30): robot chase 1.7 times slower (26 to 44 ms) between 39938f3 and 70e129d; at f823212 it is 16 ms, shut the box 4 times and 2048 1.6 times faster than at 70e129d; numbers in [`bench.md`](bench.md) | robot chase, Star Trek, tic-tac-toe | none; `just bench` (in the gate) watches for slowdowns |
 | landed | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (landed by f823212: `error[library-name-in-program]`) | all | none: the layout check's own test was removed |
 
@@ -103,3 +104,20 @@ Ask: treat a file starting with a shebang as a program and report row
 Asks already filed by X_eTaL-demos
 (`../X_eTaL-demos/docs/xetal-asks.md`) that a game also hits are
 copied here with the game named, so this list stands on its own.
+
+### A library that does not parse
+
+Found at X_eTaL 512b3ee (v0.1.0). The import names the export as
+missing and lists none, hiding the parse error that caused it:
+
+```
+$ printf "l:m_sg := { w -> 'x }\n" > L.xtl
+$ printf '"x:" u_se< "L"\np_rint! x:m_sg 2\n' > t.xtl
+$ xetal t.xtl
+error[not-exported]: x:m_sg is not defined by that library; it defines  at 24..30
+$ xetal L.xtl
+error[bad-quote]: a quote must touch a function name, `{`, `[` or a symbol at ...
+```
+
+Wanted: the library's own error, located in the library, named at the
+import.
