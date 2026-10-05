@@ -1,0 +1,1 @@
+39 message lines in the terminal games, the scripted guess and Star Trek's library written with the system macro f_ormat< instead of c_at/f_ormat chains; goldens unchanged; style.md; ask filed (unparsable library reported as missing exports); plan saga 6 rewritten.

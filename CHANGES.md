@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 14:28 `chore` Saga step format-macros completed.
+
 - 14:25 `refactor` Messages written with X_eTaL's system macro `f_ormat<` (`@ f_ormat< "SCORE {t:s_core s}"`, the template checked when the program is compiled) instead of `c_at`/`f_ormat` chains: 39 lines in the terminal games, the scripted guess and Star Trek's library; every golden unchanged; docs/style.md says when; an ask filed: a library that fails to parse is reported as missing its exports.
 
 - 14:10 `plan` The macros saga (plan saga 6) starts while the terminal pane waits on X_eTaL's release: format-macros and assert-macros inserted as launch steps 9 and 10.
