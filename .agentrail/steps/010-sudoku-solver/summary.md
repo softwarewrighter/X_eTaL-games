@@ -1,0 +1,1 @@
+games/sudoku: SudokuGrid.xtl (candidate array, unit counts by table selection, singles at once, rounds to a fixed point, search; game protocol) and sudoku.xtl over four puzzles to Inkala's (0.8 s); goldens, types, README, catalog draft; ask: i_nner cost. The page moves to sudoku-play since every page has a terminal (play.xtl).

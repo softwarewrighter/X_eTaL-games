@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 17:36 `chore` Saga step sudoku-solver completed.
+
 - 17:36 `game` Sudoku, the solver: `games/sudoku/` with the rules library `SudokuGrid.xtl` (an 81 by 9 candidate array; every unit's digit counts at once by selecting with a 27 by 9 table of cells; naked and hidden singles at once; rounds to a fixed point; search on the cell with the fewest candidates) and `sudoku.xtl`, four puzzles from Wikipedia's to Arto Inkala's (solved in 0.8 s); goldens and type comments; in the catalog as in progress; asks filed: `i_nner`'s cost (the table selection is 20 times faster).
 
 - 15:05 `plan` New games no longer wait for the launch (the user: "launch is delayed, do not delay games"): sudoku-solver and sudoku-play inserted as steps 10 and 11, before assert-macros and the terminal pane; CLAUDE.md rule 6 and the plan's priorities revised.
