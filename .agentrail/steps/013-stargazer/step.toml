@@ -1,0 +1,9 @@
+number = 13
+slug = "stargazer"
+status = "pending"
+description = "new game (wrightmikea/stargazer-poc in X_eTaL): games/stargazer/: a bright-st..."
+role = "production"
+context_files = []
+created_at = "2026-10-05T17:36:56"
+task_type = "feature"
+commits = []

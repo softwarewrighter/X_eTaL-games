@@ -1,6 +1,6 @@
 number = 11
 slug = "sudoku-play"
-status = "pending"
+status = "in-progress"
 description = "sudoku, playable: play.xtl in the terminal (row column digit, h for a hint fr..."
 role = "production"
 context_files = []

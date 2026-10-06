@@ -387,14 +387,16 @@ X_eTaL-libraries', which the games do not use.
 
 No longer after the launch (2026-10-05). Sudoku goes first, recorded as
 launch steps 10 (sudoku-solver) and 11 (sudoku-play) while the
-terminal pane waits.
+terminal pane waits. Capitals and stargazer follow as launch steps 12
+and 13 (the user asked for their ETA), before the remaining macros
+step and the terminal pane.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
 | 0 | lights-out | a 5 by 5 0/1 board, presses as XOR with `Board`'s plus, a solver over GF(2); written in the house style (moved from saga 4) |
 | 1 | connect-four | drop by column; wins by windows in four directions; heuristic and minimax players |
 | 2 | mastermind | the code-breaking game; the player that keeps every consistent code (from X_eTaL's classic) |
-| 3 | sudoku | IN PROGRESS: the solver done (launch step 10): `SudokuGrid.xtl`, candidates as an 81 by 9 one-hot array, unit counts by selecting with a 27 by 9 table of cells and summing (`i_nner` was 20 times slower: an ask), naked and hidden singles at once, rounds to a fixed point, search on the fewest candidates (Inkala's puzzle in 0.8 s); `sudoku.xtl` over four puzzles; draft in the catalog. Next (launch step 11): `play.xtl` and the page. Planned: candidates as a 9 x 9 x 9 tensor; singles and hidden singles by broadcasting; a candidate microscope |
+| 3 | sudoku | DONE (launch steps 10 and 11): `SudokuGrid.xtl`, candidates as an 81 by 9 one-hot array, unit counts by selecting with a 27 by 9 table of cells and summing (`i_nner` was 20 times slower: an ask), naked and hidden singles at once, rounds to a fixed point, search on the fewest candidates (Inkala's puzzle in 0.8 s); `sudoku.xtl` over four puzzles; `play.xtl` (moves refused with a reason, hints, candidates, the solution); the page; live. Planned: candidates as a 9 x 9 x 9 tensor; singles and hidden singles by broadcasting; a candidate microscope |
 | 4 | flood-it | the flooded region by iterated masks |
 | 5 | fifteen | the sliding puzzle; solvability by permutation parity |
 | 6 | nim | heaps, XOR strategy by binary digits |

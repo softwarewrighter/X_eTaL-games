@@ -29,6 +29,10 @@ Host max (M1 Max), X_eTaL f823212, 2026-10-04:
 | shut-the-box | 34 | 14 | 372 |
 | minesweeper | 38 | 14 | 319 |
 | 2048 | 419 | 16 | 529 |
+| sudoku | 809 | 29 | 549 |
+
+Sudoku was added 2026-10-05 at X_eTaL 512b3ee (v0.1.0), when it went
+live; its scripted program solves four puzzles, the last by search.
 
 ## X_eTaL's table and inner product slowdown
 

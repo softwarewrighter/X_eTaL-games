@@ -7,8 +7,12 @@ summing over the 27 units, repeats until nothing changes, and searches
 only when that stalls. It solves Arto Inkala's "hardest" puzzle in
 under a second.
 
-Status: the solver (`SudokuGrid.xtl`, `sudoku.xtl`); the game at the
-terminal and its page come next.
+Live: [the Sudoku page](https://softwarewrighter.github.io/X_eTaL-games/sudoku/)
+-- the game (`play.xtl`) in a terminal, the scripted solver
+(`sudoku.xtl`) as a notebook, and the sources: everything on the page
+is X_eTaL's own output, run in your browser.
+
+![The Sudoku page](screenshot.png)
 
 ## The program
 
@@ -57,9 +61,18 @@ it was 20 times slower here.
 
 ## Play it
 
+At the terminal, choose a puzzle (1 easiest, 4 hardest), then type a
+row, a column and a digit (`1 3 4`; digit 0 clears the cell). `h`
+gives a hint (the first single, else a digit from the solution), `c 1
+3` lists a cell's candidates, `s` shows the solution, and `q` stops. A
+move is refused when the cell is a given or the digit is already in
+the cell's row, column or box.
+
 ```bash
+just play sudoku         # at the terminal
 just run sudoku          # the scripted solver
 just show sudoku         # as a notebook: each statement, then its output
+just repl sudoku         # then "s:" u_se< "SudokuGrid"
 just test-game sudoku    # compare with the expected output
 ```
 

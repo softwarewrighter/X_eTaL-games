@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 19:04 `game` Sudoku is live: `play.xtl` at the terminal (choose a puzzle; row column digit, refused with the reason when the cell is a given or a peer holds the digit; h a hint, c a cell's candidates, s the solution, q to stop), its golden from `expected/play.in`; the page (terminal and notebook, tests matching the CLI goldens natively and in headless Chrome); the scripted game checks status and hint; screenshot; README, catalog, idiom table; its times added to the bench baseline. Capitals and stargazer inserted as the next steps (12, 13).
+
 - 17:36 `chore` Saga step sudoku-solver completed.
 
 - 17:36 `game` Sudoku, the solver: `games/sudoku/` with the rules library `SudokuGrid.xtl` (an 81 by 9 candidate array; every unit's digit counts at once by selecting with a 27 by 9 table of cells; naked and hidden singles at once; rounds to a fixed point; search on the cell with the fewest candidates) and `sudoku.xtl`, four puzzles from Wikipedia's to Arto Inkala's (solved in 0.8 s); goldens and type comments; in the catalog as in progress; asks filed: `i_nner`'s cost (the table selection is 20 times faster).

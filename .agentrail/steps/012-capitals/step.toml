@@ -1,0 +1,9 @@
+number = 12
+slug = "capitals"
+status = "pending"
+description = "new game (the user asked for it 2026-10-02 and for its ETA 2026-10-05): games..."
+role = "production"
+context_files = []
+created_at = "2026-10-05T17:36:56"
+task_type = "feature"
+commits = []

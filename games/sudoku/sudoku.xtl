@@ -47,3 +47,10 @@ x := s:s_olve k
 s:s_hown x
 # Every unit holds every digit once:
 '& r_/ r_avel 1 = s:p_erUnit s:o_nehot x
+
+# As a game: a new game on puzzle 1 is playing (0); with the solution
+# filled in it is solved (1); a hint names a row, a column and a digit.
+s := s:n_ew 1
+s:s_tatus s
+s:s_tatus (s:g_ivens s) c_at s:s_olve s:g_rid s
+s:h_int s
