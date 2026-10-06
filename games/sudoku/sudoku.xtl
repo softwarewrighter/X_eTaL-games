@@ -1,0 +1,49 @@
+#!/usr/bin/env xetal
+# Sudoku solved by array programs, with the rules of SudokuGrid.xtl:
+# every cell's candidates at once, every single at once, rounds until
+# nothing changes, and a search only when rounds stall.
+"s:" u_se< "SudokuGrid"
+
+# Puzzle 1 (Wikipedia's example): 30 givens, 51 empty cells.
+g := 1 s_elect s:p_uzzles @
+s:s_hown g
+'+ r_/ 0 + g = 0
+
+# The 27 units as a table of cells: the first row, column and box.
+U := s:u_nits @
+s_hape U
+1 10 19 s_elect U
+
+# Every cell's candidates at once, 81 by 9: a digit is open where none
+# of the cell's three units holds it. How many each cell has (a placed
+# cell keeps its own digit, 1):
+c := s:c_andidates g
+s_hape c
+9 9 r_eshape '+ r_/_2 c
+# Row 1, column 3 can be 1, 2 or 4.
+w_here 3 s_elect c
+
+# One round fills every single at once: naked singles (one candidate
+# left) and hidden singles (a digit with one place left in a unit).
+s:s_hown s:r_ound g
+# Rounds until nothing changes: this puzzle needs no more.
+s:r_ounds g
+s:s_hown s:p_ropagate g
+
+# Puzzle 2: 17 givens, the fewest a sudoku with one solution can have;
+# singles still finish it.
+h := 2 s_elect s:p_uzzles @
+'+ r_/ 0 + h != 0
+s:r_ounds h
+s:s_hown s:p_ropagate h
+
+# Puzzle 4 (Arto Inkala's): rounds stall at once, with 60 cells empty.
+k := 4 s_elect s:p_uzzles @
+'+ r_/ 0 + 0 = s:p_ropagate k
+# Then a search: guess in the cell with the fewest candidates, each
+# candidate in turn, rounds after each guess, back up on a
+# contradiction.
+x := s:s_olve k
+s:s_hown x
+# Every unit holds every digit once:
+'& r_/ r_avel 1 = s:p_erUnit s:o_nehot x

@@ -1,0 +1,25 @@
+l:u_nits : Unit -> Int
+l:h_omes : Unit -> Int
+l:o_nehot : (Num a, Truthy a) => Int -> a
+l:p_erUnit : Num a => a -> a
+l:p_erCell : Num a => a -> a
+l:c_andidates : (Num a, Truthy a) => Int -> a
+l:s_ingles : (Num a, Num b, Num c, Truthy c) => a -> b -> c
+l:r_ound : Int -> Int
+l:p_ropagate : Int -> Int
+l:b_roken : (Num a, Num b, Truthy b) => Int -> a -> b
+l:s_olve : Int -> Int
+l:t_ry : Int -> Int -> Int
+l:r_ounds : Num a => Int -> a
+l:p_uzzles : Unit -> Int
+l:n_ew : Int -> Int
+l:g_ivens : a -> a
+l:g_rid : a -> a
+l:w_hy : Num a => Int -> Int -> a
+l:c_lash : Num a => Int -> Int -> a
+l:m_ove : Int -> Int -> Int
+l:l_egal : (Num a, Truthy a) => Int -> a
+l:s_tatus : (Num a, Truthy a) => Int -> a
+l:h_int : Int -> Int
+l:s_hown : Int -> Char
+l:v_iew : Int -> Char

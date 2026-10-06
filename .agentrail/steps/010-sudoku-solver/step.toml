@@ -1,6 +1,6 @@
 number = 10
 slug = "sudoku-solver"
-status = "pending"
+status = "in-progress"
 description = "new game (the user, 2026-10-05: the launch is delayed, do not delay games): g..."
 role = "production"
 context_files = []

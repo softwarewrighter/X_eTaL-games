@@ -1,0 +1,175 @@
+# Sudoku's rules and a solver, a library: sudoku.xtl (scripted),
+# play.xtl (at the terminal) and the web page all use these. (Named
+# SudokuGrid because a disk that ignores case cannot hold both
+# Sudoku.xtl and sudoku.xtl.) A grid is a vector of 81 digits, row by
+# row, 0 an empty cell. A game's state is the puzzle's givens (81),
+# then the grid as filled so far (81).
+
+j := (r_ange 9) - 1
+cell := (r_ange 81) - 1
+
+# :: Unit -> Int
+# The 27 units (9 rows, 9 columns, 9 boxes) as a 27 by 9 table of the
+# cells (from 1) in each.
+l:u_nits := { @ -> 1 + ((9 * j) '+ t_able j) c_at (j '+ t_able 9 * j) c_at ((27 * j d_iv 3) + 3 * j m_od 3) '+ t_able (9 * j d_iv 3) + j m_od 3 }
+# :: Unit -> Int
+# The other way round: each cell's three units (from 1), its row's,
+# its column's and its box's, as a 3 by 81 table.
+l:h_omes := { @ -> 3 81 r_eshape 1 + (cell d_iv 9) c_at (9 + cell m_od 9) c_at 18 + (3 * cell d_iv 27) + (cell m_od 9) d_iv 3 }
+
+# :: (Num a, Truthy a) => Int -> a
+# The digits placed, one-hot: 81 by 9, a 1 at each filled cell's digit.
+l:o_nehot := { g -> 0 + g '= t_able r_ange 9 }
+# :: Num a => a -> a
+# How many times each digit appears in each unit, all 27 at once: the
+# unit table selects its cells' rows of m (27 by 9 by 9), summed over
+# the 9 cells.
+l:p_erUnit := { m -> '+ r_/_2 (l:u_nits @) s_elect m }
+# :: Num a => a -> a
+# Back to the cells: each cell's sum of its three units' rows of t
+# (27 by 9 in, 81 by 9 out).
+l:p_erCell := { t ->
+  h := l:h_omes @
+  ((1 s_elect h) s_elect t) + ((2 s_elect h) s_elect t) + (3 s_elect h) s_elect t
+}
+# :: (Num a, Truthy a) => Int -> a
+# The candidates, 81 by 9: a digit is open in an empty cell when none
+# of the cell's units holds it yet; a filled cell keeps its digit.
+l:c_andidates := { g ->
+  f := l:o_nehot g
+  open := (g = 0) '* t_able 9 r_eshape 1
+  0 + (0 < f) | (0 < open) & 0 = l:p_erCell l:p_erUnit f
+}
+# :: (Num a, Num b, Num c, Truthy c) => a -> b -> c
+# The singles of grid g with candidates c, one-hot (81 by 9): a naked
+# single is an empty cell with one candidate left; a hidden single a
+# digit with only one place left in one of the cell's units.
+l:s_ingles := { g c ->
+  empty := 0 < (g = 0) '* t_able 9 r_eshape 1
+  naked := (0 < c) & (1 = '+ r_/_2 c) '* t_able 9 r_eshape 1
+  hidden := (0 < c) & 0 < l:p_erCell 0 + 1 = l:p_erUnit c
+  0 + empty & naked | hidden
+}
+# :: Int -> Int
+# One round: every single filled at once. A cell given two digits at
+# once means the grid has no solution: -1 in every cell.
+l:r_ound := { g ->
+  s := g l:s_ingles l:c_andidates g
+  1 < 'm_ax r_/ '+ r_/_2 s ? 81 r_eshape -1
+  g + '+ r_/_2 s * 81 9 r_eshape r_ange 9
+}
+# :: Int -> Int
+# Rounds until nothing changes (or a contradiction).
+l:p_ropagate := { g ->
+  h := l:r_ound g
+  h m_atch g ? g
+  0 > 'm_in r_/ h ? h
+  l:p_ropagate h
+}
+# :: (Num a, Num b, Truthy b) => Int -> a -> b
+# 1 when grid g (candidates c) cannot be completed: a contradiction
+# marked, a digit twice in a unit, or an empty cell with no candidate.
+l:b_roken := { g c ->
+  0 > 'm_in r_/ g ? 1
+  1 < 'm_ax r_/ r_avel l:p_erUnit l:o_nehot g ? 1
+  0 < '+ r_/ 0 + (g = 0) & 0 = '+ r_/_2 c
+}
+# :: Int -> Int
+# The solution of grid g (-1 in every cell when there is none):
+# propagation, then a guess in the cell with the fewest candidates,
+# each candidate in turn, each guess propagated again.
+l:s_olve := { g ->
+  h := l:p_ropagate g
+  c := l:c_andidates h
+  h l:b_roken c ? 81 r_eshape -1
+  0 = '+ r_/ 0 + h = 0 ? h
+  k := f_irst g_rade ('+ r_/_2 c) + 10 * h != 0
+  h l:t_ry k c_at w_here k s_elect c
+}
+# :: Int -> Int -> Int
+# Guessing: kd is the cell and the digits still to try there.
+l:t_ry := { g kd ->
+  2 > t_ally kd ? 81 r_eshape -1
+  r := l:s_olve g + (2 s_elect kd) * (f_irst kd) = r_ange 81
+  0 > 'm_in r_/ r ? g l:t_ry (f_irst kd) c_at 2 d_rop kd; r
+}
+# :: Num a => Int -> a
+# How many rounds propagation takes on grid g.
+l:r_ounds := { g ->
+  h := l:r_ound g
+  (h m_atch g) | 0 > 'm_in r_/ h ? 0
+  1 + l:r_ounds h
+}
+
+### The game
+
+# The puzzles: Wikipedia's example; one with 17 givens, the fewest a
+# sudoku with one solution can have; two that singles alone cannot
+# finish (Peter Norvig's first hard one, and Arto Inkala's, called the
+# hardest in 2012).
+wikipedia := 5 3 0 0 7 0 0 0 0 6 0 0 1 9 5 0 0 0 0 9 8 0 0 0 0 6 0 8 0 0 0 6 0 0 0 3 4 0 0 8 0 3 0 0 1 7 0 0 0 2 0 0 0 6 0 6 0 0 0 0 2 8 0 0 0 0 4 1 9 0 0 5 0 0 0 0 8 0 0 7 9
+seventeen := 0 0 0 0 0 0 0 1 0 4 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 5 0 4 0 7 0 0 8 0 0 0 3 0 0 0 0 1 0 9 0 0 0 0 3 0 0 4 0 0 2 0 0 0 5 0 1 0 0 0 0 0 0 0 0 8 0 6 0 0 0
+norvig := 4 0 0 0 0 0 8 0 5 0 3 0 0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 0 2 0 0 0 0 0 6 0 0 0 0 0 8 0 4 0 0 0 0 0 0 1 0 0 0 0 0 0 0 6 0 3 0 7 0 5 0 0 2 0 0 0 0 0 1 0 4 0 0 0 0 0 0
+inkala := 8 0 0 0 0 0 0 0 0 0 0 3 6 0 0 0 0 0 0 7 0 0 9 0 2 0 0 0 5 0 0 0 7 0 0 0 0 0 0 0 4 5 7 0 0 0 0 0 1 0 0 0 3 0 0 0 1 0 0 0 0 6 8 0 0 8 5 0 0 0 1 0 0 9 0 0 0 0 4 0 0
+# :: Unit -> Int
+# The puzzles, easiest first, one per row (81 digits).
+l:p_uzzles := { @ -> 4 81 r_eshape wikipedia c_at seventeen c_at norvig c_at inkala }
+# :: Int -> Int
+# A new game on puzzle n (1 to 4): the givens, and the grid so far.
+l:n_ew := { n ->
+  g := n s_elect l:p_uzzles @
+  g c_at g
+}
+# :: a -> a
+l:g_ivens := { s -> 81 t_ake s }
+# :: a -> a
+l:g_rid := { s -> 81 d_rop s }
+# :: Num a => Int -> Int -> a
+# Why digit d cannot go at row r, column c (rcd is r c d; d 0 clears
+# the cell): 0 it can, 1 off the board, 2 a given, 3 a peer holds d.
+l:w_hy := { s rcd ->
+  (0 < 'm_in r_/ 2 t_ake rcd) & (9 >= 'm_ax r_/ 2 t_ake rcd) & (0 <= 3 s_elect rcd) & 9 >= 3 s_elect rcd ? s l:c_lash rcd; 1
+}
+# :: Num a => Int -> Int -> a
+l:c_lash := { s rcd ->
+  k := 1 + (9 * (f_irst rcd) - 1) + (2 s_elect rcd) - 1
+  0 < k s_elect l:g_ivens s ? 2
+  d := 3 s_elect rcd
+  g := (l:g_rid s) * k != r_ange 81
+  (d = 0) | d m_ember? w_here k s_elect l:c_andidates g ? 0; 3
+}
+# :: Int -> Int -> Int
+# Digit d at row r, column c (d 0 clears it), when it may go there.
+l:m_ove := { s rcd ->
+  0 < s l:w_hy rcd ? s
+  k := 1 + (9 * (f_irst rcd) - 1) + (2 s_elect rcd) - 1
+  (l:g_ivens s) c_at ((l:g_rid s) * k != r_ange 81) + (3 s_elect rcd) * k = r_ange 81
+}
+# :: (Num a, Truthy a) => Int -> a
+# The candidates of the grid so far, 81 by 9.
+l:l_egal := { s -> l:c_andidates l:g_rid s }
+# :: (Num a, Truthy a) => Int -> a
+# 1 solved, else 0 (playing).
+l:s_tatus := { s -> 0 + (0 = '+ r_/ 0 + 0 = l:g_rid s) & n_ot (l:g_rid s) l:b_roken l:l_egal s }
+# :: Int -> Int
+# A hint, as row, column and digit: the first single of the grid so
+# far, else the first empty cell's digit in the solution; 0 0 0 when
+# the grid so far has no solution (a digit placed wrong).
+l:h_int := { s ->
+  g := l:g_rid s
+  x := l:s_olve g
+  0 > 'm_in r_/ x ? 0 0 0
+  one := w_here 0 < '+ r_/_2 g l:s_ingles l:c_andidates g
+  k := f_irst one c_at w_here g = 0
+  (1 + (k - 1) d_iv 9) c_at (1 + (k - 1) m_od 9) c_at k s_elect x
+}
+# :: Int -> Char
+# A grid as text: digits, . for an empty cell, the boxes ruled off.
+l:s_hown := { g ->
+  m := (9 9 r_eshape (1 + g) s_elect ".123456789") c_at_2 9 2 r_eshape " |"
+  r := 1 10 2 10 3 10 11 10 4 10 5 10 6 10 11 10 7 10 8 10 9 s_elect_2 m
+  1 2 3 10 4 5 6 10 7 8 9 s_elect r c_at 1 21 r_eshape "------+-------+------"
+}
+# :: Int -> Char
+# The game's grid so far.
+l:v_iew := { s -> l:s_hown l:g_rid s }

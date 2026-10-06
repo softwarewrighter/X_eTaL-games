@@ -43,7 +43,8 @@ and is tested by its expected output.
 | [Minesweeper](games/minesweeper/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/minesweeper/)) | neighborhoods by rotation, flood fill to a fixed point | live |
 | [2048](games/2048/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/2048/)) | compress, merge, pad: composition; turning the board | live |
 | Lights out | boolean matrices, XOR, GF(2) | planned |
-| Connect four, Mastermind, Sudoku, Flood-it, Fifteen, Nim, Reversi | windows, histograms, candidate tensors, regions, permutations, binary digits, rays | planned |
+| [Sudoku](games/sudoku/README.md) | a candidate tensor; every single at once by sums over units; rounds to a fixed point | in progress (the solver) |
+| Connect four, Mastermind, Flood-it, Fifteen, Nim, Reversi | windows, histograms, regions, permutations, binary digits, rays | planned |
 | Capitals, Stargazer | map and sky quizzes: projections, distances, scoring | planned |
 | Battleship | placement masks, a probability map | planned |
 
