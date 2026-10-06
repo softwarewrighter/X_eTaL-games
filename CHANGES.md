@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-05
 
+- 19:04 `chore` Saga step sudoku-play completed.
+
 - 19:04 `game` Sudoku is live: `play.xtl` at the terminal (choose a puzzle; row column digit, refused with the reason when the cell is a given or a peer holds the digit; h a hint, c a cell's candidates, s the solution, q to stop), its golden from `expected/play.in`; the page (terminal and notebook, tests matching the CLI goldens natively and in headless Chrome); the scripted game checks status and hint; screenshot; README, catalog, idiom table; its times added to the bench baseline. Capitals and stargazer inserted as the next steps (12, 13).
 
 - 17:36 `chore` Saga step sudoku-solver completed.

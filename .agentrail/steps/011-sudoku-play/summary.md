@@ -1,0 +1,1 @@
+Sudoku live: play.xtl (moves with refusal reasons, hints, candidates, solution), page and tests (native + headless Chrome), screenshot, docs, bench baseline row; capitals and stargazer inserted as steps 12-13.
