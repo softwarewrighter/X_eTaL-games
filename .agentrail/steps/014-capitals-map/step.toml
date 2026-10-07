@@ -1,0 +1,9 @@
+number = 14
+slug = "capitals-map"
+status = "in-progress"
+description = "capitals, rebuilt as the user asked (2026-10-07: 'broken and unusable'): an i..."
+role = "production"
+context_files = []
+created_at = "2026-10-07T12:43:44"
+task_type = "feature"
+commits = []

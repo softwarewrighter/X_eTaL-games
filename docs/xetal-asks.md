@@ -20,11 +20,12 @@ workaround in use.
 | open | feature | `p_ower` with a Bool count (still so at f823212) (a 0/1 condition), as other numeric places accept Truthy values | 2048 | `1 *` before the condition |
 | open | performance | `i_nner` on numeric matrices costs about 100 ns per multiply-add at 512b3ee: a 27 by 81 by 9 product (`units '+ '* i_nner onehot`) takes 1.9 ms (still so at 75e6a5c), so a solver doing it twice a round took 8.8 s on a hard sudoku | sudoku | the unit counts by selecting with a table and summing (`'+ r_/_2 U s_elect m`, 0.1 ms) |
 | open | performance | Reading numbers out of text is slow on long text: `n_umbers` on 3000 lines (30 KB) takes 5.9 s, and `@ i_nclude< "coast.txt"` of a 228 KB file took 4 minutes, at 512b3ee and 75e6a5c | capitals | data read from TOML (`[]L_IST`) and parsed one short string at a time (`'{ x -> f_irst n_umbers d_isclose x } e_ach list`: 21615 points in 74 ms) |
-| open | performance | `m_ember?` of a long vector against a long vector seems to compare every pair: 207360 cells against 20000 took 13 s (75e6a5c) | capitals | the cells sorted without repeats and each gap of 0s laid out by one `r_eplicate` (0.3 s for the whole map) |
+| open | performance | `m_ember?` of a long vector against a long vector: 207360 cells against 20000 took 13 s (75e6a5c) | capitals | the cells sorted without repeats and each gap of 0s laid out by one `r_eplicate` (0.3 s for the whole map) |
 | open | performance | Star Trek's scripted game went from 15 ms (f823212) to 39 ms at 512b3ee (v0.1.0) and 42 ms at 75e6a5c; its terminal game from 16 to 41 ms, its page from 1059 to 1455 ms; other games unchanged or faster (tic-tac-toe 45 to 28 ms). Under the bench's 25 ms allowance, so not a gate failure | Star Trek | none |
 | open | feature | Numbers in data files: `[]L_IST` and `[]T_ABLE` give strings only, so a table of coordinates is written as strings and parsed in X_eTaL; X_eTaL's planned `.xtln` (Saga 37: a data-only notation of X_eTaL values) would carry numbers and matrices as they are | capitals, stargazer | numbers as strings in TOML, parsed with `n_umbers` per item |
 | open | bug | `[]T_ABLE` and `[]L_IST` read a path relative to the working directory, while `i_nclude<` reads one relative to the file that names it; a library reading its data works only when run from its own directory (75e6a5c) | capitals | every recipe runs a game's programs from its directory |
 | open | feature | A clearer message for a half-written library: a file with bare helper functions and no `l:` name yet is taken for a program, and the error says only `user functions are named with u: (write u:h_elp)`; adding "or define an `l:` name to make this file a library" would point both ways | all | none needed |
+| open | performance | Fast paths for a few array idioms the games lean on (one request, from the capitals map and the sudoku solver at 75e6a5c; requests, not defects, to weigh against X_eTaL's own plans): a join of boxed texts (raze: APL enlist, J `;`, K `,/`): none built in, and `'c_at r_/` on 242 texts takes 1.37 s; hashed membership and index-of: `m_ember?` 207360 against 20000 takes 13 s; mix (APL mix (up arrow)): boxed equal-length results to a matrix; linear text-to-number parsing (APL quad-VFI): `n_umbers` on 30 KB takes 5.9 s; a matrix-product kernel for `'+ '* i_nner` (1.9 ms for 27x81x9). Details: [the idioms](#fast-paths-for-idioms-the-games-use) | capitals, sudoku | `t:j_oin` (lib/Text.xtl: pairs, level by level, 90 ms); sorting and one `r_eplicate` for marking; numbers parsed one short string at a time; the sudoku's table selection |
 | open | bug | A library that fails to parse is reported at the import as `error[not-exported]: x:m_sg is not defined by that library; it defines` (an empty list) instead of the library's own parse error (found at 512b3ee, still so at 75e6a5c; repro in [Details](#a-library-that-does-not-parse)) | all (found writing the format macros) | `xetal FILE.xtl` on the library itself shows the real error |
 | landed | bug | `t_able` and `i_nner` slower since the higher-order built-ins became kernels (X_eTaL saga 30): robot chase 1.7 times slower (26 to 44 ms) between 39938f3 and 70e129d; at f823212 it is 16 ms, shut the box 4 times and 2048 1.6 times faster than at 70e129d; numbers in [`bench.md`](bench.md) | robot chase, Star Trek, tic-tac-toe | none; `just bench` (in the gate) watches for slowdowns |
 | landed | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (landed by f823212: `error[library-name-in-program]`) | all | none: the layout check's own test was removed |
@@ -128,3 +129,19 @@ error[bad-quote]: a quote must touch a function name, `{`, `[` or a symbol at ..
 
 Wanted: the library's own error, located in the library, named at the
 import.
+
+### Fast paths for idioms the games use
+
+Where the capitals map and the sudoku solver spent their time at
+75e6a5c, each an array idiom that a dedicated built-in or fast path
+could serve; the games work around each today, so these are requests
+in order of how much they would help the games, measured on our data:
+
+| What the games did, and how long it took | The idiom | Requested |
+| ---------------------------------------- | --------- | --------- |
+| joining 242 texts with `'{ a b -> e_nclose (d_isclose a) c_at d_isclose b } r_/ b`: 1.37 s | raze: APL enlist, J `;`, K `,/` | a join built-in, or the reduce with `c_at` recognized |
+| `(r_ange 207360) m_ember? k` with 20000 items: 13 s | membership and index-of by hashing | hashed `m_ember?` and `i_ndexOf` |
+| `'{ x -> n_umbers d_isclose x } m_ap list` gives boxes; two `e_ach` passes to get numbers | mix: APL up arrow | a mix built-in |
+| `n_umbers` on 3000 lines (30 KB): 5.9 s | quad-VFI, quad-CSV | linear text-to-number parsing |
+| `U '+ '* i_nner M`, 27x81 by 81x9: 1.9 ms | plus-dot-times as a matrix-product kernel | a numeric fast path for `'+ '* i_nner` |
+

@@ -9,6 +9,7 @@ pub fn game() -> Game {
         title: "Horse race",
         lede: "Five horses race to 15, each running 1, 2 or 3 a round, all at once: the field is one vector of positions and a round is one X_eTaL expression. Bet coins on a horse in the terminal. Ported from a 1970s-style APL program.",
         play: include_str!("../../play.xtl"),
+        interactive: false,
         script_name: "horse-race.xtl",
         script: include_str!("../../horse-race.xtl"),
         library_name: "HorseRace",

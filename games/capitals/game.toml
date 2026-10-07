@@ -2,9 +2,9 @@
 # README's game list and the live catalog (pages/index.html).
 slug = "capitals"
 title = "Capitals"
-summary = "Name the capital at the dot on the world map, from four choices: the place and its three nearest. Choose a region and how many questions. X_eTaL reads the places and coastlines from TOML, projects all 21615 coastline points onto the map at once, draws it, and finds the nearest places by computing every distance at once."
-lesson = "points projected all at once; every distance at once; nearest by grade; data from TOML"
-concepts = ["[]T_ABLE", "[]L_IST", "s_in c_os a_tan", "g_rade", "r_eplicate", "[]G_RID", "libraries"]
+summary = "A map you click: each red dot is a national capital inside its unlabeled country; click it, then its name among four nearby cities; choose a region or the whole world. X_eTaL reads the countries, capitals and cities from TOML, finds the nearest cities by computing every distance at once, and draws the map, its menus and the score as SVG; the page passes your clicks to the program as events."
+lesson = "every distance at once, nearest by grade; a map drawn as SVG text; clicks as events; data from TOML"
+concepts = ["[]T_ABLE", "[]L_IST", "[]E_VENT", "s_in c_os", "g_rade", "f_ormat<", "SVG", "libraries"]
 status = "live"
 order = 110
 sources = ["Natural Earth (public domain), fetched by assets/fetch.sh"]

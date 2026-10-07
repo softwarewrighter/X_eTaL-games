@@ -9,6 +9,7 @@ pub fn game() -> Game {
         title: "2048",
         lede: "2048 in X_eTaL: a move left slides and merges every row at once (compress by running counts and a table, merge by places in runs of equal tiles), and the other moves turn the board with reverse and transpose. Move with a, d, w, s; q stops.",
         play: include_str!("../../play.xtl"),
+        interactive: false,
         script_name: "2048.xtl",
         script: include_str!("../../2048.xtl"),
         library_name: "Twenty48",

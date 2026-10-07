@@ -1,97 +1,114 @@
 # Capitals
 
-A dot marks a capital on the world map: name it from four choices,
-the place and its three nearest neighbors. Choose a region (or the
-whole world) and how many questions; the game says right or wrong,
-how far the place you chose is, and keeps score.
-
-The program reads its data from TOML: the coastlines and the 199
-national capitals from Natural Earth (fetched, not tracked), and
-places of your own from `places.toml`. It projects every coastline
-point onto the map at once, draws the map, and finds the nearest
-places by computing every distance at once.
+A map you click. Each round puts five red dots on the map, each a
+national capital inside its country, with no names on the map. Click a
+dot: a menu of four city names opens beside it, the right one and the
+nearest other cities. Click a name: the dot turns green (right) or
+orange (wrong) and is labeled with its city, and the score goes up when
+you are right. The buttons along the top start a round in a region
+(Africa, Americas, Asia, Europe, Oceania), zoomed to it, or in the
+whole world.
 
 Live: [the Capitals page](https://softwarewrighter.github.io/X_eTaL-games/capitals/)
--- the game (`play.xtl`) in a terminal, the scripted game
-(`capitals.xtl`) as a notebook, and the sources: everything on the page
-is X_eTaL's own output, run in your browser.
+-- Play opens the map in a large dialog (close it with Escape, its X or
+a click outside); [this link](https://softwarewrighter.github.io/X_eTaL-games/capitals/#play)
+opens it at once. Below the dialog are the scripted game (`capitals.xtl`)
+as a notebook, and the sources.
 
-![The Capitals page](screenshot.png)
-
-## The program
-
-From `Atlas.xtl`, the rules library:
-
-```
-all := (("assets/cache/world.toml" "place") []T_ABLE ("places" "fields")) c_at ("places.toml" "place") []T_ABLE ("places" "fields")
-l:c_ell := { la lo -> 1 + (cols * f_loor 2 * 84 - la) + f_loor 2 * 180 + lo }
-l:c_lose := { i ->
-  r := (p_i @) / 180
-  ((s_in r * i s_elect lat) * s_in r * lat) + (c_os r * i s_elect lat) * (c_os r * lat) * c_os r * lon - i s_elect lon
-}
-```
+![The Capitals map](screenshot.png)
 
 ## How it works
 
-Read right to left.
+Everything on the map is written by X_eTaL, in `Atlas.xtl`; the page
+shows the picture and passes your clicks to the program.
 
-- `[]T_ABLE` reads a table of tables from a TOML file as a matrix of
-  texts, one row per place (name, latitude, longitude, region); the
-  capitals and your own places are joined with `c_at`. The numbers are
-  texts in TOML, so each is read with `n_umbers`.
-- `l:c_ell` is the projection: the plate carree, a scale and a shift of
-  each coordinate, onto half-degree cells (288 rows from 84 N to 60 S,
-  720 columns). It takes every point at once.
-- The map: all 21615 coastline points projected, the cells sorted
-  without repeats, and each cell's gap of 0s laid out by one
-  `r_eplicate`, then reshaped to 288 by 720. `[]G_RID` draws a matrix
-  this large as an image, a pixel per cell.
-- `l:c_lose` gives the cosine of the angle between one place and every
-  place at once (the spherical law of cosines); `g_rade` of its
-  negation orders them nearest first, and the three nearest in the
-  game's region are the wrong choices. `l:k_m` turns the cosine into
-  kilometers.
-- `l:d_ot` adds the asked place as a 7 by 7 dot: an outer product
-  (`'& t_able`) of the rows and the columns near it.
+- **The data is TOML.** `[]T_ABLE` reads the capitals (name, latitude,
+  longitude, region) and the cities (name, latitude, longitude) as
+  matrices of texts, and `[]L_IST` the country outlines; numbers are
+  texts in TOML, read with `n_umbers`. Your own places in `places.toml`
+  are joined to them with `c_at`.
+- **The map is SVG text.** The outlines (path data in degrees) go under
+  a transform that is the projection (the plate carree: map units are
+  hundredths of a degree east of 180 W and south of the pole); every
+  dot, button, label and menu is placed in map units by X_eTaL and
+  written with `f_ormat<`; the pieces are joined with `t:j_oin` (in
+  pairs, level by level, as X_eTaL has no join built-in yet).
+- **The view.** For a region, the box around its capitals with a
+  margin, widened to the map's shape; the buttons, dots and text are
+  sized to the view, so they look the same at every zoom.
+- **The choices.** `l:c_lose` gives the cosine of the angle at the
+  Earth's center between a capital and every city at once (the
+  spherical law of cosines); `g_rade` of its negation orders the cities
+  nearest first. The first four with different names, west to east,
+  are the choices; the nearest is the capital itself, the answer.
+- **The clicks.** `play.xtl` is an event loop: it shows the picture,
+  reads the next event with `[]E_VENT`, and gives a click's point to
+  `l:c_lick`, which tests it against the same rectangles and dots the
+  picture was drawn with: a region button starts a round, a menu choice
+  answers, a dot opens its menu. On the page each click is the line
+  `click X Y` in map units, and the program is run again from the start
+  with every click so far, so a game replays exactly.
+
+From `Atlas.xtl`:
+
+```
+l:c_hoices := { i ->
+  o := 12 t_ake g_rade n_eg l:c_lose i
+  nm := '{ k -> e_nclose l:t_own k } e_ach o
+  c := 4 t_ake ((nm i_ndexOf nm) = r_ange t_ally nm) r_eplicate o
+  (g_rade c s_elect tlon) s_elect c
+}
+```
 
 ## Play it
 
 ```bash
-just play capitals       # at the terminal
-just run capitals        # the scripted game
-just show capitals       # the scripted game as a notebook
+just show capitals       # the scripted game as a notebook (a round played by clicks)
+just play capitals       # at the terminal: type lines such as click 30157 6496 (map units)
 just repl capitals       # then "a:" u_se< "Atlas"
 just test-game capitals  # compare with the expected output
 ```
 
+The page is the way to play; the terminal takes the same events typed
+as lines (the golden session, `expected/play.in`, is one).
+
 ## Adding places
 
 Add places of your own to `places.toml`: list each key in `places`
-and give it a table with its name, latitude, longitude (degrees, south
-and west negative) and region. The file's comment shows an example,
-and `test.sh` checks that added places join the quiz. They are asked
-like the capitals, with the nearest places in their region as the
-wrong choices. The regions menu is the `regions` list in the same
-file.
+and give it a table with its name ("City, Country"), latitude,
+longitude (degrees, south and west negative) and region. The file's
+comment shows an example, and `test.sh` checks that added places join
+the game, with their own name among their choices. The regions menu is
+the `regions` list in the same file.
 
 ## Assets
 
-`assets/fetch.sh` downloads Natural Earth's 1:110m land and populated
-places and 1:50m countries (public domain, pinned to a commit and
-checked by SHA-256) into the git-ignored `assets/cache/`, and
-`assets/convert.py` writes `assets/cache/world.toml` from them: the
-coastline points, and each national capital's name, latitude,
-longitude and its country's UN region. Nothing is projected there.
+`assets/fetch.sh` downloads Natural Earth's 1:50m countries and
+populated places (public domain, pinned to a commit and checked by
+SHA-256) into the git-ignored `assets/cache/`, and `assets/convert.py`
+writes `assets/cache/world.toml`: each country's outline as SVG path
+data in degrees (points closer than 0.2 degree dropped), each national
+capital's name, latitude, longitude and its country's UN region, and
+every city's name, latitude and longitude. Nothing is projected or
+drawn there.
+
+## Known limits
+
+- Oceania crosses the date line, so its view spans nearly the whole
+  width of the map.
+- Each click runs the program again from the start (as every page here
+  replays its input), so a long game slows down; X_eTaL's terminal pane
+  and resumable runs will end that.
 
 ## Workarounds
 
 All named in [`docs/xetal-asks.md`](../../docs/xetal-asks.md):
 
+- Joining many texts uses `t:j_oin` (pairs, level by level): a reduce
+  with `c_at` copies the growing text each time, and X_eTaL has no join
+  (raze) built-in yet.
 - Numbers are strings in TOML (X_eTaL's data-only `.xtln` would carry
-  them as numbers), so each is read with `n_umbers`, one short string
-  at a time: on long text it is slow.
-- The map's cells are marked by sorting and one `r_eplicate`, since
-  `m_ember?` is slow on long vectors.
+  them as numbers), read with `n_umbers` one short string at a time.
 - The data files are named relative to the game's directory, where
   every recipe runs the programs: `[]T_ABLE` reads paths relative to
-  the working directory, not to the file that names them.
+  the working directory.

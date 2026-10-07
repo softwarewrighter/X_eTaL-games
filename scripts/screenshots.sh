@@ -20,12 +20,14 @@ fi
 tmp="$(mktemp -d)"
 for slug in "${slugs[@]}"; do
   [ -f "$root/games/$slug/web/Cargo.toml" ] || continue
+  # A game played by clicks is shown with its dialog open (#play), seed 1.
+  page="$slug/"; grep -q 'interactive: true' "$root/games/$slug/web/src/lib.rs" && page="$slug/?seed=1#play"
   # A watchdog: headless Chrome occasionally never returns on a page
   # that keeps animating; give each shot 60 seconds, then try once more.
   for try in 1 2; do
     "$chrome" --headless=new --disable-gpu --hide-scrollbars --window-size=1300,900 \
       --virtual-time-budget=12000 --screenshot="$tmp/$slug.png" \
-      "http://127.0.0.1:$port/X_eTaL-games/$slug/" >/dev/null 2>&1 &
+      "http://127.0.0.1:$port/X_eTaL-games/$page" >/dev/null 2>&1 &
     shot=$!
     ( sleep 60; kill "$shot" 2>/dev/null ) &
     dog=$!

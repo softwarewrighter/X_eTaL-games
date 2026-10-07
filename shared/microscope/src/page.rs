@@ -21,6 +21,11 @@ pub struct Game {
     pub lede: &'static str,
     /// The terminal program, `play.xtl`.
     pub play: &'static str,
+    /// Whether `play.xtl` is played by clicking its pictures (a map, a
+    /// board) rather than typing: the page shows its latest picture in a
+    /// large dialog and gives it each click as an event line,
+    /// `click X Y` in the picture's own coordinates ([]E_VENT).
+    pub interactive: bool,
     /// The scripted program's file name and text (`<slug>.xtl`).
     pub script_name: &'static str,
     pub script: &'static str,
@@ -213,6 +218,93 @@ fn terminal(p: &TermProps) -> Html {
     }
 }
 
+#[derive(Properties, PartialEq)]
+struct BoardProps {
+    game: Game,
+    seed: u64,
+    typed: Vec<String>,
+    on_line: Callback<String>,
+}
+
+/// Where a click on a picture falls in the picture's own coordinates:
+/// its SVG's viewBox, drawn at full width in its own proportions.
+fn picture_point(e: &MouseEvent) -> Option<(f64, f64)> {
+    let target = e.target()?.dyn_into::<Element>().ok()?;
+    let svg = target.closest("svg").ok()??;
+    let vb: Vec<f64> = svg.get_attribute("viewBox")?.split_whitespace().filter_map(|n| n.parse().ok()).collect();
+    let r = svg.get_bounding_client_rect();
+    (vb.len() == 4 && r.width() > 0.0 && r.height() > 0.0).then(|| {
+        (vb[0] + (e.client_x() as f64 - r.left()) / r.width() * vb[2], vb[1] + (e.client_y() as f64 - r.top()) / r.height() * vb[3])
+    })
+}
+
+/// An interactive game: a button opening a large dialog (closed by
+/// Escape, its X, or a click on the background) with the program's
+/// latest picture; a click on it is given to the program as an event
+/// line and the program is run again with every click so far.
+#[function_component(Board)]
+fn board(p: &BoardProps) -> Html {
+    let t = use_memo((p.seed, p.typed.clone()), |(seed, typed)| session(&p.game.libraries(), p.game.play, typed, *seed));
+    let dialog = use_node_ref();
+    {
+        // An address ending in #play opens the game at once (a link to
+        // play it; the screenshots use it).
+        let dialog = dialog.clone();
+        use_effect_with((), move |_| {
+            #[cfg(target_arch = "wasm32")]
+            if web_sys::window().and_then(|w| w.location().hash().ok()).is_some_and(|h| h == "#play") {
+                if let Some(d) = dialog.cast::<HtmlDialogElement>() {
+                    let _ = d.show_modal();
+                }
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            let _ = &dialog;
+        });
+    }
+    let open = {
+        let dialog = dialog.clone();
+        Callback::from(move |_: MouseEvent| {
+            if let Some(d) = dialog.cast::<HtmlDialogElement>() {
+                let _ = d.show_modal();
+            }
+        })
+    };
+    let close = {
+        let dialog = dialog.clone();
+        Callback::from(move |_: MouseEvent| {
+            if let Some(d) = dialog.cast::<HtmlDialogElement>() {
+                d.close();
+            }
+        })
+    };
+    let onclick = {
+        let (dialog, on_line) = (dialog.clone(), p.on_line.clone());
+        Callback::from(move |e: MouseEvent| {
+            let on_backdrop = e.target().and_then(|t| t.dyn_into::<Element>().ok()).is_some_and(|t| t.tag_name() == "DIALOG");
+            if on_backdrop {
+                if let Some(d) = dialog.cast::<HtmlDialogElement>() {
+                    d.close();
+                }
+            } else if let Some((x, y)) = picture_point(&e) {
+                on_line.emit(format!("click {} {}", x.round(), y.round()));
+            }
+        })
+    };
+    let picture = t.lines.iter().rev().find_map(|l| match l { Line::Picture(svg) => Some(svg.clone()), _ => None });
+    let said: Vec<&String> = t.lines.iter().filter_map(|l| match l { Line::Out(s) => Some(s), _ => None }).collect();
+    html! {
+        <>
+        <button class="board-open" onclick={open}>{"Play"}</button>
+        <dialog class="board" ref={dialog} {onclick}>
+            <button class="close" aria-label="Close" onclick={close}>{"\u{00d7}"}</button>
+            if let Some(svg) = picture { <div class="board-pic">{ Html::from_html_unchecked(AttrValue::from(svg)) }</div> }
+            if let Some(e) = &t.error { <div class="err">{e}</div> }
+            <pre class="transcript" hidden=true>{ for said.iter().map(|s| format!("{s}\n")) }</pre>
+        </dialog>
+        </>
+    }
+}
+
 #[function_component(Notebook)]
 fn notebook_view(p: &Game) -> Html {
     let nb = use_memo(p.clone(), |g| notebook(&g.libraries(), g.script, 1));
@@ -271,11 +363,19 @@ pub fn game_page(g: &Game) -> Html {
         <main>
             <div class="layout even">
                 <div class="col">
-                    <section class="panel">
-                        <h2>{"Play: play.xtl"}</h2>
-                        <p class="note">{"The game's terminal program, unmodified, run by X_eTaL in your browser. Type a line and press Enter: the program is run again from the start with everything typed so far as its keyboard, on the same seed, so it is the same game."}</p>
-                        <Terminal game={g.clone()} seed={*seed} typed={(*typed).clone()} {on_line} />
-                    </section>
+                    if g.interactive {
+                        <section class="panel">
+                            <h2>{"Play: play.xtl"}</h2>
+                            <p class="note">{"The game's program, unmodified, run by X_eTaL in your browser. Play opens its picture, drawn by X_eTaL; each click is given to the program as an event, click X Y in the picture's coordinates, and the program is run again from the start with every click so far, on the same seed, so it is the same game. Close it with Escape, the X or a click outside; Play again to go on."}</p>
+                            <Board game={g.clone()} seed={*seed} typed={(*typed).clone()} {on_line} />
+                        </section>
+                    } else {
+                        <section class="panel">
+                            <h2>{"Play: play.xtl"}</h2>
+                            <p class="note">{"The game's terminal program, unmodified, run by X_eTaL in your browser. Type a line and press Enter: the program is run again from the start with everything typed so far as its keyboard, on the same seed, so it is the same game."}</p>
+                            <Terminal game={g.clone()} seed={*seed} typed={(*typed).clone()} {on_line} />
+                        </section>
+                    }
                     <section class="panel">
                         <h2>{format!("The scripted game: {}", g.script_name)}</h2>
                         <p class="note">{format!("Run as a notebook, as just show runs it (seed 1): each statement, then what it printed. Everything below the source is X_eTaL's output.")}</p>
@@ -292,13 +392,24 @@ pub fn game_page(g: &Game) -> Html {
                         <p class="note">{format!("The rules, written once. A library names its exports l: (\"this library\"); a program that imports it with \"{alias}:\" u_se< \"{}\" calls them as {alias}:.", g.library_name)}</p>
                         { block(g.library, NONE) }
                     </section>
-                    { for g.shared.iter().map(|(name, text)| html! {
+                    { for g.shared.iter().map(|(name, text)| if name.contains("assets/cache/") { html! {
+                        <section class="panel code">
+                            <h2>{format!("Data: {name}")}</h2>
+                            <p class="note">{format!("Fetched from its source and converted by the game's assets/fetch.sh when the site is built (never tracked: third-party data); {} KB, not shown.", text.len() / 1024)}</p>
+                        </section>
+                    } } else if name.contains('.') { html! {
+                        <section class="panel code">
+                            <h2>{format!("Data: {name}")}</h2>
+                            <p class="note">{"A data file the program reads (TOML, with []L_IST and []T_ABLE)."}</p>
+                            <pre class="data">{text}</pre>
+                        </section>
+                    } } else { html! {
                         <section class="panel code">
                             <h2>{format!("A shared library: {name}.xtl")}</h2>
                             <p class="note">{"Used by several games; the games' programs import it with u_se<."}</p>
                             { block(text, NONE) }
                         </section>
-                    }) }
+                    } }) }
                 </div>
             </div>
         </main>

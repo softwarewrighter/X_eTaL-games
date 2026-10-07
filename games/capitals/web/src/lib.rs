@@ -7,14 +7,15 @@ use microscope::page::Game;
 pub fn game() -> Game {
     Game {
         title: "Capitals",
-        lede: "Name the capital at the dot: four choices, the place and its three nearest. X_eTaL reads the places and the coastlines from TOML, projects every point onto the map at once, draws it, and finds the nearest capitals by computing every distance at once.",
+        lede: "A map you click: each red dot is a capital inside its unlabeled country; click it, then its name among four nearby cities. X_eTaL reads the countries, capitals and cities from TOML, finds the nearest cities by computing every distance at once, and draws the whole map, menus and all, as SVG; the page only shows the picture and passes your clicks to the program.",
         play: include_str!("../../play.xtl"),
+        interactive: true,
         script_name: "capitals.xtl",
         script: include_str!("../../capitals.xtl"),
         library_name: "Atlas",
         library: include_str!("../../Atlas.xtl"),
         shared: &[
-            ("Play", include_str!("../../../../lib/Play.xtl")),
+            ("Text", include_str!("../../../../lib/Text.xtl")),
             ("places.toml", include_str!("../../places.toml")),
             ("assets/cache/world.toml", include_str!("../../assets/cache/world.toml")),
         ],

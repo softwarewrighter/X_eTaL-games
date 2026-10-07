@@ -9,6 +9,7 @@ pub fn game() -> Game {
         title: "Shut the box",
         lede: "Roll the dice and shut tiles adding up to the roll; shut all nine to win. In X_eTaL every set of tiles is considered at once: the 512 subsets of 1 to 9 are the columns of a 9 by 512 matrix of bits, their sums one inner product, and the legal moves the columns that fit and add up to the roll.",
         play: include_str!("../../play.xtl"),
+        interactive: false,
         script_name: "shut-the-box.xtl",
         script: include_str!("../../shut-the-box.xtl"),
         library_name: "ShutTheBox",

@@ -24,20 +24,27 @@ Host max (M1 Max), X_eTaL f823212, 2026-10-04:
 | guess | 7 | 6 | 373 |
 | robot-chase | 15 | 25 | 409 |
 | trek-adventure | 15 | 34 | 1396 |
-| trek | 15 | 16 | 1059 |
+| trek | 42 | 43 | 1454 |
 | tic-tac-toe | 45 | 17 | 320 |
 | shut-the-box | 34 | 14 | 372 |
 | minesweeper | 38 | 14 | 319 |
 | 2048 | 419 | 16 | 529 |
 | sudoku | 809 | 29 | 549 |
-| capitals | 372 | 437 | 5353 |
+| capitals | 291 | 635 | 3443 |
 
 Sudoku was added 2026-10-05 at X_eTaL 512b3ee (v0.1.0), when it went
 live; its scripted program solves four puzzles, the last by search.
-Capitals was added 2026-10-07 at X_eTaL 75e6a5c: each run reads and
-projects its TOML data (about 0.3 s), and the page runs the program
-again from the start on every line typed (the replay that X_eTaL's
-terminal pane will end), hence 5.4 s for the browser test's ten lines.
+Capitals was added 2026-10-07 at X_eTaL 75e6a5c and rebuilt the same
+day as a map you click: its terminal run replays the golden's eight
+clicks (each drawing the whole map as SVG); the page time is the
+browser test's clicks in the dialog.
+
+Star Trek's row was moved 2026-10-07 from 15, 16 and 1059 ms (X_eTaL
+f823212) to 42, 43 and 1454 ms: it became 2.7 times slower between
+f823212 and v0.1.0 (39 ms with a v0.1.0 build, measured side by side),
+not through this repository; the slowdown is filed in
+[`xetal-asks.md`](xetal-asks.md), and the row goes back down when
+X_eTaL's speed does.
 
 ## X_eTaL's table and inner product slowdown
 

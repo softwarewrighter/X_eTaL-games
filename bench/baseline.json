@@ -25,9 +25,9 @@
       "page_ms": 1396
     },
     "trek": {
-      "script_ms": 15,
-      "play_ms": 16,
-      "page_ms": 1059
+      "script_ms": 42,
+      "play_ms": 43,
+      "page_ms": 1454
     },
     "tic-tac-toe": {
       "script_ms": 45,
@@ -55,9 +55,9 @@
       "page_ms": 549
     },
     "capitals": {
-      "script_ms": 372,
-      "play_ms": 437,
-      "page_ms": 5353
+      "script_ms": 291,
+      "play_ms": 635,
+      "page_ms": 3443
     }
   }
 }

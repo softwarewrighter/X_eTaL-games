@@ -1,140 +1,278 @@
-# The capitals quiz's rules, a library: capitals.xtl (scripted),
-# play.xtl (at the terminal) and the web page all use these. (Named
-# Atlas because a disk that ignores case cannot hold Capitals.xtl
-# beside capitals.xtl.) The data is in two TOML files, read here with
-# []L_IST and []T_ABLE: assets/cache/world.toml (Natural Earth's
-# coastlines and the 199 national capitals, fetched by
+# The capitals game's rules and its map, a library: capitals.xtl
+# (scripted), play.xtl (the game: a map you click) and the web page all
+# use these. (Named Atlas because a disk that ignores case cannot hold
+# Capitals.xtl beside capitals.xtl.) The data is in two TOML files, read
+# with []L_IST and []T_ABLE: assets/cache/world.toml (Natural Earth's
+# country outlines, national capitals and cities, fetched by
 # assets/fetch.sh, not tracked) and places.toml (the regions, and
-# places of your own). Every point is projected here.
+# places of your own). The map is SVG written here.
 #
-# A game's state: the score, the number asked, how many to ask, the
-# region (0 the whole world), then the places to ask, by number.
+# Map units are hundredths of a degree: x = 100 (lon + 180) east from
+# 180 W, y = 100 (90 - lat) south from the pole (the plate carree). A
+# game's state: the region (0 the whole world), the dot whose menu is
+# open (0 none), the score, the number of dots n, then the n places,
+# the n results (0 not yet, 1 right, 2 wrong), then the last dot
+# answered and the city chosen for it.
+
+"t:" u_se< "Text"
 
 ### The data
 
 # Every place: the capitals, then places of your own; a row each of
 # name, latitude, longitude and region, as texts.
 all := (("assets/cache/world.toml" "place") []T_ABLE ("places" "fields")) c_at ("places.toml" "place") []T_ABLE ("places" "fields")
-# The number written in a text, and the second one (a private helper:
-# h: when X_eTaL has it).
+# The cities the wrong choices come from: Natural Earth's populated
+# places, then places of your own; name, latitude, longitude.
+towns := (("assets/cache/world.toml" "city") []T_ABLE ("cities" "cityfields")) c_at 1 2 3 s_elect_2 ("places.toml" "place") []T_ABLE ("places" "fields")
+# The number written in a text (private helpers: h: when X_eTaL has it).
 n_um := { x -> f_irst n_umbers d_isclose x }
-s_econd := { x -> 2 s_elect n_umbers d_isclose x }
+# A name up to its comma: "Paris, France" is Paris.
+c_ity := { x ->
+  t := d_isclose x
+  (n_ot '| s_\ t = f_irst ",") r_eplicate t
+}
 names := 1 s_elect_2 all
 lat := 'n_um e_ach 2 s_elect_2 all
 lon := 'n_um e_ach 3 s_elect_2 all
 regions := "places.toml" []L_IST "regions"
 region := regions i_ndexOf 4 s_elect_2 all
-coast := "assets/cache/world.toml" []L_IST "coast"
+tlat := 'n_um e_ach 2 s_elect_2 towns
+tlon := 'n_um e_ach 3 s_elect_2 towns
+# The countries, unlabeled: each outline (SVG path data in degrees)
+# wrapped as a path, joined once.
+land := t:j_oin '{ d -> e_nclose "<path d=\"" c_at (d_isclose d) c_at "\"/>" } e_ach "assets/cache/world.toml" []L_IST "countries"
 
-### The map
+### Where things are
 
-# Half-degree cells, latitude 84 north (row 1) to 60 south, longitude
-# 180 west (column 1) to 180 east.
-rows := 288
-cols := 720
-
-# :: (Num a, Num b) => a -> b -> Int
-# The cells of points (latitudes la, longitudes lo, in degrees) on the
-# map, numbered row by row from 1: the plate carree projection, a
-# scale and a shift of each coordinate, every point at once.
-l:c_ell := { la lo -> 1 + (cols * f_loor 2 * 84 - la) + f_loor 2 * 180 + lo }
-# 1 at each of the cells k (from 1), 0 elsewhere, as a vector of every
-# cell of the map: the cells sorted without repeats, then each one's
-# gap of 0s since the one before followed by a 1, all by one
-# r_eplicate. (m_ember? is far slower here: an ask.)
-m_ark := { k ->
-  u := u_nique (g_rade k) s_elect k
-  n := t_ally u
-  gap := u - 1 + 0 c_at -1 d_rop u
-  m := (r_avel o_\ (2 c_at n) r_eshape gap c_at n r_eshape 1) r_eplicate r_avel (n c_at 2) r_eshape 0 1
-  m c_at ((rows * cols) - t_ally m) r_eshape 0
-}
-# The coastline: every coast point projected and marked, once.
-k := ('s_econd e_ach coast) l:c_ell 'n_um e_ach coast
-shore := (rows c_at cols) r_eshape m_ark ((k >= 1) & k <= rows * cols) r_eplicate k
-# :: Unit -> Int
-# The coastline map, a rows by cols matrix: 1 on the coast, else 0.
-l:m_ap := { @ -> shore }
-
-### The places
-
-# :: Unit -> Int
-l:c_ount := { @ -> t_ally names }
-# :: Int -> Char
-# Place i's name.
-l:n_ame := { i -> d_isclose i s_elect names }
-# :: Unit -> Box Char
-# The regions, in the menu's order.
-l:r_egions := { @ -> regions }
+# :: Num a => a -> a
+# Map x of longitudes, and map y of latitudes (map units).
+l:m_x := { lo -> 100 * 180 + lo }
+# :: Num a => a -> a
+l:m_y := { la -> 100 * 90 - la }
 # :: Int -> Int
 # The places of region r (0 the whole world), by number.
 l:p_ool := { r -> w_here (r = 0) | region = r }
+# :: Unit -> Box Char
+l:r_egions := { @ -> regions }
+# :: Int -> Float
+# Place i's point on the map: x and y (map units).
+l:a_t := { i -> (l:m_x i s_elect lon) c_at l:m_y i s_elect lat }
+# :: Int -> Char
+# Place i's name ("Paris, France").
+l:n_ame := { i -> d_isclose i s_elect names }
+# :: Int -> Float
+# What the map shows for region r: x, y, width and height (map units),
+# the region's places with a margin, at least 30 degrees wide and
+# widened or heightened to the shape of the whole map (5 by 2), with
+# room at the top for the buttons.
+l:v_iew := { r ->
+  0 = r ? 0.0 600.0 36000.0 14400.0
+  p := l:p_ool r
+  x := l:m_x p s_elect lon
+  y := l:m_y p s_elect lat
+  w := 3000.0 m_ax 1.3 * ('m_ax r_/ x) - 'm_in r_/ x
+  h := 1.3 * ('m_ax r_/ y) - 'm_in r_/ y
+  w := w m_ax 2.5 * h
+  h := w / 2.5
+  cx := ('m_ax r_/ x) + 'm_in r_/ x
+  cy := ('m_ax r_/ y) + 'm_in r_/ y
+  ((cx - 1.2 * w) / 2) c_at (((cy - h) / 2) - 0.2 * h) c_at (1.2 * w) c_at 1.2 * h
+}
 # :: Int -> Float
 # The cosine of the angle at the Earth's center between place i and
-# every place, all at once (the spherical law of cosines): 1 for i
-# itself, larger for nearer.
+# every city at once (the spherical law of cosines): larger is nearer.
 l:c_lose := { i ->
   r := (p_i @) / 180
-  ((s_in r * i s_elect lat) * s_in r * lat) + (c_os r * i s_elect lat) * (c_os r * lat) * c_os r * lon - i s_elect lon
+  a := r * i s_elect lat
+  b := r * i s_elect lon
+  ((s_in a) * s_in r * tlat) + (c_os a) * (c_os r * tlat) * c_os b - r * tlon
 }
-# :: Int -> Float
-# The distance in km from place i to every place: the angle from its
-# cosine c (2 a_tan of the root of (1-c)/(1+c)) times the Earth's
-# radius.
-l:k_m := { i ->
-  c := 1 m_in l:c_lose i
-  6371 * 2 * a_tan ((1 - c) / 1 + c) ^ 0.5
-}
-# :: Int -> Int -> Int
-# The places p (by number) other than i, nearest to i first.
-l:n_earest := { i p ->
-  q := (p != i) r_eplicate p
-  (g_rade n_eg q s_elect l:c_lose i) s_elect q
+# :: Int -> Char
+# City k's name, up to any comma.
+l:t_own := { k -> c_ity k s_elect 1 s_elect_2 towns }
+# :: Int -> Int
+# Place i's choices, as city numbers: the nearest cities with
+# different names, four of them, west to east. The nearest is the
+# place itself (every capital is among the cities), so it is the answer.
+l:c_hoices := { i ->
+  o := 12 t_ake g_rade n_eg l:c_lose i
+  nm := '{ k -> e_nclose l:t_own k } e_ach o
+  c := 4 t_ake ((nm i_ndexOf nm) = r_ange t_ally nm) r_eplicate o
+  (g_rade c s_elect tlon) s_elect c
 }
 # :: Int -> Int
-# Place i's map: the coastline with a dot of 7 by 7 cells at the place
-# (2 on the dot, 1 on the coast, 0 elsewhere).
-l:d_ot := { i ->
-  at := (i s_elect lat) l:c_ell i s_elect lon
-  r := 1 + (at - 1) d_iv cols
-  c := 1 + (at - 1) m_od cols
-  near := (3 >= a_bs r - r_ange rows) '& t_able 3 >= a_bs c - r_ange cols
-  shore m_ax 2 * near
-}
+# Place i's answer among the cities.
+l:a_nswer := { i -> f_irst g_rade n_eg l:c_lose i }
 
 ### The game
 
 # :: Int -> Int
-# A new game of region and count (region 0 the whole world): count
-# places of the region drawn at random (all of them when it has fewer).
-l:n_ew := { rn ->
-  p := l:p_ool f_irst rn
-  n := (2 s_elect rn) m_in t_ally p
-  0 0 c_at n c_at (f_irst rn) c_at n t_ake (g_rade r_oll! (t_ally p) r_eshape 1000000) s_elect p
+# A new round in region r (0 the whole world): five of its places drawn
+# at random (all of them when it has fewer), no menu open, no score.
+l:n_ew := { r ->
+  p := l:p_ool r
+  n := 5 m_in t_ally p
+  r c_at 0 0 c_at n c_at (n t_ake (g_rade r_oll! (t_ally p) r_eshape 1000000) s_elect p) c_at (n r_eshape 0) c_at 0 0
 }
 # :: a -> a
-l:s_core := { s -> f_irst s }
+l:s_core := { s -> 3 s_elect s }
 # :: Int -> Int
-# The place asked now.
-l:a_sked := { s -> (5 + 2 s_elect s) s_elect s }
+# The round's places, and each one's result (0 not yet, 1 right, 2 wrong).
+l:d_ots := { s -> (4 s_elect s) t_ake 4 d_rop s }
 # :: Int -> Int
-# The four choices: the place asked and its three nearest in the
-# game's region, in the order of their numbers (the capitals by name,
-# then your own places).
-l:l_egal := { s ->
-  i := l:a_sked s
-  c := i c_at 3 t_ake i l:n_earest l:p_ool 4 s_elect s
-  (g_rade c) s_elect c
+l:r_esults := { s -> (4 s_elect s) t_ake (4 + 4 s_elect s) d_rop s }
+# :: (Num a, Truthy a) => Int -> a
+# 0 playing, 1 when every dot is answered.
+l:s_tatus := { s -> 0 + 0 = '+ r_/ 0 + 0 = l:r_esults s }
+
+# The layout, in map units, scaled to the view v so it looks the same
+# at every zoom: u map units to a point of a 1000-point-wide picture.
+u_nit := { v -> (3 s_elect v) / 1000 }
+# :: Float -> Float
+# The region buttons (the whole world, then each region): a row each
+# of x, y, width and height.
+l:b_uttons := { v ->
+  u := u_nit v
+  k := f_loat (r_ange 1 + t_ally regions) - 1
+  o_\ (4 c_at t_ally k) r_eshape ((f_irst v) + u * 10 + 130 * k) c_at ((2 s_elect v) + u * 10 + 0 * k) c_at (u * 120 + 0 * k) c_at u * 34 + 0 * k
 }
-# :: Int -> Int -> Int
-# Choice k (1 to 4): one more asked, and one more point when right.
-l:m_ove := { s k ->
-  right := (l:a_sked s) = k s_elect l:l_egal s
-  ((f_irst s) + right) c_at (1 + 2 s_elect s) c_at 2 d_rop s
+# :: Int -> Float
+# The open dot's menu: a row each of x, y, width and height for its
+# four choices, beside the dot, kept inside the view.
+l:m_enu := { s ->
+  v := l:v_iew f_irst s
+  u := u_nit v
+  i := (2 s_elect s) s_elect l:d_ots s
+  x := l:m_x i s_elect lon
+  y := l:m_y i s_elect lat
+  right := f_loat ((f_irst v) + 3 s_elect v) > x + u * 330
+  x0 := x + u * (332 * right) - 316
+  y0 := (y - u * 20) m_in ((2 s_elect v) + (4 s_elect v)) - u * 190
+  k := f_loat (r_ange 4) - 1
+  o_\ 4 4 r_eshape (x0 + 0 * k) c_at (y0 + u * 44 * k) c_at (u * 300 + 0 * k) c_at u * 40 + 0 * k
 }
-# :: (Eq a, Num b, Truthy b) => a -> b
-# 0 playing, 1 when every question is asked.
-l:s_tatus := { s -> 0 + (2 s_elect s) = 3 s_elect s }
-# :: Int -> Int
-# The map with the place asked now.
-l:v_iew := { s -> l:d_ot l:a_sked s }
+# Which of the rectangles r (rows of x, y, width, height) holds the
+# point xy: 1 to the number of rows, 0 for none.
+h_it := { r xy ->
+  in := ((f_irst xy) >= 1 s_elect_2 r) & ((f_irst xy) <= (1 s_elect_2 r) + 3 s_elect_2 r) & ((2 s_elect xy) >= 2 s_elect_2 r) & (2 s_elect xy) <= (2 s_elect_2 r) + 4 s_elect_2 r
+  f_irst (w_here in) c_at 0
+}
+# Which unanswered dot is at xy: 1 to n, 0 for none.
+d_ot := { s xy ->
+  u := u_nit l:v_iew f_irst s
+  p := l:d_ots s
+  dx := (l:m_x p s_elect lon) - f_irst xy
+  dy := (l:m_y p s_elect lat) - 2 s_elect xy
+  near := ((dx * dx) + dy * dy) <= (u * 14) * u * 14
+  f_irst (w_here near & 0 = l:r_esults s) c_at 0
+}
+# :: Int -> Float -> Int
+# A click at xy (map units): a region button starts a round there; in
+# an open menu a choice answers its dot; a dot not yet answered opens
+# its menu; anywhere else closes the menu.
+l:c_lick := { s xy ->
+  b := (l:b_uttons l:v_iew f_irst s) h_it xy
+  b > 0 ? l:n_ew b - 1
+  (2 s_elect s) > 0 ? s o_pen xy
+  (2 c_at s d_ot xy) s_et s
+}
+# A click while a menu is open: a choice answers; elsewhere, another
+# dot's menu opens or the menu closes.
+o_pen := { s xy ->
+  k := (l:m_enu s) h_it xy
+  k > 0 ? s a_nswer k
+  (2 c_at s d_ot xy) s_et s
+}
+# The state with item k (from 1) replaced by v: kv is k v.
+s_et := { kv s -> s + ((2 s_elect kv) - (f_irst kv) s_elect s) * (f_irst kv) = r_ange t_ally s }
+# Choice k of the open dot: right or wrong, the score, the menu closed.
+a_nswer := { s k ->
+  d := 2 s_elect s
+  i := d s_elect l:d_ots s
+  pick := k s_elect l:c_hoices i
+  right := pick = l:a_nswer i
+  n := 4 s_elect s
+  t := (4 + n + d) c_at 2 - right
+  s := (2 c_at 0) s_et (3 c_at (3 s_elect s) + right) s_et t s_et s
+  (-2 d_rop s) c_at d c_at pick
+}
+
+### What the game says and draws
+
+# The end of a round, said after its last answer (else nothing).
+r_oundOver := { s ->
+  0 = l:s_tatus s ? ""
+  @ f_ormat< " Round over: {l:s_core s} of {4 s_elect s}. Choose a region for another round."
+}
+# :: Int -> Char
+# What has happened, in a line: the open menu, the last answer, the
+# round's end.
+l:s_ay := { s ->
+  (2 s_elect s) > 0 ? "Which city is this?"
+  d := ((t_ally s) - 1) s_elect s
+  last := (1 + d) s_elect 0 c_at l:r_esults s
+  note := r_oundOver s
+  0 = d ? "Click a red dot: which city is it?"
+  i := d s_elect l:d_ots s
+  1 = last ? @ f_ormat< "Right: {l:n_ame i}.{note}"
+  @ f_ormat< "No: that is {l:n_ame i}, not {l:t_own (t_ally s) s_elect s}.{note}"
+}
+# A whole number as text (a map coordinate).
+w_hole := { x -> f_ormat f_loor 0.5 + x }
+# An SVG rectangle (x, y, width, height: r) and its style st.
+r_ect := { r st -> e_nclose @ f_ormat< "<rect x=\"{w_hole f_irst r}\" y=\"{w_hole 2 s_elect r}\" width=\"{w_hole 3 s_elect r}\" height=\"{w_hole 4 s_elect r}\" {st}/>" }
+# An SVG text: x, y and size (map units) in xyz, its words t.
+w_ords := { xyz t -> e_nclose @ f_ormat< "<text x=\"{w_hole f_irst xyz}\" y=\"{w_hole 2 s_elect xyz}\" font-size=\"{w_hole 3 s_elect xyz}\" paint-order=\"stroke\" stroke=\"#ffffff\" stroke-width=\"{w_hole 0.25 * 3 s_elect xyz}\">{t}</text>" }
+# A dot's color by its result (0 not yet, red; 1 right, green; 2
+# wrong, orange), and a button's (1 when its region is shown).
+d_otColor := { r -> d_isclose (1 + r) s_elect "#d62828" "#2a9d3a" "#f08c00" }
+b_uttonColor := { on -> d_isclose (1 + on) s_elect "#ffffff" "#a8dadc" }
+# The round's dots: red not yet answered, green right, orange wrong;
+# each answered one named.
+s_pots := { s u ->
+  p := l:d_ots s
+  r := l:r_esults s
+  x := l:m_x p s_elect lon
+  y := l:m_y p s_elect lat
+  dots := '{ k -> e_nclose @ f_ormat< "<circle class=\"dot\" cx=\"{w_hole k s_elect x}\" cy=\"{w_hole k s_elect y}\" r=\"{w_hole u * 9}\" fill=\"{d_otColor k s_elect r}\" stroke=\"#ffffff\" stroke-width=\"{w_hole u * 2}\"/>" } e_ach r_ange t_ally p
+  named := w_here r > 0
+  dots c_at '{ k -> (((k s_elect x) + u * 13) c_at ((k s_elect y) + u * 6) c_at u * 18) w_ords c_ity (k s_elect p) s_elect names } e_ach named
+}
+# The region buttons (the one shown filled), and the score.
+b_ar := { s v ->
+  u := u_nit v
+  b := l:b_uttons v
+  k := r_ange f_irst s_hape b
+  label := (e_nclose "World") c_at regions
+  r := '{ j -> (j s_elect b) r_ect @ f_ormat< "class=\"region\" rx=\"{w_hole u * 6}\" fill=\"{b_uttonColor j = 1 + f_irst s}\" stroke=\"#264653\"" } e_ach k
+  w := '{ j -> (((1 s_elect j s_elect b) + u * 12) c_at ((2 s_elect j s_elect b) + u * 24) c_at u * 18) w_ords d_isclose j s_elect label } e_ach k
+  score := ((f_irst v) + (3 s_elect v) - u * 190) c_at ((2 s_elect v) + u * 34) c_at u * 22
+  r c_at w c_at score w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
+}
+# What happened, along the bottom.
+s_aid := { s v ->
+  u := u_nit v
+  (((f_irst v) + u * 12) c_at ((2 s_elect v) + (4 s_elect v) - u * 16) c_at u * 22) w_ords l:s_ay s
+}
+# The open menu: the four choices, each a button.
+c_hoose := { s u ->
+  0 = 2 s_elect s ? 0 r_eshape e_nclose ""
+  m := l:m_enu s
+  c := l:c_hoices (2 s_elect s) s_elect l:d_ots s
+  r := '{ j -> (j s_elect m) r_ect @ f_ormat< "class=\"choice\" rx=\"{w_hole u * 6}\" fill=\"#fffbe6\" stroke=\"#264653\"" } e_ach r_ange 4
+  r c_at '{ j -> (((1 s_elect j s_elect m) + u * 12) c_at ((2 s_elect j s_elect m) + u * 27) c_at u * 20) w_ords l:t_own j s_elect c } e_ach r_ange 4
+}
+# :: Int -> Char
+# The picture, as SVG text: the sea, the countries (unlabeled, outlines
+# in degrees under the projection's transform), the dots, the region
+# buttons and the score, what happened, and the open menu. Every
+# coordinate is computed here; the page only shows the picture.
+l:d_raw := { s ->
+  v := l:v_iew f_irst s
+  u := u_nit v
+  vb := t:j_oin '{ x -> e_nclose (w_hole x) c_at " " } e_ach v
+  head := @ f_ormat< "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{vb}\" width=\"1000\" height=\"400\" font-family=\"sans-serif\">"
+  sea := v r_ect "fill=\"#bfdcef\""
+  open := e_nclose @ f_ormat< "<g transform=\"matrix(100 0 0 -100 18000 9000)\" fill=\"#f3eee0\" stroke=\"#7a7a7a\" stroke-width=\"{u / 100}\">"
+  t:j_oin (e_nclose head) c_at sea c_at open c_at (e_nclose land) c_at (e_nclose "</g>") c_at (s s_pots u) c_at (s b_ar v) c_at (s s_aid v) c_at (s c_hoose u) c_at e_nclose "</svg>"
+}

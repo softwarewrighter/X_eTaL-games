@@ -1,48 +1,40 @@
 #!/usr/bin/env xetal
-# Capitals, scripted (seed 1), with the rules of Atlas.xtl: the map and
-# the places as arrays read from TOML, every point projected at once,
-# every distance at once.
+# Capitals, scripted (seed 1), with the rules and the drawing of
+# Atlas.xtl: the places read from TOML, every distance at once, the
+# map drawn as SVG, and a round played by clicks given as points.
 "a:" u_se< "Atlas"
 
-# The map: Natural Earth's 21615 coastline points (assets/cache/world.toml),
-# projected at once onto half-degree cells (latitude 84 N to 60 S, all
-# longitudes): a 288 by 720 matrix with a 1 at every coast cell, which
-# X_eTaL draws.
-m := a:m_ap @
-s_hape m
-'+ r_/ r_avel m
-pic := []S_HOW []G_RID m
-
-# The places: the 199 national capitals, sorted by name, then any of
-# your own from places.toml; how many in each region (0 is all).
-a:c_ount @
+# The places: Natural Earth's national capitals, then any of your own
+# from places.toml; how many in each region (0 is all of them).
 a:r_egions @
 '{ r -> t_ally a:p_ool r } e_ach 0 1 2 3 4 5
-# Place 135 is Paris (48.87 N, 2.33 E); its cell on the map, and the
-# row and column of that cell.
-a:n_ame 135
-c := 48.87 a:c_ell 2.33
-c
-(1 + (c - 1) d_iv 720) c_at 1 + (c - 1) m_od 720
 
-# The distance from Paris to every place at once, in km (the spherical
-# law of cosines): the three nearest, and the farthest.
-d := a:k_m 135
-n := 3 t_ake 135 a:n_earest a:p_ool 0
-f_loor n s_elect d
-a:n_ame f_irst n
-a:n_ame f_irst g_rade n_eg d
-f_loor 'm_ax r_/ d
+# Paris: its point on the map (map units: hundredths of a degree east
+# of 180 W and south of the pole), and its four choices, the nearest
+# cities with different names, west to east (the nearest is Paris).
+p := f_irst w_here '{ i -> "Paris, France" m_atch a:n_ame i } e_ach a:p_ool 0
+a:n_ame p
+f_loor a:a_t p
+'{ k -> e_nclose a:t_own k } e_ach a:c_hoices p
 
-# A game of 5 questions in Europe (region 4), drawn at random (seed 1):
-# the first asked, as its dot on the map, and its four choices: it and
-# its three nearest in Europe.
-s := a:n_ew 4 5
-4 d_rop s
-pic := []S_HOW []G_RID a:v_iew s
-a:l_egal s
-a:n_ame a:a_sked s
+# What the map shows for Europe: x, y, width and height, around its
+# capitals.
+f_loor a:v_iew 4
 
-# A player who always takes the first choice: the score after five.
-u:g_ame := { s -> 1 = a:s_tatus s ? a:s_core s; u:g_ame s a:m_ove 1 }
-u:g_ame s
+# A round in Europe (seed 1): five capitals drawn at random, and the
+# picture X_eTaL draws for it.
+s := a:n_ew 4
+'{ i -> e_nclose a:n_ame i } e_ach a:d_ots s
+pic := []S_HOW a:d_raw s
+
+# A click on the first dot opens its menu; a click on the right name
+# (the middle of its button) answers it.
+i := f_irst a:d_ots s
+t := s a:c_lick a:a_t i
+a:s_ay t
+k := f_irst w_here (a:c_hoices i) = a:a_nswer i
+b := k s_elect a:m_enu t
+t := t a:c_lick ((f_irst b) + 0.5 * 3 s_elect b) c_at (2 s_elect b) + 0.5 * 4 s_elect b
+a:s_ay t
+pic := []S_HOW a:d_raw t
+a:s_core t

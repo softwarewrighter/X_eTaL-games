@@ -154,3 +154,17 @@ dialog.about p { margin: 0 0 6px; line-height: 1.55; }
 dialog.about .close { position: absolute; top: 6px; right: 8px; font: 1.4rem/1 system-ui, sans-serif;
   background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; }
 dialog.about .close:hover { color: var(--fg); }
+
+/* An interactive game (Game::interactive): Play opens a large dialog
+   with the program's latest picture, drawn at full width in its own
+   proportions so a click maps straight to the picture's coordinates;
+   closed by Escape, its X, or a click on the background. */
+button.board-open { font: inherit; font-size: 1.05rem; padding: 8px 22px; cursor: pointer; }
+dialog.board { border: 1px solid var(--line); border-radius: 12px; padding: 34px 12px 12px; width: 96vw; max-width: 96vw;
+  max-height: 94vh; background: var(--card); color: var(--fg); overflow: auto; }
+dialog.board::backdrop { background: rgba(0, 0, 0, 0.55); }
+dialog.board .board-pic svg { display: block; width: 100%; height: auto; cursor: pointer; }
+dialog.board .close { position: absolute; top: 4px; right: 10px; font: 1.6rem/1 system-ui, sans-serif;
+  background: none; border: 0; color: var(--muted); cursor: pointer; }
+dialog.board .close:hover { color: var(--fg); }
+pre.data { white-space: pre-wrap; font-size: .85rem; }

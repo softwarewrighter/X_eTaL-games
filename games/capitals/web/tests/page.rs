@@ -13,7 +13,7 @@ fn printed(lines: &[Line]) -> String {
 }
 
 #[test]
-fn the_terminal_matches_the_command_line_golden() {
+fn the_clicks_replay_the_command_line_golden() {
     let g = game();
     let typed: Vec<String> = include_str!("../../expected/play.in").lines().map(str::to_string).collect();
     let t = session(&g.libraries(), g.play, &typed, 1);
@@ -34,8 +34,13 @@ fn the_notebook_matches_the_command_line_golden() {
 }
 
 #[test]
-fn a_new_game_waits_for_its_first_line() {
+fn a_new_game_shows_its_map() {
+    // Played by clicks (Game::interactive): with no click yet the program
+    // draws its first map, then reads the end of the events.
     let g = game();
+    assert!(g.interactive);
     let t = session(&g.libraries(), g.play, &[], 7);
-    assert!(t.waiting && t.error.is_none());
+    assert!(t.error.is_none(), "{:?}", t.error);
+    let svg = t.lines.iter().find_map(|l| match l { Line::Picture(s) => Some(s.clone()), _ => None }).expect("a picture");
+    assert!(svg.contains("viewBox=") && svg.contains("class=\"dot\"") && svg.contains("class=\"region\""));
 }

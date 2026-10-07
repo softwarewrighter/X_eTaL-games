@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Places of your own are asked like the capitals: a copy of the game
 # with New York and Sydney added to places.toml, as its comment shows,
-# has 201 places, each in its region, with the nearest capitals as its
-# wrong choices.
+# has two more places, each in its region, each with its own name among
+# its choices (the answer) beside nearby cities.
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 root="$(cd "$here/../.." && pwd)"
@@ -27,16 +27,17 @@ region = "Oceania"
 TOML
 cat > "$tmp/t.xtl" <<'XTL'
 "a:" u_se< "Atlas"
-a:c_ount @
 '{ r -> t_ally a:p_ool r } e_ach 0 2 5
-a:n_ame 200
-a:n_ame f_irst 200 a:n_earest a:p_ool 2
-a:n_ame f_irst 201 a:n_earest a:p_ool 5
+n := t_ally a:p_ool 0
+a:n_ame n - 1
+a:t_own a:a_nswer n - 1
+a:n_ame n
+(a:a_nswer n) m_ember? a:c_hoices n
 XTL
-got="$(cd "$tmp" && "$root/bin/xetal" run --seed 1 t.xtl)"
-want="201
-201 37 14
+got="$(cd "$tmp" && XETAL_PATH="$root/lib" "$root/bin/xetal" run --seed 1 t.xtl)"
+want="202 38 14
 New York, United States
-Washington, D.C., United States of America
-Canberra, Australia"
+New York
+Sydney, Australia
+1"
 [ "$got" = "$want" ] || { echo "capitals/test.sh: expected"; echo "$want"; echo "got"; echo "$got"; exit 1; }

@@ -9,6 +9,7 @@ pub fn game() -> Game {
         title: "Tic-tac-toe",
         lede: "Tic-tac-toe in X_eTaL: the board is a vector of 9, the eight lines a table of squares, and one selection and one reduce give every line's sum at once. You are X; the computer rates every empty square at once. The scripted game also has a minimax player.",
         play: include_str!("../../play.xtl"),
+        interactive: false,
         script_name: "tic-tac-toe.xtl",
         script: include_str!("../../tic-tac-toe.xtl"),
         library_name: "TicTacToe",

@@ -127,6 +127,48 @@ const PLAY = (lines) => `(async () => {
   return { out, err, nb, pics };
 })()`;
 
+// Runs in the page, for a game played by clicks (Game::interactive):
+// open its dialog, then for each line "click X Y" (the picture's own
+// coordinates) click the matching point on the screen, waiting for the
+// program to answer; X_eTaL's transcript and the picture come back.
+const CLICK = (lines) => `(async () => {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const until = async (f, what) => { for (let i = 0; i < 500; i++) { const v = f(); if (v) return v; await sleep(20); } throw new Error("timed out waiting for " + what); };
+  const said = () => document.querySelector("dialog.board pre.transcript")?.textContent || "";
+  (await until(() => document.querySelector("button.board-open"), "the Play button")).click();
+  await until(() => document.querySelector("dialog.board[open] .board-pic svg"), "the picture in the dialog");
+  for (const line of ${JSON.stringify(lines)}) {
+    const [, x, y] = line.split(" ").map(Number);
+    const before = said();
+    const svg = document.querySelector("dialog.board[open] .board-pic svg");
+    const vb = svg.getAttribute("viewBox").split(" ").map(Number);
+    const r = svg.getBoundingClientRect();
+    const cx = r.left + (x - vb[0]) / vb[2] * r.width, cy = r.top + (y - vb[1]) / vb[3] * r.height;
+    const el = document.elementFromPoint(cx, cy) || svg;
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: cx, clientY: cy }));
+    await until(() => said() !== before, "the program to answer " + line);
+    await sleep(30);
+  }
+  const err = document.querySelector("dialog.board .err")?.textContent || "";
+  const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
+  return { out: said(), err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length };
+})()`;
+const BOARD_OPEN = `(() => { if (!document.querySelector("dialog.board[open]")) document.querySelector("button.board-open").click(); return !!document.querySelector("dialog.board[open]"); })()`;
+const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
+const BOARD_BACKDROP = `(() => { document.querySelector("dialog.board[open]").click(); return true; })()`;
+const BOARD_X = `(() => { document.querySelector("dialog.board[open] .close").click(); return true; })()`;
+
+// The game's dialog closes by Escape, a click on the background, and its X.
+async function boardProblems(page) {
+  for (const [how, act] of [["Escape", null], ["the background", BOARD_BACKDROP], ["the X", BOARD_X]]) {
+    if (!(await page.evaluate(BOARD_OPEN))) return "the game's dialog did not open";
+    if (act) await page.evaluate(act); else await page.key("Escape", 27);
+    await sleep(150);
+    if (await page.evaluate(BOARD_IS_OPEN)) return `${how} did not close the game's dialog`;
+  }
+  return null;
+}
+
 // Runs in the page: the title's about link or dialog. For a dialog, the
 // three ways to close it are tried by the caller (Escape is a real key
 // press, sent over the DevTools protocol).
@@ -187,19 +229,21 @@ try {
     const page = await open(`${base}${slug}/?seed=1`);
     try {
       const t0 = performance.now();
-      const got = await page.evaluate(PLAY(typed));
+      const interactive = readFileSync(join(dir, "web/src/lib.rs"), "utf8").includes("interactive: true");
+      const got = await page.evaluate(interactive ? CLICK(typed) : PLAY(typed));
       timings[slug] = Math.round(performance.now() - t0);
       const want = readFileSync(join(dir, "expected/play.out"), "utf8");
       const wantNb = readFileSync(join(dir, `expected/${slug}.out`), "utf8");
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
-      else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): the terminal differs from expected/play.out`); console.log(got.out); failed++; }
+      else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
       else if (readFileSync(join(dir, "play.xtl"), "utf8").includes("[]S_HOW") && !got.pics) { console.log(`FAIL: ${slug} (browser): play.xtl shows pictures but none appeared`); failed++; }
       else {
         const toml = readFileSync(join(dir, "game.toml"), "utf8");
         const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
-        const problem = await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
+        const problem = (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
         if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
+        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks on the map in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, ${wiki ? "Wikipedia link" : "about dialog"})`);
         else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }

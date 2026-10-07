@@ -25,6 +25,10 @@ said := t:l_ines "one" "two"
 kfv := 3 4 r_eshape 1 1 2 2 0 2 0 2 0 1 0 0
 w_here ((1 s_elect kfv) m_ember? 1) & kfv t:h_olds 0 1
 w_here ((1 s_elect kfv) m_ember? 1 2) & kfv t:h_olds 0 0
+# Joined texts: none, one, five (as a reduce with c_at would).
+t_ally t:j_oin 0 r_eshape e_nclose "a"
+t:j_oin e_nclose "one"
+t:j_oin "a" "bc" "" "def" "g"
 
 # Play: a number, all the numbers, a letter (from lib/expected/test.in).
 p:n_umber "A NUMBER ?"

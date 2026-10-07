@@ -3,8 +3,8 @@
 # third-party assets are never committed, docs/plan.md A9), then turn
 # it into the data file assets/cache/world.toml with convert.py.
 #
-# Source: Natural Earth, 1:110m physical land and populated places, and
-# 1:50m countries (only each country's UN region is used)
+# Source: Natural Earth, 1:50m countries (outlines and UN regions) and
+# 1:50m populated places (the capitals, and the cities for the choices)
 #   https://www.naturalearthdata.com/  (GeoJSON from
 #   https://github.com/nvkelso/natural-earth-vector, pinned below)
 # License: public domain (https://www.naturalearthdata.com/about/terms-of-use/)
@@ -22,8 +22,7 @@ get() {  # get FILE SHA256
     mv "$f.part" "$f"
   fi
 }
-get ne_110m_land.geojson 9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9
-get ne_110m_populated_places.geojson a86028b083182b68c7620fc6e1a8a47ee547cb9cd2fb62ccbb78bea786440899
 get ne_50m_admin_0_countries.geojson 3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb
-"$here/convert.py" "$cache/ne_110m_land.geojson" "$cache/ne_110m_populated_places.geojson" \
-  "$cache/ne_50m_admin_0_countries.geojson" "$cache/world.toml"
+get ne_50m_populated_places.geojson da4662b7bbfeb897d02f228c5839131dce27acff5717630f91ccff4f67828ee7
+"$here/convert.py" "$cache/ne_50m_admin_0_countries.geojson" \
+  "$cache/ne_50m_populated_places.geojson" "$cache/world.toml"
