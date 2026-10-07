@@ -16,6 +16,7 @@ pub fn game() -> Game {
         library: include_str!("../../Atlas.xtl"),
         shared: &[
             ("Text", include_str!("../../../../lib/Text.xtl")),
+            ("Svg", include_str!("../../../../lib/Svg.xtl")),
             ("places.toml", include_str!("../../places.toml")),
             ("assets/cache/world.toml", include_str!("../../assets/cache/world.toml")),
         ],

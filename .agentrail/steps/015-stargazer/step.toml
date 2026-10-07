@@ -1,6 +1,6 @@
 number = 15
 slug = "stargazer"
-status = "pending"
+status = "in-progress"
 description = "new game (wrightmikea/stargazer-poc in X_eTaL): games/stargazer/: a bright-st..."
 role = "production"
 context_files = []

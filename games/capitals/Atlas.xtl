@@ -15,6 +15,7 @@
 # answered and the city chosen for it.
 
 "t:" u_se< "Text"
+"sv:" u_se< "Svg"
 
 ### The data
 
@@ -24,20 +25,18 @@ all := (("assets/cache/world.toml" "place") []T_ABLE ("places" "fields")) c_at (
 # The cities the wrong choices come from: Natural Earth's populated
 # places, then places of your own; name, latitude, longitude.
 towns := (("assets/cache/world.toml" "city") []T_ABLE ("cities" "cityfields")) c_at 1 2 3 s_elect_2 ("places.toml" "place") []T_ABLE ("places" "fields")
-# The number written in a text (private helpers: h: when X_eTaL has it).
-n_um := { x -> f_irst n_umbers d_isclose x }
-# A name up to its comma: "Paris, France" is Paris.
+# A name up to its comma (private helpers: h: when X_eTaL has it): "Paris, France" is Paris.
 c_ity := { x ->
   t := d_isclose x
   (n_ot '| s_\ t = f_irst ",") r_eplicate t
 }
 names := 1 s_elect_2 all
-lat := 'n_um e_ach 2 s_elect_2 all
-lon := 'n_um e_ach 3 s_elect_2 all
+lat := 'sv:n_um e_ach 2 s_elect_2 all
+lon := 'sv:n_um e_ach 3 s_elect_2 all
 regions := "places.toml" []L_IST "regions"
 region := regions i_ndexOf 4 s_elect_2 all
-tlat := 'n_um e_ach 2 s_elect_2 towns
-tlon := 'n_um e_ach 3 s_elect_2 towns
+tlat := 'sv:n_um e_ach 2 s_elect_2 towns
+tlon := 'sv:n_um e_ach 3 s_elect_2 towns
 # The countries, unlabeled: each outline (SVG path data in degrees)
 # wrapped as a path, joined once.
 land := t:j_oin '{ d -> e_nclose "<path d=\"" c_at (d_isclose d) c_at "\"/>" } e_ach "assets/cache/world.toml" []L_IST "countries"
@@ -125,41 +124,13 @@ l:r_esults := { s -> (4 s_elect s) t_ake (4 + 4 s_elect s) d_rop s }
 # 0 playing, 1 when every dot is answered.
 l:s_tatus := { s -> 0 + 0 = '+ r_/ 0 + 0 = l:r_esults s }
 
-# The layout, in map units, scaled to the view v so it looks the same
-# at every zoom: u map units to a point of a 1000-point-wide picture.
-u_nit := { v -> (3 s_elect v) / 1000 }
-# :: Float -> Float
-# The region buttons (the whole world, then each region): a row each
-# of x, y, width and height.
-l:b_uttons := { v ->
-  u := u_nit v
-  k := f_loat (r_ange 1 + t_ally regions) - 1
-  o_\ (4 c_at t_ally k) r_eshape ((f_irst v) + u * 10 + 130 * k) c_at ((2 s_elect v) + u * 10 + 0 * k) c_at (u * 120 + 0 * k) c_at u * 34 + 0 * k
-}
 # :: Int -> Float
 # The open dot's menu: a row each of x, y, width and height for its
-# four choices, beside the dot, kept inside the view.
-l:m_enu := { s ->
-  v := l:v_iew f_irst s
-  u := u_nit v
-  i := (2 s_elect s) s_elect l:d_ots s
-  x := l:m_x i s_elect lon
-  y := l:m_y i s_elect lat
-  right := f_loat ((f_irst v) + 3 s_elect v) > x + u * 330
-  x0 := x + u * (332 * right) - 316
-  y0 := (y - u * 20) m_in ((2 s_elect v) + (4 s_elect v)) - u * 190
-  k := f_loat (r_ange 4) - 1
-  o_\ 4 4 r_eshape (x0 + 0 * k) c_at (y0 + u * 44 * k) c_at (u * 300 + 0 * k) c_at u * 40 + 0 * k
-}
-# Which of the rectangles r (rows of x, y, width, height) holds the
-# point xy: 1 to the number of rows, 0 for none.
-h_it := { r xy ->
-  in := ((f_irst xy) >= 1 s_elect_2 r) & ((f_irst xy) <= (1 s_elect_2 r) + 3 s_elect_2 r) & ((2 s_elect xy) >= 2 s_elect_2 r) & (2 s_elect xy) <= (2 s_elect_2 r) + 4 s_elect_2 r
-  f_irst (w_here in) c_at 0
-}
+# four choices, beside the dot (Svg's menu), kept inside the view.
+l:m_enu := { s -> (l:v_iew f_irst s) sv:m_enu l:a_t (2 s_elect s) s_elect l:d_ots s }
 # Which unanswered dot is at xy: 1 to n, 0 for none.
 d_ot := { s xy ->
-  u := u_nit l:v_iew f_irst s
+  u := sv:u_nit l:v_iew f_irst s
   p := l:d_ots s
   dx := (l:m_x p s_elect lon) - f_irst xy
   dy := (l:m_y p s_elect lat) - 2 s_elect xy
@@ -171,7 +142,7 @@ d_ot := { s xy ->
 # an open menu a choice answers its dot; a dot not yet answered opens
 # its menu; anywhere else closes the menu.
 l:c_lick := { s xy ->
-  b := (l:b_uttons l:v_iew f_irst s) h_it xy
+  b := ((l:v_iew f_irst s) sv:b_uttons 1 + t_ally regions) sv:h_it xy
   b > 0 ? l:n_ew b - 1
   (2 s_elect s) > 0 ? s o_pen xy
   (2 c_at s d_ot xy) s_et s
@@ -179,7 +150,7 @@ l:c_lick := { s xy ->
 # A click while a menu is open: a choice answers; elsewhere, another
 # dot's menu opens or the menu closes.
 o_pen := { s xy ->
-  k := (l:m_enu s) h_it xy
+  k := (l:m_enu s) sv:h_it xy
   k > 0 ? s a_nswer k
   (2 c_at s d_ot xy) s_et s
 }
@@ -217,16 +188,9 @@ l:s_ay := { s ->
   1 = last ? @ f_ormat< "Right: {l:n_ame i}.{note}"
   @ f_ormat< "No: that is {l:n_ame i}, not {l:t_own (t_ally s) s_elect s}.{note}"
 }
-# A whole number as text (a map coordinate).
-w_hole := { x -> f_ormat f_loor 0.5 + x }
-# An SVG rectangle (x, y, width, height: r) and its style st.
-r_ect := { r st -> e_nclose @ f_ormat< "<rect x=\"{w_hole f_irst r}\" y=\"{w_hole 2 s_elect r}\" width=\"{w_hole 3 s_elect r}\" height=\"{w_hole 4 s_elect r}\" {st}/>" }
-# An SVG text: x, y and size (map units) in xyz, its words t.
-w_ords := { xyz t -> e_nclose @ f_ormat< "<text x=\"{w_hole f_irst xyz}\" y=\"{w_hole 2 s_elect xyz}\" font-size=\"{w_hole 3 s_elect xyz}\" paint-order=\"stroke\" stroke=\"#ffffff\" stroke-width=\"{w_hole 0.25 * 3 s_elect xyz}\">{t}</text>" }
 # A dot's color by its result (0 not yet, red; 1 right, green; 2
-# wrong, orange), and a button's (1 when its region is shown).
+# wrong, orange).
 d_otColor := { r -> d_isclose (1 + r) s_elect "#d62828" "#2a9d3a" "#f08c00" }
-b_uttonColor := { on -> d_isclose (1 + on) s_elect "#ffffff" "#a8dadc" }
 # The round's dots: red not yet answered, green right, orange wrong;
 # each answered one named.
 s_pots := { s u ->
@@ -234,33 +198,25 @@ s_pots := { s u ->
   r := l:r_esults s
   x := l:m_x p s_elect lon
   y := l:m_y p s_elect lat
-  dots := '{ k -> e_nclose @ f_ormat< "<circle class=\"dot\" cx=\"{w_hole k s_elect x}\" cy=\"{w_hole k s_elect y}\" r=\"{w_hole u * 9}\" fill=\"{d_otColor k s_elect r}\" stroke=\"#ffffff\" stroke-width=\"{w_hole u * 2}\"/>" } e_ach r_ange t_ally p
+  dots := '{ k -> e_nclose @ f_ormat< "<circle class=\"dot\" cx=\"{sv:w_hole k s_elect x}\" cy=\"{sv:w_hole k s_elect y}\" r=\"{sv:w_hole u * 9}\" fill=\"{d_otColor k s_elect r}\" stroke=\"#ffffff\" stroke-width=\"{sv:w_hole u * 2}\"/>" } e_ach r_ange t_ally p
   named := w_here r > 0
-  dots c_at '{ k -> (((k s_elect x) + u * 13) c_at ((k s_elect y) + u * 6) c_at u * 18) w_ords c_ity (k s_elect p) s_elect names } e_ach named
+  dots c_at '{ k -> (((k s_elect x) + u * 13) c_at ((k s_elect y) + u * 6) c_at u * 18) sv:w_ords c_ity (k s_elect p) s_elect names } e_ach named
 }
-# The region buttons (the one shown filled), and the score.
+# The region buttons (the region shown filled), and the score.
 b_ar := { s v ->
-  u := u_nit v
-  b := l:b_uttons v
-  k := r_ange f_irst s_hape b
-  label := (e_nclose "World") c_at regions
-  r := '{ j -> (j s_elect b) r_ect @ f_ormat< "class=\"region\" rx=\"{w_hole u * 6}\" fill=\"{b_uttonColor j = 1 + f_irst s}\" stroke=\"#264653\"" } e_ach k
-  w := '{ j -> (((1 s_elect j s_elect b) + u * 12) c_at ((2 s_elect j s_elect b) + u * 24) c_at u * 18) w_ords d_isclose j s_elect label } e_ach k
+  u := sv:u_nit v
   score := ((f_irst v) + (3 s_elect v) - u * 190) c_at ((2 s_elect v) + u * 34) c_at u * 22
-  r c_at w c_at score w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
+  ((v c_at f_loat 1 + f_irst s) sv:l_abeled (e_nclose "World") c_at regions) c_at score sv:w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
 }
 # What happened, along the bottom.
 s_aid := { s v ->
-  u := u_nit v
-  (((f_irst v) + u * 12) c_at ((2 s_elect v) + (4 s_elect v) - u * 16) c_at u * 22) w_ords l:s_ay s
+  u := sv:u_nit v
+  (((f_irst v) + u * 12) c_at ((2 s_elect v) + (4 s_elect v) - u * 16) c_at u * 22) sv:w_ords l:s_ay s
 }
 # The open menu: the four choices, each a button.
-c_hoose := { s u ->
+c_hoose := { s ->
   0 = 2 s_elect s ? 0 r_eshape e_nclose ""
-  m := l:m_enu s
-  c := l:c_hoices (2 s_elect s) s_elect l:d_ots s
-  r := '{ j -> (j s_elect m) r_ect @ f_ormat< "class=\"choice\" rx=\"{w_hole u * 6}\" fill=\"#fffbe6\" stroke=\"#264653\"" } e_ach r_ange 4
-  r c_at '{ j -> (((1 s_elect j s_elect m) + u * 12) c_at ((2 s_elect j s_elect m) + u * 27) c_at u * 20) w_ords l:t_own j s_elect c } e_ach r_ange 4
+  (l:m_enu s) sv:c_hoices '{ k -> e_nclose l:t_own k } e_ach l:c_hoices (2 s_elect s) s_elect l:d_ots s
 }
 # :: Int -> Char
 # The picture, as SVG text: the sea, the countries (unlabeled, outlines
@@ -269,10 +225,8 @@ c_hoose := { s u ->
 # coordinate is computed here; the page only shows the picture.
 l:d_raw := { s ->
   v := l:v_iew f_irst s
-  u := u_nit v
-  vb := t:j_oin '{ x -> e_nclose (w_hole x) c_at " " } e_ach v
-  head := @ f_ormat< "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{vb}\" width=\"1000\" height=\"400\" font-family=\"sans-serif\">"
-  sea := v r_ect "fill=\"#bfdcef\""
+  u := sv:u_nit v
+  sea := v sv:r_ect "fill=\"#bfdcef\""
   open := e_nclose @ f_ormat< "<g transform=\"matrix(100 0 0 -100 18000 9000)\" fill=\"#f3eee0\" stroke=\"#7a7a7a\" stroke-width=\"{u / 100}\">"
-  t:j_oin (e_nclose head) c_at sea c_at open c_at (e_nclose land) c_at (e_nclose "</g>") c_at (s s_pots u) c_at (s b_ar v) c_at (s s_aid v) c_at (s c_hoose u) c_at e_nclose "</svg>"
+  v sv:p_icture sea c_at open c_at (e_nclose land) c_at (e_nclose "</g>") c_at (s s_pots u) c_at (s b_ar v) c_at (s s_aid v) c_at c_hoose s
 }

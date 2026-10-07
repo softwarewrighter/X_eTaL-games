@@ -37,3 +37,20 @@ p:n_umber "NOTHING ?"
 "MOVE ?" p:l_etter "adws"
 p:l_ine "A LINE ?"
 p:n_umbersIn "row 3, column 12"
+
+# Svg: numbers in texts, whole numbers, rectangles hit, the buttons and
+# the menu laid out in a view, and the pieces of a picture.
+"g:" u_se< "Svg"
+g:n_um e_nclose "48.87"
+g:w_hole 2.5
+(2 4 r_eshape 0 0 10 10 20 0 10 10.0) g:h_it 25 5.0
+(2 4 r_eshape 0 0 10 10 20 0 10 10.0) g:h_it 15 5.0
+v := 0 0 2000 800.0
+v g:b_uttons 3
+v g:m_enu 1000 400.0
+v g:r_ect "fill=\"red\""
+(10 20 30.0) g:w_ords "hi"
+t_ally (v c_at 2.0) g:l_abeled "a" "b"
+t_ally (v g:m_enu 100 100.0) g:c_hoices "w" "x" "y" "z"
+v g:p_icture e_nclose "<circle/>"
+

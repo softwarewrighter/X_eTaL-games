@@ -354,11 +354,16 @@ pub fn game_page(g: &Game) -> Html {
                 <Title title={g.title} wikipedia={field(g.toml, "wikipedia")} about={field(g.toml, "about")} />
             </div>
             <p class="lede">{g.lede}</p>
-            <div class="controls">
-                <button onclick={new_game}>{"New game"}</button>
-                <button onclick={restart}>{"Restart this game"}</button>
-                <span class="gen">{format!("seed {}", *seed)}</span>
-            </div>
+            // A game played by clicks starts its own rounds on the map, so its
+            // page has only Play (in the panel below), no New game or
+            // Restart (the user, 2026-10-07).
+            if !g.interactive {
+                <div class="controls">
+                    <button onclick={new_game}>{"New game"}</button>
+                    <button onclick={restart}>{"Restart this game"}</button>
+                    <span class="gen">{format!("seed {}", *seed)}</span>
+                </div>
+            }
         </header>
         <main>
             <div class="layout even">

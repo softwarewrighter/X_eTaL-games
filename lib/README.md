@@ -9,7 +9,8 @@ loads the ones it lists (`shared` in its `page::Game`).
 | Library | What it gives |
 | ------- | ------------- |
 | `Play.xtl` | reading what a player types: the numbers on a line (`l:n_umbers`), the first number or -1 (`l:n_umber`), which of some letters a line starts with (`l:l_etter`) |
-| `Text.xtl` | printing a strand of lines (`l:l_ines`); which rows of a text table hold in a state (`l:h_olds`) |
+| `Text.xtl` | printing a strand of lines (`l:l_ines`); which rows of a text table hold in a state (`l:h_olds`); boxed texts joined in pairs, level by level (`l:j_oin`) |
+| `Svg.xtl` | pictures written as SVG text and the clicks on them, for the games played by clicking a map: a number in a text (`l:n_um`), whole numbers (`l:w_hole`), rectangles and labels (`l:r_ect`, `l:w_ords`), which rectangle a click hits (`l:h_it`), a row of buttons and a menu laid out in a view (`l:b_uttons`, `l:m_enu`) and drawn (`l:l_abeled`, `l:c_hoices`), the whole picture (`l:p_icture`) |
 | `Board.xtl` | square numbers and rows/columns both ways (`l:c_ell`, `l:r_c`); every square's neighbor count, edges not wrapping (`l:a_round`); the plus of four neighbors (`l:p_lus`); a character board spaced as the games print it (`l:s_paced`) |
 | `State.xtl` | several items of a state vector changed at once (`l:u_pdate`); a stretch replaced (`l:p_ut`) |
 

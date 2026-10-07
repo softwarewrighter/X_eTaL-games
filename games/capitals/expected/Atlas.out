@@ -14,7 +14,6 @@ l:s_core : a -> a
 l:d_ots : Int -> Int
 l:r_esults : Int -> Int
 l:s_tatus : (Num a, Truthy a) => Int -> a
-l:b_uttons : Float -> Float
 l:m_enu : Int -> Float
 l:c_lick : Int -> Float -> Int
 l:s_ay : Int -> Char

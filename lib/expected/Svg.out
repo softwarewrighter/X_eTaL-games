@@ -1,0 +1,11 @@
+l:n_um : Box Char -> Float
+l:w_hole : Float -> Char
+l:u_nit : Num a => a -> Float
+l:r_ect : Float -> a -> Box Char
+l:w_ords : Float -> a -> Box Char
+l:h_it : Num a => a -> a -> Int
+l:b_uttons : Float -> Int -> Float
+l:m_enu : Float -> Float -> Float
+l:l_abeled : Float -> Box a -> Box Char
+l:c_hoices : Float -> Box a -> Box Char
+l:p_icture : Float -> Box Char -> Char

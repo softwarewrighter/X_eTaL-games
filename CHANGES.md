@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-07
 
+- 15:23 `refactor` A game played by clicks has only its Play button (the user: New game and Restart did nothing visible there; its rounds start on the map); `lib/Svg.xtl`, the pictures-and-clicks pieces of the capitals map (numbers in texts, whole numbers, rectangles and labels, hit tests, the button row and the menu laid out and drawn, the whole picture) for every game played on a map, tested in `lib/test.xtl`; `Atlas.xtl` uses it, its pictures byte for byte the same.
+
 - 14:20 `chore` Saga step capitals-map completed.
 
 - 13:58 `game` Capitals rebuilt as a map you click (the user: the first version was broken and unusable): Play opens a large dialog (Escape, its X or a click outside close it; `#play` opens it at once) with X_eTaL's picture: Natural Earth's 1:50m country outlines, unlabeled, so each red dot lies in its country; click a dot, then its name among four nearby cities (1:50m populated places, nearest by every distance at once); dots turn green or orange and are named; the score and region buttons (zoomed views) are on the map. `Atlas.xtl` writes the whole SVG (`f_ormat<`, `t:j_oin`) and tests the clicks; `play.xtl` is an event loop on `[]E_VENT`. The shell: `Game::interactive` (the dialog; clicks become `click X Y` lines in the picture's coordinates, replayed like typed lines), data files shown as data; the browser test clicks the map and closes the dialog all three ways. `lib/Text.xtl`: `l:j_oin` (pairs, level by level: 90 ms where a reduce took 1.37 s). docs/plan.md A11 revised for clicks; a request: fast paths for idioms the games lean on (raze, hashed membership, mix, parsing, matrix product), with our timings and workarounds.
