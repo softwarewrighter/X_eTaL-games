@@ -1,0 +1,48 @@
+#!/usr/bin/env xetal
+# Capitals, scripted (seed 1), with the rules of Atlas.xtl: the map and
+# the places as arrays read from TOML, every point projected at once,
+# every distance at once.
+"a:" u_se< "Atlas"
+
+# The map: Natural Earth's 21615 coastline points (assets/cache/world.toml),
+# projected at once onto half-degree cells (latitude 84 N to 60 S, all
+# longitudes): a 288 by 720 matrix with a 1 at every coast cell, which
+# X_eTaL draws.
+m := a:m_ap @
+s_hape m
+'+ r_/ r_avel m
+pic := []S_HOW []G_RID m
+
+# The places: the 199 national capitals, sorted by name, then any of
+# your own from places.toml; how many in each region (0 is all).
+a:c_ount @
+a:r_egions @
+'{ r -> t_ally a:p_ool r } e_ach 0 1 2 3 4 5
+# Place 135 is Paris (48.87 N, 2.33 E); its cell on the map, and the
+# row and column of that cell.
+a:n_ame 135
+c := 48.87 a:c_ell 2.33
+c
+(1 + (c - 1) d_iv 720) c_at 1 + (c - 1) m_od 720
+
+# The distance from Paris to every place at once, in km (the spherical
+# law of cosines): the three nearest, and the farthest.
+d := a:k_m 135
+n := 3 t_ake 135 a:n_earest a:p_ool 0
+f_loor n s_elect d
+a:n_ame f_irst n
+a:n_ame f_irst g_rade n_eg d
+f_loor 'm_ax r_/ d
+
+# A game of 5 questions in Europe (region 4), drawn at random (seed 1):
+# the first asked, as its dot on the map, and its four choices: it and
+# its three nearest in Europe.
+s := a:n_ew 4 5
+4 d_rop s
+pic := []S_HOW []G_RID a:v_iew s
+a:l_egal s
+a:n_ame a:a_sked s
+
+# A player who always takes the first choice: the score after five.
+u:g_ame := { s -> 1 = a:s_tatus s ? a:s_core s; u:g_ame s a:m_ove 1 }
+u:g_ame s

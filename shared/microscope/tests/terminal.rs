@@ -58,3 +58,11 @@ fn pictures_come_from_the_program() {
     let t = session(&[], "x := []S_HOW []G_RID 1 0\n", &[], 1);
     assert!(matches!(t.lines.first(), Some(Line::Picture(svg)) if svg.starts_with("<svg")));
 }
+
+#[test]
+fn a_data_file_is_stored_by_its_path() {
+    let data = ("data/cities.toml", "cities = [\"Oslo\", \"Lima\"]\n");
+    let t = session(&[data], "p_rint! d_isclose 2 s_elect \"data/cities.toml\" []L_IST \"cities\"\n", &[], 1);
+    assert!(t.error.is_none(), "{:?}", t.error);
+    assert_eq!(t.lines.first(), Some(&Line::Out("Lima".into())));
+}

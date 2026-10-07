@@ -30,9 +30,14 @@ Host max (M1 Max), X_eTaL f823212, 2026-10-04:
 | minesweeper | 38 | 14 | 319 |
 | 2048 | 419 | 16 | 529 |
 | sudoku | 809 | 29 | 549 |
+| capitals | 372 | 437 | 5353 |
 
 Sudoku was added 2026-10-05 at X_eTaL 512b3ee (v0.1.0), when it went
 live; its scripted program solves four puzzles, the last by search.
+Capitals was added 2026-10-07 at X_eTaL 75e6a5c: each run reads and
+projects its TOML data (about 0.3 s), and the page runs the program
+again from the start on every line typed (the replay that X_eTaL's
+terminal pane will end), hence 5.4 s for the browser test's ten lines.
 
 ## X_eTaL's table and inner product slowdown
 

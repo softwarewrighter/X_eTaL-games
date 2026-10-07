@@ -1,0 +1,17 @@
+l:c_ell : (Num a, Num b) => a -> b -> Int
+l:m_ap : Unit -> Int
+l:c_ount : Unit -> Int
+l:n_ame : Int -> Char
+l:r_egions : Unit -> Box Char
+l:p_ool : Int -> Int
+l:c_lose : Int -> Float
+l:k_m : Int -> Float
+l:n_earest : Int -> Int -> Int
+l:d_ot : Int -> Int
+l:n_ew : Int -> Int
+l:s_core : a -> a
+l:a_sked : Int -> Int
+l:l_egal : Int -> Int
+l:m_ove : Int -> Int -> Int
+l:s_tatus : (Eq a, Num b, Truthy b) => a -> b
+l:v_iew : Int -> Int

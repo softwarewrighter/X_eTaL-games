@@ -53,6 +53,11 @@
       "script_ms": 809,
       "play_ms": 29,
       "page_ms": 549
+    },
+    "capitals": {
+      "script_ms": 372,
+      "play_ms": 437,
+      "page_ms": 5353
     }
   }
 }

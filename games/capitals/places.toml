@@ -1,0 +1,25 @@
+# Data for the capitals quiz, read by Atlas.xtl (X_eTaL's []L_IST and
+# []T_ABLE). The 199 national capitals come from Natural Earth
+# (assets/fetch.sh writes assets/cache/world.toml, not tracked); places
+# of your own go here, asked like the capitals, with the nearest places
+# as the wrong choices. Every value is a string (TOML lists in X_eTaL
+# hold strings); latitude and longitude are degrees, south and west
+# negative; region is one of the regions below.
+#
+# To add a place, list its key in places and give it a table, e.g.:
+#
+#   places = ["new-york", "sydney"]
+#
+#   [place.new-york]
+#   name = "New York, United States"
+#   lat = "40.71"
+#   lon = "-74.01"
+#   region = "Americas"
+
+# The regions a game can be limited to, in the menu's order.
+regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
+
+places = []
+fields = ["name", "lat", "lon", "region"]
+
+[place]

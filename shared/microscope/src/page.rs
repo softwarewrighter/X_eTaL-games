@@ -27,7 +27,8 @@ pub struct Game {
     /// The rules library's name (as `u_se<` names it) and text.
     pub library_name: &'static str,
     pub library: &'static str,
-    /// The shared libraries (lib/) the game uses, by name and text.
+    /// The shared libraries (lib/) the game uses, by name and text, and
+    /// its data files, by path (with the extension) and text.
     pub shared: &'static [(&'static str, &'static str)],
     /// The game's game.toml: its `wikipedia` link or its `about` text
     /// (what the title opens).

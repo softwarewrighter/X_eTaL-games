@@ -409,7 +409,7 @@ faster; a Star Trek slowdown since f823212 found and filed.
 | 5 | fifteen | the sliding puzzle; solvability by permutation parity |
 | 6 | nim | heaps, XOR strategy by binary digits |
 | 7 | reversi | the eight rays, captures and flips |
-| 8 | capitals | world map (fetched, not tracked: A9); capitals as a lon/lat table projected by X_eTaL; distractors chosen by distance; scored at the terminal, the map drawn by X_eTaL (`[]P_ATH`/`[]S_HOW`); clicking on the map waits until X_eTaL can take pointer input (an ask) |
+| 8 | capitals | DONE (launch step 13): `Atlas.xtl` reads TOML (`assets/cache/world.toml` from Natural Earth, fetched and converted, not tracked; `places.toml`, tracked: the regions and places of your own, `test.sh` proves they join); 21615 coastline points projected at once and drawn by `[]G_RID`; every distance at once (spherical law of cosines), the three nearest in the region as the wrong choices; a region and a count chosen at the start; `play.xtl`, the page (the shell stores data files by path); live. Clicking on the map waits for the page to pass pointer events (X_eTaL main has `[]E_VENT`). Planned: (fetched, not tracked: A9); capitals as a lon/lat table projected by X_eTaL; distractors chosen by distance; scored at the terminal, the map drawn by X_eTaL (`[]P_ATH`/`[]S_HOW`); clicking on the map waits until X_eTaL can take pointer input (an ask) |
 | 9 | stargazer | the stargazer-poc quiz in X_eTaL: a bright-star table (fetched, A9) projected and drawn by X_eTaL; name the star from the choices at the terminal; clicking waits like capitals |
 | 10 | gallery-3-release | catalog, docs, retrospective |
 

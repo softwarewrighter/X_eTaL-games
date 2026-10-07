@@ -1,0 +1,59 @@
+CAPITALS: WHICH CAPITAL IS AT THE DOT?
+  0  The whole world
+  1  Africa
+  2  Americas
+  3  Asia
+  4  Europe
+  5  Oceania
+REGION ?
+  0  The whole world
+  1  Africa
+  2  Americas
+  3  Asia
+  4  Europe
+  5  Oceania
+REGION ?
+HOW MANY QUESTIONS (1 TO 20) ?
+HOW MANY QUESTIONS (1 TO 20) ?
+
+QUESTION 1 OF 5, SCORE 0
+  1  Amsterdam, Netherlands
+  2  Brussels, Belgium
+  3  Luxembourg, Luxembourg
+  4  Paris, France
+YOUR ANSWER (1 TO 4) ?
+RIGHT: Brussels, Belgium
+
+QUESTION 2 OF 5, SCORE 1
+  1  Monaco, Monaco
+  2  Rome, Italy
+  3  San Marino, San Marino
+  4  Vatican City, Vatican
+YOUR ANSWER (1 TO 4) ?
+YOUR ANSWER (1 TO 4) ?
+RIGHT: Rome, Italy
+
+QUESTION 3 OF 5, SCORE 2
+  1  Amsterdam, Netherlands
+  2  Brussels, Belgium
+  3  London, United Kingdom
+  4  Paris, France
+YOUR ANSWER (1 TO 4) ?
+NO: Paris, France IS 340 KM AWAY. IT IS London, United Kingdom.
+
+QUESTION 4 OF 5, SCORE 2
+  1  Berlin, Germany
+  2  Kobenhavn, Denmark
+  3  Oslo, Norway
+  4  Stockholm, Sweden
+YOUR ANSWER (1 TO 4) ?
+NO: Oslo, Norway IS 483 KM AWAY. IT IS Kobenhavn, Denmark.
+
+QUESTION 5 OF 5, SCORE 2
+  1  Bucharest, Romania
+  2  Pristina, Kosovo
+  3  Skopje, North Macedonia
+  4  Sofia, Bulgaria
+YOUR ANSWER (1 TO 4) ?
+NO: Bucharest, Romania IS 297 KM AWAY. IT IS Sofia, Bulgaria.
+YOU SCORED 2 OF 5

@@ -1,0 +1,12 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "capitals"
+title = "Capitals"
+summary = "Name the capital at the dot on the world map, from four choices: the place and its three nearest. Choose a region and how many questions. X_eTaL reads the places and coastlines from TOML, projects all 21615 coastline points onto the map at once, draws it, and finds the nearest places by computing every distance at once."
+lesson = "points projected all at once; every distance at once; nearest by grade; data from TOML"
+concepts = ["[]T_ABLE", "[]L_IST", "s_in c_os a_tan", "g_rade", "r_eplicate", "[]G_RID", "libraries"]
+status = "live"
+order = 110
+sources = ["Natural Earth (public domain), fetched by assets/fetch.sh"]
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/List_of_national_capitals"   # the title links here (opens in a new tab)

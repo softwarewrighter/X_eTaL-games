@@ -45,7 +45,8 @@ and is tested by its expected output.
 | Lights out | boolean matrices, XOR, GF(2) | planned |
 | [Sudoku](games/sudoku/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/sudoku/)) | a candidate tensor; every single at once by sums over units; rounds to a fixed point | live |
 | Connect four, Mastermind, Flood-it, Fifteen, Nim, Reversi | windows, histograms, regions, permutations, binary digits, rays | planned |
-| Capitals, Stargazer | map and sky quizzes: projections, distances, scoring | planned |
+| [Capitals](games/capitals/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/capitals/)) | points projected all at once; every distance at once; nearest by grade; data from TOML | live |
+| Stargazer | a sky quiz: projections, magnitudes, distances | planned |
 | Battleship | placement masks, a probability map | planned |
 
 A game's name links to its own page (`games/<name>/README.md`) once it
@@ -71,6 +72,7 @@ its idiom in the code.
 | neighborhoods by rotate and reduce; flood fill to a fixed point | [Minesweeper](games/minesweeper/README.md) |
 | compress, merge, compress as a train; turning the board by powers of 0 or 1 | [2048](games/2048/README.md) |
 | every cell's candidates as one array; every unit counted at once by selecting with a table; rounds to a fixed point | [Sudoku](games/sudoku/README.md) |
+| 21615 coastline points projected at once; every distance at once, nearest by grade; data read from TOML | [Capitals](games/capitals/README.md) |
 
 ## Build
 

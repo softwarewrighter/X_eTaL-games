@@ -105,10 +105,19 @@ impl Write for Out {
 /// Runs take turns: the store is global, so tests may run in parallel.
 static TURN: Mutex<()> = Mutex::new(());
 
-/// Install a store holding `libraries` and `typed`, writing into `shared`.
+/// The store path of a library or data file: a library by its name
+/// (`Board` is `Board.xtl`), a data file by its path, extension and all
+/// (`places.toml`, `assets/cache/world.toml`), as `[]T_ABLE` reads it.
+fn path(name: &str) -> String {
+    let file = name.rsplit('/').next().unwrap_or(name);
+    if file.contains('.') { name.to_string() } else { format!("{name}.xtl") }
+}
+
+/// Install a store holding `libraries` (and data files) and `typed`,
+/// writing into `shared`.
 fn install(libraries: &[(&str, &str)], typed: &[String], shared: &Arc<Mutex<Shared>>) {
     let store = Session {
-        files: libraries.iter().map(|(n, t)| (format!("{n}.xtl"), t.to_string())).collect(),
+        files: libraries.iter().map(|(n, t)| (path(n), t.to_string())).collect(),
         typed: Mutex::new(typed.iter().cloned().collect()),
         shared: shared.clone(),
     };

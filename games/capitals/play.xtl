@@ -1,0 +1,54 @@
+#!/usr/bin/env xetal
+# Capitals at the terminal: choose a region (or the whole world) and
+# how many questions; each is a dot on the map; type the number of its
+# name among four (the place and its three nearest in the region). The
+# places are in TOML (assets/cache/world.toml and your own in
+# places.toml); the rules are those of Atlas.xtl.
+"a:" u_se< "Atlas"
+"p:" u_se< "Play"
+said := p_rint! "CAPITALS: WHICH CAPITAL IS AT THE DOT?"
+
+# The regions menu, from places.toml: 0 the whole world, then each.
+u:m_enu := { j ->
+  said := p_rint! @ f_ormat< "  {j}  {d_isclose j s_elect a:r_egions @}"
+  j < t_ally a:r_egions @ ? u:m_enu j + 1; j
+}
+u:r_egion := { @ ->
+  said := p_rint! "  0  The whole world"
+  shown := u:m_enu 1
+  r := p:n_umber "REGION ?"
+  (r >= 0) & r <= t_ally a:r_egions @ ? r; u:r_egion @
+}
+u:c_ount := { @ ->
+  n := p:n_umber "HOW MANY QUESTIONS (1 TO 20) ?"
+  (n >= 1) & n <= 20 ? n; u:c_ount @
+}
+u:a_sk := { s ->
+  k := p:n_umber "YOUR ANSWER (1 TO 4) ?"
+  (k >= 1) & k <= 4 ? k; u:a_sk s
+}
+# The choices c, from j on, one line each.
+u:l_ist := { c j ->
+  said := p_rint! @ f_ormat< "  {j}  {a:n_ame j s_elect c}"
+  j < 4 ? c u:l_ist j + 1; j
+}
+# Right, or which capital was chosen, how far it is, and the answer.
+u:v_erdict := { s k ->
+  i := a:a_sked s
+  pick := k s_elect a:l_egal s
+  pick = i ? @ f_ormat< "RIGHT: {a:n_ame i}"
+  @ f_ormat< "NO: {a:n_ame pick} IS {f_loor pick s_elect a:k_m i} KM AWAY. IT IS {a:n_ame i}."
+}
+# A turn: the map with the dot, the choices, the answer and the verdict.
+u:t_urn := { s ->
+  1 = a:s_tatus s ? @ f_ormat< "YOU SCORED {a:s_core s} OF {3 s_elect s}"
+  said := p_rint! ""
+  said := p_rint! @ f_ormat< "QUESTION {1 + 2 s_elect s} OF {3 s_elect s}, SCORE {a:s_core s}"
+  pic := []S_HOW []G_RID a:v_iew s
+  shown := (a:l_egal s) u:l_ist 1
+  k := u:a_sk s
+  said := p_rint! s u:v_erdict k
+  u:t_urn s a:m_ove k
+}
+r := u:r_egion @
+u:t_urn a:n_ew r c_at u:c_ount @

@@ -1,0 +1,140 @@
+# The capitals quiz's rules, a library: capitals.xtl (scripted),
+# play.xtl (at the terminal) and the web page all use these. (Named
+# Atlas because a disk that ignores case cannot hold Capitals.xtl
+# beside capitals.xtl.) The data is in two TOML files, read here with
+# []L_IST and []T_ABLE: assets/cache/world.toml (Natural Earth's
+# coastlines and the 199 national capitals, fetched by
+# assets/fetch.sh, not tracked) and places.toml (the regions, and
+# places of your own). Every point is projected here.
+#
+# A game's state: the score, the number asked, how many to ask, the
+# region (0 the whole world), then the places to ask, by number.
+
+### The data
+
+# Every place: the capitals, then places of your own; a row each of
+# name, latitude, longitude and region, as texts.
+all := (("assets/cache/world.toml" "place") []T_ABLE ("places" "fields")) c_at ("places.toml" "place") []T_ABLE ("places" "fields")
+# The number written in a text, and the second one (a private helper:
+# h: when X_eTaL has it).
+n_um := { x -> f_irst n_umbers d_isclose x }
+s_econd := { x -> 2 s_elect n_umbers d_isclose x }
+names := 1 s_elect_2 all
+lat := 'n_um e_ach 2 s_elect_2 all
+lon := 'n_um e_ach 3 s_elect_2 all
+regions := "places.toml" []L_IST "regions"
+region := regions i_ndexOf 4 s_elect_2 all
+coast := "assets/cache/world.toml" []L_IST "coast"
+
+### The map
+
+# Half-degree cells, latitude 84 north (row 1) to 60 south, longitude
+# 180 west (column 1) to 180 east.
+rows := 288
+cols := 720
+
+# :: (Num a, Num b) => a -> b -> Int
+# The cells of points (latitudes la, longitudes lo, in degrees) on the
+# map, numbered row by row from 1: the plate carree projection, a
+# scale and a shift of each coordinate, every point at once.
+l:c_ell := { la lo -> 1 + (cols * f_loor 2 * 84 - la) + f_loor 2 * 180 + lo }
+# 1 at each of the cells k (from 1), 0 elsewhere, as a vector of every
+# cell of the map: the cells sorted without repeats, then each one's
+# gap of 0s since the one before followed by a 1, all by one
+# r_eplicate. (m_ember? is far slower here: an ask.)
+m_ark := { k ->
+  u := u_nique (g_rade k) s_elect k
+  n := t_ally u
+  gap := u - 1 + 0 c_at -1 d_rop u
+  m := (r_avel o_\ (2 c_at n) r_eshape gap c_at n r_eshape 1) r_eplicate r_avel (n c_at 2) r_eshape 0 1
+  m c_at ((rows * cols) - t_ally m) r_eshape 0
+}
+# The coastline: every coast point projected and marked, once.
+k := ('s_econd e_ach coast) l:c_ell 'n_um e_ach coast
+shore := (rows c_at cols) r_eshape m_ark ((k >= 1) & k <= rows * cols) r_eplicate k
+# :: Unit -> Int
+# The coastline map, a rows by cols matrix: 1 on the coast, else 0.
+l:m_ap := { @ -> shore }
+
+### The places
+
+# :: Unit -> Int
+l:c_ount := { @ -> t_ally names }
+# :: Int -> Char
+# Place i's name.
+l:n_ame := { i -> d_isclose i s_elect names }
+# :: Unit -> Box Char
+# The regions, in the menu's order.
+l:r_egions := { @ -> regions }
+# :: Int -> Int
+# The places of region r (0 the whole world), by number.
+l:p_ool := { r -> w_here (r = 0) | region = r }
+# :: Int -> Float
+# The cosine of the angle at the Earth's center between place i and
+# every place, all at once (the spherical law of cosines): 1 for i
+# itself, larger for nearer.
+l:c_lose := { i ->
+  r := (p_i @) / 180
+  ((s_in r * i s_elect lat) * s_in r * lat) + (c_os r * i s_elect lat) * (c_os r * lat) * c_os r * lon - i s_elect lon
+}
+# :: Int -> Float
+# The distance in km from place i to every place: the angle from its
+# cosine c (2 a_tan of the root of (1-c)/(1+c)) times the Earth's
+# radius.
+l:k_m := { i ->
+  c := 1 m_in l:c_lose i
+  6371 * 2 * a_tan ((1 - c) / 1 + c) ^ 0.5
+}
+# :: Int -> Int -> Int
+# The places p (by number) other than i, nearest to i first.
+l:n_earest := { i p ->
+  q := (p != i) r_eplicate p
+  (g_rade n_eg q s_elect l:c_lose i) s_elect q
+}
+# :: Int -> Int
+# Place i's map: the coastline with a dot of 7 by 7 cells at the place
+# (2 on the dot, 1 on the coast, 0 elsewhere).
+l:d_ot := { i ->
+  at := (i s_elect lat) l:c_ell i s_elect lon
+  r := 1 + (at - 1) d_iv cols
+  c := 1 + (at - 1) m_od cols
+  near := (3 >= a_bs r - r_ange rows) '& t_able 3 >= a_bs c - r_ange cols
+  shore m_ax 2 * near
+}
+
+### The game
+
+# :: Int -> Int
+# A new game of region and count (region 0 the whole world): count
+# places of the region drawn at random (all of them when it has fewer).
+l:n_ew := { rn ->
+  p := l:p_ool f_irst rn
+  n := (2 s_elect rn) m_in t_ally p
+  0 0 c_at n c_at (f_irst rn) c_at n t_ake (g_rade r_oll! (t_ally p) r_eshape 1000000) s_elect p
+}
+# :: a -> a
+l:s_core := { s -> f_irst s }
+# :: Int -> Int
+# The place asked now.
+l:a_sked := { s -> (5 + 2 s_elect s) s_elect s }
+# :: Int -> Int
+# The four choices: the place asked and its three nearest in the
+# game's region, in the order of their numbers (the capitals by name,
+# then your own places).
+l:l_egal := { s ->
+  i := l:a_sked s
+  c := i c_at 3 t_ake i l:n_earest l:p_ool 4 s_elect s
+  (g_rade c) s_elect c
+}
+# :: Int -> Int -> Int
+# Choice k (1 to 4): one more asked, and one more point when right.
+l:m_ove := { s k ->
+  right := (l:a_sked s) = k s_elect l:l_egal s
+  ((f_irst s) + right) c_at (1 + 2 s_elect s) c_at 2 d_rop s
+}
+# :: (Eq a, Num b, Truthy b) => a -> b
+# 0 playing, 1 when every question is asked.
+l:s_tatus := { s -> 0 + (2 s_elect s) = 3 s_elect s }
+# :: Int -> Int
+# The map with the place asked now.
+l:v_iew := { s -> l:d_ot l:a_sked s }
