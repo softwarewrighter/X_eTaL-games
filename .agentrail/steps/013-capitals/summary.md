@@ -1,0 +1,1 @@
+Capitals live: data in TOML (fetched world.toml + tracked places.toml), coastline projected at once, distances at once, region and count options, play/page/tests incl. test.sh for added places; shell stores data files by path.

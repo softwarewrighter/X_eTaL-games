@@ -1,0 +1,11 @@
+{
+  "task_type": "feature",
+  "state": {
+    "number": 13,
+    "step": "capitals"
+  },
+  "action": "Prototyped map and data parsing (found and worked around slow n_umbers/include/member), TOML via []T_ABLE after the X_eTaL bump, full gate exit 0.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-07T12:28:20"
+}

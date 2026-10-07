@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-07
 
+- 12:28 `chore` Saga step capitals completed.
+
 - 11:45 `game` Capitals is live: name the capital at the dot from four choices (it and its three nearest in the region); a region and a count chosen at the start; score, and how far a wrong choice is. `Atlas.xtl` reads its data from TOML (`[]T_ABLE`, `[]L_IST`): Natural Earth's coastlines and 199 capitals (`assets/fetch.sh` and `convert.py` write the untracked `assets/cache/world.toml`) and `places.toml` (tracked: the regions and places of your own; `test.sh` adds two and checks them); 21615 points projected at once, the map drawn by `[]G_RID`, every distance at once. The shell stores data files by their paths (a test). Asks filed: data paths relative to the working directory, a clearer half-written-library message.
 
 - 10:23 `build` The Cargo.lock files follow X_eTaL 75e6a5c (its TOML reader crates), left out of the move's commit.
