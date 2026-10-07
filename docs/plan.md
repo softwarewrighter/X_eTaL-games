@@ -113,6 +113,12 @@ is frame timing and collision geometry, not arrays.
 
 ## Priorities (2026-10-03, revised 2026-10-05)
 
+Revised 2026-10-07 (the user): game data lives in data files loaded
+by the X_eTaL program (TOML now, X_eTaL's `.xtln` when its Saga 37
+lands), so a game is extended by editing data; XETAL_COMMIT moved past
+v0.1.0 to an untagged X_eTaL main commit to get TOML tables
+(`[]L_IST`, `[]T_ABLE`).
+
 Revised 2026-10-05 (the user): "launch is delayed, do not delay
 games." The launch waits only on X_eTaL's terminal pane, with no date,
 so new games go ahead now: sudoku first (a solver, then a playable
@@ -387,9 +393,11 @@ X_eTaL-libraries', which the games do not use.
 
 No longer after the launch (2026-10-05). Sudoku goes first, recorded as
 launch steps 10 (sudoku-solver) and 11 (sudoku-play) while the
-terminal pane waits. Capitals and stargazer follow as launch steps 12
-and 13 (the user asked for their ETA), before the remaining macros
-step and the terminal pane.
+terminal pane waits. Capitals and stargazer follow (the user asked for
+their ETA), before the remaining macros step and the terminal pane,
+after launch step 12, xetal-tables: X_eTaL moved to 75e6a5c (main,
+untagged) for TOML data files; every golden unchanged; tic-tac-toe
+faster; a Star Trek slowdown since f823212 found and filed.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |

@@ -1,0 +1,1 @@
+the user (2026-10-07): game data in data files loaded by X_eTaL, and the pin moved past v0.1.0 to get them: just xetal-bump to X_eTaL main (TOML tables []L_IST and []T_ABLE, events []E_VENT); every golden, type and timing check re-run; differences explained or asked; the plan and audit say the pin is now an untagged main commit.

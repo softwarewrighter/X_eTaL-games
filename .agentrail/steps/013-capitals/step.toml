@@ -1,6 +1,6 @@
-number = 12
+number = 13
 slug = "capitals"
-status = "pending"
+status = "in-progress"
 description = "new game (the user asked for it 2026-10-02 and for its ETA 2026-10-05): games..."
 role = "production"
 context_files = []
