@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-07
 
+- 10:22 `chore` Saga step xetal-tables completed.
+
 - 10:22 `vendor` X_eTaL moved past v0.1.0 to 75e6a5c (main, untagged; the user's decision) for TOML data files (`[]L_IST`, `[]T_ABLE`): every golden, type and browser check unchanged; tic-tac-toe faster (45 to 28 ms); asks filed from the capitals work: text-to-number parsing and `i_nclude<` slow on long text, `m_ember?` slow on long vectors, numbers in data files (X_eTaL's `.xtln`), and Star Trek 2.7 times slower since f823212 (already so at v0.1.0).
 
 ## 2026-10-05

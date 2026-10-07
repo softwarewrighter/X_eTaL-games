@@ -1,0 +1,1 @@
+XETAL_COMMIT -> 75e6a5c (untagged main) for TOML data files; full gate unchanged; asks filed (parsing/include/member speed, .xtln numbers, Trek slowdown since f823212).
