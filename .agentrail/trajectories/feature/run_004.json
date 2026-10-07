@@ -1,0 +1,11 @@
+{
+  "task_type": "feature",
+  "state": {
+    "number": 14,
+    "step": "capitals-map"
+  },
+  "action": "Prototyped data and SVG in the scratchpad, event loop on []E_VENT, shell dialog with click-to-event, golden clicks computed from the layout, full gate exit 0 after re-baselining capitals and Star Trek.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-07T14:20:49"
+}

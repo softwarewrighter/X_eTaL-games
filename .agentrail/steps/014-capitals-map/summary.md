@@ -1,0 +1,1 @@
+Capitals rebuilt: a clickable SVG map drawn by X_eTaL in a large dialog (country outlines, dots in countries, menus of nearby cities, verdicts, score, zoomed regions); Game::interactive shell support; browser test clicks; l:j_oin; docs and bench.
