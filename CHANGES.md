@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-08
 
+- 11:43 `chore` Saga step assert-macros completed.
+
 - 11:05 `test` Every scripted game states what it guarantees with X_eTaL's system macro `a_ssert<` (23 assertions, the conditions as written: a winner, every secret found within 7 guesses, perfect play a draw, every move for a 7 adds up to 7, a slide keeps the tiles' total, the sudoku keeps every given, a capital's nearest city is itself, a star among its own choices, ...), bound so the goldens are unchanged; a failing one writes to standard error and fails the tests (the tooling self-test proves both ways). docs/style.md says when.
 
 - 07:56 `chore` Saga step docs-xref completed.

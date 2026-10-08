@@ -1,0 +1,11 @@
+{
+  "task_type": "refactor",
+  "state": {
+    "number": 18,
+    "step": "assert-macros"
+  },
+  "action": "Read each scripted game, chose properties it demonstrates, one assertion caught my own wrong expectation; affected gate exit 0.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-08T11:43:53"
+}

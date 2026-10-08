@@ -1,0 +1,1 @@
+23 a_ssert< guarantees across the 12 scripted games (goldens unchanged), self-test both ways, style.md; control macros deliberately unused.
