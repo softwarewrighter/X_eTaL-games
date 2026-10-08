@@ -1,0 +1,1 @@
+Stargazer live: a sky you click, modeled on capitals, on lib/Svg.xtl; BSC5 + IAU names in TOML; mixed-brightness rounds and choices; tests, page, docs. Earlier in the step: Play-only pages for click games and lib/Svg.xtl (83f16ab).
