@@ -1,9 +1,10 @@
 number = 21
 slug = "lights-out"
-status = "in-progress"
+status = "completed"
 description = "new game (plan saga 8 row 0; the user, 2026-10-08: games while the terminal w..."
 role = "production"
 context_files = []
 created_at = "2026-10-08T14:50:23"
+completed_at = "2026-10-08T16:26:41"
 task_type = "feature"
-commits = []
+commits = ["e355c14ad3229d3427c633be67c0cc9fcdbf6872"]

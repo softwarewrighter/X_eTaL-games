@@ -1,0 +1,11 @@
+{
+  "task_type": "feature",
+  "state": {
+    "number": 21,
+    "step": "lights-out"
+  },
+  "action": "Lamps.xtl prototyped and doc-tested, solver checked on 50 puzzles, golden clicks from the layout.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-08T16:26:41"
+}

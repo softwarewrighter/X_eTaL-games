@@ -1,0 +1,1 @@
+Lights out live: click board, GF(2) solver for hints, quiet patterns notebook, exhaustive test.sh; affected gate 18 s.
