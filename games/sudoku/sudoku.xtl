@@ -1,7 +1,7 @@
 #!/usr/bin/env xetal
-# Sudoku solved by array programs, with the rules of SudokuGrid.xtl:
-# every cell's candidates at once, every single at once, rounds until
-# nothing changes, and a search only when rounds stall.
+## Sudoku solved by array programs, with the rules of SudokuGrid.xtl:
+## every cell's candidates at once, every single at once, rounds until
+## nothing changes, and a search only when rounds stall.
 "s:" u_se< "SudokuGrid"
 
 # Puzzle 1 (Wikipedia's example): 30 givens, 51 empty cells.

@@ -1,21 +1,21 @@
 #!/usr/bin/env xetal
-# Trek adventure at the terminal, as the COR24 BASIC game plays it:
-# "Star Trek: Decaying Orbit". Pick commands by number (8 for help);
-# GO, TAKE and USE then ask for a room or an item number. Every command
-# takes a turn; fix the engines before the 30 turns run out. The rules
-# and all the text are in TrekAdventure.xtl.
+## Trek adventure at the terminal, as the COR24 BASIC game plays it:
+## "Star Trek: Decaying Orbit". Pick commands by number (8 for help);
+## GO, TAKE and USE then ask for a room or an item number. Every command
+## takes a turn; fix the engines before the 30 turns run out. The rules
+## and all the text are in TrekAdventure.xtl.
 "t:" u_se< "TrekAdventure"
 "p:" u_se< "Play"
 
-# The items here as the TAKE menu lists them, "  3=TOOLKIT".
+## The items here as the TAKE menu lists them, "  3=TOOLKIT".
 u:l_ist := { v ->
   0 = t_ally v ? 0
   shown := p_rint! @ f_ormat< "  {f_irst v}={d_isclose (f_irst v) s_elect t:i_tems @}"
   1 + u:l_ist 1 d_rop v
 }
 
-# The argument a command asks for: a room for GO, an item for TAKE (0
-# when there is nothing to take) and USE, else none.
+## The argument a command asks for: a room for GO, an item for TAKE (0
+## when there is nothing to take) and USE, else none.
 u:a_rg := { s c ->
   c = 3 ? p:n_umber "GO TO ROOM# ?"
   c = 4 ? u:t_akeWhat s
@@ -35,7 +35,7 @@ u:u_seWhat := { s ->
   p:n_umber "ITEM# ?"
 }
 
-# A turn: the room, the menu, a command, what it says, the clock.
+## A turn: the room, the menu, a command, what it says, the clock.
 u:t_urn := { s ->
   0 < t:s_tatus s ? s t:s_ay 200 + t:s_tatus s
   said := p_rint! "----------------------------------------"

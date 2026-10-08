@@ -40,4 +40,5 @@ done < <("$root/scripts/games.py" list)
 done
 cp "$root/images/modern-xetal-logo.jpg" "$root/images/favicon.ico" "$root/pages/"
 "$root/scripts/build-catalog.py"
+"$root/scripts/build-docs.sh"
 echo "pages/ built; just publish puts it on the gh-pages branch (the live site)."

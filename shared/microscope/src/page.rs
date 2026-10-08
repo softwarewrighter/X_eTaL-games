@@ -348,6 +348,8 @@ pub fn game_page(g: &Game) -> Html {
         Callback::from(move |_: MouseEvent| typed.set(vec![]))
     };
     let alias = g.library_name.chars().next().map(|c| c.to_ascii_lowercase()).unwrap_or('g');
+    // The game's pages in the cross-reference (pages/doc/, xetal doc).
+    let slug = field(g.toml, "slug").unwrap_or_default();
     html! {
         <>
         <header>
@@ -391,11 +393,11 @@ pub fn game_page(g: &Game) -> Html {
                 </div>
                 <div class="col">
                     <section class="panel code">
-                        <h2>{"The program: play.xtl"}</h2>
+                        <h2>{"The program: play.xtl"}{" "}<a class="xref" href={format!("../doc/games-{slug}-play.xtl.html")} title="Its cross-reference: every definition documented and linked">{"docs"}</a></h2>
                         { block(g.play, NONE) }
                     </section>
                     <section class="panel code">
-                        <h2>{format!("The library: {}.xtl", g.library_name)}</h2>
+                        <h2>{format!("The library: {}.xtl", g.library_name)}{" "}<a class="xref" href={format!("../doc/games-{slug}-{}.xtl.html", g.library_name)} title="Its cross-reference: every definition documented and linked">{"docs"}</a></h2>
                         <p class="note">{format!("The rules, written once. A library names its exports l: (\"this library\"); a program that imports it with \"{alias}:\" u_se< \"{}\" calls them as {alias}:.", g.library_name)}</p>
                         { block(g.library, NONE) }
                     </section>
@@ -412,7 +414,7 @@ pub fn game_page(g: &Game) -> Html {
                         </section>
                     } } else { html! {
                         <section class="panel code">
-                            <h2>{format!("A shared library: {name}.xtl")}</h2>
+                            <h2>{format!("A shared library: {name}.xtl")}{" "}<a class="xref" href={format!("../doc/lib-{name}.xtl.html")} title="Its cross-reference: every definition documented and linked">{"docs"}</a></h2>
                             <p class="note">{"Used by several games; the games' programs import it with u_se<."}</p>
                             { block(text, NONE) }
                         </section>

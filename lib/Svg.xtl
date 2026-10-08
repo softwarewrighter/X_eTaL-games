@@ -1,43 +1,71 @@
-# Svg: pictures written as SVG text, and the clicks on them, shared by
-# the games played by clicking a map (capitals, stargazer). A picture's
-# view v is x, y, width and height in the game's own units (its viewBox);
-# layout is scaled to the view (l:u_nit), so buttons, menus and text look
-# the same at every zoom. Rectangles are rows of x, y, width and height.
+## Svg: pictures written as SVG text, and the clicks on them, shared by
+## the games played by clicking a map (capitals, stargazer). A picture's
+## view v is x, y, width and height in the game's own units (its viewBox);
+## layout is scaled to the view (l:u_nit), so buttons, menus and text look
+## the same at every zoom. Rectangles are rows of x, y, width and height.
 
 "t:" u_se< "Text"
 
 # :: Box Char -> Float
-# The number written in a text (a cell of a TOML table).
+## The number written in a text (a cell of a TOML table).
+## >> "g:" u_se< "Svg"
+## >> g:n_um e_nclose "48.87"
+## 48.87
 l:n_um := { x -> f_irst n_umbers d_isclose x }
 # :: Float -> Char
-# A whole number as text (a coordinate in a picture).
+## A whole number as text (a coordinate in a picture).
+## >> "g:" u_se< "Svg"
+## >> g:w_hole 2.5
+## 3
 l:w_hole := { x -> f_ormat f_loor 0.5 + x }
 # :: Num a => a -> Float
-# Units of the view per point of a picture 1000 points wide.
+## Units of the view per point of a picture 1000 points wide.
+## >> "g:" u_se< "Svg"
+## >> g:u_nit 0 0 2000 800.0
+## 2.0
 l:u_nit := { v -> (3 s_elect v) / 1000 }
 # :: Float -> a -> Box Char
-# An SVG rectangle r (x, y, width, height) with the attributes st.
+## An SVG rectangle r (x, y, width, height) with the attributes st.
+## >> "g:" u_se< "Svg"
+## >> d_isclose (0 0 20 10.0) g:r_ect "fill=\"red\""
+## <rect x="0" y="0" width="20" height="10" fill="red"/>
 l:r_ect := { r st -> e_nclose @ f_ormat< "<rect x=\"{l:w_hole f_irst r}\" y=\"{l:w_hole 2 s_elect r}\" width=\"{l:w_hole 3 s_elect r}\" height=\"{l:w_hole 4 s_elect r}\" {st}/>" }
 # :: Float -> a -> Box Char
-# An SVG text at x, y in size z (xyz), with a white halo to read over a
-# map.
+## An SVG text at x, y in size z (xyz), with a white halo to read over a
+## map.
+## >> "g:" u_se< "Svg"
+## >> d_isclose (10 20 30.0) g:w_ords "hi"
+## <text x="10" y="20" font-size="30" paint-order="stroke" stroke="#ffffff" stroke-width="8">hi</text>
 l:w_ords := { xyz t -> e_nclose @ f_ormat< "<text x=\"{l:w_hole f_irst xyz}\" y=\"{l:w_hole 2 s_elect xyz}\" font-size=\"{l:w_hole 3 s_elect xyz}\" paint-order=\"stroke\" stroke=\"#ffffff\" stroke-width=\"{l:w_hole 0.25 * 3 s_elect xyz}\">{t}</text>" }
 # :: Num a => a -> a -> Int
-# Which of the rectangles r holds the point xy: 1 to the number of
-# rows, 0 for none.
+## Which of the rectangles r holds the point xy: 1 to the number of
+## rows, 0 for none.
+## >> "g:" u_se< "Svg"
+## >> (2 4 r_eshape 0 0 10 10 20 0 10 10.0) g:h_it 25 5.0
+## 2
 l:h_it := { r xy ->
   in := ((f_irst xy) >= 1 s_elect_2 r) & ((f_irst xy) <= (1 s_elect_2 r) + 3 s_elect_2 r) & ((2 s_elect xy) >= 2 s_elect_2 r) & (2 s_elect xy) <= (2 s_elect_2 r) + 4 s_elect_2 r
   f_irst (w_here in) c_at 0
 }
 # :: Float -> Int -> Float
-# A row of n buttons along the top of the view v.
+## A row of n buttons along the top of the view v.
+## >> "g:" u_se< "Svg"
+## >> (0 0 2000 800.0) g:b_uttons 2
+##  20.0 20.0 240.0 68.0
+## 280.0 20.0 240.0 68.0
 l:b_uttons := { v n ->
   u := l:u_nit v
   k := f_loat (r_ange n) - 1
   o_\ (4 c_at n) r_eshape ((f_irst v) + u * 10 + 130 * k) c_at ((2 s_elect v) + u * 10 + 0 * k) c_at (u * 120 + 0 * k) c_at u * 34 + 0 * k
 }
 # :: Float -> Float -> Float
-# A menu of four choices beside the point xy, kept inside the view v.
+## A menu of four choices beside the point xy, kept inside the view v.
+## >> "g:" u_se< "Svg"
+## >> (0 0 2000 800.0) g:m_enu 1000 400.0
+## 1032.0 360.0 600.0 80.0
+## 1032.0 448.0 600.0 80.0
+## 1032.0 536.0 600.0 80.0
+## 1032.0 624.0 600.0 80.0
 l:m_enu := { v xy ->
   u := l:u_nit v
   x := f_irst xy
@@ -47,11 +75,14 @@ l:m_enu := { v xy ->
   k := f_loat (r_ange 4) - 1
   o_\ 4 4 r_eshape (x0 + 0 * k) c_at (y0 + u * 44 * k) c_at (u * 300 + 0 * k) c_at u * 40 + 0 * k
 }
-# A button's fill: the one shown filled.
+## A button's fill: the one shown filled.
 f_ill := { on -> d_isclose (1 + on) s_elect "#ffffff" "#a8dadc" }
 # :: Float -> Box a -> Box Char
-# Buttons b (rectangles) labeled with the texts names: the one numbered
-# by the view's fifth item (from 1) filled; v is the view and that number.
+## Buttons b (rectangles) labeled with the texts names: the one numbered
+## by the view's fifth item (from 1) filled; v is the view and that number.
+## >> "g:" u_se< "Svg"
+## >> t_ally (0 0 2000 800 1.0) g:l_abeled "a" "b"
+## 4
 l:l_abeled := { vb names ->
   v := 4 t_ake vb
   u := l:u_nit v
@@ -61,14 +92,20 @@ l:l_abeled := { vb names ->
   r c_at '{ j -> (((1 s_elect j s_elect b) + u * 12) c_at ((2 s_elect j s_elect b) + u * 24) c_at u * 18) l:w_ords d_isclose j s_elect names } e_ach k
 }
 # :: Float -> Box a -> Box Char
-# A menu m (four rectangles) of the texts names, each a button.
+## A menu m (four rectangles) of the texts names, each a button.
+## >> "g:" u_se< "Svg"
+## >> t_ally ((0 0 2000 800.0) g:m_enu 100 100.0) g:c_hoices "w" "x" "y" "z"
+## 8
 l:c_hoices := { m names ->
   u := (3 s_elect 1 s_elect m) / 300
   r := '{ j -> (j s_elect m) l:r_ect @ f_ormat< "class=\"choice\" rx=\"{l:w_hole u * 6}\" fill=\"#fffbe6\" stroke=\"#264653\"" } e_ach r_ange 4
   r c_at '{ j -> (((1 s_elect j s_elect m) + u * 12) c_at ((2 s_elect j s_elect m) + u * 27) c_at u * 20) l:w_ords d_isclose j s_elect names } e_ach r_ange 4
 }
 # :: Float -> Box Char -> Char
-# The picture: an SVG document of the view v holding the pieces p.
+## The picture: an SVG document of the view v holding the pieces p.
+## >> "g:" u_se< "Svg"
+## >> (0 0 20 10.0) g:p_icture e_nclose "<circle/>"
+## <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10 " width="1000" height="400" font-family="sans-serif"><circle/></svg>
 l:p_icture := { v p ->
   vb := t:j_oin '{ x -> e_nclose (l:w_hole x) c_at " " } e_ach v
   t:j_oin (e_nclose @ f_ormat< "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{vb}\" width=\"1000\" height=\"400\" font-family=\"sans-serif\">") c_at p c_at e_nclose "</svg>"

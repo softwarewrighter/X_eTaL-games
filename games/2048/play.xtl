@@ -1,20 +1,20 @@
 #!/usr/bin/env xetal
-# 2048 at the terminal: slide the tiles with a (left), d (right), w (up)
-# or s (down), then Enter; q stops. Equal tiles that meet merge; make a 2048.
-# The board is printed as X_eTaL prints a matrix (0 is an empty
-# square). The rules are those of Twenty48.xtl.
+## 2048 at the terminal: slide the tiles with a (left), d (right), w (up)
+## or s (down), then Enter; q stops. Equal tiles that meet merge; make a 2048.
+## The board is printed as X_eTaL prints a matrix (0 is an empty
+## square). The rules are those of Twenty48.xtl.
 "t:" u_se< "Twenty48"
 "p:" u_se< "Play"
 said := p_rint! "2048: A LEFT, D RIGHT, W UP, S DOWN"
 
-# A direction (1 left, 2 right, 3 up, 4 down) from the first of a d w s
-# on the line, 0 for q; anything else is asked for again.
+## A direction (1 left, 2 right, 3 up, 4 down) from the first of a d w s
+## on the line, 0 for q; anything else is asked for again.
 u:a_sk := { s ->
   k := "MOVE (A D W S, Q TO STOP) ?" p:l_etter "adwsADWSqQ"
   k <= 8 ? 1 + (k - 1) m_od 4
   k <= 10 ? 0; u:a_sk s
 }
-# A turn: the score and board, a move, until the game ends.
+## A turn: the score and board, a move, until the game ends.
 u:t_urn := { s ->
   said := p_rint! ""
   said := p_rint! @ f_ormat< "SCORE {t:s_core s}"

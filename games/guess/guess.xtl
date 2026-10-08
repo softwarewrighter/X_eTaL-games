@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Guess the number, scripted (seed 1), with the rules of NumberGuess.xtl.
+## Guess the number, scripted (seed 1), with the rules of NumberGuess.xtl.
 "g:" u_se< "NumberGuess"
 
 # A secret, and three guesses answered at once.
@@ -7,9 +7,9 @@ t := g:n_ew g:top
 t g:m_ove 10 50 90
 g:r_eply t g:m_ove 50
 
-# The halving player on this secret: guess the middle of what is still
-# possible, narrow, repeat. Each guess is printed with its answer, and
-# the result is how many guesses it took.
+## The halving player on this secret: guess the middle of what is still
+## possible, narrow, repeat. Each guess is printed with its answer, and
+## the result is how many guesses it took.
 u:p_lay := { t b ->
   k := f_irst r_avel g:g_uess b
   r := t g:m_ove k

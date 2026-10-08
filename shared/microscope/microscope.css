@@ -169,3 +169,4 @@ dialog.board .close { position: absolute; top: 4px; right: 10px; font: 1.6rem/1 
 dialog.board .close:hover { color: var(--fg); }
 pre.data { white-space: pre-wrap; font-size: .85rem; }
 dialog.board .board-err { margin: 0 0 8px; padding: 8px 12px; border-radius: 8px; background: #fde2e1; color: #8a1c1c; font-weight: 600; }
+h2 a.xref { font-size: .8rem; font-weight: 600; margin-left: 6px; color: var(--accent); }

@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Tic-tac-toe, scripted (seed 1), with the rules of TicTacToe.xtl.
+## Tic-tac-toe, scripted (seed 1), with the rules of TicTacToe.xtl.
 "t:" u_se< "TicTacToe"
 
 # The eight lines as a table of squares, and a board.
@@ -31,7 +31,7 @@ t:v_iew p
 '{ t:v_alue p t:m_ove _r } e_ach t:l_egal p
 t:b_est p
 
-# The quick player against itself, from an empty board: a draw.
+## The quick player against itself, from an empty board: a draw.
 u:s_elf := { b ->
   0 < t:s_tatus b ? b
   u:s_elf b t:m_ove t:a_i b

@@ -1,27 +1,48 @@
-# Board: square boards as arrays, shared by the games. Rows and columns
-# count from 0; a square's number counts from 1, row by row.
+## Board: square boards as arrays, shared by the games. Rows and columns
+## count from 0; a square's number counts from 1, row by row.
 
 # :: Num a => a -> a -> a
-# The number of square rc (row, column) on a board n wide; rc may hold
-# many squares, as a 2-row matrix (rows, then columns).
+## The number of square rc (row, column) on a board n wide; rc may hold
+## many squares, as a 2-row matrix (rows, then columns).
+## >> "b:" u_se< "Board"
+## >> 3 b:c_ell 1 2
+## 6
+## >> 3 b:c_ell 2 2 r_eshape 0 2 1 0
+## 2 7
 l:c_ell := { n rc -> 1 + (n * 1 s_elect rc) + 2 s_elect rc }
 # :: Int -> Int -> Int
-# The row and column of squares k on a board n wide (a 2-row matrix for
-# many squares).
+## The row and column of squares k on a board n wide (a 2-row matrix for
+## many squares).
+## >> "b:" u_se< "Board"
+## >> 3 b:r_c 6
+## 1 2
+## >> 3 b:r_c 1 9
+## 0 2
+## 0 2
 l:r_c := { n k -> (2 c_at s_hape k) r_eshape ((k - 1) d_iv n) c_at (k - 1) m_od n }
 
 # :: Num a => a -> a
-# Every square's count of 1s among its eight neighbors, all at once:
-# the board in a border of zeros, rotated along both axes by -1, 0 and
-# 1 (nine boards), summed, less the board, the border dropped.
+## Every square's count of 1s among its eight neighbors, all at once:
+## the board in a border of zeros, rotated along both axes by -1, 0 and
+## 1 (nine boards), summed, less the board, the border dropped.
+## >> "b:" u_se< "Board"
+## >> b:a_round 3 3 r_eshape 1 0 0 0 0 0 0 0 1
+## 0 1 0
+## 1 2 1
+## 0 1 0
 l:a_round := { b ->
   p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0
   t := ('+ r_/_12 -1 0 1 o_-_12 p) - p
   1 d_rop_2 -1 d_rop_2 1 d_rop -1 d_rop t
 }
 # :: Num a => a -> a
-# Every square with its four neighbors (up, down, left, right) as 1s:
-# the plus around each 1 of the board, edges not wrapping.
+## Every square with its four neighbors (up, down, left, right) as 1s:
+## the plus around each 1 of the board, edges not wrapping.
+## >> "b:" u_se< "Board"
+## >> b:p_lus 3 3 r_eshape 0 0 0 0 1 0 0 0 0
+## 0 1 0
+## 1 1 1
+## 0 1 0
 l:p_lus := { b ->
   p := 0 c_at_2 (0 c_at b c_at 0) c_at_2 0
   t := ('+ r_/ -1 0 1 o_- p) + ('+ r_/ -1 1 o_-_2 p)
@@ -29,9 +50,13 @@ l:p_lus := { b ->
 }
 
 # :: Char -> Char
-# A character board with a space after every character, as the games
-# print boards: the columns 1, c+1, 2, c+1, ... of the board with a
-# column of spaces added.
+## A character board with a space after every character, as the games
+## print boards: the columns 1, c+1, 2, c+1, ... of the board with a
+## column of spaces added.
+## >> "b:" u_se< "Board"
+## >> b:s_paced 2 3 r_eshape "abcdef"
+## a b c
+## d e f
 l:s_paced := { m ->
   c := 2 s_elect s_hape m
   spaces := ((f_irst s_hape m) c_at 1) r_eshape " "

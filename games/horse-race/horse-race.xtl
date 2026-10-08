@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Horse race: a scripted race (seed 1) with the rules of HorseRace.xtl.
+## Horse race: a scripted race (seed 1) with the rules of HorseRace.xtl.
 "h:" u_se< "HorseRace"
 
 # One round from the start, step by step: the rolls, the new positions,
@@ -11,8 +11,8 @@ p := p h:m_ove r
 p
 h:v_iew p
 
-# A whole race: a round at a time until a horse finishes; each round
-# printed as its rolls, then the track.
+## A whole race: a round at a time until a horse finishes; each round
+## printed as its rolls, then the track.
 u:r_ace := { p ->
   r := p_rint! h:r_oll p
   q := p h:m_ove r

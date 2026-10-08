@@ -1,42 +1,43 @@
-# The horse race's rules, a library: horse-race.xtl (a scripted race),
-# play.xtl (at the terminal) and the web page all use these. Five
-# horses, a track of 15; every round each horse runs 1, 2 or 3 at
-# random, all at once: the field is one vector of positions and a round
-# is one expression. The first round in which any horse reaches the
-# finish ends the race; the horses furthest along win (there can be a
-# tie).
+## The horse race's rules, a library: horse-race.xtl (a scripted race),
+## play.xtl (at the terminal) and the web page all use these. Five
+## horses, a track of 15; every round each horse runs 1, 2 or 3 at
+## random, all at once: the field is one vector of positions and a round
+## is one expression. The first round in which any horse reaches the
+## finish ends the race; the horses furthest along win (there can be a
+## tie).
 
 # :: Int
+## The distance to the finish line.
 l:finish := 15
 # :: Unit -> Char
-# The horses' names, one per row.
+## The horses' names, one per row.
 l:n_ames := { @ -> 5 7 r_eshape "LUCKY  THUNDERSHADOW COMET  BLAZE  " }
 
 # :: Num a => Int -> a
-# A new race: n horses at the start.
+## A new race: n horses at the start.
 l:n_ew := { n -> n r_eshape 0 }
 # :: a -> Int
-# A round's rolls: 1 to 3 for every horse at once.
+## A round's rolls: 1 to 3 for every horse at once.
 l:r_oll := { p -> r_oll! (t_ally p) r_eshape 3 }
 # :: Num a => a -> a -> a
-# A round: every horse moves by its roll.
+## A round: every horse moves by its roll.
 l:m_ove := { p r -> p + r }
 # :: Truthy a => Int -> a
-# 1 once any horse reaches the finish.
+## 1 once any horse reaches the finish.
 l:s_tatus := { p -> '| r_/ p >= l:finish }
 # :: (Num a, Truthy b) => a -> b
-# The leaders: every horse as far along as the furthest (a fork: the
-# maximum, compared with each).
+## The leaders: every horse as far along as the furthest (a fork: the
+## maximum, compared with each).
 l:l_eaders := ['m_ax r_/ = i_d]
 # :: Num a => a -> Int
-# The winners' numbers: where the leaders are.
+## The winners' numbers: where the leaders are.
 l:w_inners := [w_here 'm_ax r_/ = i_d]
 
 # :: Int -> Char
-# The track: a table of every horse against every column gives the bars
-# (a horse's bar reaches its position); the finish line shows where no
-# bar covers it; once the race is over the leaders' rows are marked.
-# Every square is a code into " #:", picked at once.
+## The track: a table of every horse against every column gives the bars
+## (a horse's bar reaches its position); the finish line shows where no
+## bar covers it; once the race is over the leaders' rows are marked.
+## Every square is a code into " #:", picked at once.
 l:v_iew := { p ->
   cols := r_ange l:finish + 5
   bar := p '>= t_able cols

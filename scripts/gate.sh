@@ -44,12 +44,15 @@ md=(README.md CHANGES.md lib/README.md docs/audit.md docs/bench.md docs/plan.md 
 for f in games/*/README.md shared/*/README.md; do [ -e "$f" ] && md+=("$f"); done
 markdown() { for f in "${md[@]}"; do sw-markdown-checker -f "$f" >/dev/null || { sw-markdown-checker -f "$f"; return 1; }; done; echo "markdown: ok (${#md[@]} files)"; }
 names=(); pids=()
-job() { names+=("$1"); ( "${@:2}" ) > "$logs/$1.log" 2>&1 & pids+=($!); }
+job() { names+=("$1"); ( t=$SECONDS; "${@:2}"; s=$?; echo "($1: $((SECONDS - t)) s)"; exit $s ) > "$logs/$1.log" 2>&1 & pids+=($!); }
 job vendor scripts/check-vendor.sh
 job spelling bash -c 'scripts/check-spelling.py --self-test && scripts/check-spelling.py'
 job tooling scripts/selftest-games.sh
 job libraries scripts/test-lib.sh
 job types scripts/check-types.py
+job docs scripts/check-docs.py
+job doctests bash -c 'cd lib && for f in [A-Z]*.xtl; do XETAL_PATH=. ../bin/xetal doc --test "$f" >/dev/null || { XETAL_PATH=. ../bin/xetal doc --test "$f"; exit 1; }; done; echo "doc tests: ok"'
+job xref bash -c 'd="$(mktemp -d)"; ( ls lib/[A-Z]*.xtl; ls games/*/*.xtl | grep -v _template ) | XETAL_PATH="$PWD/lib" xargs bin/xetal doc --out "$d" >/dev/null && echo "xref: builds"; s=$?; rm -rf "$d"; exit $s' 
 job affected python3 scripts/affected.py --self-test
 job markdown markdown
 web=0; [ "$mode" = full ] && web=1
@@ -58,7 +61,7 @@ while IFS= read -r slug; do
 done < <(scripts/games.py list)
 fail=0
 for i in "${!pids[@]}"; do
-  if wait "${pids[$i]}"; then echo "ok: ${names[$i]}"; else echo "FAIL: ${names[$i]} (work/gate/${names[$i]}.log)"; cat "$logs/${names[$i]}.log"; fail=1; fi
+  if wait "${pids[$i]}"; then echo "ok: ${names[$i]} $(tail -1 "$logs/${names[$i]}.log" | grep -o '[0-9]* s)' | tr -d ')')"; else echo "FAIL: ${names[$i]} (work/gate/${names[$i]}.log)"; cat "$logs/${names[$i]}.log"; fail=1; fi
 done
 echo "    (sample: $((SECONDS - started)) s)"
 [ $fail = 0 ] || { echo "gate: FAILED"; exit 1; }

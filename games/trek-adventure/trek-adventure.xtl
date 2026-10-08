@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Trek adventure, scripted, with the rules of TrekAdventure.xtl.
+## Trek adventure, scripted, with the rules of TrekAdventure.xtl.
 "t:" u_se< "TrekAdventure"
 
 # The text is one table of 157 lines; its four columns (text, key,

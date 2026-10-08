@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Minesweeper, scripted (seed 1), with the rules of Mines.xtl.
+## Minesweeper, scripted (seed 1), with the rules of Mines.xtl.
 "m:" u_se< "Mines"
 
 # A new field: 10 mines on the first 10 squares of a random order.
@@ -14,8 +14,8 @@ p := 0 c_at_2 (0 c_at (m:m_ines s) c_at 0) c_at_2 0
 s_hape -1 0 1 o_-_12 p
 m:c_ounts s
 
-# Opening a square with no mine around it floods: watch the opened
-# region grow, one ring of neighbors at a time, until it stops.
+## Opening a square with no mine around it floods: watch the opened
+## region grow, one ring of neighbors at a time, until it stops.
 u:s_teps := { o ->
   said := p_rint! '+ r_/ r_avel o
   more := 1 * (o | 0 < m:a_round o & 0 = m:c_ounts s) & n_ot m:m_ines s
@@ -26,7 +26,7 @@ start := 1 * 9 9 r_eshape 37 = r_ange 81      # row 5, column 1
 grown := u:s_teps start
 grown
 
-# Open every safe square, one after another: the field is cleared.
+## Open every safe square, one after another: the field is cleared.
 u:c_lear := { s v ->
   0 = t_ally v ? s
   next := s m:r_eveal (1 + ((f_irst v) - 1) d_iv 9) c_at 1 + ((f_irst v) - 1) m_od 9

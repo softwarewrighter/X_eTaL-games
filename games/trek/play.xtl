@@ -1,9 +1,9 @@
 #!/usr/bin/env xetal
-# Star Trek at the terminal, as the COR24 BASIC game plays it: destroy
-# every Klingon before the stardate runs out. Commands by number (9 is
-# help); warp, impulse, phasers, torpedoes and shields then ask for a
-# course (1 north, clockwise to 8) and a number. The rules are those of
-# StarTrek.xtl.
+## Star Trek at the terminal, as the COR24 BASIC game plays it: destroy
+## every Klingon before the stardate runs out. Commands by number (9 is
+## help); warp, impulse, phasers, torpedoes and shields then ask for a
+## course (1 north, clockwise to 8) and a number. The rules are those of
+## StarTrek.xtl.
 "t:" u_se< "StarTrek"
 "p:" u_se< "Play"
 said := p_rint! ""
@@ -11,9 +11,9 @@ said := p_rint! "*** STAR TREK ***"
 said := p_rint! "DEFEND THE FEDERATION."
 said := p_rint! ""
 
-# A command's arguments, asked for as the BASIC asks: a factor or a
-# number of sectors only after a good course; nothing to fire with
-# when there is nothing to fire at, or no torpedoes.
+## A command's arguments, asked for as the BASIC asks: a factor or a
+## number of sectors only after a good course; nothing to fire with
+## when there is nothing to fire at, or no torpedoes.
 u:a_rgs := { s c ->
   c = 3 ? u:c_ourseAnd "WARP FACTOR 1-8 ?"
   c = 4 ? u:c_ourseAnd "SECTORS 1-8 ?"
@@ -28,7 +28,7 @@ u:c_ourseAnd := { prompt ->
   c c_at p:n_umber prompt
 }
 
-# A turn: the menu, a command, its result, until the game is over.
+## A turn: the menu, a command, its result, until the game is over.
 u:t_urn := { s ->
   0 < t:s_tatus s ? p_rint! t:e_nd s
   said := p_rint! ""

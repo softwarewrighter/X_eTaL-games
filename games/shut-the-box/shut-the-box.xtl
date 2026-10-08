@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Shut the box, scripted (seed 1), with the rules of ShutTheBox.xtl.
+## Shut the box, scripted (seed 1), with the rules of ShutTheBox.xtl.
 "b:" u_se< "ShutTheBox"
 
 # Every set of tiles at once: the 512 subsets of 1 to 9 are the columns
@@ -22,8 +22,8 @@ t b:m_oves 7
 # How many moves each roll from 2 to 12 has with every tile open.
 '{ t_ally s b:m_oves _r } e_ach 2 3 4 5 6 7 8 9 10 11 12
 
-# A whole game by the high-tiles player: each turn shuts the move with
-# the highest tiles. Each line is the box before the roll.
+## A whole game by the high-tiles player: each turn shuts the move with
+## the highest tiles. Each line is the box before the roll.
 u:g_ame := { s ->
   said := p_rint! b:v_iew s
   r := '+ r_/ b:r_oll s

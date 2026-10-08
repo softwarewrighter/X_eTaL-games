@@ -1,25 +1,28 @@
-# Play: reading what a player types at the terminal, shared by the
-# games' play.xtl programs. Every function prints its prompt, reads a
-# line ([]R_EAD) and returns what it found; it never asks again itself
-# (a game decides what is acceptable and asks again).
+## Play: reading what a player types at the terminal, shared by the
+## games' play.xtl programs. Every function prints its prompt, reads a
+## line ([]R_EAD) and returns what it found; it never asks again itself
+## (a game decides what is acceptable and asks again).
 
 # :: a -> Char
-# The line typed, as it was typed.
+## The line typed, as it was typed.
 l:l_ine := { prompt ->
   shown := p_rint! prompt
   []R_EAD @
 }
 # :: Char -> Int
-# The whole numbers in a line (other characters dropped first), a
-# vector that may be empty.
+## The whole numbers in a line (other characters dropped first), a
+## vector that may be empty.
+## >> "p:" u_se< "Play"
+## >> p:n_umbersIn "move 3 to 12, then -1"
+## 3 12 -1
 l:n_umbersIn := { line -> f_loor n_umbers (line m_ember? "0123456789 -") r_eplicate line }
 # :: a -> Int
-# The numbers typed, a vector that may be empty.
+## The numbers typed, a vector that may be empty.
 l:n_umbers := { prompt -> l:n_umbersIn l:l_ine prompt }
 # :: a -> Int
-# The first number typed, or -1 when there is none.
+## The first number typed, or -1 when there is none.
 l:n_umber := { prompt -> f_irst (l:n_umbers prompt) c_at -1 }
 # :: a -> Char -> Int
-# Which of the letters the line starts with, 1 to the number of letters
-# (one more when it is none of them): "MOVE ?" p:l_etter "adws".
+## Which of the letters the line starts with, 1 to the number of letters
+## (one more when it is none of them): "MOVE ?" p:l_etter "adws".
 l:l_etter := { prompt letters -> letters i_ndexOf f_irst (l:l_ine prompt) c_at " " }

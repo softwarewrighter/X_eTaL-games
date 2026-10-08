@@ -1,7 +1,7 @@
 #!/usr/bin/env xetal
-# Capitals, scripted (seed 1), with the rules and the drawing of
-# Atlas.xtl: the places read from TOML, every distance at once, the
-# map drawn as SVG, and a round played by clicks given as points.
+## Capitals, scripted (seed 1), with the rules and the drawing of
+## Atlas.xtl: the places read from TOML, every distance at once, the
+## map drawn as SVG, and a round played by clicks given as points.
 "a:" u_se< "Atlas"
 
 # The places: Natural Earth's national capitals, then any of your own

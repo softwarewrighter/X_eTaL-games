@@ -1,9 +1,9 @@
 #!/usr/bin/env xetal
-# Sudoku at the terminal. Choose a puzzle (1 easiest, 4 hardest), then
-# type a row, a column and a digit ("1 3 4"; digit 0 clears the cell),
-# h for a hint, c and a row and a column for a cell's candidates
-# ("c 1 3"), s to see the solution, q to stop. The rules are those of
-# SudokuGrid.xtl.
+## Sudoku at the terminal. Choose a puzzle (1 easiest, 4 hardest), then
+## type a row, a column and a digit ("1 3 4"; digit 0 clears the cell),
+## h for a hint, c and a row and a column for a cell's candidates
+## ("c 1 3"), s to see the solution, q to stop. The rules are those of
+## SudokuGrid.xtl.
 "s:" u_se< "SudokuGrid"
 "p:" u_se< "Play"
 said := p_rint! "SUDOKU: EVERY ROW, COLUMN AND BOX HOLDS 1 TO 9"
@@ -12,7 +12,7 @@ u:p_uzzle := { @ ->
   n := p:n_umber "PUZZLE 1 TO 4 ?"
   (n >= 1) & n <= 4 ? n; u:p_uzzle @
 }
-# Why a move was refused (w from s:w_hy), as the player reads it.
+## Why a move was refused (w from s:w_hy), as the player reads it.
 u:r_efused := { w d ->
   1 = w ? "ROW, COLUMN AND DIGIT ARE 1 TO 9 (DIGIT 0 CLEARS)"
   2 = w ? "THAT CELL IS GIVEN"
@@ -27,15 +27,15 @@ u:c_ell := { s rc ->
   k := 1 + (9 * (f_irst rc) - 1) + (2 s_elect rc) - 1
   @ f_ormat< "ROW {f_irst rc} COLUMN {2 s_elect rc}: {w_here k s_elect s:l_egal s}"
 }
-# A turn: the grid, then commands until a move changes it.
+## A turn: the grid, then commands until a move changes it.
 u:t_urn := { s ->
   said := p_rint! ""
   shown := p_rint! s:v_iew s
   1 = s:s_tatus s ? "SOLVED!"
   u:a_sk s
 }
-# A command: a letter (h, c, s, q) or a move, with its numbers. A
-# hint, a cell's candidates or a refusal is printed and asked again.
+## A command: a letter (h, c, s, q) or a move, with its numbers. A
+## hint, a cell's candidates or a refusal is printed and asked again.
 u:a_sk := { s ->
   line := p:l_ine "ROW COL DIGIT, H, C ROW COL, S OR Q ?"
   v := p:n_umbersIn line
@@ -53,7 +53,7 @@ u:s_ay := { s text ->
   said := p_rint! text
   u:a_sk s
 }
-# The puzzle's solution, and the game is over.
+## The puzzle's solution, and the game is over.
 u:s_olution := { s ->
   shown := p_rint! s:s_hown s:s_olve s:g_ivens s
   "THE SOLUTION"

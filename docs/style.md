@@ -67,6 +67,20 @@ better when it is clearer, never when it is cryptic.
   `guess.xtl`); exports are `l:`, private helpers have no prefix.
 - A library holds definitions only (no top-level expressions).
 
+## Comments and the cross-reference
+
+Comments follow X_eTaL's convention (lang-choices S9), so `xetal doc`
+can show them: `##` is documentation (the block at the top of a file
+documents the file; a block directly above a definition documents it),
+`###` is a section heading, `#` is an ordinary note it leaves out. A
+`# ::` type line goes above a definition's `##` block, never between
+the block and the definition. Every export of a library has a `##`
+block (`scripts/check-docs.py`, in the gate), and the shared libraries
+show `## >>` examples with their output, which the gate runs (`xetal
+doc --test`). The cross-reference is part of the live site
+(`pages/doc/`, `scripts/build-docs.sh`), linked from the catalog and
+from each game page.
+
 ## Types and names
 
 - Every export has a type comment above it, `# :: Int -> Int -> Int`,

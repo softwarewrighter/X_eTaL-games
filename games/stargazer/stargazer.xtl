@@ -1,7 +1,7 @@
 #!/usr/bin/env xetal
-# Stargazer, scripted (seed 1), with the rules and the drawing of
-# Sky.xtl: the named stars and the sky read from TOML, bands of
-# brightness, the sky drawn as SVG, and a round played by clicks.
+## Stargazer, scripted (seed 1), with the rules and the drawing of
+## Sky.xtl: the named stars and the sky read from TOML, bands of
+## brightness, the sky drawn as SVG, and a round played by clicks.
 "k:" u_se< "Sky"
 
 # The parts of the sky, and how many named stars each holds (0 is all).

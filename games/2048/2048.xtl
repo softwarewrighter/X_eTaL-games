@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# 2048, scripted (seed 1), with the rules of Twenty48.xtl.
+## 2048, scripted (seed 1), with the rules of Twenty48.xtl.
 "t:" u_se< "Twenty48"
 
 # A board, every row slid left at once: compress (running counts and a
@@ -17,8 +17,8 @@ b t:s_lide 2
 b t:s_lide 3
 b t:s_lide 4
 
-# A whole game by a simple corner player: left, then down, then right,
-# then up, the first of them that moves anything.
+## A whole game by a simple corner player: left, then down, then right,
+## then up, the first of them that moves anything.
 u:p_ick := { s ->
   ok := '{ n_ot (s t:m_ove _r) m_atch s } e_ach 1 4 2 3
   f_irst (ok r_eplicate 1 4 2 3) c_at 1

@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Star Trek, scripted (seed 1), with the rules of StarTrek.xtl.
+## Star Trek, scripted (seed 1), with the rules of StarTrek.xtl.
 "t:" u_se< "StarTrek"
 
 # A new game. The galaxy was made all at once: three 8 by 8 planes, the
@@ -28,8 +28,8 @@ s := s t:c_ommand 5 10
 s := s t:c_ommand 8
 t:s_tatus s
 
-# The game ends when the stardate runs out: warp is one stardate a
-# factor.
+## The game ends when the stardate runs out: warp is one stardate a
+## factor.
 u:f_ar := { s -> s t:c_ommand 3 5 8 }
 s := 4 'u:f_ar p_ower s
 t:s_tatus s                                   # 2: out of time

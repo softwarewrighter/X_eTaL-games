@@ -1,31 +1,31 @@
-# The capitals game's rules and its map, a library: capitals.xtl
-# (scripted), play.xtl (the game: a map you click) and the web page all
-# use these. (Named Atlas because a disk that ignores case cannot hold
-# Capitals.xtl beside capitals.xtl.) The data is in two TOML files, read
-# with []L_IST and []T_ABLE: assets/cache/world.toml (Natural Earth's
-# country outlines, national capitals and cities, fetched by
-# assets/fetch.sh, not tracked) and places.toml (the regions, and
-# places of your own). The map is SVG written here.
-#
-# Map units are hundredths of a degree: x = 100 (lon + 180) east from
-# 180 W, y = 100 (90 - lat) south from the pole (the plate carree). A
-# game's state: the region (0 the whole world), the dot whose menu is
-# open (0 none), the score, the number of dots n, then the n places,
-# the n results (0 not yet, 1 right, 2 wrong), then the last dot
-# answered and the city chosen for it.
+## The capitals game's rules and its map, a library: capitals.xtl
+## (scripted), play.xtl (the game: a map you click) and the web page all
+## use these. (Named Atlas because a disk that ignores case cannot hold
+## Capitals.xtl beside capitals.xtl.) The data is in two TOML files, read
+## with []L_IST and []T_ABLE: assets/cache/world.toml (Natural Earth's
+## country outlines, national capitals and cities, fetched by
+## assets/fetch.sh, not tracked) and places.toml (the regions, and
+## places of your own). The map is SVG written here.
+##
+## Map units are hundredths of a degree: x = 100 (lon + 180) east from
+## 180 W, y = 100 (90 - lat) south from the pole (the plate carree). A
+## game's state: the region (0 the whole world), the dot whose menu is
+## open (0 none), the score, the number of dots n, then the n places,
+## the n results (0 not yet, 1 right, 2 wrong), then the last dot
+## answered and the city chosen for it.
 
 "t:" u_se< "Text"
 "sv:" u_se< "Svg"
 
 ### The data
 
-# Every place: the capitals, then places of your own; a row each of
-# name, latitude, longitude and region, as texts.
+## Every place: the capitals, then places of your own; a row each of
+## name, latitude, longitude and region, as texts.
 all := (("assets/cache/world.toml" "place") []T_ABLE ("places" "fields")) c_at ("places.toml" "place") []T_ABLE ("places" "fields")
-# The cities the wrong choices come from: Natural Earth's populated
-# places, then places of your own; name, latitude, longitude.
+## The cities the wrong choices come from: Natural Earth's populated
+## places, then places of your own; name, latitude, longitude.
 towns := (("assets/cache/world.toml" "city") []T_ABLE ("cities" "cityfields")) c_at 1 2 3 s_elect_2 ("places.toml" "place") []T_ABLE ("places" "fields")
-# A name up to its comma (private helpers: h: when X_eTaL has it): "Paris, France" is Paris.
+## A name up to its comma (private helpers: h: when X_eTaL has it): "Paris, France" is Paris.
 c_ity := { x ->
   t := d_isclose x
   (n_ot '| s_\ t = f_irst ",") r_eplicate t
@@ -37,33 +37,35 @@ regions := "places.toml" []L_IST "regions"
 region := regions i_ndexOf 4 s_elect_2 all
 tlat := 'sv:n_um e_ach 2 s_elect_2 towns
 tlon := 'sv:n_um e_ach 3 s_elect_2 towns
-# The countries, unlabeled: each outline (SVG path data in degrees)
-# wrapped as a path, joined once.
+## The countries, unlabeled: each outline (SVG path data in degrees)
+## wrapped as a path, joined once.
 land := t:j_oin '{ d -> e_nclose "<path d=\"" c_at (d_isclose d) c_at "\"/>" } e_ach "assets/cache/world.toml" []L_IST "countries"
 
 ### Where things are
 
 # :: Num a => a -> a
-# Map x of longitudes, and map y of latitudes (map units).
+## Map x of longitudes, and map y of latitudes (map units).
 l:m_x := { lo -> 100 * 180 + lo }
 # :: Num a => a -> a
+## Map y of latitudes (map units): hundredths of a degree south of the north pole.
 l:m_y := { la -> 100 * 90 - la }
 # :: Int -> Int
-# The places of region r (0 the whole world), by number.
+## The places of region r (0 the whole world), by number.
 l:p_ool := { r -> w_here (r = 0) | region = r }
 # :: Unit -> Box Char
+## The regions, in the menu's order (from places.toml).
 l:r_egions := { @ -> regions }
 # :: Int -> Float
-# Place i's point on the map: x and y (map units).
+## Place i's point on the map: x and y (map units).
 l:a_t := { i -> (l:m_x i s_elect lon) c_at l:m_y i s_elect lat }
 # :: Int -> Char
-# Place i's name ("Paris, France").
+## Place i's name ("Paris, France").
 l:n_ame := { i -> d_isclose i s_elect names }
 # :: Int -> Float
-# What the map shows for region r: x, y, width and height (map units),
-# the region's places with a margin, at least 30 degrees wide and
-# widened or heightened to the shape of the whole map (5 by 2), with
-# room at the top for the buttons.
+## What the map shows for region r: x, y, width and height (map units),
+## the region's places with a margin, at least 30 degrees wide and
+## widened or heightened to the shape of the whole map (5 by 2), with
+## room at the top for the buttons.
 l:v_iew := { r ->
   0 = r ? 0.0 600.0 36000.0 14400.0
   p := l:p_ool r
@@ -78,8 +80,8 @@ l:v_iew := { r ->
   ((cx - 1.2 * w) / 2) c_at (((cy - h) / 2) - 0.2 * h) c_at (1.2 * w) c_at 1.2 * h
 }
 # :: Int -> Float
-# The cosine of the angle at the Earth's center between place i and
-# every city at once (the spherical law of cosines): larger is nearer.
+## The cosine of the angle at the Earth's center between place i and
+## every city at once (the spherical law of cosines): larger is nearer.
 l:c_lose := { i ->
   r := (p_i @) / 180
   a := r * i s_elect lat
@@ -87,12 +89,12 @@ l:c_lose := { i ->
   ((s_in a) * s_in r * tlat) + (c_os a) * (c_os r * tlat) * c_os b - r * tlon
 }
 # :: Int -> Char
-# City k's name, up to any comma.
+## City k's name, up to any comma.
 l:t_own := { k -> c_ity k s_elect 1 s_elect_2 towns }
 # :: Int -> Int
-# Place i's choices, as city numbers: the nearest cities with
-# different names, four of them, west to east. The nearest is the
-# place itself (every capital is among the cities), so it is the answer.
+## Place i's choices, as city numbers: the nearest cities with
+## different names, four of them, west to east. The nearest is the
+## place itself (every capital is among the cities), so it is the answer.
 l:c_hoices := { i ->
   o := 12 t_ake g_rade n_eg l:c_lose i
   nm := '{ k -> e_nclose l:t_own k } e_ach o
@@ -100,36 +102,38 @@ l:c_hoices := { i ->
   (g_rade c s_elect tlon) s_elect c
 }
 # :: Int -> Int
-# Place i's answer among the cities.
+## Place i's answer among the cities.
 l:a_nswer := { i -> f_irst g_rade n_eg l:c_lose i }
 
 ### The game
 
 # :: Int -> Int
-# A new round in region r (0 the whole world): five of its places drawn
-# at random (all of them when it has fewer), no menu open, no score.
+## A new round in region r (0 the whole world): five of its places drawn
+## at random (all of them when it has fewer), no menu open, no score.
 l:n_ew := { r ->
   p := l:p_ool r
   n := 5 m_in t_ally p
   r c_at 0 0 c_at n c_at (n t_ake (g_rade r_oll! (t_ally p) r_eshape 1000000) s_elect p) c_at (n r_eshape 0) c_at 0 0
 }
 # :: a -> a
+## The round's score.
 l:s_core := { s -> 3 s_elect s }
 # :: Int -> Int
-# The round's places, and each one's result (0 not yet, 1 right, 2 wrong).
+## The round's places, and each one's result (0 not yet, 1 right, 2 wrong).
 l:d_ots := { s -> (4 s_elect s) t_ake 4 d_rop s }
 # :: Int -> Int
+## Each dot's result in the round: 0 not yet, 1 right, 2 wrong.
 l:r_esults := { s -> (4 s_elect s) t_ake (4 + 4 s_elect s) d_rop s }
 # :: (Num a, Truthy a) => Int -> a
-# 0 playing, 1 when every dot is answered.
+## 0 playing, 1 when every dot is answered.
 l:s_tatus := { s -> 0 + 0 = '+ r_/ 0 + 0 = l:r_esults s }
 
 # :: Int -> Float
-# The open dot's menu: a row each of x, y, width and height for its
-# four choices, beside the dot (Svg's menu), kept inside the view.
+## The open dot's menu: a row each of x, y, width and height for its
+## four choices, beside the dot (Svg's menu), kept inside the view.
 l:m_enu := { s -> (l:v_iew f_irst s) sv:m_enu l:a_t (2 s_elect s) s_elect l:d_ots s }
-# Which unanswered dot is at xy: the nearest within reach (dots of close
-# capitals overlap), 1 to n, 0 for none.
+## Which unanswered dot is at xy: the nearest within reach (dots of close
+## capitals overlap), 1 to n, 0 for none.
 d_ot := { s xy ->
   u := sv:u_nit l:v_iew f_irst s
   p := l:d_ots s
@@ -141,25 +145,25 @@ d_ot := { s xy ->
   f_irst g_rade d2 + 1e12 * f_loat n_ot ok
 }
 # :: Int -> Float -> Int
-# A click at xy (map units): a region button starts a round there; in
-# an open menu a choice answers its dot; a dot not yet answered opens
-# its menu; anywhere else closes the menu.
+## A click at xy (map units): a region button starts a round there; in
+## an open menu a choice answers its dot; a dot not yet answered opens
+## its menu; anywhere else closes the menu.
 l:c_lick := { s xy ->
   b := ((l:v_iew f_irst s) sv:b_uttons 1 + t_ally regions) sv:h_it xy
   b > 0 ? l:n_ew b - 1
   (2 s_elect s) > 0 ? s o_pen xy
   (2 c_at s d_ot xy) s_et s
 }
-# A click while a menu is open: a choice answers; elsewhere, another
-# dot's menu opens or the menu closes.
+## A click while a menu is open: a choice answers; elsewhere, another
+## dot's menu opens or the menu closes.
 o_pen := { s xy ->
   k := (l:m_enu s) sv:h_it xy
   k > 0 ? s a_nswer k
   (2 c_at s d_ot xy) s_et s
 }
-# The state with item k (from 1) replaced by v: kv is k v.
+## The state with item k (from 1) replaced by v: kv is k v.
 s_et := { kv s -> s + ((2 s_elect kv) - (f_irst kv) s_elect s) * (f_irst kv) = r_ange t_ally s }
-# Choice k of the open dot: right or wrong, the score, the menu closed.
+## Choice k of the open dot: right or wrong, the score, the menu closed.
 a_nswer := { s k ->
   d := 2 s_elect s
   i := d s_elect l:d_ots s
@@ -173,14 +177,14 @@ a_nswer := { s k ->
 
 ### What the game says and draws
 
-# The end of a round, said after its last answer (else nothing).
+## The end of a round, said after its last answer (else nothing).
 r_oundOver := { s ->
   0 = l:s_tatus s ? ""
   @ f_ormat< " Round over: {l:s_core s} of {4 s_elect s}. Choose a region for another round."
 }
 # :: Int -> Char
-# What has happened, in a line: the open menu, the last answer, the
-# round's end.
+## What has happened, in a line: the open menu, the last answer, the
+## round's end.
 l:s_ay := { s ->
   (2 s_elect s) > 0 ? "Which city is this?"
   d := ((t_ally s) - 1) s_elect s
@@ -191,11 +195,11 @@ l:s_ay := { s ->
   1 = last ? @ f_ormat< "Right: {l:n_ame i}.{note}"
   @ f_ormat< "No: that is {l:n_ame i}, not {l:t_own (t_ally s) s_elect s}.{note}"
 }
-# A dot's color by its result (0 not yet, red; 1 right, green; 2
-# wrong, orange).
+## A dot's color by its result (0 not yet, red; 1 right, green; 2
+## wrong, orange).
 d_otColor := { r -> d_isclose (1 + r) s_elect "#d62828" "#2a9d3a" "#f08c00" }
-# The round's dots: red not yet answered, green right, orange wrong;
-# each answered one named.
+## The round's dots: red not yet answered, green right, orange wrong;
+## each answered one named.
 s_pots := { s u ->
   p := l:d_ots s
   r := l:r_esults s
@@ -205,27 +209,27 @@ s_pots := { s u ->
   named := w_here r > 0
   dots c_at '{ k -> (((k s_elect x) + u * 13) c_at ((k s_elect y) + u * 6) c_at u * 18) sv:w_ords c_ity (k s_elect p) s_elect names } e_ach named
 }
-# The region buttons (the region shown filled), and the score.
+## The region buttons (the region shown filled), and the score.
 b_ar := { s v ->
   u := sv:u_nit v
   score := ((f_irst v) + (3 s_elect v) - u * 190) c_at ((2 s_elect v) + u * 34) c_at u * 22
   ((v c_at f_loat 1 + f_irst s) sv:l_abeled (e_nclose "World") c_at regions) c_at score sv:w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
 }
-# What happened, along the bottom.
+## What happened, along the bottom.
 s_aid := { s v ->
   u := sv:u_nit v
   (((f_irst v) + u * 12) c_at ((2 s_elect v) + (4 s_elect v) - u * 16) c_at u * 22) sv:w_ords l:s_ay s
 }
-# The open menu: the four choices, each a button.
+## The open menu: the four choices, each a button.
 c_hoose := { s ->
   0 = 2 s_elect s ? 0 r_eshape e_nclose ""
   (l:m_enu s) sv:c_hoices '{ k -> e_nclose l:t_own k } e_ach l:c_hoices (2 s_elect s) s_elect l:d_ots s
 }
 # :: Int -> Char
-# The picture, as SVG text: the sea, the countries (unlabeled, outlines
-# in degrees under the projection's transform), the dots, the region
-# buttons and the score, what happened, and the open menu. Every
-# coordinate is computed here; the page only shows the picture.
+## The picture, as SVG text: the sea, the countries (unlabeled, outlines
+## in degrees under the projection's transform), the dots, the region
+## buttons and the score, what happened, and the open menu. Every
+## coordinate is computed here; the page only shows the picture.
 l:d_raw := { s ->
   v := l:v_iew f_irst s
   u := sv:u_nit v

@@ -1,49 +1,49 @@
-# Stargazer's rules and its sky, a library: stargazer.xtl (scripted),
-# play.xtl (the game: a sky you click) and the web page all use these.
-# The data is in two TOML files, read with []L_IST and []T_ABLE:
-# assets/cache/sky.toml (the Bright Star Catalog's stars and the IAU's
-# named stars, fetched by assets/fetch.sh, not tracked) and stars.toml
-# (the parts of the sky, the brightness bands, stars of your own). The
-# sky is SVG written here, with the pieces of lib/Svg.xtl.
-#
-# Sky units are hundredths of a degree: x = 100 (360 - ra), so right
-# ascension grows to the left as on the sky seen from Earth, and
-# y = 100 (90 - dec) south from the north pole. A game's state: the part
-# of the sky (0 all of it), the star whose menu is open (0 none), the
-# score, the number of stars n, the round's random number, then the n
-# stars, the n results (0 not yet, 1 right, 2 wrong), then the last star
-# answered and the star chosen for it.
+## Stargazer's rules and its sky, a library: stargazer.xtl (scripted),
+## play.xtl (the game: a sky you click) and the web page all use these.
+## The data is in two TOML files, read with []L_IST and []T_ABLE:
+## assets/cache/sky.toml (the Bright Star Catalog's stars and the IAU's
+## named stars, fetched by assets/fetch.sh, not tracked) and stars.toml
+## (the parts of the sky, the brightness bands, stars of your own). The
+## sky is SVG written here, with the pieces of lib/Svg.xtl.
+##
+## Sky units are hundredths of a degree: x = 100 (360 - ra), so right
+## ascension grows to the left as on the sky seen from Earth, and
+## y = 100 (90 - dec) south from the north pole. A game's state: the part
+## of the sky (0 all of it), the star whose menu is open (0 none), the
+## score, the number of stars n, the round's random number, then the n
+## stars, the n results (0 not yet, 1 right, 2 wrong), then the last star
+## answered and the star chosen for it.
 
 "t:" u_se< "Text"
 "sv:" u_se< "Svg"
 
 ### The data
 
-# The named stars, then any of your own: name, ra, dec, magnitude and
-# constellation, as texts.
+## The named stars, then any of your own: name, ra, dec, magnitude and
+## constellation, as texts.
 named := (("assets/cache/sky.toml" "star") []T_ABLE ("stars" "fields")) c_at ("stars.toml" "star") []T_ABLE ("stars" "fields")
 names := 1 s_elect_2 named
 ra := 'sv:n_um e_ach 2 s_elect_2 named
 dec := 'sv:n_um e_ach 3 s_elect_2 named
 mag := 'sv:n_um e_ach 4 s_elect_2 named
-# The second and third numbers in a text (private helpers: h: when
-# X_eTaL has it).
+## The second and third numbers in a text (private helpers: h: when
+## X_eTaL has it).
 s_econd := { x -> 2 s_elect n_umbers d_isclose x }
 t_hird := { x -> 3 s_elect n_umbers d_isclose x }
-# The parts of the sky: name, ra0, ra1, dec0, dec1.
+## The parts of the sky: name, ra0, ra1, dec0, dec1.
 parts := ("stars.toml" "area") []T_ABLE ("areas" "areafields")
 ra0 := 'sv:n_um e_ach 2 s_elect_2 parts
 ra1 := 'sv:n_um e_ach 3 s_elect_2 parts
 dec0 := 'sv:n_um e_ach 4 s_elect_2 parts
 dec1 := 'sv:n_um e_ach 5 s_elect_2 parts
-# The brightness bands' upper edges, each star's band (1 the brightest),
-# and how many of each band a round takes.
+## The brightness bands' upper edges, each star's band (1 the brightest),
+## and how many of each band a round takes.
 edges := 's_econd e_ach "stars.toml" []L_IST "bands"
 band := 1 + '+ r_/_2 0 + mag '> t_able -1 d_rop edges
 mix := f_loor 'sv:n_um e_ach "stars.toml" []L_IST "mix"
-# The sky behind: every catalog star to magnitude 5.5, as paths of
-# points (one per brightness class, a round dot of a fixed size on the
-# screen at every zoom), joined once.
+## The sky behind: every catalog star to magnitude 5.5, as paths of
+## points (one per brightness class, a round dot of a fixed size on the
+## screen at every zoom), joined once.
 sky := "assets/cache/sky.toml" []L_IST "sky"
 sx := 100 * 360 - 'sv:n_um e_ach sky
 sy := 100 * 90 - 's_econd e_ach sky
@@ -55,33 +55,34 @@ layer := t:j_oin '{ k -> e_nclose @ f_ormat< "<path d=\"{p_oints k}\" stroke-wid
 ### Where things are
 
 # :: Num a => a -> a
-# Sky x of right ascensions, and sky y of declinations (sky units).
+## Sky x of right ascensions, and sky y of declinations (sky units).
 l:s_x := { r -> 100 * 360 - r }
 # :: Num a => a -> a
+## Sky y of declinations (sky units): hundredths of a degree south of the north pole.
 l:s_y := { d -> 100 * 90 - d }
-# Which named stars lie in part a's right ascensions (through 0h when
-# ra0 is above ra1).
+## Which named stars lie in part a's right ascensions (through 0h when
+## ra0 is above ra1).
 i_nRa := { a ->
   (a s_elect ra0) <= a s_elect ra1 ? (ra >= a s_elect ra0) & ra < a s_elect ra1
   (ra >= a s_elect ra0) | ra < a s_elect ra1
 }
 # :: Int -> Int
-# The named stars in part a of the sky (0 all of it), by number.
+## The named stars in part a of the sky (0 all of it), by number.
 l:p_ool := { a ->
   0 = a ? r_ange t_ally names
   w_here (i_nRa a) & (dec >= a s_elect dec0) & dec <= a s_elect dec1
 }
 # :: Unit -> Box Char
-# The parts of the sky, by name, in the menu's order.
+## The parts of the sky, by name, in the menu's order.
 l:p_arts := { @ -> 1 s_elect_2 parts }
 # :: Int -> Char
-# Star i's name.
+## Star i's name.
 l:n_ame := { i -> d_isclose i s_elect names }
 # :: Int -> Float
-# What the sky shows for part a: x, y, width and height (sky units), in
-# the shape of a picture (5 by 2) with room at the top for the buttons;
-# the whole sky (a 0) a little wider than one turn, drawn again on both
-# sides.
+## What the sky shows for part a: x, y, width and height (sky units), in
+## the shape of a picture (5 by 2) with room at the top for the buttons;
+## the whole sky (a 0) a little wider than one turn, drawn again on both
+## sides.
 l:v_iew := { a ->
   0 = a ? -4500.0 -1000.0 45000.0 18000.0
   r1 := (a s_elect ra1) + 360 * f_loat (a s_elect ra0) > a s_elect ra1
@@ -94,8 +95,8 @@ l:v_iew := { a ->
   (cx - 0.6 * w) c_at (cy - 0.7 * h) c_at (1.2 * w) c_at 1.2 * h
 }
 # :: Int -> Int -> Float
-# Star i's point in part a's view: x and y, x moved by a whole turn when
-# that brings it nearer the middle of the view (the sky wraps at 0h).
+## Star i's point in part a's view: x and y, x moved by a whole turn when
+## that brings it nearer the middle of the view (the sky wraps at 0h).
 l:a_t := { a i ->
   v := l:v_iew a
   x := l:s_x i s_elect ra
@@ -103,15 +104,15 @@ l:a_t := { a i ->
   (x - 36000.0 * f_loat f_loor 0.5 + (x - mid) / 36000) c_at l:s_y i s_elect dec
 }
 # :: Int -> Int -> Int
-# Star i's choices, with the round's random number q: it and one star
-# from each brightness band (another star, from anywhere in the sky,
-# picked by q and i), in the order of right ascension.
+## Star i's choices, with the round's random number q: it and one star
+## from each brightness band (another star, from anywhere in the sky,
+## picked by q and i), in the order of right ascension.
 l:c_hoices := { q i ->
   c := i c_at '{ b -> q o_ne i c_at b } e_ach r_ange t_ally mix
   (g_rade c s_elect n_eg ra) s_elect c
 }
-# Band b's star for star i: a star of that band other than i, at a
-# place fixed by q, i and b.
+## Band b's star for star i: a star of that band other than i, at a
+## place fixed by q, i and b.
 o_ne := { q ib ->
   l := w_here band = 2 s_elect ib
   l := (l != f_irst ib) r_eplicate l
@@ -120,14 +121,14 @@ o_ne := { q ib ->
 
 ### The game
 
-# The first n items of v, or all of them when v has fewer (a band with
-# no star in a part of the sky: the round is filled from the rest).
+## The first n items of v, or all of them when v has fewer (a band with
+## no star in a part of the sky: the round is filled from the rest).
 u_pTo := { n v -> (n m_in t_ally v) t_ake v }
 # :: Int -> Int
-# A new round in part a of the sky (0 all of it): its named stars in a
-# random order, mix of each band taken in turn (bright, middling, faint),
-# filled up from the rest when a band has too few; five, or all of them
-# when the part has fewer.
+## A new round in part a of the sky (0 all of it): its named stars in a
+## random order, mix of each band taken in turn (bright, middling, faint),
+## filled up from the rest when a band has too few; five, or all of them
+## when the part has fewer.
 l:n_ew := { a ->
   p := l:p_ool a
   o := (g_rade r_oll! (t_ally p) r_eshape 1000000) s_elect p
@@ -138,26 +139,28 @@ l:n_ew := { a ->
   a c_at 0 0 c_at n c_at (r_oll! 1000000) c_at stars c_at (n r_eshape 0) c_at 0 0
 }
 # :: a -> a
+## The round's score.
 l:s_core := { s -> 3 s_elect s }
 # :: Int -> Int
-# The round's stars, and each one's result (0 not yet, 1 right, 2 wrong).
+## The round's stars, and each one's result (0 not yet, 1 right, 2 wrong).
 l:m_arks := { s -> (4 s_elect s) t_ake 5 d_rop s }
 # :: Int -> Int
+## Each star's result in the round: 0 not yet, 1 right, 2 wrong.
 l:r_esults := { s -> (4 s_elect s) t_ake (5 + 4 s_elect s) d_rop s }
 # :: (Num a, Truthy a) => Int -> a
-# 0 playing, 1 when every star is answered.
+## 0 playing, 1 when every star is answered.
 l:s_tatus := { s -> 0 + 0 = '+ r_/ 0 + 0 = l:r_esults s }
 # :: Int -> Int
-# The open star's choices.
+## The open star's choices.
 l:o_ffered := { s -> (5 s_elect s) l:c_hoices (2 s_elect s) s_elect l:m_arks s }
 # :: Int -> Float
-# The open star's menu: four rectangles beside it (Svg's menu).
+## The open star's menu: four rectangles beside it (Svg's menu).
 l:m_enu := { s -> (l:v_iew f_irst s) sv:m_enu (f_irst s) l:a_t (2 s_elect s) s_elect l:m_arks s }
-# The marked stars' x and y in their view.
+## The marked stars' x and y in their view.
 x_s := { s -> '{ i -> f_irst (f_irst s) l:a_t i } e_ach l:m_arks s }
 y_s := { s -> '{ i -> 2 s_elect (f_irst s) l:a_t i } e_ach l:m_arks s }
-# Which unanswered star is at xy: the nearest within reach, 1 to n, 0
-# for none.
+## Which unanswered star is at xy: the nearest within reach, 1 to n, 0
+## for none.
 s_tarAt := { s xy ->
   u := sv:u_nit l:v_iew f_irst s
   dx := (x_s s) - f_irst xy
@@ -168,25 +171,25 @@ s_tarAt := { s xy ->
   f_irst g_rade d2 + 1e12 * f_loat n_ot ok
 }
 # :: Int -> Float -> Int
-# A click at xy (sky units): a part's button starts a round there; in
-# an open menu a choice answers its star; a star not yet answered opens
-# its menu; anywhere else closes the menu.
+## A click at xy (sky units): a part's button starts a round there; in
+## an open menu a choice answers its star; a star not yet answered opens
+## its menu; anywhere else closes the menu.
 l:c_lick := { s xy ->
   b := ((l:v_iew f_irst s) sv:b_uttons 1 + t_ally l:p_arts @) sv:h_it xy
   b > 0 ? l:n_ew b - 1
   (2 s_elect s) > 0 ? s o_pen xy
   (2 c_at s s_tarAt xy) s_et s
 }
-# A click while a menu is open: a choice answers; elsewhere, another
-# star's menu opens or the menu closes.
+## A click while a menu is open: a choice answers; elsewhere, another
+## star's menu opens or the menu closes.
 o_pen := { s xy ->
   k := (l:m_enu s) sv:h_it xy
   k > 0 ? s a_nswer k
   (2 c_at s s_tarAt xy) s_et s
 }
-# The state with item k (from 1) replaced by v: kv is k v.
+## The state with item k (from 1) replaced by v: kv is k v.
 s_et := { kv s -> s + ((2 s_elect kv) - (f_irst kv) s_elect s) * (f_irst kv) = r_ange t_ally s }
-# Choice k of the open star: right or wrong, the score, the menu closed.
+## Choice k of the open star: right or wrong, the score, the menu closed.
 a_nswer := { s k ->
   d := 2 s_elect s
   i := d s_elect l:m_arks s
@@ -200,14 +203,14 @@ a_nswer := { s k ->
 
 ### What the game says and draws
 
-# The end of a round, said after its last answer (else nothing).
+## The end of a round, said after its last answer (else nothing).
 r_oundOver := { s ->
   0 = l:s_tatus s ? ""
   @ f_ormat< " Round over: {l:s_core s} of {4 s_elect s}. Choose a part of the sky for another round."
 }
 # :: Int -> Char
-# What has happened, in a line: the open menu, the last answer, the
-# round's end.
+## What has happened, in a line: the open menu, the last answer, the
+## round's end.
 l:s_ay := { s ->
   (2 s_elect s) > 0 ? "Which star is this?"
   d := ((t_ally s) - 1) s_elect s
@@ -218,11 +221,11 @@ l:s_ay := { s ->
   1 = last ? @ f_ormat< "Right: {l:n_ame i}, in {d_isclose i s_elect 5 s_elect_2 named}.{note}"
   @ f_ormat< "No: that is {l:n_ame i}, not {l:n_ame (t_ally s) s_elect s}.{note}"
 }
-# A ring's color by its result (0 not yet, red; 1 right, green; 2
-# wrong, orange).
+## A ring's color by its result (0 not yet, red; 1 right, green; 2
+## wrong, orange).
 r_ingColor := { r -> d_isclose (1 + r) s_elect "#ff4d4d" "#3ddc84" "#ffa630" }
-# The round's stars: a ring around each (its color its result), each
-# answered one named.
+## The round's stars: a ring around each (its color its result), each
+## answered one named.
 r_ings := { s u ->
   x := x_s s
   y := y_s s
@@ -230,28 +233,28 @@ r_ings := { s u ->
   rings := '{ k -> e_nclose @ f_ormat< "<circle class=\"dot\" cx=\"{sv:w_hole k s_elect x}\" cy=\"{sv:w_hole k s_elect y}\" r=\"{sv:w_hole u * 13}\" fill=\"none\" stroke=\"{r_ingColor k s_elect r}\" stroke-width=\"{sv:w_hole u * 3}\"/>" } e_ach r_ange t_ally x
   rings c_at '{ k -> (((k s_elect x) + u * 16) c_at ((k s_elect y) + u * 6) c_at u * 18) sv:w_ords l:n_ame k s_elect l:m_arks s } e_ach w_here r > 0
 }
-# The parts' buttons (the part shown filled), and the score below them
-# at the right (seven buttons fill the row).
+## The parts' buttons (the part shown filled), and the score below them
+## at the right (seven buttons fill the row).
 b_ar := { s v ->
   u := sv:u_nit v
   score := ((f_irst v) + (3 s_elect v) - u * 190) c_at ((2 s_elect v) + u * 80) c_at u * 22
   ((v c_at f_loat 1 + f_irst s) sv:l_abeled (e_nclose "All") c_at l:p_arts @) c_at score sv:w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
 }
-# What happened, along the bottom.
+## What happened, along the bottom.
 s_aid := { s v ->
   u := sv:u_nit v
   (((f_irst v) + u * 12) c_at ((2 s_elect v) + (4 s_elect v) - u * 16) c_at u * 22) sv:w_ords l:s_ay s
 }
-# The open menu: the four names, each a button.
+## The open menu: the four names, each a button.
 c_hoose := { s ->
   0 = 2 s_elect s ? 0 r_eshape e_nclose ""
   (l:m_enu s) sv:c_hoices '{ i -> e_nclose l:n_ame i } e_ach l:o_ffered s
 }
 # :: Int -> Char
-# The picture, as SVG text: the night, the sky's stars (drawn three
-# times, a turn apart, so a view across 0h is whole), the round's rings,
-# the parts' buttons and the score, what happened, and the open menu.
-# Every coordinate is computed here; the page only shows the picture.
+## The picture, as SVG text: the night, the sky's stars (drawn three
+## times, a turn apart, so a view across 0h is whole), the round's rings,
+## the parts' buttons and the score, what happened, and the open menu.
+## Every coordinate is computed here; the page only shows the picture.
 l:d_raw := { s ->
   v := l:v_iew f_irst s
   u := sv:u_nit v

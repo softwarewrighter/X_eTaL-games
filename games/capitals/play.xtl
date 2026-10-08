@@ -1,11 +1,11 @@
 #!/usr/bin/env xetal
-# Capitals: a map you click. Each round puts five red dots on the map,
-# each a national capital (or a place of your own) inside its unlabeled
-# country; click a dot, then its name among four nearby cities. The
-# buttons along the top start a round in a region or the whole world.
-# On the page the map is in a dialog and your clicks come to the program
-# as events; at the command line, lines such as "click 1234 567" (map
-# units) on standard input. The rules and the drawing are Atlas.xtl's.
+## Capitals: a map you click. Each round puts five red dots on the map,
+## each a national capital (or a place of your own) inside its unlabeled
+## country; click a dot, then its name among four nearby cities. The
+## buttons along the top start a round in a region or the whole world.
+## On the page the map is in a dialog and your clicks come to the program
+## as events; at the command line, lines such as "click 1234 567" (map
+## units) on standard input. The rules and the drawing are Atlas.xtl's.
 "a:" u_se< "Atlas"
 
 u:l_oop := { s ->

@@ -163,6 +163,10 @@ const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
 const BOARD_BACKDROP = `(() => { document.querySelector("dialog.board[open]").click(); return true; })()`;
 const BOARD_X = `(() => { document.querySelector("dialog.board[open] .close").click(); return true; })()`;
 
+// Every cross-reference link on a page (a.xref, to pages/doc/) leads to a page.
+const XREFS = `(async () => { const bad = []; for (const a of document.querySelectorAll("a.xref")) {
+  const r = await fetch(a.href).catch(() => null); if (!r || !r.ok) bad.push(a.getAttribute("href")); } return { n: document.querySelectorAll("a.xref").length, bad }; })()`;
+
 // The game's dialog closes by Escape, a click on the background, and its X.
 async function boardProblems(page) {
   for (const [how, act] of [["Escape", null], ["the background", BOARD_BACKDROP], ["the X", BOARD_X]]) {
@@ -247,10 +251,12 @@ try {
       else {
         const toml = readFileSync(join(dir, "game.toml"), "utf8");
         const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
-        const problem = (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
+        const xrefs = await page.evaluate(XREFS);
+        const problem = (xrefs.bad.length && `cross-reference links lead nowhere: ${xrefs.bad.join(", ")}`) || (!xrefs.n && "no cross-reference links")
+          || (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
         if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
-        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks on the map in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, only Play, ${wiki ? "Wikipedia link" : "about dialog"})`);
-        else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks on the map in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }
     await page.close();

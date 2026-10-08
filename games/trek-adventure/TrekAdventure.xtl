@@ -1,26 +1,27 @@
-# Trek adventure's rules, a library: trek-adventure.xtl (a scripted
-# walkthrough), play.xtl (at the terminal) and the web page all use
-# these. "Star Trek: Decaying Orbit": you wake alone on the Enterprise's
-# bridge, its orbit decaying; find the toolkit and the engine coupler,
-# prep the relay in engineering, install the coupler before the turns
-# run out, and deal with the Klingon boarders on the way.
-#
-# The game is tables, not branches: every line of text is one row of a
-# table, with a key (a room, an event, an ending) and a condition on the
-# state; a room's description or a message is the rows whose key it is
-# and whose condition holds, picked by one mask. The rooms' exits are a
-# 9 by 9 table, the items' places a vector.
-#
-# The state is one vector: 1 room, 2 turns left, items held 3 phaser,
-# 4 ID card, 5 toolkit, 6 coupler, 7 tribble (1 = carried), 8 relay
-# prepped, 9 boarders aboard, 10 won, 11 dead, 12 the last event (the
-# key of what to say).
+## Trek adventure's rules, a library: trek-adventure.xtl (a scripted
+## walkthrough), play.xtl (at the terminal) and the web page all use
+## these. "Star Trek: Decaying Orbit": you wake alone on the Enterprise's
+## bridge, its orbit decaying; find the toolkit and the engine coupler,
+## prep the relay in engineering, install the coupler before the turns
+## run out, and deal with the Klingon boarders on the way.
+##
+## The game is tables, not branches: every line of text is one row of a
+## table, with a key (a room, an event, an ending) and a condition on the
+## state; a room's description or a message is the rows whose key it is
+## and whose condition holds, picked by one mask. The rooms' exits are a
+## 9 by 9 table, the items' places a vector.
+##
+## The state is one vector: 1 room, 2 turns left, items held 3 phaser,
+## 4 ID card, 5 toolkit, 6 coupler, 7 tribble (1 = carried), 8 relay
+## prepped, 9 boarders aboard, 10 won, 11 dead, 12 the last event (the
+## key of what to say).
 
 "s:" u_se< "State"
 "x:" u_se< "Text"
 
-# -- the text ---------------------------------------------------------------
+### The text
 # :: Unit -> Box Char
+## Every line the game prints, numbered as the rooms, items and events refer to them.
 l:t_ext := { @ -> (
   ""                                             # 300
   "*** STAR TREK: DECAYING ORBIT ***"            # 300
@@ -181,8 +182,8 @@ l:t_ext := { @ -> (
   "*** COMMAND RESIGNED ***"                     # 204
 ) }
 # :: Num a => Unit -> a
-# Each line's key: a room (1 to 9), an event (10 to 99), the clock (101
-# to 103), an ending (201 to 204), the opening (300).
+## Each line's key: a room (1 to 9), an event (10 to 99), the clock (101
+## to 103), an ending (201 to 204), the opening (300).
 l:k_eys := { @ -> (
   300 300 300 300 300 300 300 300 300 300 300 300 300 300 1 1 1 1 1
   1 1 2 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4 5 5 5 5 5 5 5 6 6 6 6 6 6 6 7
@@ -193,7 +194,7 @@ l:k_eys := { @ -> (
   201 202 202 202 202 202 202 203 203 203 203 203 203 203 204 204
 ) }
 # :: Num a => Unit -> a
-# Each line's condition: shown only when this state item (0: always) ...
+## Each line's condition: shown only when this state item (0: always) ...
 l:f_lags := { @ -> (
   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0
   0 0 4 0 0 0 0 5 6 7 0 0 0 0 8 8 8 0 0 0 0 0 0 0 0 0 0 9 0 0 0 0 0
@@ -202,7 +203,7 @@ l:f_lags := { @ -> (
   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ) }
 # :: Num a => Unit -> a
-# ... has this value.
+## ... has this value.
 l:v_alues := { @ -> (
   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0
@@ -212,20 +213,20 @@ l:v_alues := { @ -> (
 ) }
 
 # :: Num a => Unit -> a
-# The table's three number columns as one 3-row matrix (key, condition
-# item, condition value), as lib/Text reads it.
+## The table's three number columns as one 3-row matrix (key, condition
+## item, condition value), as lib/Text reads it.
 l:k_fv := { @ -> (3 c_at t_ally l:k_eys @) r_eshape (l:k_eys @) c_at (l:f_lags @) c_at l:v_alues @ }
 # :: Num a => Int -> a -> Int
-# The rows for keys k (one or many) in state s: the key matches, and the
-# row's condition holds (lib/Text's l:h_olds).
+## The rows for keys k (one or many) in state s: the key matches, and the
+## row's condition holds (lib/Text's l:h_olds).
 l:l_ines := { s k -> w_here ((l:k_eys @) m_ember? k) & (l:k_fv @) x:h_olds s }
 # :: (Num a, Num b) => Int -> a -> b
-# Print the lines for keys k; how many were printed.
+## Print the lines for keys k; how many were printed.
 l:s_ay := { s k -> x:l_ines (s l:l_ines k) s_elect l:t_ext @ }
 
-# -- the ship -----------------------------------------------------------------
+### The ship
 # :: Num a => Unit -> a
-# Exits: row r, column x is 1 when room x can be reached from room r.
+## Exits: row r, column x is 1 when room x can be reached from room r.
 l:e_xits := { @ -> 9 9 r_eshape (
   0 1 0 0 0 0 0 0 0
   1 0 1 0 0 1 0 0 0
@@ -238,70 +239,87 @@ l:e_xits := { @ -> 9 9 r_eshape (
   0 0 1 0 0 0 0 0 0
 ) }
 # :: Unit -> Box Char
-# The items, numbered as the TAKE menu numbers them, and where each lies.
+## The items, numbered as the TAKE menu numbers them, and where each lies.
 l:i_tems := { @ -> "PHASER" "CARD" "TOOLKIT" "COUPLER" "TRIBBLE" }
 # :: Num a => Unit -> a
+## Where each item lies at the start, by room.
 l:h_omes := { @ -> 1 4 5 5 5 }
 
-# -- the state ------------------------------------------------------------------
+### The state
 # Where each thing is in the state vector, by name.
 # :: Int
+## Where the room is, in the state.
 l:room := 1
 # :: Int
+## Where the turns left are, in the state.
 l:turns := 2
 # :: Int
+## Where the phaser's place is, in the state.
 l:phaser := 3
 # :: Int
+## Where the card's place is, in the state.
 l:card := 4
 # :: Int
+## Where the toolkit's place is, in the state.
 l:toolkit := 5
 # :: Int
+## Where the coupler's place is, in the state.
 l:coupler := 6
 # :: Int
+## Where the tribble's place is, in the state.
 l:tribble := 7
 # :: Int
+## Whether the relay is fixed, its place in the state.
 l:relay := 8
 # :: Int
+## Whether the boarders are aboard, its place in the state.
 l:boarders := 9
 # :: Int
+## Whether the game is won, its place in the state.
 l:won := 10
 # :: Int
+## Whether the player is dead, its place in the state.
 l:dead := 11
 # :: Int
+## The last event, its place in the state.
 l:event := 12
 
 # :: Num b => a -> b
+## A new game: in room 1 with 30 turns, nothing taken or done.
 l:n_ew := { x -> 1 30 0 0 0 0 0 0 0 0 0 0 }
 # :: a -> a
+## The room the player is in.
 l:r_oom := { s -> l:room s_elect s }
 # :: a -> a
+## The turns left.
 l:t_urns := { s -> l:turns s_elect s }
 # :: a -> a
+## The last event (a code for the message).
 l:e_vent := { s -> l:event s_elect s }
 # :: (Num a, Truthy a) => a -> a
-# 0 playing, 1 won, 2 dead, 3 out of time.
+## 0 playing, 1 won, 2 dead, 3 out of time.
 l:s_tatus := { s -> (l:won s_elect s) m_ax (2 * l:dead s_elect s) m_ax 3 * 0 >= l:t_urns s }
 # :: Int -> Int -> Int
-# Several items of s changed at once (lib/State): iv is index, value,
-# index, value, ...
+## Several items of s changed at once (lib/State): iv is index, value,
+## index, value, ...
 l:u_pdate := { s iv -> s s:u_pdate iv }
 # :: Int -> Int -> Int
-# Just the event changed: what to say next.
+## Just the event changed: what to say next.
 l:s_aying := { s e -> s l:u_pdate l:event c_at e }
 # :: Num a => a -> Int
-# The items here, by number: in this room and not carried.
+## The items here, by number: in this room and not carried.
 l:p_resent := { s -> w_here ((l:h_omes @) = l:r_oom s) & 0 = 5 t_ake 2 d_rop s }
 # :: (Truthy a, Num b) => a -> b -> b
-# Of a row of checks that would refuse an action (1 where a check
-# fails) and the event saying each, the first refusal: 0 when there is
-# none.
+## Of a row of checks that would refuse an action (1 where a check
+## fails) and the event saying each, the first refusal: 0 when there is
+## none.
 l:r_efusal := { fails events -> f_irst (fails r_eplicate events) c_at 0 }
 
-# -- a command ------------------------------------------------------------------
+### A command
 # :: Int -> Int -> Int
-# cx is the command and its argument (a room or an item number, or 0):
-# 1 look, 2 inventory, 3 go, 4 take, 5 use, 6 throw, 7 fire, 8 help.
-# The result is the new state, its event the key of what to say.
+## cx is the command and its argument (a room or an item number, or 0):
+## 1 look, 2 inventory, 3 go, 4 take, 5 use, 6 throw, 7 fire, 8 help.
+## The result is the new state, its event the key of what to say.
 l:m_ove := { s cx ->
   c := f_irst cx
   x := 2 s_elect cx
@@ -316,8 +334,8 @@ l:m_ove := { s cx ->
   s l:s_aying 10
 }
 # :: Int -> Int -> Int
-# Go to room x: there must be an exit (a 1 in the exits table), and the
-# armory wants the ID card.
+## Go to room x: there must be an exit (a 1 in the exits table), and the
+## armory wants the ID card.
 l:g_o := { s x ->
   (x < 1) | x > 9 ? s l:s_aying 11
   e := ((0 = x s_elect (l:r_oom s) s_elect l:e_xits @) c_at (x = 7) & 0 = l:card s_elect s) l:r_efusal 11 12
@@ -325,7 +343,7 @@ l:g_o := { s x ->
   s l:u_pdate l:room c_at x c_at l:event c_at 0
 }
 # :: Int -> Int -> Int
-# Take item x: it must be here and not yet carried.
+## Take item x: it must be here and not yet carried.
 l:t_ake := { s x ->
   x = 0 ? s l:s_aying 20
   (x < 1) | x > 5 ? s l:s_aying 21
@@ -334,8 +352,8 @@ l:t_ake := { s x ->
   s l:u_pdate (2 + x) c_at 1 c_at l:event c_at 22 + x
 }
 # :: Int -> Int -> Int
-# Use item x: the toolkit and the coupler in engineering, the computer
-# in its core; anything else does nothing.
+## Use item x: the toolkit and the coupler in engineering, the computer
+## in its core; anything else does nothing.
 l:u_se := { s x ->
   r := l:r_oom s
   (r = 6) & x = 1 ? l:t_oolkit s
@@ -344,54 +362,54 @@ l:u_se := { s x ->
   s l:s_aying 30
 }
 # :: Int -> Int
-# The toolkit preps the relay: it needs the toolkit and the coupler, and
-# the relay not yet prepped.
+## The toolkit preps the relay: it needs the toolkit and the coupler, and
+## the relay not yet prepped.
 l:t_oolkit := { s ->
   e := ((0 = l:toolkit s_elect s) c_at (0 = l:coupler s_elect s) c_at 1 = l:relay s_elect s) l:r_efusal 31 32 33
   0 < e ? s l:s_aying e
   s l:u_pdate l:relay c_at 1 c_at l:event c_at 34
 }
 # :: Int -> Int
-# The coupler, installed, wins: it needs the coupler, the toolkit and a
-# prepped relay.
+## The coupler, installed, wins: it needs the coupler, the toolkit and a
+## prepped relay.
 l:c_oupler := { s ->
   e := ((0 = l:coupler s_elect s) c_at (0 = l:toolkit s_elect s) c_at 0 = l:relay s_elect s) l:r_efusal 35 36 37
   0 < e ? s l:s_aying e
   s l:u_pdate l:won c_at 1 c_at l:event c_at 38
 }
 # :: Int -> Int
-# Throwing the tribble makes the boarders retreat (it needs both).
+## Throwing the tribble makes the boarders retreat (it needs both).
 l:t_hrow := { s ->
   e := ((0 = l:tribble s_elect s) c_at 0 = l:boarders s_elect s) l:r_efusal 40 41
   0 < e ? s l:s_aying e
   s l:u_pdate l:boarders c_at 0 c_at l:tribble c_at 0 c_at l:event c_at 42
 }
 # :: Int -> Int
-# Firing the phaser at the boarders is fatal (it needs both).
+## Firing the phaser at the boarders is fatal (it needs both).
 l:f_ire := { s ->
   e := ((0 = l:phaser s_elect s) c_at 0 = l:boarders s_elect s) l:r_efusal 50 51
   0 < e ? s l:s_aying e
   s l:u_pdate l:dead c_at 1 c_at l:event c_at 52
 }
 # :: Num a => a -> a
-# The keys of what the last event says (the inventory adds what is
-# carried, or "nothing").
+## The keys of what the last event says (the inventory adds what is
+## carried, or "nothing").
 l:s_aid := { s ->
   e := l:e_vent s
   e != 60 ? e
   60 61 c_at (0 = '+ r_/ 5 t_ake 2 d_rop s) r_eplicate 62
 }
 
-# -- the clock --------------------------------------------------------------------
+### The clock
 # :: Int -> Int
-# Each command takes a turn; at 21 turns left Klingons come aboard.
+## Each command takes a turn; at 21 turns left Klingons come aboard.
 l:c_lock := { s ->
   t := (l:t_urns s) - 1
   s l:u_pdate l:turns c_at t c_at l:boarders c_at (l:boarders s_elect s) m_ax t = 21
 }
 # :: (Num a, Truthy a, Num b) => a -> b
-# What the clock says after a turn: the sensors (at 22), the Klingons in
-# the shuttle bay, their voices in the corridor late in the game.
+## What the clock says after a turn: the sensors (at 22), the Klingons in
+## the shuttle bay, their voices in the corridor late in the game.
 l:a_larms := { s ->
   t := l:t_urns s
   r := l:r_oom s

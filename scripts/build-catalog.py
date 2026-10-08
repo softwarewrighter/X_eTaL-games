@@ -216,6 +216,9 @@ move at once, and X_eTaL says them that way, with no loop over squares or pieces
 <div class="examples">{examples}</div></li>
 <li><b>Try one.</b> Pick a game below; the table says which array idea each one is written around.
 A title links to the game's history.</li>
+<li><b>Read the code.</b> <a href="doc/">The cross-reference</a>, written by <code>xetal doc</code>:
+every program and library of every game and the shared libraries, each definition with its type,
+its documentation and examples (run by the gate), its source, and every place it is used.</li>
 </ol>
 <nav class="family"><h3>The X_eTaL family</h3><ul>{family}</ul></nav>
 </section>

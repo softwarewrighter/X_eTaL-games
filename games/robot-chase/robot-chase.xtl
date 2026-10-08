@@ -1,5 +1,5 @@
 #!/usr/bin/env xetal
-# Robot chase, scripted (seed 1), with the rules of RobotChase.xtl.
+## Robot chase, scripted (seed 1), with the rules of RobotChase.xtl.
 "r:" u_se< "RobotChase"
 
 # A new game: you (P) and 12 robots (R) on 13 random squares.

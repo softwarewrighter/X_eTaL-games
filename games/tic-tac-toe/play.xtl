@@ -1,20 +1,20 @@
 #!/usr/bin/env xetal
-# Tic-tac-toe at the terminal: you are X and move first; type the number
-# of an empty square. The computer plays O with the quick player of
-# TicTacToe.xtl (it wins when it can, blocks, takes the center, then a
-# corner; a fork can beat it).
+## Tic-tac-toe at the terminal: you are X and move first; type the number
+## of an empty square. The computer plays O with the quick player of
+## TicTacToe.xtl (it wins when it can, blocks, takes the center, then a
+## corner; a fork can beat it).
 "t:" u_se< "TicTacToe"
 "p:" u_se< "Play"
 said := p_rint! "TIC-TAC-TOE: YOU ARE X."
 
-# Your move: the number of an empty square, or it asks again.
+## Your move: the number of an empty square, or it asks again.
 u:a_sk := { b ->
   k := "YOUR MOVE (1-9) ?" p:l_etter "123456789"
   (k <= 9) & 0 = k s_elect b c_at 1 ? k; u:a_sk b
 }
 u:v_erdict := { b -> d_isclose (t:s_tatus b) s_elect "YOU WIN!" "I WIN." "A DRAW." }
 
-# You, then the computer, until the game is over.
+## You, then the computer, until the game is over.
 u:y_ou := { b ->
   said := p_rint! ""
   shown := p_rint! t:v_iew b

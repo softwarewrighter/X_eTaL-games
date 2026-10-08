@@ -182,6 +182,7 @@ that. See [`docs/plan.md`](docs/plan.md).
 
 - [`docs/plan.md`](docs/plan.md) -- architecture decisions, the
   gallery, the roadmap
+- [The cross-reference](https://softwarewrighter.github.io/X_eTaL-games/doc/) -- every program and library, documented and linked (`xetal doc`; `just pages` builds it into `pages/doc/`)
 - [`docs/audit.md`](docs/audit.md) -- the state at the v0.1.0 tag
 - [`docs/style.md`](docs/style.md) -- how the games' X_eTaL is written
 - [`docs/xetal-asks.md`](docs/xetal-asks.md) -- features and fixes the

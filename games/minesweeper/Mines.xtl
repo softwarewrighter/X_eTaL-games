@@ -1,52 +1,58 @@
-# Minesweeper's rules, a library: minesweeper.xtl (scripted), play.xtl
-# (at the terminal) and the web page all use these. A 9 by 9 field
-# hides 10 mines; open a square to see how many mines touch it, flag
-# the ones you think are mines, and open every safe square to win.
-#
-# The state is one vector: the status (0 playing, 1 won, 2 lost), then
-# the mines, the opened squares and the flags, three 9 by 9 0/1 boards.
+## Minesweeper's rules, a library: minesweeper.xtl (scripted), play.xtl
+## (at the terminal) and the web page all use these. A 9 by 9 field
+## hides 10 mines; open a square to see how many mines touch it, flag
+## the ones you think are mines, and open every safe square to win.
+##
+## The state is one vector: the status (0 playing, 1 won, 2 lost), then
+## the mines, the opened squares and the flags, three 9 by 9 0/1 boards.
 
 "b:" u_se< "Board"
 
 # :: Int
+## The field's width and height.
 l:n := 9
 # :: a -> a
+## Where the mines are, n by n (1 a mine).
 l:m_ines := { s -> (l:n c_at l:n) r_eshape 81 t_ake 1 d_rop s }
 # :: a -> a
+## Which squares are open, n by n.
 l:o_pen := { s -> (l:n c_at l:n) r_eshape 81 t_ake 82 d_rop s }
 # :: a -> a
+## Which squares are flagged, n by n.
 l:f_lags := { s -> (l:n c_at l:n) r_eshape -81 t_ake s }
 # :: a -> a
+## 0 playing, 1 won, 2 lost.
 l:s_tatus := { s -> f_irst s }
 # :: a -> a -> a
+## The state again from a status and the three boards.
 l:s_tate := { st m -> st c_at r_avel m }
 
 # :: (Num b, Truthy b) => a -> b
-# A new field: 10 mines on the first 10 squares of a random order.
+## A new field: 10 mines on the first 10 squares of a random order.
 l:n_ew := { x ->
   m := (r_ange 81) m_ember? 10 t_ake g_rade r_oll! 81 r_eshape 1000000
   0 c_at m c_at 162 r_eshape 0
 }
 
 # :: Num a => a -> a
-# The eight neighbors of every square at once, as Life counts them
-# (lib/Board: the board in a border of zeros rotated by every offset and
-# summed, less itself).
+## The eight neighbors of every square at once, as Life counts them
+## (lib/Board: the board in a border of zeros rotated by every offset and
+## summed, less itself).
 l:a_round := { b -> b:a_round b }
 # :: Num a => a -> a
-# How many mines touch each square.
+## How many mines touch each square.
 l:c_ounts := { s -> l:a_round l:m_ines s }
 
 # :: a -> a -> a
-# The state again from a status and the three boards' parts.
+## The state again from a status and the three boards' parts.
 l:w_ith := { s so -> (f_irst so) c_at (r_avel l:m_ines s) c_at 1 d_rop so }
 
 # :: (Num a, Truthy a) => a -> Int -> a
-# Opening square rc (row, column from 1): a mine loses; otherwise the
-# opened region grows by flood fill: every opened square with no mine
-# around it opens its neighbors, again and again until nothing
-# changes. Squares next to a mine have a count, so the fill never
-# reaches a mine. Opened squares lose their flags.
+## Opening square rc (row, column from 1): a mine loses; otherwise the
+## opened region grows by flood fill: every opened square with no mine
+## around it opens its neighbors, again and again until nothing
+## changes. Squares next to a mine have a count, so the fill never
+## reaches a mine. Opened squares lose their flags.
 l:r_eveal := { s rc ->
   k := l:n b:c_ell rc - 1
   1 = k s_elect r_avel l:m_ines s ? s l:w_ith 2 c_at (r_avel (l:o_pen s) | l:m_ines s) c_at r_avel l:f_lags s
@@ -56,6 +62,7 @@ l:r_eveal := { s rc ->
   s l:w_ith won c_at (r_avel o) c_at r_avel (l:f_lags s) & n_ot o
 }
 # :: (Num a, Truthy a) => a -> a -> a
+## The opened region grown by flood fill: every opened square with no mine around it opens its neighbors, until nothing changes.
 l:g_row := { s o ->
   zero := o & 0 = l:c_ounts s
   more := (o | 0 < l:a_round zero) & n_ot l:m_ines s
@@ -63,7 +70,7 @@ l:g_row := { s o ->
   s l:g_row more
 }
 # :: (Num a, Truthy a) => a -> Int -> a
-# Flag (or unflag) square rc, if it is not open.
+## Flag (or unflag) square rc, if it is not open.
 l:f_lag := { s rc ->
   k := l:n b:c_ell rc - 1
   1 = k s_elect r_avel l:o_pen s ? s
@@ -72,10 +79,10 @@ l:f_lag := { s rc ->
 }
 
 # :: (Num a, Truthy a) => a -> a
-# The field as text: # unopened, F flagged, . an opened square with no
-# mine around, 1 to 8 its count, * a mine (shown once the game is
-# lost); row and column numbers around it, spaced (lib/Board). Every
-# square's code at once.
+## The field as text: # unopened, F flagged, . an opened square with no
+## mine around, 1 to 8 its count, * a mine (shown once the game is
+## lost); row and column numbers around it, spaced (lib/Board). Every
+## square's code at once.
 l:c_odes := { s ->
   o := l:o_pen s
   shown := o & n_ot l:m_ines s
@@ -83,10 +90,11 @@ l:c_odes := { s ->
   1 + ((n_ot o) & l:f_lags s) + (2 * boom) + shown * 3 + l:c_ounts s
 }
 # :: Int -> Char
+## The field as text: # unopened, F flagged, * a mine (when lost), . an opened square with no mine around, else its count.
 l:v_iew := { s ->
   lab := (l:n c_at 2) r_eshape "1 2 3 4 5 6 7 8 9 "
   (1 20 r_eshape "  1 2 3 4 5 6 7 8 9 ") c_at lab c_at_2 b:s_paced (l:c_odes s) s_elect "#F*.12345678"
 }
 # :: Int -> Char
-# The field as a picture X_eTaL draws: the same characters in a grid.
+## The field as a picture X_eTaL draws: the same characters in a grid.
 l:p_icture := { s -> []G_RID (l:c_odes s) s_elect "#F*.12345678" }

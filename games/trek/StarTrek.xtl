@@ -1,99 +1,118 @@
-# Star Trek's rules, a library: trek.xtl (scripted), play.xtl (at the
-# terminal) and the web page all use these. The classic Star Trek game
-# as the COR24 BASIC demo plays it: an 8 by 8 galaxy of quadrants, each
-# an 8 by 8 grid of sectors; find and destroy every Klingon before the
-# stardate runs out, with warp and impulse drive, phasers, photon
-# torpedoes and shields.
-#
-# The game is one vector: 1 energy, 2 torpedoes, 3 shields, 4 stardate,
-# 5 deadline, 6 and 7 the quadrant (row, column, 0 to 7), 8 and 9 the
-# sector, 10 the status (0 playing, 1 won, 2 out of time, 3 ship lost,
-# 4 resigned); then the galaxy as three planes of 64 (Klingons, bases,
-# stars per quadrant) and the current quadrant's 64 sectors (0 empty,
-# 1 the Enterprise, 2 a star, 3 a base, 4 and more a Klingon: its hit
-# points plus 4).
+## Star Trek's rules, a library: trek.xtl (scripted), play.xtl (at the
+## terminal) and the web page all use these. The classic Star Trek game
+## as the COR24 BASIC demo plays it: an 8 by 8 galaxy of quadrants, each
+## an 8 by 8 grid of sectors; find and destroy every Klingon before the
+## stardate runs out, with warp and impulse drive, phasers, photon
+## torpedoes and shields.
+##
+## The game is one vector: 1 energy, 2 torpedoes, 3 shields, 4 stardate,
+## 5 deadline, 6 and 7 the quadrant (row, column, 0 to 7), 8 and 9 the
+## sector, 10 the status (0 playing, 1 won, 2 out of time, 3 ship lost,
+## 4 resigned); then the galaxy as three planes of 64 (Klingons, bases,
+## stars per quadrant) and the current quadrant's 64 sectors (0 empty,
+## 1 the Enterprise, 2 a star, 3 a base, 4 and more a Klingon: its hit
+## points plus 4).
 
 "b:" u_se< "Board"
 "s:" u_se< "State"
 "x:" u_se< "Text"
 
-# -- reading the state ------------------------------------------------
+### Reading the state
 # Where each thing is in the state vector, by name.
 # :: Int
+## Where the energy is, in the state.
 l:energy := 1
 # :: Int
+## Where the torpedoes left are, in the state.
 l:torpedoes := 2
 # :: Int
+## Where the shields are, in the state.
 l:shieldsAt := 3
 # :: Int
+## Where the stardate is, in the state.
 l:stardate := 4
 # :: Int
+## Where the quadrant's row is, in the state.
 l:quadRow := 6
 # :: Int
+## Where the quadrant's column is, in the state.
 l:quadCol := 7
 # :: Int
+## Where the sector's row is, in the state.
 l:sectRow := 8
 # :: Int
+## Where the sector's column is, in the state.
 l:sectCol := 9
 # :: Int
+## Where the status is, in the state.
 l:status := 10
 
 # :: a -> a
-# -- -------------------------------------------------
+## The energy left.
 l:e_nergy := { s -> 1 s_elect s }
 # :: a -> a
+## Torpedoes left.
 l:t_orps := { s -> 2 s_elect s }
 # :: a -> a
+## The shields' energy.
 l:s_hields := { s -> 3 s_elect s }
 # :: a -> a
+## The stardate.
 l:d_ate := { s -> 4 s_elect s }
 # :: a -> a
+## The quadrant: row and column, 0 to 7.
 l:q_uad := { s -> 6 7 s_elect s }
 # :: a -> a
+## The sector within the quadrant: row and column, 0 to 7.
 l:s_ector := { s -> 8 9 s_elect s }
 # :: a -> a
+## 0 playing, 1 won, 2 time ran out, 3 the Enterprise lost, 4 resigned.
 l:s_tatus := { s -> 10 s_elect s }
 # :: a -> Int -> a
-# Plane p of the galaxy (1 Klingons, 2 bases, 3 stars), an 8 by 8 matrix.
+## Plane p of the galaxy (1 Klingons, 2 bases, 3 stars), an 8 by 8 matrix.
 l:g_alaxy := { s p -> 8 8 r_eshape 64 t_ake (10 + 64 * p - 1) d_rop s }
 # :: a -> a
+## The quadrant shown: 8 by 8 sectors (0 empty, then the Enterprise, a star, a base, a Klingon's hit points).
 l:g_rid := { s -> 8 8 r_eshape -64 t_ake s }
 # :: Num a => a -> a
-# Klingons in the galaxy and in this quadrant.
+## Klingons in the galaxy and in this quadrant.
 l:k_lingons := { s -> '+ r_/ r_avel s l:g_alaxy 1 }
 # :: (Num a, Num b, Truthy b) => a -> b
+## How many Klingons are in this quadrant.
 l:h_ere := { s -> '+ r_/ r_avel 4 <= l:g_rid s }
 
 # :: Int -> Int -> Int
-# -- changing it -------------------------------------------------------
-# Several items changed at once (lib/State): iv is index, value, ...
+### Changing it
+## Several items changed at once (lib/State): iv is index, value, ...
 l:u_pdate := { s iv -> s s:u_pdate iv }
 # :: Int -> Int -> Int
-# The items from position p on replaced by v (pv is p then v; lib/State).
+## The items from position p on replaced by v (pv is p then v; lib/State).
 l:p_ut := { s pv -> s s:p_ut pv }
 # :: Int -> Int -> Int
+## The state with a new quadrant grid.
 l:w_ithGrid := { s g -> s l:p_ut ((t_ally s) - 63) c_at r_avel g }
 # :: Int -> Int -> Int
+## The state with plane p of the galaxy replaced (pg is p then its 64 numbers).
 l:w_ithPlane := { s pg -> s l:p_ut (11 + 64 * (f_irst pg) - 1) c_at 1 d_rop pg }
 # :: Num a => a -> a
-# The quadrant's square in a galaxy plane, 1 to 64.
+## The quadrant's square in a galaxy plane, 1 to 64.
 l:h_ome := { s -> 1 + (8 * 6 s_elect s) + 7 s_elect s }
 
 # :: Int -> Char
-# -- where things are, said as the BASIC said it ------------------------
-# A row and column (0 to 7) as "C-5".
+### Where things are, said as the BASIC said it
+## A row and column (0 to 7) as "C-5".
 l:a_t := { rc -> ((1 + f_irst rc) s_elect "ABCDEFGH") c_at "-" c_at f_ormat 1 + 2 s_elect rc }
 
 # :: Num a => Unit -> a
-# The eight courses of the compass, 1 north, clockwise: the step in rows
-# and columns for each, as a 2 by 8 table.
+## The eight courses of the compass, 1 north, clockwise: the step in rows
+## and columns for each, as a 2 by 8 table.
 l:c_ourses := { @ -> 2 8 r_eshape -1 -1 0 1 1 1 0 -1 0 1 1 1 0 -1 -1 -1 }
 
 # :: a -> Int
-# -- a new game and a new quadrant --------------------------------------
-# Every quadrant at once: Klingons in about 15 of each 100 (1 to 3 of
-# them), a base in 2 of 10, 1 to 5 stars. A galaxy without Klingons is
-# rolled again.
+### A new game and a new quadrant
+## Every quadrant at once: Klingons in about 15 of each 100 (1 to 3 of
+## them), a base in 2 of 10, 1 to 5 stars. A galaxy without Klingons is
+## rolled again.
 l:n_ew := { x ->
   kl := (85 < r_oll! 64 r_eshape 100) * r_oll! 64 r_eshape 3
   0 = '+ r_/ kl ? l:n_ew x
@@ -103,10 +122,10 @@ l:n_ew := { x ->
   l:e_nter (3000 10 0 2300 2330 c_at q c_at 0 0 0) c_at kl c_at bases c_at stars c_at 64 r_eshape 0
 }
 # :: Int -> Int
-# Entering a quadrant: the Enterprise, its Klingons (5 hit points
-# each), base and stars on different sectors at random, all placed at
-# once: the codes in a row, put into the sectors of a random order (the
-# order's own order is its inverse).
+## Entering a quadrant: the Enterprise, its Klingons (5 hit points
+## each), base and stars on different sectors at random, all placed at
+## once: the codes in a row, put into the sectors of a random order (the
+## order's own order is its inverse).
 l:e_nter := { s ->
   c := l:h_ome s
   n := c s_elect r_avel s l:g_alaxy 1
@@ -125,10 +144,10 @@ l:e_nter := { s ->
 }
 
 # :: Int -> Int
-# -- scans --------------------------------------------------------------
-# The short-range scan: the sector grid as characters, every sector at
-# once (a Klingon's code, 4 or more, is cut to 4 and read as K), spaced
-# by lib/Board.
+### Scans
+## The short-range scan: the sector grid as characters, every sector at
+## once (a Klingon's code, 4 or more, is cut to 4 and read as K), spaced
+## by lib/Board.
 l:s_rs := { s ->
   said := p_rint! ""
   said := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s} SECTOR {l:a_t l:s_ector s}"
@@ -139,11 +158,11 @@ l:s_rs := { s ->
   s
 }
 # :: Int -> Int
-# The long-range scan: the 5 by 5 quadrants around this one, each as its
-# Klingons, bases and stars in three digits, "***" off the galaxy. The
-# window's rows and columns are a table; the three planes' values for
-# the 25 quadrants are one selection from a 3 by 64 matrix, and every
-# cell's four characters are picked at once from " *0123456789".
+## The long-range scan: the 5 by 5 quadrants around this one, each as its
+## Klingons, bases and stars in three digits, "***" off the galaxy. The
+## window's rows and columns are a table; the three planes' values for
+## the 25 quadrants are one selection from a 3 by 64 matrix, and every
+## cell's four characters are picked at once from " *0123456789".
 l:l_rs := { s ->
   said := p_rint! ""
   said := p_rint! @ f_ormat< "LONG RANGE SCAN AT QUADRANT {l:a_t l:q_uad s}"
@@ -159,20 +178,21 @@ l:l_rs := { s ->
 }
 
 # :: a -> b -> a
-# -- small helpers ------------------------------------------------------------
-# Say t and give s back.
+### Small helpers
+## Say t and give s back.
 l:s_ay := { s t ->
   said := p_rint! t
   s
 }
 # :: a -> a
+## Refuse a command for want of energy.
 l:i_nsufficient := { s -> s l:s_ay "INSUFFICIENT ENERGY" }
 # :: Num a => a -> a
-# A sector's number, 1 to 64, from its row and column.
+## A sector's number, 1 to 64, from its row and column.
 l:c_ell := { rc -> 8 b:c_ell rc }
 # :: Int -> Int -> Int
-# The Enterprise moved to sector rc: its old sector emptied, the new one
-# marked, both in one expression over the 64 sectors.
+## The Enterprise moved to sector rc: its old sector emptied, the new one
+## marked, both in one expression over the 64 sectors.
 l:m_oveTo := { s rc ->
   g := r_avel l:g_rid s
   all := r_ange 64
@@ -181,20 +201,22 @@ l:m_oveTo := { s rc ->
   (s l:u_pdate l:sectRow c_at (f_irst rc) c_at l:sectCol c_at 2 s_elect rc) l:w_ithGrid g
 }
 # :: Int -> Int -> Int
-# A path from the Enterprise along course c for k steps: a 2 by k matrix
-# of rows and columns, every step at once; and which steps are inside
-# the quadrant, and their sectors (clamped, for looking them up).
+## A path from the Enterprise along course c for k steps: a 2 by k matrix
+## of rows and columns, every step at once; and which steps are inside
+## the quadrant, and their sectors (clamped, for looking them up).
 l:p_ath := { s ck ->
   d := (f_irst ck) s_elect_2 l:c_ourses @
   k := r_ange 2 s_elect ck
   ((l:s_ector s) 'l_eft t_able k) + d '* t_able k
 }
 # :: (Num a, Truthy b) => a -> b
+## Whether every point of P (rows and columns) lies inside a quadrant.
 l:i_nside := { P -> '& r_/ (P >= 0) & P <= 7 }
 # :: Num a => a -> a
+## The sectors (1 to 64) of the points P, clamped to the quadrant.
 l:c_ells := { P -> 1 + (8 * 0 m_ax 7 m_in 1 s_elect P) + 0 m_ax 7 m_in 2 s_elect P }
 # :: Num a => Int -> a
-# Print each sector of a flat list of rows and columns, "  C-5".
+## Print each sector of a flat list of rows and columns, "  C-5".
 l:t_rack := { v ->
   0 = t_ally v ? 0
   said := p_rint! @ f_ormat< "  {l:a_t 2 t_ake v}"
@@ -202,9 +224,9 @@ l:t_rack := { v ->
 }
 
 # :: Int -> Int
-# -- the Klingons fire back -------------------------------------------------------
-# 30 to 60 units: the shields take them first, the rest comes off the
-# energy.
+### The Klingons fire back
+## 30 to 60 units: the shields take them first, the rest comes off the
+## energy.
 l:f_ire := { s ->
   0 = l:h_ere s ? s
   u := 29 + r_oll! 31
@@ -216,9 +238,9 @@ l:f_ire := { s ->
 }
 
 # :: Int -> Int -> Int
-# -- moving -------------------------------------------------------------------------
-# Warp: course c, factor p (1 to 8) quadrants; 8 energy and one stardate
-# a factor; clamped at the galaxy's edge; a new quadrant, then a scan.
+### Moving
+## Warp: course c, factor p (1 to 8) quadrants; 8 energy and one stardate
+## a factor; clamped at the galaxy's edge; a new quadrant, then a scan.
 l:w_arp := { s cp ->
   c := f_irst cp
   p := 2 s_elect cp
@@ -231,12 +253,13 @@ l:w_arp := { s cp ->
   l:s_rs l:e_nter s l:u_pdate l:energy c_at ((l:e_nergy s) - 8 * p) c_at l:stardate c_at ((l:d_ate s) + p) c_at l:quadRow c_at (f_irst q) c_at l:quadCol c_at 2 s_elect q
 }
 # :: Num a => Int -> a
+## Say n times that a move was clamped at the galaxy's edge.
 l:c_lamped := { n -> x:l_ines n r_eshape e_nclose "OUT OF GALAXY - CLAMPED" }
 # :: Int -> Int -> Int
-# Impulse: course c, p (1 to 8) sectors, a unit of energy each. The
-# whole path at once; the first step that leaves the quadrant or meets
-# something decides: through to the end, into the next quadrant, or
-# halted just before the obstacle.
+## Impulse: course c, p (1 to 8) sectors, a unit of energy each. The
+## whole path at once; the first step that leaves the quadrant or meets
+## something decides: through to the end, into the next quadrant, or
+## halted just before the obstacle.
 l:i_mpulse := { s cp ->
   c := f_irst cp
   p := 2 s_elect cp
@@ -252,21 +275,23 @@ l:i_mpulse := { s cp ->
   l:s_rs t l:h_alt j s_elect_2 (l:s_ector s) c_at_2 P
 }
 # :: Int -> Int -> Int
+## Leave the quadrant along course c: into the neighbor, clamped at the galaxy's edge.
 l:c_ross := { s c ->
   q := 0 m_ax 7 m_in (l:q_uad s) + c s_elect_2 l:c_ourses @
   l:e_nter s l:u_pdate l:quadRow c_at (f_irst q) c_at l:quadCol c_at 2 s_elect q
 }
 # :: Int -> Int -> Int
+## Stop at sector rc in front of an obstacle.
 l:h_alt := { s rc ->
   said := p_rint! @ f_ormat< "OBSTRUCTED - HALTED AT SECTOR {l:a_t rc}"
   s l:m_oveTo rc
 }
 
 # :: Int -> Int -> Int
-# -- fighting -----------------------------------------------------------------------
-# Phasers: p energy split over the Klingons here; every Klingon is hit
-# at once (its code less the share); those below 4 are destroyed. One
-# line per Klingon, in sector order; then they fire back.
+### Fighting
+## Phasers: p energy split over the Klingons here; every Klingon is hit
+## at once (its code less the share); those below 4 are destroyed. One
+## line per Klingon, in sector order; then they fire back.
 l:p_hasers := { s p ->
   n := l:h_ere s
   0 = n ? s l:s_ay "NO KLINGONS HERE"
@@ -281,8 +306,8 @@ l:p_hasers := { s p ->
   l:f_ire ((s l:u_pdate l:energy c_at (l:e_nergy s) - p) l:w_ithGrid v * n_ot dead) l:w_ithPlane 1 c_at kl
 }
 # :: Num a => Int -> a
-# The phaser report from pairs of a sector and what is left of its
-# Klingon.
+## The phaser report from pairs of a sector and what is left of its
+## Klingon.
 l:h_its := { v ->
   0 = t_ally v ? 0
   k := (f_irst v) - 1
@@ -292,14 +317,15 @@ l:h_its := { v ->
   1 + l:h_its 2 d_rop v
 }
 # :: Int -> Char
+## What a hit leaves of a Klingon: destroyed, or its hit points left.
 l:p_hp := { hp ->
   hp < 0 ? " DESTROYED"
   @ f_ormat< " HIT - HP LEFT {hp}"
 }
 # :: Int -> Int -> Int
-# A photon torpedo along course c: the whole track at once, to the first
-# thing it meets or the quadrant's edge; a Klingon or a base there is
-# destroyed, a star absorbs it. Then the Klingons fire back.
+## A photon torpedo along course c: the whole track at once, to the first
+## thing it meets or the quadrant's edge; a Klingon or a base there is
+## destroyed, a star absorbs it. Then the Klingons fire back.
 l:t_orpedo := { s c ->
   0 >= l:t_orps s ? s l:s_ay "NO TORPEDOES REMAINING"
   (c < 1) | c > 8 ? s
@@ -315,7 +341,7 @@ l:t_orpedo := { s c ->
   l:f_ire t l:s_trike (j s_elect what) c_at j s_elect_2 P
 }
 # :: Int -> Int -> Int
-# What a torpedo did on sector rc (the thing's code first).
+## What a torpedo did on sector rc (the thing's code first).
 l:s_trike := { s wrc ->
   w := f_irst wrc
   rc := 1 d_rop wrc
@@ -328,14 +354,17 @@ l:s_trike := { s wrc ->
   (s l:w_ithGrid g) l:w_ithPlane 1 c_at (r_avel s l:g_alaxy 1) - (l:h_ome s) = r_ange 64
 }
 # :: Int -> Int -> Int
-# Shields: p energy into the shields (negative drains them back).
+## Shields: p energy into the shields (negative drains them back).
 l:s_hieldsTo := { s p ->
   0 > (l:e_nergy s) - p ? l:i_nsufficient s
   s l:u_pdate l:energy c_at ((l:e_nergy s) - p) c_at l:shieldsAt c_at (l:s_hields s) + p
 }
 
+### Reports
+
 # :: Int -> Int
-# -- reports ---------------------------------------------------------------------------
+## The status report: the stardate, energy, shields, torpedoes and
+## Klingons left, the quadrant and the sector.
 l:r_eport := { s ->
   said := p_rint! ""
   said := p_rint! @ f_ormat< "STARDATE {l:d_ate s} / {5 s_elect s}"
@@ -348,6 +377,7 @@ l:r_eport := { s ->
   s
 }
 # :: a -> a
+## Print the commands.
 l:h_elp := { s ->
   said := p_rint! ""
   shown := l:l_ines (
@@ -370,18 +400,19 @@ l:h_elp := { s ->
   s
 }
 # :: Num a => Box Char -> a
-# Print each string of a list of strings (lib/Text).
+## Print each string of a list of strings (lib/Text).
 l:l_ines := { v -> x:l_ines v }
 
 # :: Int -> Int -> Int
-# -- the game's course --------------------------------------------------------------------
-# A command and its arguments: 1 SRS, 2 LRS, 3 warp (course, factor),
-# 4 impulse (course, sectors), 5 phasers (energy), 6 torpedo (course),
-# 7 shields (energy), 8 status, 9 help, 0 resign; then the verdict.
+### The game's course
+## A command and its arguments: 1 SRS, 2 LRS, 3 warp (course, factor),
+## 4 impulse (course, sectors), 5 phasers (energy), 6 torpedo (course),
+## 7 shields (energy), 8 status, 9 help, 0 resign; then the verdict.
 l:c_ommand := { s v ->
   l:j_udge s l:d_o v
 }
 # :: Int -> Int -> Int
+## Carry out command v (its number, then its arguments).
 l:d_o := { s v ->
   c := f_irst v
   a := 1 d_rop v
@@ -398,14 +429,15 @@ l:d_o := { s v ->
   s l:s_ay "?WHAT"
 }
 # :: Int -> Int
-# The status: out of time first, then the ship lost, then the mission
-# complete (as the BASIC checks them); a resignation stands.
+## The status: out of time first, then the ship lost, then the mission
+## complete (as the BASIC checks them); a resignation stands.
 l:j_udge := { s ->
   4 = l:s_tatus s ? s
   over := ((l:d_ate s) > 5 s_elect s) c_at (0 >= l:e_nergy s) c_at 0 = l:k_lingons s
   s l:u_pdate l:status c_at f_irst (over r_eplicate 2 3 1) c_at 0
 }
 # :: Int -> Char
+## The game's ending, printed, and the Klingons left.
 l:e_nd := { s ->
   st := l:s_tatus s
   said := p_rint! ""
@@ -414,6 +446,7 @@ l:e_nd := { s ->
   @ f_ormat< "KLINGONS REMAINING {l:k_lingons s}"
 }
 # :: Int -> Char
+## The mission complete: the stardate and the energy left.
 l:m_ission := { s ->
   said := p_rint! "*** MISSION COMPLETE ***"
   said := p_rint! @ f_ormat< "STARDATE {l:d_ate s}"

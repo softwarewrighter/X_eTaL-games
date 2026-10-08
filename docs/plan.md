@@ -365,6 +365,13 @@ promotion gate, as it touches the games).
 | 4 | start-here | DONE: the catalog opens with Start here (what you are looking at; why an array language, with three lines from the games drawn by `xetal render --html` at build time; try one), the X_eTaL family's live sites, then the idiom table and the cards; the README lists the whole family. Planned: the catalog's first screen: what you are looking at, why it is an array expression, the X_eTaL that did it; the idiom table; links to the ecosystem's front door (X_eTaL's site) and the sibling repos | |
 | 5 | audit-tag | DONE: `docs/audit.md` (the state at v0.1.0: games, the pinned X_eTaL, the gate, timings, asks, the linked repositories, the saga record, known limits); links checked; the audit's orphan work commits claimed by a retroactive step; tagged v0.1.0. Planned: a cross-repo status audit (asks, vendored commit, sibling links); a version tag of a known-compatible snapshot | the other repos |
 
+## The cross-reference (launch step 17)
+
+DONE (the user, 2026-10-07): the comments in X_eTaL's convention (`##`,
+`###`, `#`), every export documented, examples in the shared libraries
+run by the gate, the `xetal doc` site at `pages/doc/` linked from the
+catalog and the game pages.
+
 ## Saga 6 -- macros
 
 | # | Step slug | Delivers | Waits on |

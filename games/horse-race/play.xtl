@@ -1,12 +1,12 @@
 #!/usr/bin/env xetal
-# Horse race at the terminal: you start with 10 coins. Before each race
-# pick a horse, 1 to 5, and bet a coin on it; if it wins (a share of a
-# tie counts) you get 4 back. Type q to stop. The rules are those of
-# HorseRace.xtl.
+## Horse race at the terminal: you start with 10 coins. Before each race
+## pick a horse, 1 to 5, and bet a coin on it; if it wins (a share of a
+## tie counts) you get 4 back. Type q to stop. The rules are those of
+## HorseRace.xtl.
 "h:" u_se< "HorseRace"
 "p:" u_se< "Play"
 
-# The race, a round at a time, the track printed after each round.
+## The race, a round at a time, the track printed after each round.
 u:r_ace := { p ->
   q := p h:m_ove h:r_oll p
   shown := p_rint! h:v_iew q
@@ -14,13 +14,13 @@ u:r_ace := { p ->
   1 = h:s_tatus q ? q; u:r_ace q
 }
 
-# Your pick: 1 to 5, 0 to stop, or it asks again.
+## Your pick: 1 to 5, 0 to stop, or it asks again.
 u:a_sk := { c ->
   k := (@ f_ormat< "you have {c} coins; your horse (1 to 5, q to stop):") p:l_etter "12345q"
   k <= 5 ? k; k = 6 ? 0; u:a_sk c
 }
 
-# One race on your pick, then the next, until you stop or run out.
+## One race on your pick, then the next, until you stop or run out.
 u:b_et := { c ->
   k := u:a_sk c
   k = 0 ? @ f_ormat< "you leave with {c}"

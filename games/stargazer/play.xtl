@@ -1,11 +1,11 @@
 #!/usr/bin/env xetal
-# Stargazer: a sky you click. Each round rings five named stars, mixed
-# bright, middling and faint; click a ringed star, then its name among
-# four (one star from each brightness band besides it). The buttons
-# along the top start a round in a part of the sky or all of it. On the
-# page the sky is in a dialog and your clicks come to the program as
-# events; at the command line, lines such as "click 26000 10600" (sky
-# units) on standard input. The rules and the drawing are Sky.xtl's.
+## Stargazer: a sky you click. Each round rings five named stars, mixed
+## bright, middling and faint; click a ringed star, then its name among
+## four (one star from each brightness band besides it). The buttons
+## along the top start a round in a part of the sky or all of it. On the
+## page the sky is in a dialog and your clicks come to the program as
+## events; at the command line, lines such as "click 26000 10600" (sky
+## units) on standard input. The rules and the drawing are Sky.xtl's.
 "k:" u_se< "Sky"
 
 u:l_oop := { s ->
