@@ -1,9 +1,10 @@
 number = 16
 slug = "gate-sizes"
-status = "in-progress"
+status = "completed"
 description = "the user (2026-10-07): a 25-minute gate is not acceptable; follow X_eTaL's D1..."
 role = "production"
 context_files = []
 created_at = "2026-10-07T17:29:40"
+completed_at = "2026-10-07T20:33:33"
 task_type = "build"
-commits = []
+commits = ["d366255020a0c75652fbc61ad651e3478e34b32d"]

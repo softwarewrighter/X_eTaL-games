@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-07
 
+- 20:33 `chore` Saga step gate-sizes completed.
+
 - 20:19 `fix` The browser test took about 33 s per page doing nothing: closing a tab asked Chrome's /json/close for JSON, and it answers with text, so the request was retried a hundred times. A plain request now: the whole browser test in 18 s (from 367 s), the affected gate over every page in 3 minutes (from 9.5). A game played by clicks says an error at the top of its dialog ("The program stopped: ...") rather than leaving a picture that seems frozen. `--affected` times natively only the games whose X_eTaL changed (`affected.py --timed`; `bench.py --native`), and plays the touched pages once.
 
 - 17:52 `build` The gate in three sizes (the user: 25 minutes is not acceptable; after X_eTaL's D108): `just gate` is the sample, every check and every game's goldens in parallel, each to its own log under work/gate/ (51 s from about 25 minutes); `--affected` adds the page crates, pages, browser test and timings of the games the change touches (`scripts/affected.py`, with a self-test: a game's files, the shared libraries its page carries, or everything for the shell and the page scripts); `--full` is everything. `scripts/check-busy.sh` refuses to start on a busy machine (another cargo, gate or trunk serve here). `build-pages.sh`, `bench.py` (rows too) and `test-games.sh` (`TEST_GAMES_WEB=0`) take the touched games.

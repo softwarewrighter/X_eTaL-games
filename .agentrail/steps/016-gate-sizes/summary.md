@@ -1,0 +1,1 @@
+Gate in three sizes after X_eTaL D108 (sample 51-59 s, --affected touched games only, --full everything); affected.py with self-tests; check-busy.sh; browser test 18 s from 367 s (tab close retried JSON 33 s a page); stargazer north-sky freeze and capitals overlapping-dot fixes with exhaustive click tests; errors shown at the top of a click game's dialog. All live.
