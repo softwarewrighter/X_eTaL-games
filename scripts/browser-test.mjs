@@ -151,7 +151,7 @@ const CLICK = (lines) => `(async () => {
   }
   const err = document.querySelector("dialog.board .err")?.textContent || "";
   const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
-  return { out: said(), err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length };
+  return { out: said(), err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
 })()`;
 const BOARD_OPEN = `(() => { if (!document.querySelector("dialog.board[open]")) document.querySelector("button.board-open").click(); return !!document.querySelector("dialog.board[open]"); })()`;
 const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
@@ -237,13 +237,14 @@ try {
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
       else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
+      else if (interactive && got.controls) { console.log(`FAIL: ${slug} (browser): a game played by clicks shows New game and Restart (only Play belongs)`); failed++; }
       else if (readFileSync(join(dir, "play.xtl"), "utf8").includes("[]S_HOW") && !got.pics) { console.log(`FAIL: ${slug} (browser): play.xtl shows pictures but none appeared`); failed++; }
       else {
         const toml = readFileSync(join(dir, "game.toml"), "utf8");
         const wiki = (toml.match(/^wikipedia = "(.*?)"/m) || [])[1];
         const problem = (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
         if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
-        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks on the map in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks on the map in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, only Play, ${wiki ? "Wikipedia link" : "about dialog"})`);
         else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }

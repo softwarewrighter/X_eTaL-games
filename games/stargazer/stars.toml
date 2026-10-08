@@ -1,0 +1,78 @@
+# Data for the stargazer game, read by Sky.xtl (X_eTaL's []L_IST and
+# []T_ABLE). The sky and the named stars come from the Yale Bright Star
+# Catalog and the IAU Catalog of Star Names (assets/fetch.sh writes
+# assets/cache/sky.toml, not tracked). Every value is a string (TOML
+# lists in X_eTaL hold strings).
+
+# The parts of the sky a round can be limited to, in the menu's order:
+# right ascension from ra0 to ra1 (degrees, east from 0h; ra0 above ra1
+# wraps through 0h) and declination from dec0 to dec1 (degrees). The
+# seasons are the evening skies of the northern hemisphere.
+areas = ["winter", "spring", "summer", "autumn", "north", "south"]
+areafields = ["name", "ra0", "ra1", "dec0", "dec1"]
+
+# Brightness bands, by visual magnitude (smaller is brighter): famous,
+# middling, faint. A round's five stars take mix of each (bright,
+# middling, faint), and each star's three wrong choices are one from
+# each band, from anywhere in the sky.
+bands = ["-2 1.5", "1.5 3", "3 5"]
+mix = ["1", "2", "2"]
+
+# Stars of your own (asked like the named stars): list each key in
+# stars and give it a table, e.g.
+#
+#   stars = ["my-star"]
+#
+#   [star.my-star]
+#   name = "My Star"
+#   ra = "83.82"
+#   dec = "-5.39"
+#   mag = "4.0"
+#   con = "Ori"
+stars = []
+fields = ["name", "ra", "dec", "mag", "con"]
+
+
+[area.winter]
+name = "Winter"
+ra0 = "60"
+ra1 = "135"
+dec0 = "-60"
+dec1 = "60"
+
+[area.spring]
+name = "Spring"
+ra0 = "135"
+ra1 = "225"
+dec0 = "-60"
+dec1 = "60"
+
+[area.summer]
+name = "Summer"
+ra0 = "225"
+ra1 = "315"
+dec0 = "-60"
+dec1 = "60"
+
+[area.autumn]
+name = "Autumn"
+ra0 = "315"
+ra1 = "60"
+dec0 = "-60"
+dec1 = "60"
+
+[area.north]
+name = "North"
+ra0 = "0"
+ra1 = "360"
+dec0 = "50"
+dec1 = "90"
+
+[area.south]
+name = "South"
+ra0 = "0"
+ra1 = "360"
+dec0 = "-90"
+dec1 = "-45"
+
+[star]

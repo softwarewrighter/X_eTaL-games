@@ -1,0 +1,34 @@
+#!/usr/bin/env xetal
+# Stargazer, scripted (seed 1), with the rules and the drawing of
+# Sky.xtl: the named stars and the sky read from TOML, bands of
+# brightness, the sky drawn as SVG, and a round played by clicks.
+"k:" u_se< "Sky"
+
+# The parts of the sky, and how many named stars each holds (0 is all).
+k:p_arts @
+'{ a -> t_ally k:p_ool a } e_ach 0 1 2 3 4 5 6
+
+# Sirius: its point on the sky (sky units: hundredths of a degree, right
+# ascension growing to the left) and its choices: Sirius and one star
+# from each brightness band, picked by the round's number (here 7).
+i := f_irst w_here '{ j -> "Sirius" m_atch k:n_ame j } e_ach k:p_ool 0
+f_loor 0 k:a_t i
+'{ j -> e_nclose k:n_ame j } e_ach 7 k:c_hoices i
+
+# A round in the winter sky (seed 1): five named stars, mixed bright,
+# middling and faint, and the picture X_eTaL draws for it.
+s := k:n_ew 1
+'{ j -> e_nclose k:n_ame j } e_ach k:m_arks s
+pic := []S_HOW k:d_raw s
+
+# A click on the first ringed star opens its menu; a click on the right
+# name (the middle of its button) answers it.
+j := f_irst k:m_arks s
+t := s k:c_lick 1 k:a_t j
+k:s_ay t
+c := f_irst w_here (k:o_ffered t) = j
+b := c s_elect k:m_enu t
+t := t k:c_lick ((f_irst b) + 0.5 * 3 s_elect b) c_at (2 s_elect b) + 0.5 * 4 s_elect b
+k:s_ay t
+pic := []S_HOW k:d_raw t
+k:s_core t

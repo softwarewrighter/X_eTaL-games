@@ -58,6 +58,11 @@
       "script_ms": 291,
       "play_ms": 635,
       "page_ms": 3443
+    },
+    "stargazer": {
+      "script_ms": 145,
+      "play_ms": 169,
+      "page_ms": 1245
     }
   }
 }

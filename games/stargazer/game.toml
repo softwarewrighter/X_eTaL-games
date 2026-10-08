@@ -1,0 +1,12 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "stargazer"
+title = "Stargazer"
+summary = "A sky you click: five named stars ringed, mixed bright, middling and faint; click one, then its name among four (one star from each brightness band besides it); choose a part of the sky or all of it. X_eTaL reads the Bright Star Catalog and the IAU's star names from TOML, draws the whole sky as SVG, and the page passes your clicks to the program as events."
+lesson = "brightness bands as a table; every star placed at once; the sky drawn as SVG text; clicks as events; data from TOML"
+concepts = ["[]T_ABLE", "[]L_IST", "[]E_VENT", "t_able", "g_rade", "f_ormat<", "SVG", "libraries"]
+status = "live"
+order = 120
+sources = ["wrightmikea/stargazer-poc (the idea)", "Yale Bright Star Catalog (NASA, public domain) and IAU Catalog of Star Names (IAU, CC BY), fetched by assets/fetch.sh"]
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/List_of_proper_names_of_stars"   # the title links here (opens in a new tab)

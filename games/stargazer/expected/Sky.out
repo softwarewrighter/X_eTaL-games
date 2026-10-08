@@ -1,0 +1,18 @@
+l:s_x : Num a => a -> a
+l:s_y : Num a => a -> a
+l:p_ool : Int -> Int
+l:p_arts : Unit -> Box Char
+l:n_ame : Int -> Char
+l:v_iew : Int -> Float
+l:a_t : Int -> Int -> Float
+l:c_hoices : Int -> Int -> Int
+l:n_ew : Int -> Int
+l:s_core : a -> a
+l:m_arks : Int -> Int
+l:r_esults : Int -> Int
+l:s_tatus : (Num a, Truthy a) => Int -> a
+l:o_ffered : Int -> Int
+l:m_enu : Int -> Float
+l:c_lick : Int -> Float -> Int
+l:s_ay : Int -> Char
+l:d_raw : Int -> Char

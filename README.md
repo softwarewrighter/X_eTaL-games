@@ -46,7 +46,7 @@ and is tested by its expected output.
 | [Sudoku](games/sudoku/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/sudoku/)) | a candidate tensor; every single at once by sums over units; rounds to a fixed point | live |
 | Connect four, Mastermind, Flood-it, Fifteen, Nim, Reversi | windows, histograms, regions, permutations, binary digits, rays | planned |
 | [Capitals](games/capitals/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/capitals/)) | a map you click: every distance at once, nearest by grade; the map drawn as SVG text; clicks as events; data from TOML | live |
-| Stargazer | a sky quiz: projections, magnitudes, distances | planned |
+| [Stargazer](games/stargazer/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/stargazer/)) | a sky you click: brightness bands as a table; the sky drawn as SVG text; clicks as events; data from TOML | live |
 | Battleship | placement masks, a probability map | planned |
 
 A game's name links to its own page (`games/<name>/README.md`) once it
@@ -73,6 +73,7 @@ its idiom in the code.
 | compress, merge, compress as a train; turning the board by powers of 0 or 1 | [2048](games/2048/README.md) |
 | every cell's candidates as one array; every unit counted at once by selecting with a table; rounds to a fixed point | [Sudoku](games/sudoku/README.md) |
 | every distance at once, nearest by grade; a map, its menus and score written as SVG text; clicks as events (`[]E_VENT`) | [Capitals](games/capitals/README.md) |
+| every star's brightness band by one table; 2887 stars placed at once; the same picture-and-click pieces (`lib/Svg.xtl`) | [Stargazer](games/stargazer/README.md) |
 
 ## Build
 

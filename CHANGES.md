@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-07
 
+- 17:09 `game` Stargazer is live, modeled on the capitals map (the user's design): Play opens a sky you click; five named stars ringed, mixed one bright, two middling, two faint; a star's menu offers it and one star from each brightness band, from anywhere in the sky (not the nearest stars: too hard); verdicts, labels, score and the parts of the sky (seasonal evening skies, the poles) on the picture. `Sky.xtl` writes the SVG with `lib/Svg.xtl`; the data is TOML: the Yale Bright Star Catalog (NASA, public domain) and the IAU Catalog of Star Names (CC BY) fetched by `assets/fetch.sh` into the untracked `sky.toml`, and the tracked `stars.toml` (parts of the sky, bands, mix, your own stars; `test.sh` adds one). The browser test also checks that a game played by clicks has only its Play button.
+
 - 15:23 `refactor` A game played by clicks has only its Play button (the user: New game and Restart did nothing visible there; its rounds start on the map); `lib/Svg.xtl`, the pictures-and-clicks pieces of the capitals map (numbers in texts, whole numbers, rectangles and labels, hit tests, the button row and the menu laid out and drawn, the whole picture) for every game played on a map, tested in `lib/test.xtl`; `Atlas.xtl` uses it, its pictures byte for byte the same.
 
 - 14:20 `chore` Saga step capitals-map completed.
