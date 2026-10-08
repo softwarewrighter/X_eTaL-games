@@ -55,6 +55,14 @@ rm -f "$g/expected/probe.in"
 XETAL_BLESS=1 "$t" probe >/dev/null
 grep -qx 16 "$g/expected/probe.out" || { echo "selftest: a program using a library" >&2; exit 1; }
 expect pass "a program using a library"
+# A scripted game states its expectations with a_ssert<: one that holds
+# is silent and passes; one that fails writes "assertion failed: ..." to
+# standard error, which fails the game.
+printf '#!/usr/bin/env xetal\n"r:" u_se< "Rules"\nok := "r:finish = 15" a_ssert< "the finish"\nr:finish + 1\n' > "$g/probe.xtl"
+expect pass "an assertion that holds"
+printf '#!/usr/bin/env xetal\n"r:" u_se< "Rules"\nok := "r:finish = 16" a_ssert< "the finish"\nr:finish + 1\n' > "$g/probe.xtl"
+expect fail "an assertion that fails"
+printf '#!/usr/bin/env xetal\n"r:" u_se< "Rules"\nr:finish + 1\n' > "$g/probe.xtl"
 printf 'finish := 15\n' > "$g/Rules.xtl"
 expect fail "a library exporting nothing"
 printf 'l:finish := 15\n' > "$g/Rules.xtl"

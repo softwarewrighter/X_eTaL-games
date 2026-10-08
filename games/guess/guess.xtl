@@ -39,3 +39,9 @@ n := 1 + 3 s_elect st                # the guesses each secret needed
 10 t_ake n
 '+ r_/_2 (r_ange 7) '= t_able n      # games won in 1, 2, ... 7 guesses
 'm_ax r_/ n                          # never more than 7: 2^7 > 100
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "7 >= 'm_ax r_/ n" a_ssert< "every secret found in at most 7 guesses (2^7 > 100)"
+ok := "g:top = '+ r_/ s = g:g_uess 2 t_ake st" a_ssert< "all games won after 7 rounds"

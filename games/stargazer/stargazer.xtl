@@ -32,3 +32,9 @@ t := t k:c_lick ((f_irst b) + 0.5 * 3 s_elect b) c_at (2 s_elect b) + 0.5 * 4 s_
 k:s_ay t
 pic := []S_HOW k:d_raw t
 k:s_core t
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "i m_ember? 7 k:c_hoices i" a_ssert< "a star is among its own choices"
+ok := "4 = t_ally u_nique 7 k:c_hoices i" a_ssert< "four different stars to choose from"

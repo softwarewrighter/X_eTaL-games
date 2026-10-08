@@ -36,3 +36,9 @@ done := s u:c_lear w_here n_ot r_avel m:m_ines s
 m:v_iew done
 m:s_tatus done                           # 1: won
 pic := []S_HOW m:p_icture done
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "10 = '+ r_/ r_avel m:m_ines s" a_ssert< "ten mines"
+ok := "1 = m:s_tatus done" a_ssert< "opening every safe square wins"

@@ -33,3 +33,9 @@ u:g_ame := { s ->
   u:g_ame t
 }
 u:g_ame s                                # the score: 0 shuts the box
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "512 = 2 s_elect s_hape M" a_ssert< "every subset of nine tiles"
+ok := "'& r_/ 7 = (s b:m_oves 7) '+ '* i_nner r_ange 9" a_ssert< "every move for a 7 adds up to 7"

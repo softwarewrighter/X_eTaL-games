@@ -1,6 +1,6 @@
 number = 18
 slug = "assert-macros"
-status = "pending"
+status = "in-progress"
 description = "macros saga step 2: each scripted game states its expectations in X_eTaL with..."
 role = "production"
 context_files = []

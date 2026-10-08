@@ -43,3 +43,9 @@ r:s_tatus lost
 # The long-range scan of the new game: robots, wrecks and you, summed in
 # 4 by 4 regions (the board as a 4 by 4 by 4 by 4 array).
 r:l_rs s
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "1 = r:s_tatus t" a_ssert< "the three robots collide: won"
+ok := "2 = r:s_tatus lost" a_ssert< "walking into a robot: caught"

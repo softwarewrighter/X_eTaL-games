@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-08
 
+- 11:05 `test` Every scripted game states what it guarantees with X_eTaL's system macro `a_ssert<` (23 assertions, the conditions as written: a winner, every secret found within 7 guesses, perfect play a draw, every move for a 7 adds up to 7, a slide keeps the tiles' total, the sudoku keeps every given, a capital's nearest city is itself, a star among its own choices, ...), bound so the goldens are unchanged; a failing one writes to standard error and fails the tests (the tooling self-test proves both ways). docs/style.md says when.
+
 - 07:56 `chore` Saga step docs-xref completed.
 
 - 07:41 `docs` The cross-reference on the live site (the user asked for it, with ## and ### comments shown): every library's and program's comments in X_eTaL's convention (## documentation, ### sections, # notes; 41 files converted, 85 exports documented that had no description of their own); ## >> examples for every export of the shared libraries (46, run by `xetal doc --test` in the gate); `scripts/check-docs.py` (every export has a ## block, in the gate); `scripts/build-docs.sh` writes `xetal doc --out` into `pages/doc/` with the site; the catalog's Start here and every game page link to it (the browser test follows each link); docs/style.md says how.

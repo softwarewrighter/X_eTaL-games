@@ -40,3 +40,9 @@ end := u:s_elf t:n_ew 0
 t:v_iew end
 pic := []S_HOW t:p_icture end
 t:s_tatus end                  # 3: a draw
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "1 = t:s_tatus b" a_ssert< "X completes a line"
+ok := "3 = t:s_tatus end" a_ssert< "perfect play is a draw"

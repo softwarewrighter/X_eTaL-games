@@ -377,7 +377,7 @@ catalog and the game pages.
 | # | Step slug | Delivers | Waits on |
 | - | --------- | -------- | -------- |
 | 1 | format-macros | DONE: 39 messages in the terminal games, the scripted guess and Star Trek's library written with `@ f_ormat< "... {expr} ..."` instead of `c_at`/`f_ormat` chains; every golden unchanged; docs/style.md; an ask filed (a library that fails to parse reported as missing its exports). Planned: the checks, Test/Assert, as a `.xtlm` library | X_eTaL saga 19 (landed in v0.1.0) |
-| 2 | assert-macros | each scripted game states its expectations with `a_ssert<` (the condition as written, silent when it holds); the game tests fail on any assertion; control macros (`i_f<`, `u_nless<`) only where a guard cannot do the job (X_eTaL-libraries' rule: a macro only where a function or a guard cannot) | |
+| 2 | assert-macros | DONE (launch step 18): every scripted game states what it guarantees with `a_ssert<` (23 assertions: a winner, every secret within 7 guesses, perfect play a draw, every move for a 7 adds to 7, a slide keeps the total, the sudoku keeps its givens, a capital's nearest city is itself, ...), bound so the goldens are unchanged; a failing one fails the tests (the tooling self-test proves both ways; one caught a wrong expectation of mine in capitals); `i_f<`/`u_nless<` not used: guards do their job | |
 
 The saga record runs these as launch steps 9 and 10 (agentrail keeps
 one active saga; the terminal pane, step 11, still waits). The

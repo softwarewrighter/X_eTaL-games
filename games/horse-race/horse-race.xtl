@@ -22,3 +22,9 @@ u:r_ace := { p ->
 final := u:r_ace h:n_ew 5
 final
 (h:w_inners final) s_elect h:n_ames @
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "1 = h:s_tatus final" a_ssert< "the race ends with a winner"
+ok := "0 < t_ally h:w_inners final" a_ssert< "someone wins"

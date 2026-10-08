@@ -34,3 +34,9 @@ u:f_ar := { s -> s t:c_ommand 3 5 8 }
 s := 4 'u:f_ar p_ower s
 t:s_tatus s                                   # 2: out of time
 t:e_nd s
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "2 = t:s_tatus s" a_ssert< "the long voyage runs out of time"
+ok := "0 <= t:k_lingons s" a_ssert< "never fewer than no Klingons"

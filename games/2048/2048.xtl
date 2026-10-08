@@ -31,3 +31,9 @@ end := u:g_ame t:n_ew 0
 t:b_oard end
 t:s_core end
 t:s_tatus end                            # 2: no move left
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "('+ r_/ r_avel b) = '+ r_/ r_avel b t:s_lide 2" a_ssert< "a slide keeps the tiles' total"
+ok := "2 = t:s_tatus end" a_ssert< "the game ends with no move left"

@@ -38,3 +38,9 @@ t := t a:c_lick ((f_irst b) + 0.5 * 3 s_elect b) c_at (2 s_elect b) + 0.5 * 4 s_
 a:s_ay t
 pic := []S_HOW a:d_raw t
 a:s_core t
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "\"Paris\" m_atch a:t_own a:a_nswer p" a_ssert< "the nearest city to a capital is the capital"
+ok := "(a:a_nswer p) m_ember? a:c_hoices p" a_ssert< "the answer is among the choices"

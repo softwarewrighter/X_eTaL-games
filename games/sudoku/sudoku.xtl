@@ -54,3 +54,9 @@ s := s:n_ew 1
 s:s_tatus s
 s:s_tatus (s:g_ivens s) c_at s:s_olve s:g_rid s
 s:h_int s
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "'& r_/ (k = 0) | x = k" a_ssert< "the solution keeps every given"
+ok := "'& r_/ r_avel 1 = s:p_erUnit s:o_nehot x" a_ssert< "every unit holds every digit once"

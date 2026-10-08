@@ -50,6 +50,12 @@ better when it is clearer, never when it is cryptic.
   (a power count must be a number, not a Bool).
 - A function over the rows of a matrix: `m_ap` over the row numbers
   (`'{ f _r s_elect m } m_ap r_ange t_ally m`); `m_ap` alone maps items.
+- What a scripted game guarantees is stated with X_eTaL's system macro
+  `a_ssert<`, bound so it prints nothing: `ok := "3 = t:s_tatus end"
+  a_ssert< "perfect play is a draw"`. It is silent when the condition
+  holds and writes the condition as written to standard error when it
+  does not, which fails the tests (the self-test proves it). The control
+  macros (`i_f<`, `u_nless<`) are not used: a guard does their job.
 - A message with values in it is a format string, `@ f_ormat< "SCORE
   {t:s_core s}"`: X_eTaL's system macro, whose template is checked when
   the program is compiled (an unclosed `{` stops it), not a chain of

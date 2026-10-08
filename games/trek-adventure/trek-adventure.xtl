@@ -55,3 +55,8 @@ t:s_tatus 30 'u:w_ait p_ower t:n_ew 0
 
 # Nothing carried: the inventory says so.
 said := (t:n_ew 0) t:s_ay t:s_aid (t:n_ew 0) t:m_ove 2 0
+
+# What the game guarantees, checked by a_ssert< (the condition as
+# written; silent when it holds, a line on standard error, which fails
+# the tests, when it does not).
+ok := "1 = t:s_tatus last" a_ssert< "the scripted moves win"
