@@ -1,9 +1,10 @@
 number = 19
 slug = "live-clicks"
-status = "in-progress"
+status = "completed"
 description = "the user (2026-10-08): clicks on the map games got slower as a game went on (..."
 role = "production"
 context_files = []
 created_at = "2026-10-08T12:45:42"
+completed_at = "2026-10-08T13:12:11"
 task_type = "refactor"
-commits = []
+commits = ["c558acfeef0199dd63efc96ff0d3bdde595daa3c"]

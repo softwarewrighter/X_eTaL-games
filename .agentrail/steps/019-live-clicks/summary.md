@@ -1,0 +1,1 @@
+Map games keep their program running between clicks (Live on xetal_play::Interactive): per-click cost constant; capitals 3443->722 ms, stargazer 1245->324 ms for the golden clicks; equivalence tests.
