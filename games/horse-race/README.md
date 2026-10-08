@@ -20,15 +20,15 @@ A program imports the rules and calls them under the name it gives
 the library, here `h:`. The race in `horse-race.xtl`:
 
 ```
-"h:" u_se< "HorseRace"
+"hr:" u_se< "HorseRace"
 u:r_ace := { p ->
-  r := p_rint! h:r_oll p
-  q := p h:m_ove r
-  shown := p_rint! h:v_iew q
-  1 = h:s_tatus q ? q; u:r_ace q
+  r := p_rint! hr:r_oll p
+  q := p hr:m_ove r
+  shown := p_rint! hr:v_iew q
+  1 = hr:s_tatus q ? q; u:r_ace q
 }
-final := u:r_ace h:n_ew 5
-(h:w_inners final) s_elect h:n_ames @
+final := u:r_ace hr:n_ew 5
+(hr:w_inners final) s_elect hr:n_ames @
 ```
 
 ## The rules: a library

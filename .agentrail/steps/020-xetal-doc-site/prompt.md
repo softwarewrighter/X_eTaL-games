@@ -1,0 +1,1 @@
+the user (2026-10-08): move the pin to the latest X_eTaL main for the doc site's directory grouping (18d9aae, D129) and its other new features (headers, sorting), the h: namespace and tuples; regenerate /doc with the new tool (no fix-up of its output here: fixes belong in the tool); goldens rerun, full gate after the move; the ask closed.

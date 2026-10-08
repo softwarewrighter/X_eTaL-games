@@ -76,7 +76,7 @@ l:m_enu := { v xy ->
   o_\ 4 4 r_eshape (x0 + 0 * k) c_at (y0 + u * 44 * k) c_at (u * 300 + 0 * k) c_at u * 40 + 0 * k
 }
 ## A button's fill: the one shown filled.
-f_ill := { on -> d_isclose (1 + on) s_elect "#ffffff" "#a8dadc" }
+h:f_ill := { on -> d_isclose (1 + on) s_elect "#ffffff" "#a8dadc" }
 # :: Float -> Box a -> Box Char
 ## Buttons b (rectangles) labeled with the texts names: the one numbered
 ## by the view's fifth item (from 1) filled; v is the view and that number.
@@ -88,7 +88,7 @@ l:l_abeled := { vb names ->
   u := l:u_nit v
   b := v l:b_uttons t_ally names
   k := r_ange t_ally names
-  r := '{ j -> (j s_elect b) l:r_ect @ f_ormat< "class=\"region\" rx=\"{l:w_hole u * 6}\" fill=\"{f_ill (f_loat j) = 5 s_elect vb}\" stroke=\"#264653\"" } e_ach k
+  r := '{ j -> (j s_elect b) l:r_ect @ f_ormat< "class=\"region\" rx=\"{l:w_hole u * 6}\" fill=\"{h:f_ill (f_loat j) = 5 s_elect vb}\" stroke=\"#264653\"" } e_ach k
   r c_at '{ j -> (((1 s_elect j s_elect b) + u * 12) c_at ((2 s_elect j s_elect b) + u * 24) c_at u * 18) l:w_ords d_isclose j s_elect names } e_ach k
 }
 # :: Float -> Box a -> Box Char

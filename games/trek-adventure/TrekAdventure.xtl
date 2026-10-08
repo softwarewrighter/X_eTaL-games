@@ -284,7 +284,7 @@ l:dead := 11
 ## The last event, its place in the state.
 l:event := 12
 
-# :: Num b => a -> b
+# :: (Any a, Num b) => a -> b
 ## A new game: in room 1 with 30 turns, nothing taken or done.
 l:n_ew := { x -> 1 30 0 0 0 0 0 0 0 0 0 0 }
 # :: a -> a

@@ -77,7 +77,7 @@ l:s_pawn := { b ->
   v := 2 + 2 * 10 = r_oll! 10
   4 4 r_eshape (r_avel b) + v * k = r_ange 16
 }
-# :: (Num b, Truthy b) => a -> b
+# :: (Any a, Num b, Truthy b) => a -> b
 ## A new game: no score, two tiles spawned on an empty board.
 l:n_ew := { x -> 0 c_at r_avel l:s_pawn l:s_pawn 4 4 r_eshape 0 }
 

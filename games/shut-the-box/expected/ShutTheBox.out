@@ -1,4 +1,4 @@
-l:n_ew : Num b => a -> b
+l:n_ew : (Any a, Num b) => a -> b
 l:s_core : Int -> Int
 l:s_ubsets : Unit -> Int
 l:s_ums : Unit -> Int

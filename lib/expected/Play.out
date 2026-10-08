@@ -1,5 +1,5 @@
-l:l_ine : a -> Char
+l:l_ine : Any a => a -> Char
 l:n_umbersIn : Char -> Int
-l:n_umbers : a -> Int
-l:n_umber : a -> Int
-l:l_etter : a -> Char -> Int
+l:n_umbers : Any a => a -> Int
+l:n_umber : Any a => a -> Int
+l:l_etter : Any a => a -> Char -> Int

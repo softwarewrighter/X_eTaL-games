@@ -108,7 +108,7 @@ l:a_t := { rc -> ((1 + f_irst rc) s_elect "ABCDEFGH") c_at "-" c_at f_ormat 1 + 
 ## and columns for each, as a 2 by 8 table.
 l:c_ourses := { @ -> 2 8 r_eshape -1 -1 0 1 1 1 0 -1 0 1 1 1 0 -1 -1 -1 }
 
-# :: a -> Int
+# :: Any a => a -> Int
 ### A new game and a new quadrant
 ## Every quadrant at once: Klingons in about 15 of each 100 (1 to 3 of
 ## them), a base in 2 of 10, 1 to 5 stars. A galaxy without Klingons is
@@ -177,14 +177,15 @@ l:l_rs := { s ->
   s
 }
 
-# :: a -> b -> a
 ### Small helpers
+
+# :: (Any a, Any b) => a -> b -> a
 ## Say t and give s back.
 l:s_ay := { s t ->
   said := p_rint! t
   s
 }
-# :: a -> a
+# :: Any a => a -> a
 ## Refuse a command for want of energy.
 l:i_nsufficient := { s -> s l:s_ay "INSUFFICIENT ENERGY" }
 # :: Num a => a -> a
@@ -376,7 +377,7 @@ l:r_eport := { s ->
   said := p_rint! @ f_ormat< "SECTOR   {l:a_t l:s_ector s}"
   s
 }
-# :: a -> a
+# :: Any a => a -> a
 ## Print the commands.
 l:h_elp := { s ->
   said := p_rint! ""

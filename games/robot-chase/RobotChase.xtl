@@ -56,7 +56,7 @@ l:c_ell := { rc -> 16 b:c_ell rc }
 l:o_nSquares := { k w -> ((r_ange 256) '= t_able k) '+ '* i_nner w }
 
 ### A new game
-# :: a -> Int
+# :: Any a => a -> Int
 ## 13 different squares at random (the order of 256 random keys), as a 2
 ## by 13 matrix of rows and columns: you on the first, a robot on each of
 ## the others.
@@ -172,7 +172,7 @@ l:p_icture := { s -> []G_RID (l:c_odes s) s_elect ".R*PX" }
 l:l_rs := { s ->
   robots := (l:c_ell l:r_obots s) l:o_nSquares l:a_live s
   me := (r_ange 256) = l:c_ell l:p_os s
-  (r_egions robots) c_at_2 (r_egions r_avel l:w_recks s) c_at_2 r_egions me
+  (h:r_egions robots) c_at_2 (h:r_egions r_avel l:w_recks s) c_at_2 h:r_egions me
 }
 ## The 256 squares as 4 by 4 regions, each summed (private).
-r_egions := { v -> '+ r_/_24 4 4 4 4 r_eshape v }
+h:r_egions := { v -> '+ r_/_24 4 4 4 4 r_eshape v }

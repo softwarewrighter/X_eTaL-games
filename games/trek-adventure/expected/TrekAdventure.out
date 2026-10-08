@@ -20,7 +20,7 @@ l:boarders : Int
 l:won : Int
 l:dead : Int
 l:event : Int
-l:n_ew : Num b => a -> b
+l:n_ew : (Any a, Num b) => a -> b
 l:r_oom : a -> a
 l:t_urns : a -> a
 l:e_vent : a -> a

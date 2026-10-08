@@ -4,7 +4,7 @@ l:o_pen : a -> a
 l:f_lags : a -> a
 l:s_tatus : a -> a
 l:s_tate : a -> a -> a
-l:n_ew : (Num b, Truthy b) => a -> b
+l:n_ew : (Any a, Num b, Truthy b) => a -> b
 l:a_round : Num a => a -> a
 l:c_ounts : Num a => a -> a
 l:w_ith : a -> a -> a

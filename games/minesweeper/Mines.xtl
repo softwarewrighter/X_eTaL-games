@@ -27,7 +27,7 @@ l:s_tatus := { s -> f_irst s }
 ## The state again from a status and the three boards.
 l:s_tate := { st m -> st c_at r_avel m }
 
-# :: (Num b, Truthy b) => a -> b
+# :: (Any a, Num b, Truthy b) => a -> b
 ## A new field: 10 mines on the first 10 squares of a random order.
 l:n_ew := { x ->
   m := (r_ange 81) m_ember? 10 t_ake g_rade r_oll! 81 r_eshape 1000000

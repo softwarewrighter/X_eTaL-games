@@ -9,7 +9,7 @@
 
 "b:" u_se< "Board"
 
-# :: Num b => a -> b
+# :: (Any a, Num b) => a -> b
 ## A new box: all nine tiles open (1).
 l:n_ew := { x -> 9 r_eshape 1 }
 # :: Int -> Int

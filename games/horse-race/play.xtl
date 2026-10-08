@@ -3,15 +3,15 @@
 ## pick a horse, 1 to 5, and bet a coin on it; if it wins (a share of a
 ## tie counts) you get 4 back. Type q to stop. The rules are those of
 ## HorseRace.xtl.
-"h:" u_se< "HorseRace"
+"hr:" u_se< "HorseRace"
 "p:" u_se< "Play"
 
 ## The race, a round at a time, the track printed after each round.
 u:r_ace := { p ->
-  q := p h:m_ove h:r_oll p
-  shown := p_rint! h:v_iew q
+  q := p hr:m_ove hr:r_oll p
+  shown := p_rint! hr:v_iew q
   gap := p_rint! ""
-  1 = h:s_tatus q ? q; u:r_ace q
+  1 = hr:s_tatus q ? q; u:r_ace q
 }
 
 ## Your pick: 1 to 5, 0 to stop, or it asks again.
@@ -24,10 +24,10 @@ u:a_sk := { c ->
 u:b_et := { c ->
   k := u:a_sk c
   k = 0 ? @ f_ormat< "you leave with {c}"
-  shown := p_rint! @ f_ormat< "THE RACE IS ON! you are on {k s_elect h:n_ames @}"
-  w := h:w_inners u:r_ace h:n_ew 5
+  shown := p_rint! @ f_ormat< "THE RACE IS ON! you are on {k s_elect hr:n_ames @}"
+  w := hr:w_inners u:r_ace hr:n_ew 5
   won := f_irst k m_ember? w
-  said := p_rint! @ f_ormat< "WINNER: {r_avel w s_elect h:n_ames @}"
+  said := p_rint! @ f_ormat< "WINNER: {r_avel w s_elect hr:n_ames @}"
   c := c + (4 * won) - 1
   told := p_rint! d_isclose (1 + won) s_elect "you lose a coin" "you win 4 coins"
   c = 0 ? "out of coins"; u:b_et c

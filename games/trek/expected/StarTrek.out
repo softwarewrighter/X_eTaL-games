@@ -25,12 +25,12 @@ l:w_ithPlane : Int -> Int -> Int
 l:h_ome : Num a => a -> a
 l:a_t : Int -> Char
 l:c_ourses : Num a => Unit -> a
-l:n_ew : a -> Int
+l:n_ew : Any a => a -> Int
 l:e_nter : Int -> Int
 l:s_rs : Int -> Int
 l:l_rs : Int -> Int
-l:s_ay : a -> b -> a
-l:i_nsufficient : a -> a
+l:s_ay : (Any a, Any b) => a -> b -> a
+l:i_nsufficient : Any a => a -> a
 l:c_ell : Num a => a -> a
 l:m_oveTo : Int -> Int -> Int
 l:p_ath : Int -> Int -> Int
@@ -50,7 +50,7 @@ l:t_orpedo : Int -> Int -> Int
 l:s_trike : Int -> Int -> Int
 l:s_hieldsTo : Int -> Int -> Int
 l:r_eport : Int -> Int
-l:h_elp : a -> a
+l:h_elp : Any a => a -> a
 l:l_ines : Num a => Box Char -> a
 l:c_ommand : Int -> Int -> Int
 l:d_o : Int -> Int -> Int

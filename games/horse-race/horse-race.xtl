@@ -1,30 +1,30 @@
 #!/usr/bin/env xetal
 ## Horse race: a scripted race (seed 1) with the rules of HorseRace.xtl.
-"h:" u_se< "HorseRace"
+"hr:" u_se< "HorseRace"
 
 # One round from the start, step by step: the rolls, the new positions,
 # the track.
-p := h:n_ew 5
-r := h:r_oll p
+p := hr:n_ew 5
+r := hr:r_oll p
 r
-p := p h:m_ove r
+p := p hr:m_ove r
 p
-h:v_iew p
+hr:v_iew p
 
 ## A whole race: a round at a time until a horse finishes; each round
 ## printed as its rolls, then the track.
 u:r_ace := { p ->
-  r := p_rint! h:r_oll p
-  q := p h:m_ove r
-  shown := p_rint! h:v_iew q
-  1 = h:s_tatus q ? q; u:r_ace q
+  r := p_rint! hr:r_oll p
+  q := p hr:m_ove r
+  shown := p_rint! hr:v_iew q
+  1 = hr:s_tatus q ? q; u:r_ace q
 }
-final := u:r_ace h:n_ew 5
+final := u:r_ace hr:n_ew 5
 final
-(h:w_inners final) s_elect h:n_ames @
+(hr:w_inners final) s_elect hr:n_ames @
 
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "1 = h:s_tatus final" a_ssert< "the race ends with a winner"
-ok := "0 < t_ally h:w_inners final" a_ssert< "someone wins"
+ok := "1 = hr:s_tatus final" a_ssert< "the race ends with a winner"
+ok := "0 < t_ally hr:w_inners final" a_ssert< "someone wins"

@@ -362,7 +362,9 @@ pub fn game_page(g: &Game) -> Html {
         let typed = typed.clone();
         Callback::from(move |_: MouseEvent| typed.set(vec![]))
     };
-    let alias = g.library_name.chars().next().map(|c| c.to_ascii_lowercase()).unwrap_or('g');
+    // The alias play.xtl imports the rules library under ("hr:" u_se< "HorseRace").
+    let wanted = format!("u_se< \"{}\"", g.library_name);
+    let alias = g.play.lines().find(|l| l.contains(&wanted)).and_then(|l| l.split('"').nth(1)).unwrap_or("g:").trim_end_matches(':').to_string();
     // The game's pages in the cross-reference (pages/doc/, xetal doc).
     let slug = field(g.toml, "slug").unwrap_or_default();
     html! {

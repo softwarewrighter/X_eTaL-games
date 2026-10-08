@@ -23,7 +23,7 @@ l:w_inner := { b ->
 # :: (Num a, Num b, Truthy b) => a -> b
 ## Whose turn: X (1) when the board has as many X as O, else O (-1).
 l:t_urn := { b -> 1 - 2 * 0 != '+ r_/ b }
-# :: Num b => a -> b
+# :: (Any a, Num b) => a -> b
 ## A new board: nine empty squares.
 l:n_ew := { x -> 9 r_eshape 0 }
 # :: Num a => a -> Int

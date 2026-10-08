@@ -10,7 +10,7 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 xetal="$(scripts/build-xetal.sh)"
-files=(lib/[A-Z]*.xtl)
+files=(); for f in lib/*.xtl; do [ "$(basename "$f")" = test.xtl ] || files+=("$f"); done
 while IFS= read -r slug; do
   [ -n "$slug" ] && files+=(games/"$slug"/*.xtl)
 done < <(scripts/games.py list)
