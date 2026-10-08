@@ -1,0 +1,40 @@
+#!/usr/bin/env xetal
+## Lights out, scripted (seed 1), with the rules, solver and drawing of
+## Lamps.xtl: a press as a matrix, a board of presses as one product mod
+## 2, and the puzzle solved by Gaussian elimination over GF(2).
+"lo:" u_se< "Lamps"
+
+# The press matrix: row 13 (the middle square) is the plus around it.
+P := lo:p_resses @
+s_hape P
+5 5 r_eshape 13 s_elect P
+
+# A puzzle (seed 1): some squares pressed at random from all off.
+s := lo:n_ew 0
+5 5 r_eshape lo:l_ights s
+
+# Its solution: the presses that turn it off, by elimination mod 2;
+# pressing them all at once (one product with the press matrix, mod 2)
+# leaves every light off.
+x := lo:s_olve lo:l_ights s
+5 5 r_eshape x
+5 5 r_eshape (lo:l_ights s) lo:a_fter x
+
+# Why every puzzle has four solutions: two quiet patterns, sets of
+# presses that change nothing (each light flipped an even number of
+# times), and so can be added to any solution.
+q := 2 25 r_eshape 0 1 1 1 0 1 0 1 0 1 1 1 0 1 1 1 0 1 0 1 0 1 1 1 0 1 0 1 0 1 1 0 1 0 1 0 0 0 0 0 1 0 1 0 1 1 0 1 0 1
+'{ i -> '+ r_/ (25 r_eshape 0) lo:a_fter i s_elect q } e_ach 1 2
+
+# Played by clicks: the hint's square, then each press of the solution.
+t := s lo:c_lick 500 67.0
+lo:s_ay t
+u:p_ressAll := { s ks -> 0 = t_ally ks ? s; (s lo:p_ress f_irst ks) u:p_ressAll 1 d_rop ks }
+done := s u:p_ressAll w_here x
+lo:s_ay done
+pic := []S_HOW lo:d_raw done
+
+# What the game guarantees, checked by a_ssert< (silent when it holds).
+ok := "0 = '+ r_/ (lo:l_ights s) lo:a_fter x" a_ssert< "the solution turns every light off"
+ok := "1 = lo:s_tatus done" a_ssert< "pressing the solution wins"
+ok := "0 = '+ r_/ r_avel (q '+ '* i_nner lo:p_resses @) m_od 2" a_ssert< "the quiet patterns change nothing"

@@ -63,6 +63,11 @@
       "script_ms": 145,
       "play_ms": 169,
       "page_ms": 1245
+    },
+    "lights-out": {
+      "script_ms": 39,
+      "play_ms": 59,
+      "page_ms": 691
     }
   }
 }

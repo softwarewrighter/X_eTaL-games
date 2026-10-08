@@ -1,0 +1,19 @@
+#!/usr/bin/env xetal
+## Lights out: a 5 by 5 board you click. A press toggles a light and its
+## four neighbors; turn every light off. New puzzle starts another (every
+## one can be solved), Hint rings a square of a solution X_eTaL works out
+## over GF(2). On the page the board is in a dialog and your clicks come
+## to the program as events; at the command line, lines such as
+## "click 285 215" on standard input. The rules, the solver and the
+## drawing are Lamps.xtl's.
+"lo:" u_se< "Lamps"
+
+## Show the board, read the next event, act on a click, again.
+u:l_oop := { s ->
+  said := p_rint! lo:s_ay s
+  pic := []S_HOW lo:d_raw s
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? "THE END"
+  "click" m_atch []E_KIND e ? u:l_oop s lo:c_lick []E_AT e; u:l_oop s
+}
+u:l_oop lo:n_ew 0

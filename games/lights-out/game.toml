@@ -1,0 +1,12 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "lights-out"
+title = "Lights out"
+summary = "A 5 by 5 board you click: a press toggles a light and its four neighbors; turn every light off. Every puzzle can be solved, and Hint rings a square of a solution X_eTaL works out by Gaussian elimination over GF(2): a press is a row of a matrix, a board of presses one product with it, mod 2."
+lesson = "a press as a matrix; a board of presses as one product mod 2; Gaussian elimination over GF(2)"
+concepts = ["t_able", "i_nner", "m_od", "[]E_VENT", "SVG", "libraries"]
+status = "live"
+order = 105
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Lights_Out_(game)"   # the title links here (opens in a new tab)

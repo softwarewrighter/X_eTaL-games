@@ -408,7 +408,7 @@ faster; a Star Trek slowdown since f823212 found and filed.
 
 | # | Step slug | Delivers |
 | - | --------- | -------- |
-| 0 | lights-out | a 5 by 5 0/1 board, presses as XOR with `Board`'s plus, a solver over GF(2); written in the house style (moved from saga 4) |
+| 0 | lights-out | DONE (launch step 21): a 5 by 5 board you click (the map games' dialog, Svg, Live); a press as a row of the 25 by 25 press matrix (two tables of distances), a board of presses one product mod 2; Hint from a GF(2) solver (elimination mod 2, recursive over the columns; rank 23, the two quiet patterns shown); every puzzle solvable; test.sh presses every square and solves 50 puzzles |
 | 1 | connect-four | drop by column; wins by windows in four directions; heuristic and minimax players |
 | 2 | mastermind | the code-breaking game; the player that keeps every consistent code (from X_eTaL's classic) |
 | 3 | sudoku | DONE (launch steps 10 and 11): `SudokuGrid.xtl`, candidates as an 81 by 9 one-hot array, unit counts by selecting with a 27 by 9 table of cells and summing (`i_nner` was 20 times slower: an ask), naked and hidden singles at once, rounds to a fixed point, search on the fewest candidates (Inkala's puzzle in 0.8 s); `sudoku.xtl` over four puzzles; `play.xtl` (moves refused with a reason, hints, candidates, the solution); the page; live. Planned: candidates as a 9 x 9 x 9 tensor; singles and hidden singles by broadcasting; a candidate microscope |

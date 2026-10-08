@@ -1,0 +1,1 @@
+sudoku (the user's item 4): type or paste your own puzzle at the terminal (p then 81 digits, 0 or . for an empty cell), checked (81 cells, no clash, solvable) and then played with hints; README; goldens.

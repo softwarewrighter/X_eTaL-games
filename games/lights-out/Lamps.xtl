@@ -1,0 +1,137 @@
+## Lights out's rules, a solver and the board's picture, a library:
+## lights-out.xtl (scripted), play.xtl (the game: a board you click) and
+## the web page all use these. The board is 25 lights, row by row, 1 on.
+## A press toggles a light and its four neighbors: the press matrix,
+## 25 by 25, says which, and a whole board of presses is one product
+## with it, mod 2. A game's state: the moves made, the square a hint
+## shows (0 none), then the 25 lights.
+
+"sv:" u_se< "Svg"
+
+### The press matrix
+
+# The row and column of each square, from 0.
+row := ((r_ange 25) - 1) d_iv 5
+col := ((r_ange 25) - 1) m_od 5
+# :: (Num a, Truthy a) => Unit -> a
+## Which lights each press toggles: row i is square i's press, a 1 on
+## every square at most one step away (itself and its four neighbors),
+## all 625 pairs at once by two tables of distances.
+## >> "lo:" u_se< "Lamps"
+## >> 5 5 r_eshape 13 s_elect lo:p_resses @
+## 0 0 0 0 0
+## 0 0 1 0 0
+## 0 1 1 1 0
+## 0 0 1 0 0
+## 0 0 0 0 0
+l:p_resses := { @ -> 0 + 1 >= (a_bs row '- t_able row) + a_bs col '- t_able col }
+# :: Int -> Int -> Int
+## The board after pressing the squares p (a 0/1 vector of 25) on board
+## b: each light flips once for every press that reaches it, mod 2, one
+## inner product for all of them.
+l:a_fter := { b p -> (b + p '+ '* i_nner l:p_resses @) m_od 2 }
+
+### Solving it
+
+## One column of Gaussian elimination mod 2 on the augmented matrix m
+## (the press matrix, the board as its last column), rc the next pivot
+## row and the column: a row with a 1 in the column is swapped up, and
+## added (mod 2) to every other row with a 1 there; a column without one
+## is a free press, left 0.
+h:s_tep := { m rc ->
+  r := f_irst rc
+  c := 2 s_elect rc
+  (c > 25) | r > 25 ? m
+  cand := w_here (1 = c s_elect_2 m) & (r_ange 25) >= r
+  0 = t_ally cand ? m h:s_tep r c_at c + 1
+  p := f_irst cand
+  k := r_ange 25
+  m := (k + ((p - r) * k = r) + (r - p) * k = p) s_elect m
+  hit := 0 + (1 = c s_elect_2 m) & k != r
+  m := (m + hit '* t_able r s_elect m) m_od 2
+  m h:s_tep (r + 1) c_at c + 1
+}
+# :: Int -> Int
+## The presses that turn board b off (a 0/1 vector of 25), when there
+## are any: the matrix reduced mod 2, each pivot's press read from the
+## board's column; the free presses (5 by 5 has two) left 0.
+## >> "lo:" u_se< "Lamps"
+## >> b := 25 r_eshape 0 0 1 0 0
+## >> 0 = '+ r_/ b lo:a_fter lo:s_olve b
+## 1
+l:s_olve := { b ->
+  m := ((l:p_resses @) c_at_2 b) h:s_tep 1 1
+  lead := '{ i -> f_irst (w_here 1 = 25 t_ake i s_elect m) c_at 0 } e_ach r_ange 25
+  last := 26 s_elect_2 m
+  '{ j -> '+ r_/ (lead = j) * last } e_ach r_ange 25
+}
+
+### The game
+
+# :: Any a => a -> Int
+## A new puzzle: some squares pressed at random on a board all off, so
+## it can always be solved (a board left all off gets its middle pressed).
+l:n_ew := { x ->
+  p := 0 + 1 = r_oll! 25 r_eshape 2
+  p := p + (0 = '+ r_/ p) * 13 = r_ange 25
+  0 0 c_at (25 r_eshape 0) l:a_fter p
+}
+# :: a -> a
+## The moves made.
+l:m_oves := { s -> f_irst s }
+# :: a -> a
+## The 25 lights.
+l:l_ights := { s -> 2 d_rop s }
+# :: Int -> Int -> Int
+## Square k (1 to 25) pressed: one more move, the hint gone.
+l:p_ress := { s k -> (1 + l:m_oves s) c_at 0 c_at (l:l_ights s) l:a_fter 0 + k = r_ange 25 }
+# :: Int -> Int
+## A hint: the first square of a solution of the board as it is.
+l:h_int := { s -> (l:m_oves s) c_at (f_irst (w_here 1 = l:s_olve l:l_ights s) c_at 0) c_at l:l_ights s }
+# :: (Num a, Num b, Truthy b) => a -> b
+## 0 playing, 1 every light off.
+l:s_tatus := { s -> 0 + 0 = '+ r_/ l:l_ights s }
+
+### The picture and the clicks
+
+# The picture's view (2.5 by 1, the dialog's shape) and the board in it:
+# 170 units a square, from (200, 130).
+view := 0.0 0.0 2500.0 1000.0
+# :: Unit -> Float
+## The squares as rectangles (x, y, width, height), one row each, 1 to 25.
+l:s_quares := { @ -> o_\ (4 c_at 25) r_eshape (200.0 + 170 * f_loat col) c_at (130.0 + 170 * f_loat row) c_at (25 r_eshape 160.0) c_at 25 r_eshape 160.0 }
+# :: Int -> Float -> Int
+## A click at xy: a square presses it; the first button starts a new
+## puzzle, the second shows a hint.
+l:c_lick := { s xy ->
+  b := (view sv:b_uttons 2) sv:h_it xy
+  b = 1 ? l:n_ew 0
+  b = 2 ? l:h_int s
+  k := (l:s_quares @) sv:h_it xy
+  k > 0 ? s l:p_ress k
+  s
+}
+# :: Num a => a -> Char
+## What to say: how many lights are on and how many moves, or the win.
+l:s_ay := { s ->
+  1 = l:s_tatus s ? @ f_ormat< "All the lights are out, in {h:c_ount l:m_oves s}!"
+  (2 s_elect s) > 0 ? "Hint: press the square ringed in blue."
+  @ f_ormat< "{'+ r_/ l:l_ights s} lights on, {h:c_ount l:m_oves s}."
+}
+## A count of moves in words: 1 move, 2 moves.
+h:c_ount := { n -> 1 = n ? "1 move"; @ f_ormat< "{n} moves" }
+## A light's fill: on yellow, off dark.
+h:f_ill := { on -> d_isclose (1 + on) s_elect "#2b2d42" "#ffd84d" }
+# :: Int -> Char
+## The picture, as SVG text: the buttons, the 25 lights (the hint's
+## square ringed), and what to say. Every coordinate is computed here.
+l:d_raw := { s ->
+  q := l:s_quares @
+  b := l:l_ights s
+  bg := view sv:r_ect "fill=\"#14213d\""
+  lights := '{ k -> (k s_elect q) sv:r_ect @ f_ormat< "class=\"light\" rx=\"18\" fill=\"{h:f_ill k s_elect b}\" stroke=\"#000000\" stroke-width=\"4\"" } e_ach r_ange 25
+  h := 2 s_elect s
+  ring := (h > 0) r_eplicate '{ k -> (((k s_elect q) + -12 -12 24 24.0)) sv:r_ect "fill=\"none\" stroke=\"#4cc9f0\" stroke-width=\"14\" rx=\"26\"" } e_ach 1 m_ax h
+  words := (1250 450 44.0) sv:w_ords l:s_ay s
+  view sv:p_icture bg c_at ((view c_at 0.0) sv:l_abeled "New puzzle" "Hint") c_at lights c_at ring c_at words
+}

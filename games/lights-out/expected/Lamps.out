@@ -1,0 +1,13 @@
+l:p_resses : (Num a, Truthy a) => Unit -> a
+l:a_fter : Int -> Int -> Int
+l:s_olve : Int -> Int
+l:n_ew : Any a => a -> Int
+l:m_oves : a -> a
+l:l_ights : a -> a
+l:p_ress : Int -> Int -> Int
+l:h_int : Int -> Int
+l:s_tatus : (Num a, Num b, Truthy b) => a -> b
+l:s_quares : Unit -> Float
+l:c_lick : Int -> Float -> Int
+l:s_ay : Num a => a -> Char
+l:d_raw : Int -> Char
