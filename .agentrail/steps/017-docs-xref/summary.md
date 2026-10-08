@@ -1,0 +1,1 @@
+Cross-reference at /doc/: comments in ## / ### convention across 41 files, every export documented, 46 doc-test examples in lib/, check-docs and doc tests in the gate, xetal doc --out site linked from catalog and game pages.

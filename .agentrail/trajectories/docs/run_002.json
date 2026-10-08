@@ -1,0 +1,11 @@
+{
+  "task_type": "docs",
+  "state": {
+    "number": 17,
+    "step": "docs-xref"
+  },
+  "action": "Conversion script, examples filled from doc-test output and checked by hand, check-docs, build-docs.sh, browser-test link check, affected gate.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-08T07:56:13"
+}
