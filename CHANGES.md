@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-08
 
+- 13:09 `fix` Clicks on the map games no longer slow down as a game goes on (the user): the page kept replaying every click from the start; now it keeps the program running between clicks (`microscope::terminal::Live`, on X_eTaL's resumable run, `xetal_play::Interactive`) and feeds each click to the waiting program. The browser test's eight capitals clicks in 722 ms (from 3443), stargazer's six in 324 ms (from 1245), and the same per click however long the game. Both games' page tests check that feeding the golden's clicks one at a time gives the replayed transcript.
+
 - 12:02 `build` The sample gate in 4 seconds (from 51, and 600 on a loaded machine): every job and every test-games.sh run called build-xetal.sh, which ran cargo, so the parallel jobs queued on cargo's lock; the gate now builds X_eTaL once and exports XETAL_BIN, which build-xetal.sh returns as it is.
 
 - 11:43 `chore` Saga step assert-macros completed.

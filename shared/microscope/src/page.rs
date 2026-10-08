@@ -12,7 +12,7 @@ use yew::prelude::*;
 
 use crate::chrome::footer;
 use crate::source::{block, NONE};
-use crate::terminal::{notebook, session, Line};
+use crate::terminal::{notebook, session, Line, Live};
 
 /// What a game page shows.
 #[derive(Clone, Debug, PartialEq, Properties)]
@@ -244,7 +244,22 @@ fn picture_point(e: &MouseEvent) -> Option<(f64, f64)> {
 /// line and the program is run again with every click so far.
 #[function_component(Board)]
 fn board(p: &BoardProps) -> Html {
-    let t = use_memo((p.seed, p.typed.clone()), |(seed, typed)| session(&p.game.libraries(), p.game.play, typed, *seed));
+    // The game keeps running between clicks (Live): only the clicks it has
+    // not been given yet are fed to it, so a click costs its own work, not
+    // a replay of every click before it. A new seed starts a new game.
+    let live = use_mut_ref(|| None::<(u64, Live, usize)>);
+    let t = {
+        let mut slot = live.borrow_mut();
+        if !matches!(&*slot, Some((seed, _, fed)) if *seed == p.seed && *fed <= p.typed.len()) {
+            *slot = Some((p.seed, Live::start(&p.game.libraries(), p.game.play, p.seed), 0));
+        }
+        let (_, game, fed) = slot.as_mut().expect("started above");
+        for line in &p.typed[*fed..] {
+            game.feed(line);
+        }
+        *fed = p.typed.len();
+        game.transcript()
+    };
     let dialog = use_node_ref();
     {
         // An address ending in #play opens the game at once (a link to

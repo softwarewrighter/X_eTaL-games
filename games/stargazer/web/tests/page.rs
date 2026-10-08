@@ -44,3 +44,23 @@ fn a_new_game_shows_its_map() {
     let svg = t.lines.iter().find_map(|l| match l { Line::Picture(s) => Some(s.clone()), _ => None }).expect("a picture");
     assert!(svg.contains("viewBox=") && svg.contains("class=\"dot\"") && svg.contains("class=\"region\""));
 }
+
+#[test]
+fn clicks_fed_one_at_a_time_give_the_replayed_game() {
+    // The page keeps the program running between clicks (Live); each
+    // click fed to it must leave the same transcript as a replay of every
+    // click from the start, but for the end of events the replay reads.
+    use microscope::terminal::Live;
+    let g = game();
+    let clicks: Vec<String> = include_str!("../../expected/play.in").lines().map(str::to_string).collect();
+    let mut live = Live::start(&g.libraries(), g.play, 1);
+    for c in &clicks {
+        live.feed(c);
+    }
+    let t = live.transcript();
+    assert!(t.error.is_none() && t.waiting, "{:?}", t.error);
+    let replay = session(&g.libraries(), g.play, &clicks, 1);
+    let mut want = replay.lines.clone();
+    assert_eq!(want.pop(), Some(Line::Out("THE END".into())));
+    assert_eq!(t.lines, want);
+}

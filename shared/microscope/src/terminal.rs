@@ -190,3 +190,88 @@ pub fn notebook(libraries: &[(&str, &str)], src: &str, seed: u64) -> Notebook {
     let err = run.err.trim().to_string();
     Notebook { cells, error: (!err.is_empty()).then_some(err) }
 }
+
+/// A game played by clicks, kept running (X_eTaL's resumable run,
+/// `xetal_play::Interactive`): started once, it stops where it waits for
+/// the next event, and each click fed to it goes on from there, so a click
+/// costs only its own work (a replay from the start made a long game
+/// slower with every click). Its store (libraries, data files, the
+/// transcript) is installed again before each step, since the notebook
+/// installs one of its own.
+pub struct Live {
+    run: Option<xetal_play::Interactive>,
+    store: Arc<Session>,
+    shared: Arc<Mutex<Shared>>,
+    lines: Vec<Line>,
+    error: Option<String>,
+    over: bool,
+}
+
+/// Transitions per slice: a slice ends where the program waits, so this
+/// only bounds a runaway loop between two waits.
+const SLICE: usize = 50_000_000;
+
+impl Live {
+    /// Start `src` with `libraries`, rolling from `seed`, and run it to
+    /// its first wait.
+    pub fn start(libraries: &[(&str, &str)], src: &str, seed: u64) -> Live {
+        let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
+        let shared = Arc::new(Mutex::new(Shared::default()));
+        let store = Arc::new(Session {
+            files: libraries.iter().map(|(n, t)| (path(n), t.to_string())).collect(),
+            typed: Mutex::new(VecDeque::new()),
+            shared: shared.clone(),
+        });
+        xetal_store::install(store.clone());
+        let (run, error) = match xetal_play::Interactive::start(src, seed, Box::new(Out(shared.clone()))) {
+            Ok(run) => (Some(run), None),
+            Err(r) => (None, Some(r.err.trim().to_string()).filter(|e| !e.is_empty())),
+        };
+        let mut live = Live { run, store, shared, lines: vec![], error, over: false };
+        live.go();
+        live
+    }
+
+    /// Run until the program waits, ends or stops on an error.
+    fn go(&mut self) {
+        let Some(run) = self.run.as_mut() else {
+            self.over = true;
+            self.lines.extend(take(&self.shared));
+            return;
+        };
+        xetal_store::install(self.store.clone());
+        loop {
+            match run.step(SLICE) {
+                xetal_play::Step::Running => continue,
+                xetal_play::Step::Done(r) => {
+                    let e = r.err.trim().to_string();
+                    self.error = (!e.is_empty()).then_some(e);
+                    self.over = true;
+                    self.run = None;
+                    break;
+                }
+                _ => break,
+            }
+        }
+        self.lines.extend(take(&self.shared));
+    }
+
+    /// A line (an event, `click X Y`) for the waiting program, and its
+    /// run to the next wait.
+    pub fn feed(&mut self, line: &str) {
+        if self.over {
+            return;
+        }
+        let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
+        self.lines.push(Line::In(line.to_string()));
+        if let Some(run) = self.run.as_mut() {
+            run.feed(line.to_string());
+        }
+        self.go();
+    }
+
+    /// The transcript so far: waiting unless the program ended.
+    pub fn transcript(&self) -> Transcript {
+        Transcript { lines: self.lines.clone(), waiting: !self.over, error: self.error.clone() }
+    }
+}

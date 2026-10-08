@@ -241,7 +241,11 @@ try {
       const interactive = readFileSync(join(dir, "web/src/lib.rs"), "utf8").includes("interactive: true");
       const got = await page.evaluate(interactive ? CLICK(typed) : PLAY(typed));
       timings[slug] = Math.round(performance.now() - t0);
-      const want = readFileSync(join(dir, "expected/play.out"), "utf8");
+      // A game played by clicks keeps running on the page (it is never
+      // given the end of events), so its golden's last line, the program's
+      // answer to that end, is not on the page.
+      const golden = readFileSync(join(dir, "expected/play.out"), "utf8");
+      const want = interactive ? golden.replace(/[^\n]*\n$/, "") : golden;
       const wantNb = readFileSync(join(dir, `expected/${slug}.out`), "utf8");
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
       else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
