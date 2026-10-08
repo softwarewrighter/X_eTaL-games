@@ -1,0 +1,11 @@
+{
+  "task_type": "vendor",
+  "state": {
+    "number": 20,
+    "step": "xetal-doc-site"
+  },
+  "action": "xetal-bump, xetal migrate plus a hand fix for templates, rebless with diff review, full gate 158 s.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-08T14:48:25"
+}
