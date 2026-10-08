@@ -77,9 +77,11 @@ async function open(url) {
     waiting.set(n, (msg) => { clearTimeout(timer); r(msg); });
     ws.send(JSON.stringify({ id: n, method, params }));
   });
+  const t0 = Date.now();
   await send("Page.enable");
   await send("Page.navigate", { url });
   for (let i = 0; i < 300 && !events.includes("Page.loadEventFired"); i++) await sleep(100);
+  debug(`${url}: load event after ${Date.now() - t0} ms (${events.includes("Page.loadEventFired") ? "seen" : "never seen"})`);
   // An evaluation can be lost while the page is still loading (its
   // context replaced): try again, a few times, before giving up.
   const evaluate = async (expression) => {
@@ -97,12 +99,15 @@ async function open(url) {
     if (r.result?.result?.value === true) break;
     await sleep(100);
   }
+  debug(`${url}: drawn after ${Date.now() - t0} ms`);
   const key = async (k, code) => {
     for (const type of ["rawKeyDown", "keyUp"]) await send("Input.dispatchKeyEvent", { type, key: k, code: k, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code });
   };
   // Closing a page closes its tab too (open tabs would otherwise pile up,
   // one running game each, for the rest of the run).
-  const close = async () => { ws.close(); await json(`/json/close/${target.id}`).catch(() => {}); };
+  // /json/close answers with text, not JSON: a plain request (json()
+  // would retry it a hundred times, about 33 s a page).
+  const close = async () => { ws.close(); await fetch(`http://127.0.0.1:${cdpPort}/json/close/${target.id}`, { signal: AbortSignal.timeout(5000) }).catch(() => {}); };
   return { evaluate, key, close };
 }
 
@@ -188,7 +193,7 @@ const XBUTTON = `(() => { document.querySelector("dialog.about[open] .close").cl
 // The title of a page (sel) against game.toml: a Wikipedia link in a new
 // tab with the glyph, or a dialog that Escape, the backdrop and the X
 // each close. Returns a problem, or "" when all is well.
-const debug = (...m) => { if (process.env.BT_DEBUG) console.error("debug:", ...m); };
+const debug = (...m) => { if (process.env.BT_DEBUG) console.error(`debug +${((performance.now()) / 1000).toFixed(1)}s:`, ...m); };
 async function aboutProblems(page, sel, wiki) {
   debug("about", sel);
   const a = await page.evaluate(ABOUT(sel));

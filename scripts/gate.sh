@@ -87,8 +87,20 @@ if [ "$mode" = affected ]; then
       && echo "ok: $slug/web (native and wasm32)" || { echo "FAIL: $slug/web"; exit 1; }
   done
 fi
-# Their pages built, played in a real browser and timed (scripts/bench.py
-# runs the browser test itself).
+# Their pages built and played in a real browser.
 timed "pages" scripts/build-pages.sh "$@" >/dev/null
-timed "browser and timings" scripts/bench.py "$@"
+if [ "$mode" = full ]; then
+  # Every game timed, natively and in the browser (bench.py runs the
+  # browser test itself).
+  timed "browser and timings" scripts/bench.py
+else
+  timed "browser" scripts/browser-test.mjs "$@"
+  # Timed natively: only the games whose X_eTaL ran differently (the page
+  # shell and the scripts do not change how fast X_eTaL runs).
+  t=(); while IFS= read -r s; do [ -n "$s" ] && t+=("$s"); done < <(python3 scripts/affected.py --timed)
+  if [ ${#t[@]} -gt 0 ]; then
+    [ "${t[0]}" = all ] && t=()
+    timed "timings" scripts/bench.py --native ${t[@]+"${t[@]}"}
+  fi
+fi
 echo "gate: ok ($mode, $((SECONDS - started)) s)"

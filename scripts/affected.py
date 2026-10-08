@@ -5,13 +5,16 @@ changed since the merge base with origin/main (GATE_BASE names another),
 committed or not, tracked or new.
 
   scripts/affected.py              # one line per game, or "all"
+  scripts/affected.py --timed      # the games whose X_eTaL ran differently
   scripts/affected.py --self-test
 
 A file under games/<slug>/ touches that game; lib/<Name>.xtl every game
 whose page carries it; shared/ (the page shell), the scripts that build,
 test or time the pages, XETAL_COMMIT and Cargo locks touch all of them.
 Docs, the saga record and the other scripts touch none (the sample
-gate checks them).
+gate checks them). --timed names only the games whose X_eTaL changed
+(their .xtl files, the shared libraries they import, XETAL_COMMIT):
+the page shell and the scripts do not change how fast X_eTaL runs.
 """
 import os, re, subprocess, sys
 from pathlib import Path
@@ -47,6 +50,13 @@ def touched(files, slugs, carries=carries):
     return [s for s in slugs if s in hit]
 
 
+def timed(files, slugs, carries=carries):
+    if "XETAL_COMMIT" in files:
+        return ["all"]
+    xtl = [f for f in files if f.endswith(".xtl") or f.endswith(".toml") and f.startswith("games/")]
+    return touched(xtl, slugs, carries)
+
+
 def changed():
     base = os.environ.get("GATE_BASE") or subprocess.run(
         ["git", "merge-base", "HEAD", "origin/main"], capture_output=True, text=True, cwd=ROOT).stdout.strip() or "HEAD"
@@ -69,6 +79,10 @@ def self_test():
         (["games/capitals/web/Cargo.lock"], ["capitals"]),
     ]
     bad = [(f, want, touched(f, s, c)) for f, want in cases if touched(f, s, c) != want]
+    for f, want in [(["shared/microscope/src/page.rs"], []), (["games/capitals/Atlas.xtl", "shared/x"], ["capitals"]),
+                    (["lib/Svg.xtl"], ["capitals", "stargazer"]), (["XETAL_COMMIT"], ["all"])]:
+        if timed(f, s, c) != want:
+            bad.append((f, want, timed(f, s, c)))
     for f, want, got in bad:
         print(f"affected.py self-test: {f} gave {got}, wanted {want}")
     print("affected: self-test ok" if not bad else "affected: self-test FAILED")
@@ -78,4 +92,5 @@ def self_test():
 if __name__ == "__main__":
     if "--self-test" in sys.argv:
         sys.exit(self_test())
-    print("\n".join(touched(changed(), games())))
+    pick = timed if "--timed" in sys.argv else touched
+    print("\n".join(pick(changed(), games())))

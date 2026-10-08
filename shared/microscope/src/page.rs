@@ -297,8 +297,10 @@ fn board(p: &BoardProps) -> Html {
         <button class="board-open" onclick={open}>{"Play"}</button>
         <dialog class="board" ref={dialog} {onclick}>
             <button class="close" aria-label="Close" onclick={close}>{"\u{00d7}"}</button>
+            // An error stops the program: said first, above the picture it
+            // left, so a game that stopped never looks merely unresponsive.
+            if let Some(e) = &t.error { <div class="err board-err">{format!("The program stopped: {e}")}</div> }
             if let Some(svg) = picture { <div class="board-pic">{ Html::from_html_unchecked(AttrValue::from(svg)) }</div> }
-            if let Some(e) = &t.error { <div class="err">{e}</div> }
             <pre class="transcript" hidden=true>{ for said.iter().map(|s| format!("{s}\n")) }</pre>
         </dialog>
         </>

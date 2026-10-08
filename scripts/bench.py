@@ -9,6 +9,7 @@ session in headless Chrome (scripts/browser-test.mjs, BENCH_OUT).
 
   scripts/bench.py                 # measure and compare with bench/baseline.json
   scripts/bench.py --baseline      # measure and write bench/baseline.json
+  scripts/bench.py --native        # the native times only (no browser)
   scripts/bench.py SLUG...         # only these games (the affected gate);
                                    # with --baseline, only their rows
   scripts/bench.py --xetal PATH --out FILE   # measure another xetal build (no pages)
@@ -101,7 +102,7 @@ def main(args):
         print(f"bench: wrote {out}")
         return 0
     vendored = (ROOT / "XETAL_COMMIT").read_text().strip()[:7]
-    results = measure(xetal_build(), pages=True)
+    results = measure(xetal_build(), pages="--native" not in args)
     host = socket.gethostname().split(".")[0]
     if "--baseline" in args and ONLY:
         base = json.loads(BASELINE.read_text())
