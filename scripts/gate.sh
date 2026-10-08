@@ -5,8 +5,8 @@
 #                                pinned X_eTaL, spelling, the game tooling's
 #                                self-test, the shared libraries, type
 #                                comments, every game's goldens (a job per
-#                                game, no Rust build), markdown. Under a
-#                                minute. Before every commit and push.
+#                                game, no Rust build), markdown. About 5
+#                                seconds. Before every commit and push.
 #   scripts/gate.sh --affected   the sample, then what the change touches
 #                                (scripts/affected.py, from the files changed
 #                                since origin/main): those games' page crates
@@ -36,7 +36,7 @@ timed() {  # timed LABEL CMD...: run, print the time when 5 s or more
 }
 
 scripts/check-busy.sh
-scripts/build-xetal.sh >/dev/null
+XETAL_BIN="$(scripts/build-xetal.sh)"; export XETAL_BIN
 logs="$root/work/gate"; rm -rf "$logs"; mkdir -p "$logs"
 
 # The sample: every check in the background, each to its own log.

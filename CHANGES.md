@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-08
 
+- 12:02 `build` The sample gate in 4 seconds (from 51, and 600 on a loaded machine): every job and every test-games.sh run called build-xetal.sh, which ran cargo, so the parallel jobs queued on cargo's lock; the gate now builds X_eTaL once and exports XETAL_BIN, which build-xetal.sh returns as it is.
+
 - 11:43 `chore` Saga step assert-macros completed.
 
 - 11:05 `test` Every scripted game states what it guarantees with X_eTaL's system macro `a_ssert<` (23 assertions, the conditions as written: a winner, every secret found within 7 guesses, perfect play a draw, every move for a 7 adds up to 7, a slide keeps the tiles' total, the sudoku keeps every given, a capital's nearest city is itself, a star among its own choices, ...), bound so the goldens are unchanged; a failing one writes to standard error and fails the tests (the tooling self-test proves both ways). docs/style.md says when.

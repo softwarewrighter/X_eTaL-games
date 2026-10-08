@@ -366,7 +366,7 @@ Read before working:
 ## Every step ends with
 
 1. The gate passes, in the size that fits (after X_eTaL's D108):
-   `just gate` (the sample, under a minute: every check and golden in
+   `just gate` (the sample, about 5 seconds: every check and golden in
    parallel) before every commit; `just gate --affected` (plus the
    pages, browser test and timings of the games the change touches)
    before `agentrail complete` of a game or page step and before
