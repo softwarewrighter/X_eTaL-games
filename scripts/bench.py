@@ -9,6 +9,8 @@ session in headless Chrome (scripts/browser-test.mjs, BENCH_OUT).
 
   scripts/bench.py                 # measure and compare with bench/baseline.json
   scripts/bench.py --baseline      # measure and write bench/baseline.json
+  scripts/bench.py SLUG...         # only these games (the affected gate);
+                                   # with --baseline, only their rows
   scripts/bench.py --xetal PATH --out FILE   # measure another xetal build (no pages)
 
 The comparison fails (exit 1) when a native measure (scripted or
@@ -35,9 +37,12 @@ SLOWER, FLOOR = 1.15, 25
 GATED = ("script_ms", "play_ms")
 
 
+ONLY = []  # the games named on the command line (the affected gate), else all
+
+
 def games():
     out = subprocess.run([str(ROOT / "scripts/games.py"), "list"], capture_output=True, text=True, check=True)
-    return [s for s in out.stdout.split() if s]
+    return [s for s in out.stdout.split() if s and (not ONLY or s in ONLY)]
 
 
 def timed(cmd, cwd, stdin_file, env):
@@ -64,7 +69,7 @@ def measure(xetal, pages):
     if pages:
         out = tempfile.mktemp(suffix=".json")
         # The browser test's own results are shown (it is the gate's browser test too).
-        subprocess.run([str(ROOT / "scripts/browser-test.mjs")], env=dict(os.environ, BENCH_OUT=out), check=True)
+        subprocess.run([str(ROOT / "scripts/browser-test.mjs"), *ONLY], env=dict(os.environ, BENCH_OUT=out), check=True)
         for slug, ms in json.loads(Path(out).read_text()).items():
             results.setdefault(slug, {})["page_ms"] = ms
     return results
@@ -88,6 +93,7 @@ def table(results, base=None):
 
 
 def main(args):
+    ONLY.extend(a for a in args if not a.startswith("--") and (ROOT / "games" / a).is_dir())
     if "--xetal" in args:
         xetal = args[args.index("--xetal") + 1]
         out = Path(args[args.index("--out") + 1])
@@ -97,6 +103,13 @@ def main(args):
     vendored = (ROOT / "XETAL_COMMIT").read_text().strip()[:7]
     results = measure(xetal_build(), pages=True)
     host = socket.gethostname().split(".")[0]
+    if "--baseline" in args and ONLY:
+        base = json.loads(BASELINE.read_text())
+        base["results"].update(results)
+        BASELINE.write_text(json.dumps(base, indent=2) + "\n")
+        print(table(results))
+        print(f"bench: baseline rows written for {', '.join(ONLY)}")
+        return 0
     if "--baseline" in args:
         BASELINE.write_text(json.dumps({"host": host, "xetal": vendored, "runs": RUNS,
                                         "date": time.strftime("%Y-%m-%d"), "results": results}, indent=2) + "\n")

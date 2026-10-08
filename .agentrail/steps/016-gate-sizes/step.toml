@@ -1,0 +1,9 @@
+number = 16
+slug = "gate-sizes"
+status = "in-progress"
+description = "the user (2026-10-07): a 25-minute gate is not acceptable; follow X_eTaL's D1..."
+role = "production"
+context_files = []
+created_at = "2026-10-07T17:29:40"
+task_type = "build"
+commits = []

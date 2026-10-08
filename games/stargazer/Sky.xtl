@@ -120,6 +120,9 @@ o_ne := { q ib ->
 
 ### The game
 
+# The first n items of v, or all of them when v has fewer (a band with
+# no star in a part of the sky: the round is filled from the rest).
+u_pTo := { n v -> (n m_in t_ally v) t_ake v }
 # :: Int -> Int
 # A new round in part a of the sky (0 all of it): its named stars in a
 # random order, mix of each band taken in turn (bright, middling, faint),
@@ -129,7 +132,7 @@ l:n_ew := { a ->
   p := l:p_ool a
   o := (g_rade r_oll! (t_ally p) r_eshape 1000000) s_elect p
   b := o s_elect band
-  pick := d_isclose '{ x y -> e_nclose (d_isclose x) c_at d_isclose y } r_/ '{ k -> (k s_elect mix) t_ake (b = k) r_eplicate o } m_ap r_ange t_ally mix
+  pick := d_isclose '{ x y -> e_nclose (d_isclose x) c_at d_isclose y } r_/ '{ k -> (k s_elect mix) u_pTo (b = k) r_eplicate o } m_ap r_ange t_ally mix
   n := 5 m_in t_ally p
   stars := n t_ake pick c_at (n_ot o m_ember? pick) r_eplicate o
   a c_at 0 0 c_at n c_at (r_oll! 1000000) c_at stars c_at (n r_eshape 0) c_at 0 0
@@ -153,13 +156,16 @@ l:m_enu := { s -> (l:v_iew f_irst s) sv:m_enu (f_irst s) l:a_t (2 s_elect s) s_e
 # The marked stars' x and y in their view.
 x_s := { s -> '{ i -> f_irst (f_irst s) l:a_t i } e_ach l:m_arks s }
 y_s := { s -> '{ i -> 2 s_elect (f_irst s) l:a_t i } e_ach l:m_arks s }
-# Which unanswered star is at xy: 1 to n, 0 for none.
+# Which unanswered star is at xy: the nearest within reach, 1 to n, 0
+# for none.
 s_tarAt := { s xy ->
   u := sv:u_nit l:v_iew f_irst s
   dx := (x_s s) - f_irst xy
   dy := (y_s s) - 2 s_elect xy
-  near := ((dx * dx) + dy * dy) <= (u * 16) * u * 16
-  f_irst (w_here near & 0 = l:r_esults s) c_at 0
+  d2 := (dx * dx) + dy * dy
+  ok := (d2 <= (u * 16) * u * 16) & 0 = l:r_esults s
+  0 = '+ r_/ 0 + ok ? 0
+  f_irst g_rade d2 + 1e12 * f_loat n_ot ok
 }
 # :: Int -> Float -> Int
 # A click at xy (sky units): a part's button starts a round there; in

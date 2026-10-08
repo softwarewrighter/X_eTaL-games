@@ -128,14 +128,17 @@ l:s_tatus := { s -> 0 + 0 = '+ r_/ 0 + 0 = l:r_esults s }
 # The open dot's menu: a row each of x, y, width and height for its
 # four choices, beside the dot (Svg's menu), kept inside the view.
 l:m_enu := { s -> (l:v_iew f_irst s) sv:m_enu l:a_t (2 s_elect s) s_elect l:d_ots s }
-# Which unanswered dot is at xy: 1 to n, 0 for none.
+# Which unanswered dot is at xy: the nearest within reach (dots of close
+# capitals overlap), 1 to n, 0 for none.
 d_ot := { s xy ->
   u := sv:u_nit l:v_iew f_irst s
   p := l:d_ots s
   dx := (l:m_x p s_elect lon) - f_irst xy
   dy := (l:m_y p s_elect lat) - 2 s_elect xy
-  near := ((dx * dx) + dy * dy) <= (u * 14) * u * 14
-  f_irst (w_here near & 0 = l:r_esults s) c_at 0
+  d2 := (dx * dx) + dy * dy
+  ok := (d2 <= (u * 14) * u * 14) & 0 = l:r_esults s
+  0 = '+ r_/ 0 + ok ? 0
+  f_irst g_rade d2 + 1e12 * f_loat n_ot ok
 }
 # :: Int -> Float -> Int
 # A click at xy (map units): a region button starts a round there; in

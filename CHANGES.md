@@ -12,6 +12,10 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-07
 
+- 17:52 `build` The gate in three sizes (the user: 25 minutes is not acceptable; after X_eTaL's D108): `just gate` is the sample, every check and every game's goldens in parallel, each to its own log under work/gate/ (51 s from about 25 minutes); `--affected` adds the page crates, pages, browser test and timings of the games the change touches (`scripts/affected.py`, with a self-test: a game's files, the shared libraries its page carries, or everything for the shell and the page scripts); `--full` is everything. `scripts/check-busy.sh` refuses to start on a busy machine (another cargo, gate or trunk serve here). `build-pages.sh`, `bench.py` (rows too) and `test-games.sh` (`TEST_GAMES_WEB=0`) take the touched games.
+
+- 17:52 `fix` Stargazer froze after choosing the north sky (the user): a round took a bright star from a band that part of the sky does not have, an error every later click replayed; a band now gives what it has and the round fills from the rest. Capitals: two overlapping Caribbean dots, and a click always opened the first; both games open the nearest marker. Both games' test.sh now clicks every button from every view and every answer of every marker in every round.
+
 - 17:26 `chore` Saga step stargazer completed.
 
 - 17:09 `game` Stargazer is live, modeled on the capitals map (the user's design): Play opens a sky you click; five named stars ringed, mixed one bright, two middling, two faint; a star's menu offers it and one star from each brightness band, from anywhere in the sky (not the nearest stars: too hard); verdicts, labels, score and the parts of the sky (seasonal evening skies, the poles) on the picture. `Sky.xtl` writes the SVG with `lib/Svg.xtl`; the data is TOML: the Yale Bright Star Catalog (NASA, public domain) and the IAU Catalog of Star Names (CC BY) fetched by `assets/fetch.sh` into the untracked `sky.toml`, and the tracked `stars.toml` (parts of the sky, bands, mix, your own stars; `test.sh` adds one). The browser test also checks that a game played by clicks has only its Play button.

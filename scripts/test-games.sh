@@ -11,6 +11,7 @@
 #   - web/ (a Cargo workspace), when present: cargo test, and cargo
 #     check for wasm32 (the browser build);
 #   - test.sh, when present and executable: run it.
+# TEST_GAMES_WEB=0 leaves out web/ (the sample gate: the goldens alone).
 # XETAL_BLESS=1 rewrites the expected .out/.err files instead (review
 # the diff!); .in files are written by hand.
 # XETAL_GAMES_DIR overrides games/ (scripts/selftest-games.sh uses it).
@@ -69,7 +70,7 @@ for slug in ${slugs[@]+"${slugs[@]}"}; do
       echo "FAIL: $slug/$name"; cat "$tmp/diff"; fail=1
     fi
   done
-  if [ -f "$d/web/Cargo.toml" ]; then
+  if [ -f "$d/web/Cargo.toml" ] && [ "${TEST_GAMES_WEB:-1}" != 0 ]; then
     (cd "$d/web" && cargo test -q --workspace >/dev/null 2>&1) \
       && echo "ok: $slug/web" || { echo "FAIL: $slug/web"; (cd "$d/web" && cargo test -q --workspace) || true; fail=1; }
     (cd "$d/web" && cargo check -q --target wasm32-unknown-unknown >/dev/null 2>&1) \

@@ -104,9 +104,10 @@ publish:
 verify-live:
     scripts/browser-test.mjs --url https://softwarewrighter.github.io/X_eTaL-games/
 
-# The full pre-commit gate
-gate:
-    scripts/gate.sh
+# The pre-commit gate: the sample (default, under a minute), --affected
+# (plus what the change touches), --full (everything)
+gate *args:
+    scripts/gate.sh {{args}}
 
 # Show the agentrail saga state and the current step
 status:

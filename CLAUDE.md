@@ -365,7 +365,13 @@ Read before working:
 
 ## Every step ends with
 
-1. `just gate` passes (tests, goldens, markdown).
+1. The gate passes, in the size that fits (after X_eTaL's D108):
+   `just gate` (the sample, under a minute: every check and golden in
+   parallel) before every commit; `just gate --affected` (plus the
+   pages, browser test and timings of the games the change touches)
+   before `agentrail complete` of a game or page step and before
+   `just publish`; `just gate --full` before a release and after an
+   X_eTaL move.
 2. Docs updated: README (game list, status, build), the game's
    README, `CHANGES.md`, `docs/plan.md`, `docs/xetal-asks.md` as
    needed.
@@ -380,7 +386,7 @@ Read before working:
 
 ```bash
 just                      # list recipes
-just gate                 # pre-commit gate
+just gate                 # pre-commit gate (sample); --affected, --full
 agentrail status          # current saga state
 agentrail next            # current step + context
 agentrail plan            # the saga plan

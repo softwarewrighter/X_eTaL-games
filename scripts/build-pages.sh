@@ -5,14 +5,16 @@
 #   - every game with a web app (games/<slug>/web/) is built with trunk
 #     into pages/<slug>/, served under /X_eTaL-games/<slug>/;
 #   - pages/index.html, the catalog, from every game.toml.
-# A game removed from games/ loses its pages/<slug>/.
-#   scripts/build-pages.sh
+# A game removed from games/ loses its pages/<slug>/. Named games only
+# (the affected gate): just those are built, the others left as they are.
+#   scripts/build-pages.sh [SLUG...]
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 base="/X_eTaL-games"
 "$root/scripts/games.py" check
 # Third-party assets are fetched (never tracked), so trunk can copy them.
-"$root/scripts/fetch-assets.sh"
+"$root/scripts/fetch-assets.sh" "$@"
+only=("$@")
 mkdir -p "$root/pages"
 touch "$root/pages/.nojekyll"
 keep=()
@@ -21,6 +23,7 @@ while IFS= read -r slug; do
   web="$root/games/$slug/web"
   [ -f "$web/Cargo.toml" ] || continue
   keep+=("$slug")
+  [ ${#only[@]} = 0 ] || printf '%s\n' "${only[@]}" | grep -qx "$slug" || continue
   dist="$root/target/pages-dist/$slug"
   echo "==> trunk build $slug"
   # The app's own index.html is the trunk entry: games/<slug>/web/index.html.
@@ -30,7 +33,7 @@ while IFS= read -r slug; do
   if [ -f "$root/games/$slug/screenshot.png" ]; then cp "$root/games/$slug/screenshot.png" "$root/pages/$slug/"; fi
 done < <("$root/scripts/games.py" list)
 # Drop pages/<slug>/ of games that no longer have a web app.
-for d in "$root"/pages/*/; do
+[ ${#only[@]} = 0 ] && for d in "$root"/pages/*/; do
   [ -d "$d" ] || continue
   s="$(basename "$d")"
   printf '%s\n' ${keep[@]+"${keep[@]}"} | grep -qx "$s" || { echo "removing pages/$s/"; rm -rf "$d"; }
