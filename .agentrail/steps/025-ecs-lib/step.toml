@@ -1,6 +1,6 @@
 number = 25
 slug = "ecs-lib"
-status = "pending"
+status = "in-progress"
 description = "the user (2026-10-09): an entity-component-system library, published here (li..."
 role = "production"
 context_files = []

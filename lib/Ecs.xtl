@@ -1,0 +1,73 @@
+## Ecs: an entity-component system as arrays, shared by the games built
+## on it. A world is one matrix of numbers: a row per entity slot, and
+## columns for its fields. Column 1 says whether the slot holds a living
+## entity (1) or is free (0); each component then takes a column saying
+## whether the entity has it, followed by its fields. Entities are row
+## numbers. A system is a whole-column expression: every entity with
+## the components it needs, at once. The macro library Ecs.xtlm, under
+## the same alias, writes a world's layout from a list of components
+## (getters, setters, masks); these are the functions any world uses.
+
+### Living entities
+
+# :: (Num a, Truthy b) => a -> b
+## Which slots hold a living entity: column 1.
+## >> "ec:" u_se< "Ecs"
+## >> ec:a_live 3 2 r_eshape 1.0 7 0.0 0 1.0 9
+## 1 0 1
+l:a_live := { W -> 0 < 1 s_elect_2 W }
+# :: (Num a, Num b, Truthy b) => a -> b
+## How many entities are alive.
+l:c_ount := { W -> '+ r_/ 0 + l:a_live W }
+# :: Float -> (Int, Int, Float) -> Float
+## The world W with values written at rows ids and columns cols (vals: a
+## number for all, or a value per row, or a row of values per row), every
+## cell at once: the rows and the columns as one-hot tables, the cells
+## outside left as they were.
+## >> "ec:" u_se< "Ecs"
+## >> W := 3 3 r_eshape 0.0
+## >> W ec:p_ut (2 3, 3, 5.0 6.0)
+## 0.0 0.0 0.0
+## 0.0 0.0 0.0
+## 0.0 5.0 6.0
+l:p_ut := { W (cols, ids, vals) ->
+  c := r_avel cols
+  i := r_avel ids
+  R := f_loat (r_ange t_ally W) '= t_able i
+  K := f_loat c '= t_able r_ange 2 s_elect s_hape W
+  V := ((t_ally i) c_at t_ally c) r_eshape vals
+  M := 0 < R '+ '* i_nner (((t_ally i) c_at t_ally c) r_eshape 1.0) '+ '* i_nner K
+  (W * f_loat n_ot M) + R '+ '* i_nner V '+ '* i_nner K
+}
+
+### Spawning and despawning
+
+# :: Float -> Int -> (Float, Int)
+## Room for n new entities: the world with the first n free slots made
+## alive, and their numbers (fewer when the world is nearly full).
+## >> "ec:" u_se< "Ecs"
+## >> (W, ids) := (4 3 r_eshape 0.0) ec:s_pawn 2
+## >> ids
+## 1 2
+l:s_pawn := { W n ->
+  ids := n t_ake w_here n_ot l:a_live W
+  (W l:p_ut (1, ids, 1.0), ids)
+}
+# :: Float -> Int -> Float
+## The world with entities ids gone: their rows cleared, every column.
+l:d_espawn := { W ids -> W * f_loat (n_ot (r_ange t_ally W) m_ember? r_avel ids) '* t_able (2 s_elect s_hape W) r_eshape 1 }
+
+### Systems' helpers
+
+# :: (Num a, Truthy b) => (a, a, a) -> b
+## Which points of P are within distance d of which points of Q (both
+## n by 2, x then y): a table of every pair at once, P's rows down.
+## >> "ec:" u_se< "Ecs"
+## >> ec:n_ear (2 2 r_eshape 0 0 5 5.0, 1 2 r_eshape 1 0.0, 1.5)
+## 1
+## 0
+l:n_ear := { (P, Q, d) ->
+  dx := (1 s_elect_2 P) '- t_able 1 s_elect_2 Q
+  dy := (2 s_elect_2 P) '- t_able 2 s_elect_2 Q
+  ((dx * dx) + dy * dy) <= d * d
+}

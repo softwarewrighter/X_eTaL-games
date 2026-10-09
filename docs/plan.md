@@ -372,6 +372,16 @@ DONE (the user, 2026-10-07): the comments in X_eTaL's convention (`##`,
 run by the gate, the `xetal doc` site at `pages/doc/` linked from the
 catalog and the game pages.
 
+## The ECS games (launch steps 25-30)
+
+The user (2026-10-09): an entity-component system as a function and
+macro library here (`lib/Ecs.xtl`, `lib/Ecs.xtlm`; packaging comes
+later, with X_eTaL's planned library ecosystem), used by demo games
+that each show a benefit of it: a dungeon crawler (keys, turn-based),
+a side-scroller and a race game (ticks), an asteroids-style shooter
+(entities spawned and despawned). Step 25, the library: DONE. Step
+26: the page passes keys and ticks as []E_VENT lines.
+
 ## Saga 6 -- macros
 
 | # | Step slug | Delivers | Waits on |

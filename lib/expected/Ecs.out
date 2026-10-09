@@ -1,0 +1,6 @@
+l:a_live : (Num a, Truthy b) => a -> b
+l:c_ount : (Num a, Num b, Truthy b) => a -> b
+l:p_ut : Float -> (Int, Int, Float) -> Float
+l:s_pawn : Float -> Int -> (Float, Int)
+l:d_espawn : Float -> Int -> Float
+l:n_ear : (Num a, Truthy b) => (a, a, a) -> b

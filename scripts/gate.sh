@@ -51,7 +51,7 @@ job tooling scripts/selftest-games.sh
 job libraries scripts/test-lib.sh
 job types scripts/check-types.py
 job docs scripts/check-docs.py
-job doctests bash -c 'cd lib && for f in [A-Z]*.xtl; do XETAL_PATH=. ../bin/xetal doc --test "$f" >/dev/null || { XETAL_PATH=. ../bin/xetal doc --test "$f"; exit 1; }; done; echo "doc tests: ok"'
+job doctests bash -c 'cd lib && for f in [A-Z]*.xtl [A-Z]*.xtlm; do XETAL_PATH=. ../bin/xetal doc --test "$f" >/dev/null || { XETAL_PATH=. ../bin/xetal doc --test "$f"; exit 1; }; done; echo "doc tests: ok"'
 job xref bash -c 'd="$(mktemp -d)"; ( ls lib/*.xtl | grep -v /test.xtl; ls games/*/*.xtl | grep -v _template ) | XETAL_PATH="$PWD/lib" xargs bin/xetal doc --out "$d" >/dev/null && echo "xref: builds"; s=$?; rm -rf "$d"; exit $s' 
 job affected python3 scripts/affected.py --self-test
 job markdown markdown

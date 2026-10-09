@@ -54,3 +54,20 @@ t_ally (v, 2) g:l_abeled "a" "b"
 t_ally (v g:m_enu 100 100.0) g:c_hoices "w" "x" "y" "z"
 v g:p_icture e_nclose "<circle/>"
 
+# Ecs: a world laid out by the macro (columns worked out when compiled),
+# entities spawned, a component written for several at once, a system as
+# one whole-column expression, and the entities near a point.
+"ec:" u_se< "Ecs"
+@ ec:c_omponents< "pos:2 vel:2"
+W := u:w_orld 4
+(W, ids) := W ec:s_pawn 3
+ids
+W := W u:s_etPos (ids, 3 2 r_eshape 0 0 5 5 9 9.0)
+W := W u:s_etVel (1 2, 2 2 r_eshape 1 0 0 1.0)
+movers := w_here (ec:a_live W) & (u:h_asPos W) & u:h_asVel W
+W := W u:s_etPos (movers, (movers s_elect u:p_os W) + movers s_elect u:v_el W)
+u:p_os W
+W := W ec:d_espawn 2
+ec:c_ount W
+ec:n_ear ((w_here ec:a_live W) s_elect u:p_os W, 1 2 r_eshape 1 0.0, 1.5)
+

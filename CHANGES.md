@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 12:39 `feat` `lib/Ecs.xtl` and `lib/Ecs.xtlm`, an entity-component system as arrays (the user: a function and macro library here, packaging later): a world is a matrix, a row per entity and a column per field (column 1 alive); the macro `@ ec:c_omponents< "pos:2 vel:2 hp"` writes each component's getter, mask, setter and remover and the world's constructor from the list, every column number worked out when the program is compiled; the functions spawn, despawn, count, write any cells at once (`ec:p_ut`, by one-hot tables) and find every pair of points within a distance (`ec:n_ear`). Systems are whole-column expressions over the entities a mask picks (lib/test.xtl moves every entity with a position and a velocity in one line). Doc-tested (17 examples, the macro's too: the gate's doc tests now cover .xtlm), in the cross-reference.
+
 - 11:08 `chore` Saga step tuples completed.
 
 - 11:05 `refactor` Tuples (X_eTaL Saga 39) where values of different meanings were packed into one argument and picked apart by position: `lib/Svg.xtl`'s `w_ords (x, y, size)` and `l_abeled (view, on)` (their types now say so: `(Float, Float, Float) -> a -> Box Char`), capitals' and stargazer's `s_et (k, v)`, stargazer's `o_ne (i, b)`, lights out's `h:s_tep (r, c)`; every output unchanged; docs/style.md says when (many values of one kind stay arrays).
