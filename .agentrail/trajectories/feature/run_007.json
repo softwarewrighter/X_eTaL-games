@@ -1,0 +1,11 @@
+{
+  "task_type": "feature",
+  "state": {
+    "number": 22,
+    "step": "sudoku-paste"
+  },
+  "action": "c_ells parser with doc test, p_roblem codes, golden with refusals, affected gate 33 s.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-08T19:14:09"
+}

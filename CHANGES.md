@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-08
 
+- 19:14 `chore` Saga step sudoku-paste completed.
+
 - 18:56 `game` Sudoku takes your own puzzle (the user's item 4): at the prompt, type or paste 81 cells (0 or . empty; anything else left out), checked first and refused with the reason (not 81 cells, a digit twice in a unit, no solution: `s:p_roblem`). The built-in puzzles moved from the library to `puzzles.toml` (the data-file rule), read with `[]L_IST`; `s:c_ells` reads cells from any text (doc-tested).
 
 - 16:26 `chore` Saga step lights-out completed.

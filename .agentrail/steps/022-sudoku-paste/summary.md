@@ -1,0 +1,1 @@
+Own puzzles typed or pasted, checked with reasons; built-in puzzles in puzzles.toml.
