@@ -1,9 +1,10 @@
 number = 28
 slug = "catalog-toc"
-status = "in-progress"
+status = "completed"
 description = "the user (2026-10-09): the catalog gets a table of contents at the top left: ..."
 role = "production"
 context_files = []
 created_at = "2026-10-09T15:00:08"
+completed_at = "2026-10-09T15:41:23"
 task_type = "feature"
-commits = []
+commits = ["3f5cac8fb09d29d9e744fe42540f80599a57c273"]

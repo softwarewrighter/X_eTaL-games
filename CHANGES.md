@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 15:41 `chore` Saga step catalog-toc completed.
+
 - 15:37 `feat` The catalog's table of contents (the user): at the top left, in view while scrolling (above the cards on a narrow screen), every game by group (puzzles, chance and strategy, adventures, quizzes), alphabetical, each linking to its card; `group` in every game.toml, checked by games.py (the template lists them); the browser test follows every link.
 
 - 13:36 `chore` Saga step dungeon completed.
