@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 13:33 `game` Dungeon is live, the first game on lib/Ecs: find the way out with the arrow keys or WASD, fight rats and goblins, pick up potions and gold. You, the monsters and the items are rows of one world matrix (laid out by `"h" ec:c_omponents<`); what each is comes from its components, which `dungeon.toml` gives each kind, so a new kind is data (test.sh adds bats and checks they spawn and chase with no code changed); every rule is a system over every entity at once (the monsters' chase all at once, collisions resolved); the state is a tuple. `lib/Ecs.xtlm`: the left side names the namespace (`"u"` in a program, `"h"` or `"l"` in a library). The browser test plays key games by keydown.
+
 - 13:01 `chore` Saga step events completed.
 
 - 12:58 `feat` A game played by clicks also gets its keys and, when it asks, the clock (for the ECS games): the dialog sends `key NAME` (X_eTaL's own names, `xetal_lineedit::key_name`: Up, Down, Left, Right, Enter, a letter; Escape still closes it; the keys a game uses no longer scroll the page), and `Game::ticks` games are fed `tick 0.05` twenty times a second while the dialog is open (straight to the running game: ticks are not kept). A shell test feeds a key, a tick and a click to a running event loop.

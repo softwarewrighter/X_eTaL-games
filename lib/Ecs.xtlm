@@ -30,12 +30,14 @@ h:c_omponent? := { w ->
 }
 ## The function names for a component: p_os, h_asPos, s_etPos, d_ropPos
 ## for pos.
-h:g_etter := { n -> "u:" c_at (1 t_ake n) c_at "_" c_at 1 d_rop n }
+h:g_etter := { n -> (1 t_ake n) c_at "_" c_at 1 d_rop n }
+## A text without spaces at its ends.
+h:t_rim := { t -> (n_ot (r_ev '& s_\ r_ev t = f_irst " ") | '& s_\ t = f_irst " ") r_eplicate t }
 h:t_itle := { n -> ((lowers i_ndexOf 1 t_ake n) s_elect []A) c_at 1 d_rop n }
 
 ### The macro
 
-## @ ec:c_omponents< "pos:2 vel:2 hp": a world's layout from its
+## "u" ec:c_omponents< "pos:2 vel:2 hp": a world's layout from its
 ## components, each a name and a width (1 when left out). Column 1 says
 ## whether a slot is alive; each component takes a column saying whether
 ## an entity has it, then its fields. When the program is compiled it
@@ -45,9 +47,10 @@ h:t_itle := { n -> ((lowers i_ndexOf 1 t_ake n) s_elect []A) c_at 1 d_rop n }
 ## marked present) and a remover (W u:d_ropPos ids), and u:w_orld n, a
 ## world of n slots: every column number worked out as a plain number.
 ## A malformed component stops the compiler: error[bad-components].
-## Nothing goes on the left (@).
+## The left side is the namespace of the names it writes: "u" in a
+## program, "h" (private) or "l" (exported) in a library.
 ## >> "ec:" u_se< "Ecs"
-## >> @ ec:c_omponents< "pos:2 hp"
+## >> "u" ec:c_omponents< "pos:2 hp"
 ## >> W := u:w_orld 3
 ## >> s_hape W
 ## 3 6
@@ -56,8 +59,9 @@ h:t_itle := { n -> ((lowers i_ndexOf 1 t_ake n) s_elect []A) c_at 1 d_rop n }
 ## 0.0 7.0 0.0
 ## >> u:h_asHp W
 ## 0 1 0
-m:c_omponents< := { none t ->
-  ({ @ -> 0 })_ none
+m:c_omponents< := { ns t ->
+  n := h:t_rim ns
+  n_ot (n m_atch "u") | (n m_atch "h") | n m_atch "l" ? "bad-components left" []R_EJECT "the names' namespace: \"u\" in a program, \"h\" or \"l\" in a library"
   ws := h:w_ords t
   0 = t_ally ws ? "bad-components right" []R_EJECT "no components: write them name or name:width"
   bad := (n_ot '{ h:c_omponent? d_isclose _r } e_ach ws) r_eplicate ws
@@ -65,22 +69,22 @@ m:c_omponents< := { none t ->
   k := '{ h:w_idth d_isclose _r } e_ach ws
   p := 2 + 0 c_at -1 d_rop '+ s_\ 1 + k
   cols := 1 + '+ r_/ 1 + k
-  world := "u:w_orld := { n -> (n c_at " c_at (f_ormat cols) c_at ") r_eshape 0.0 }\n"
-  t:j_oin (e_nclose world) c_at '{ i -> h:d_efs (d_isclose i s_elect ws, i s_elect p, i s_elect k, cols) } m_ap r_ange t_ally ws
+  world := n c_at ":w_orld := { n -> (n c_at " c_at (f_ormat cols) c_at ") r_eshape 0.0 }\n"
+  t:j_oin (e_nclose world) c_at '{ i -> h:d_efs (d_isclose i s_elect ws, i s_elect p, i s_elect k, cols, n) } m_ap r_ange t_ally ws
 }
 ## The four definitions for one component: its word, its presence column
-## p, its width k and the world's number of columns c.
-h:d_efs := { (w, p, k, c) ->
+## p, its width k, the world's number of columns c, and the namespace s.
+h:d_efs := { (w, p, k, c, s) ->
   n := h:n_ame w
   T := h:t_itle n
   P := f_ormat p
   F := f_ormat p + r_ange k
   PF := f_ormat p c_at p + r_ange k
-  get := (h:g_etter n) c_at " := { W -> (" c_at F c_at ") s_elect_2 W }\n"
-  has := "u:h_as" c_at T c_at " := { W -> 0 < " c_at P c_at " s_elect_2 W }\n"
-  set1 := "u:s_et" c_at T c_at " := { W (ids, v) ->\n  i := r_avel ids\n  V := (((t_ally i) c_at 1) r_eshape 1.0) c_at_2 ((t_ally i) c_at " c_at (f_ormat k) c_at ") r_eshape v\n"
+  get := s c_at ":" c_at (h:g_etter n) c_at " := { W -> (" c_at F c_at ") s_elect_2 W }\n"
+  has := s c_at ":h_as" c_at T c_at " := { W -> 0 < " c_at P c_at " s_elect_2 W }\n"
+  set1 := s c_at ":s_et" c_at T c_at " := { W (ids, v) ->\n  i := r_avel ids\n  V := (((t_ally i) c_at 1) r_eshape 1.0) c_at_2 ((t_ally i) c_at " c_at (f_ormat k) c_at ") r_eshape v\n"
   set2 := "  R := f_loat (r_ange t_ally W) '= t_able i\n  C := f_loat (" c_at PF c_at ") '= t_able r_ange " c_at (f_ormat c) c_at "\n"
   set3 := "  M := 0 < R '+ '* i_nner (((t_ally i) c_at " c_at (f_ormat 1 + k) c_at ") r_eshape 1.0) '+ '* i_nner C\n  (W * f_loat n_ot M) + R '+ '* i_nner V '+ '* i_nner C\n}\n"
-  drop := "u:d_rop" c_at T c_at " := { W ids -> W * f_loat n_ot ((r_ange t_ally W) m_ember? r_avel ids) '* t_able " c_at P c_at " = r_ange " c_at (f_ormat c) c_at " }\n"
+  drop := s c_at ":d_rop" c_at T c_at " := { W ids -> W * f_loat n_ot ((r_ange t_ally W) m_ember? r_avel ids) '* t_able " c_at P c_at " = r_ange " c_at (f_ormat c) c_at " }\n"
   get c_at has c_at set1 c_at set2 c_at set3 c_at drop
 }

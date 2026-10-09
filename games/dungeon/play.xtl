@@ -1,0 +1,28 @@
+#!/usr/bin/env xetal
+## The dungeon: find the way out (>). Arrow keys or WASD move you; walk
+## into a monster to fight it; walk over potions (!) and gold ($) to pick
+## them up; r starts again. On the page the dungeon is in a dialog and
+## your keys come to the program as events; at the command line, lines
+## such as "key Up" on standard input. The rules are Crawl.xtl's, built
+## on lib/Ecs.
+"cr:" u_se< "Crawl"
+
+## A key's step: a row and a column (0 0 for any other key, a turn waited).
+u:s_tep := { name ->
+  k := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d") i_ndexOf e_nclose name
+  ((1 + (k - 1) m_od 4) s_elect 9 2 r_eshape -1 0 1 0 0 -1 0 1 0 0 0 0 0 0 0 0 0 0) * k <= 8
+}
+## Show the dungeon, read the next event, act on a key, again.
+u:l_oop := { s ->
+  (W, g, n, m) := s
+  said := p_rint! m
+  pic := []S_HOW cr:d_raw s
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? "THE END"
+  n_ot "key" m_atch []E_KIND e ? u:l_oop s
+  name := f_ormat []E_KEY e
+  "r" m_atch name ? u:l_oop cr:n_ew 0
+  0 < cr:s_tatus s ? u:l_oop s
+  u:l_oop s cr:t_urn f_loat u:s_tep name
+}
+u:l_oop cr:n_ew 0

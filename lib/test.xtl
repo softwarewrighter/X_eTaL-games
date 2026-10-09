@@ -58,7 +58,7 @@ v g:p_icture e_nclose "<circle/>"
 # entities spawned, a component written for several at once, a system as
 # one whole-column expression, and the entities near a point.
 "ec:" u_se< "Ecs"
-@ ec:c_omponents< "pos:2 vel:2"
+"u" ec:c_omponents< "pos:2 vel:2"
 W := u:w_orld 4
 (W, ids) := W ec:s_pawn 3
 ids

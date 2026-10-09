@@ -1,0 +1,6 @@
+l:n_ew : (Any a, Num b, Num c) => a -> (Float, b, c, Char)
+l:t_urn : (Num a, Any b) => (Float, Int, a, b) -> Float -> (Float, Int, a, Char)
+l:s_tatus : (Num a, Any b, Any c, Any d, Num e) => (a, b, c, d) -> e
+l:y_ou : (Num a, Any b) => (a, Int, Int, b) -> Int
+l:d_raw : (Float, Int, Int, a) -> Char
+l:h_as : (Num a, Any b, Any c, Any d, Num e, Truthy e) => (a, b, c, d) -> e

@@ -380,7 +380,9 @@ later, with X_eTaL's planned library ecosystem), used by demo games
 that each show a benefit of it: a dungeon crawler (keys, turn-based),
 a side-scroller and a race game (ticks), an asteroids-style shooter
 (entities spawned and despawned). Step 25, the library: DONE. Step
-26: the page passes keys and ticks as []E_VENT lines.
+26, keys and ticks from the page: DONE. Step 27, the dungeon
+crawler: DONE (kinds as data, systems over every entity, a test that
+adds bats with no code).
 
 ## Saga 6 -- macros
 

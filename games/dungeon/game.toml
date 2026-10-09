@@ -1,0 +1,12 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "dungeon"
+title = "Dungeon"
+summary = "Find the way out with the arrow keys: fight rats and goblins, pick up potions and gold. Built on lib/Ecs, an entity-component system as arrays: you, the monsters and the items are rows of one matrix, what each is comes from its components (a new kind is a table in dungeon.toml, not new code), and every rule is one expression over all of them."
+lesson = "an entity-component system as arrays: entities as rows, components as columns, systems as whole-column expressions"
+concepts = ["Ecs.xtlm macro", "tuples", "[]E_VENT keys", "w_here masks", "t_able", "SVG", "libraries"]
+status = "live"
+order = 130
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Entity_component_system"   # the title links here (opens in a new tab)

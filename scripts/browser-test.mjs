@@ -142,9 +142,18 @@ const CLICK = (lines) => `(async () => {
   const said = () => document.querySelector("dialog.board pre.transcript")?.textContent || "";
   (await until(() => document.querySelector("button.board-open"), "the Play button")).click();
   await until(() => document.querySelector("dialog.board[open] .board-pic svg"), "the picture in the dialog");
+  const arrows = { UP: "ArrowUp", DOWN: "ArrowDown", LEFT: "ArrowLeft", RIGHT: "ArrowRight" };
   for (const line of ${JSON.stringify(lines)}) {
-    const [, x, y] = line.split(" ").map(Number);
     const before = said();
+    if (line.startsWith("key ")) {
+      // A key line: a keydown on the dialog, as a player's key would be.
+      const name = line.slice(4);
+      document.querySelector("dialog.board[open]").dispatchEvent(new KeyboardEvent("keydown", { key: arrows[name] || name, bubbles: true }));
+      await until(() => said() !== before, "the program to answer " + line);
+      await sleep(30);
+      continue;
+    }
+    const [, x, y] = line.split(" ").map(Number);
     const svg = document.querySelector("dialog.board[open] .board-pic svg");
     const vb = svg.getAttribute("viewBox").split(" ").map(Number);
     const r = svg.getBoundingClientRect();
@@ -259,7 +268,7 @@ try {
         const problem = (xrefs.bad.length && `cross-reference links lead nowhere: ${xrefs.bad.join(", ")}`) || (!xrefs.n && "no cross-reference links")
           || (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
         if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
-        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks on the map in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks and keys in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
         else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }

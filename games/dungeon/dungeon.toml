@@ -1,0 +1,62 @@
+# The dungeon, read by Crawl.xtl (X_eTaL's []L_IST and []T_ABLE). The
+# map: one string a row, 25 wide; # a wall, . a floor, + a door (a
+# floor), > the way out, @ where you start, and any kind's glyph below
+# puts one of that kind there. Every value is a string.
+#
+# A kind is a set of components: hp and atk make it fight, chase makes
+# it come after you, heal and gold make it something to pick up. Adding
+# a kind of monster or item is adding a table here (and its glyph to the
+# map): the systems in Crawl.xtl act on components, never on kinds.
+map = [
+  "#########################",
+  "#@...#.......r......#...#",
+  "#....#..###.....#...#.!.#",
+  "#.r..+..#$#.....#...+...#",
+  "#....#..#.#..g..#####...#",
+  "##.###..........#..$....#",
+  "#.......#####...+.......#",
+  "#...!...#...#...#....g.>#",
+  "#########################",
+]
+
+# You: your hit points, then your attack.
+player = ["12", "2"]
+
+kinds = ["rat", "goblin", "potion", "gold"]
+fields = ["glyph", "hp", "atk", "chase", "heal", "gold", "color"]
+
+[kind.rat]
+glyph = "r"
+hp = "3"
+atk = "1"
+chase = "1"
+heal = "0"
+gold = "1"
+color = "#e76f51"
+
+[kind.goblin]
+glyph = "g"
+hp = "6"
+atk = "2"
+chase = "1"
+heal = "0"
+gold = "3"
+color = "#d62828"
+
+[kind.potion]
+glyph = "!"
+hp = "0"
+atk = "0"
+chase = "0"
+heal = "5"
+gold = "0"
+color = "#4cc9f0"
+
+[kind.gold]
+glyph = "$"
+hp = "0"
+atk = "0"
+chase = "0"
+heal = "0"
+gold = "5"
+color = "#ffd166"
