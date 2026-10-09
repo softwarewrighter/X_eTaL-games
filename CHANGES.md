@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 13:01 `chore` Saga step events completed.
+
 - 12:58 `feat` A game played by clicks also gets its keys and, when it asks, the clock (for the ECS games): the dialog sends `key NAME` (X_eTaL's own names, `xetal_lineedit::key_name`: Up, Down, Left, Right, Enter, a letter; Escape still closes it; the keys a game uses no longer scroll the page), and `Game::ticks` games are fed `tick 0.05` twenty times a second while the dialog is open (straight to the running game: ticks are not kept). A shell test feeds a key, a tick and a click to a running event loop.
 
 - 12:39 `chore` Saga step ecs-lib completed.
