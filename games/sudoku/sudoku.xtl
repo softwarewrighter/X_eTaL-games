@@ -55,6 +55,17 @@ s:s_tatus s
 s:s_tatus (s:g_ivens s) c_at s:s_olve s:g_rid s
 s:h_int s
 
+# Your own puzzle: its cells read from a text (0 or . empty), and why
+# one cannot be played: 0 it can, 1 not 81 cells, 2 a digit twice in a
+# unit, 3 no solution (row 1 needs a 9 in its last cell, but column 9
+# has one already).
+own := s:c_ells "53..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79"
+own m_atch 1 s_elect s:p_uzzles @
+s:p_roblem own
+s:p_roblem 1 2 3
+s:p_roblem (2 r_eshape 5) c_at 79 r_eshape 0
+s:p_roblem 1 2 3 4 5 6 7 8 0 0 0 0 0 0 0 0 0 9 c_at 63 r_eshape 0
+
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).

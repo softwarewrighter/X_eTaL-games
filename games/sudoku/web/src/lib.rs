@@ -14,7 +14,7 @@ pub fn game() -> Game {
         script: include_str!("../../sudoku.xtl"),
         library_name: "SudokuGrid",
         library: include_str!("../../SudokuGrid.xtl"),
-        shared: &[("Play", include_str!("../../../../lib/Play.xtl"))],
+        shared: &[("Play", include_str!("../../../../lib/Play.xtl")), ("Text", include_str!("../../../../lib/Text.xtl")), ("puzzles.toml", include_str!("../../puzzles.toml"))],
         toml: include_str!("../../game.toml"),
     }
 }

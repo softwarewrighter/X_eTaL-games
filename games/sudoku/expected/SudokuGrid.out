@@ -11,7 +11,9 @@ l:b_roken : (Num a, Num b, Truthy b) => Int -> a -> b
 l:s_olve : Int -> Int
 l:t_ry : Int -> Int -> Int
 l:r_ounds : Num a => Int -> a
+l:c_ells : Char -> Int
 l:p_uzzles : Unit -> Int
+l:p_roblem : Num a => Int -> a
 l:n_ew : Int -> Int
 l:g_ivens : a -> a
 l:g_rid : a -> a

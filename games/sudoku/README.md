@@ -61,7 +61,12 @@ it was 20 times slower here.
 
 ## Play it
 
-At the terminal, choose a puzzle (1 easiest, 4 hardest), then type a
+At the terminal, choose a puzzle (1 easiest, 4 hardest), or type or
+paste one of your own: 81 cells, row by row, a digit or 0 or `.` for
+an empty cell (other characters are left out, so a pasted grid with
+spaces or line breaks works). It is checked first: refused, with the
+reason, when it is not 81 cells, has a digit twice in a row, column or
+box, or has no solution. Then type a
 row, a column and a digit (`1 3 4`; digit 0 clears the cell). `h`
 gives a hint (the first single, else a digit from the solution), `c 1
 3` lists a cell's candidates, `s` shows the solution, and `q` stops. A
@@ -75,6 +80,12 @@ just show sudoku         # as a notebook: each statement, then its output
 just repl sudoku         # then "s:" u_se< "SudokuGrid"
 just test-game sudoku    # compare with the expected output
 ```
+
+## Adding puzzles
+
+The built-in puzzles are in `puzzles.toml`, one string of 81 cells each
+(read with X_eTaL's `[]L_IST`), easiest first: add a puzzle by adding a
+string and its name.
 
 ## Sources
 

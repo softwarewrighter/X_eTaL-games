@@ -5,6 +5,8 @@
 ## row, 0 an empty cell. A game's state is the puzzle's givens (81),
 ## then the grid as filled so far (81).
 
+"t:" u_se< "Text"
+
 j := (r_ange 9) - 1
 cell := (r_ange 81) - 1
 
@@ -103,23 +105,41 @@ l:r_ounds := { g ->
 
 ### The game
 
-## The puzzles: Wikipedia's example; one with 17 givens, the fewest a
-## sudoku with one solution can have; two that singles alone cannot
-## finish (Peter Norvig's first hard one, and Arto Inkala's, called the
-## hardest in 2012).
-wikipedia := 5 3 0 0 7 0 0 0 0 6 0 0 1 9 5 0 0 0 0 9 8 0 0 0 0 6 0 8 0 0 0 6 0 0 0 3 4 0 0 8 0 3 0 0 1 7 0 0 0 2 0 0 0 6 0 6 0 0 0 0 2 8 0 0 0 0 4 1 9 0 0 5 0 0 0 0 8 0 0 7 9
-seventeen := 0 0 0 0 0 0 0 1 0 4 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 5 0 4 0 7 0 0 8 0 0 0 3 0 0 0 0 1 0 9 0 0 0 0 3 0 0 4 0 0 2 0 0 0 5 0 1 0 0 0 0 0 0 0 0 8 0 6 0 0 0
-norvig := 4 0 0 0 0 0 8 0 5 0 3 0 0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 0 2 0 0 0 0 0 6 0 0 0 0 0 8 0 4 0 0 0 0 0 0 1 0 0 0 0 0 0 0 6 0 3 0 7 0 5 0 0 2 0 0 0 0 0 1 0 4 0 0 0 0 0 0
-inkala := 8 0 0 0 0 0 0 0 0 0 0 3 6 0 0 0 0 0 0 7 0 0 9 0 2 0 0 0 5 0 0 0 7 0 0 0 0 0 0 0 4 5 7 0 0 0 0 0 1 0 0 0 3 0 0 0 1 0 0 0 0 6 8 0 0 8 5 0 0 0 1 0 0 9 0 0 0 0 4 0 0
-# :: Unit -> Int
-## The puzzles, easiest first, one per row (81 digits).
-l:p_uzzles := { @ -> 4 81 r_eshape wikipedia c_at seventeen c_at norvig c_at inkala }
-# :: Int -> Int
-## A new game on puzzle n (1 to 4): the givens, and the grid so far.
-l:n_ew := { n ->
-  g := n s_elect l:p_uzzles @
-  g c_at g
+# :: Char -> Int
+## The cells written in a text (any other characters left out): digits,
+## 0 or . an empty cell. A puzzle is 81 of them.
+## >> "s:" u_se< "SudokuGrid"
+## >> s:c_ells "53..7 0"
+## 5 3 0 0 7 0
+l:c_ells := { t ->
+  c := (t m_ember? "0123456789.") r_eplicate t
+  d := ("0123456789." i_ndexOf c) - 1
+  d * d < 10
 }
+# :: Unit -> Int
+## The puzzles of puzzles.toml, one per row (81 digits), easiest first.
+l:p_uzzles := { @ ->
+  p := "puzzles.toml" []L_IST "puzzles"
+  ((t_ally p) c_at 81) r_eshape l:c_ells t:j_oin p
+}
+# :: Num a => Int -> a
+## Why the 81 cells of g cannot be played: 0 they can; 1 not 81 cells;
+## 2 a digit twice in a row, column or box; 3 no solution.
+l:p_roblem := { g ->
+  81 != t_ally g ? 1
+  1 < 'm_ax r_/ r_avel l:p_erUnit l:o_nehot g ? 2
+  0 > 'm_in r_/ l:s_olve g ? 3
+  0
+}
+# :: Int -> Int
+## A new game on puzzle n (1 to the number of puzzles), or on the 81
+## cells n itself: the givens, and the grid so far.
+l:n_ew := { n ->
+  1 = t_ally n ? h:g_ame (f_irst n) s_elect l:p_uzzles @
+  h:g_ame n
+}
+## A game on grid g: its givens, and the grid so far (the same at first).
+h:g_ame := { g -> g c_at g }
 # :: a -> a
 ## The puzzle's givens (81 digits, 0 an empty cell).
 l:g_ivens := { s -> 81 t_ake s }

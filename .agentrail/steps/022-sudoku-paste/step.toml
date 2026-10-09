@@ -1,6 +1,6 @@
 number = 22
 slug = "sudoku-paste"
-status = "pending"
+status = "in-progress"
 description = "sudoku (the user's item 4): type or paste your own puzzle at the terminal (p ..."
 role = "production"
 context_files = []

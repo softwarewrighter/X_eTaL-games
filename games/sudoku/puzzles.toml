@@ -1,0 +1,12 @@
+# The sudoku puzzles, read by SudokuGrid.xtl (X_eTaL's []L_IST): one
+# string of 81 cells each, row by row, 0 or . an empty cell, easiest
+# first. Add a puzzle by adding a string (and its name); at the terminal
+# you can also type or paste one of your own instead of choosing.
+
+names = ["Wikipedia's example", "17 givens, the fewest a sudoku with one solution can have", "Peter Norvig's first hard one", "Arto Inkala's, called the hardest in 2012"]
+puzzles = [
+  "530070000600195000098000060800060003400803001700020006060000280000419005000080079",
+  "000000010400000000020000000000050407008000300001090000300400200050100000000806000",
+  "400000805030000000000700000020000060000080400000010000000603070500200000104000000",
+  "800000000003600000070090200050007000000045700000100030001000068008500010090000400",
+]

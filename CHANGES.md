@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-08
 
+- 18:56 `game` Sudoku takes your own puzzle (the user's item 4): at the prompt, type or paste 81 cells (0 or . empty; anything else left out), checked first and refused with the reason (not 81 cells, a digit twice in a unit, no solution: `s:p_roblem`). The built-in puzzles moved from the library to `puzzles.toml` (the data-file rule), read with `[]L_IST`; `s:c_ells` reads cells from any text (doc-tested).
+
 - 16:26 `chore` Saga step lights-out completed.
 
 - 16:16 `game` Lights out is live: a 5 by 5 board you click, in the map games' dialog; a press toggles a light and its four neighbors; New puzzle (every one solvable) and Hint, a square of a solution from a solver over GF(2) in X_eTaL. `Lamps.xtl`: the 25 by 25 press matrix by two tables of distances, a board of presses as one product mod 2, Gaussian elimination mod 2 (rank 23; the scripted game shows the two quiet patterns behind four solutions per puzzle); test.sh presses every square, both buttons, and solves 50 random puzzles.
