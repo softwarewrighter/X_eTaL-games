@@ -1,0 +1,1 @@
+the user (2026-10-08): X_eTaL's []A (the uppercase alphabet) and []D (the digits) replace the alphabet and digit literals in the games and libraries; the pin moved to the latest X_eTaL main for them (its own commit, goldens rerun, full gate).

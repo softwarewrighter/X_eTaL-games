@@ -112,8 +112,8 @@ l:r_ounds := { g ->
 ## >> s:c_ells "53..7 0"
 ## 5 3 0 0 7 0
 l:c_ells := { t ->
-  c := (t m_ember? "0123456789.") r_eplicate t
-  d := ("0123456789." i_ndexOf c) - 1
+  c := (t m_ember? []D c_at ".") r_eplicate t
+  d := (([]D c_at ".") i_ndexOf c) - 1
   d * d < 10
 }
 # :: Unit -> Int
@@ -189,7 +189,7 @@ l:h_int := { s ->
 # :: Int -> Char
 ## A grid as text: digits, . for an empty cell, the boxes ruled off.
 l:s_hown := { g ->
-  m := (9 9 r_eshape (1 + g) s_elect ".123456789") c_at_2 9 2 r_eshape " |"
+  m := (9 9 r_eshape (1 + g) s_elect "." c_at 1 d_rop []D) c_at_2 9 2 r_eshape " |"
   r := 1 10 2 10 3 10 11 10 4 10 5 10 6 10 11 10 7 10 8 10 9 s_elect_2 m
   1 2 3 10 4 5 6 10 7 8 9 s_elect r c_at 1 21 r_eshape "------+-------+------"
 }

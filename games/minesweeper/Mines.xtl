@@ -93,8 +93,8 @@ l:c_odes := { s ->
 ## The field as text: # unopened, F flagged, * a mine (when lost), . an opened square with no mine around, else its count.
 l:v_iew := { s ->
   lab := (l:n c_at 2) r_eshape "1 2 3 4 5 6 7 8 9 "
-  (1 20 r_eshape "  1 2 3 4 5 6 7 8 9 ") c_at lab c_at_2 b:s_paced (l:c_odes s) s_elect "#F*.12345678"
+  (1 20 r_eshape "  1 2 3 4 5 6 7 8 9 ") c_at lab c_at_2 b:s_paced (l:c_odes s) s_elect "#F*." c_at 1 d_rop -1 d_rop []D
 }
 # :: Int -> Char
 ## The field as a picture X_eTaL draws: the same characters in a grid.
-l:p_icture := { s -> []G_RID (l:c_odes s) s_elect "#F*.12345678" }
+l:p_icture := { s -> []G_RID (l:c_odes s) s_elect "#F*." c_at 1 d_rop -1 d_rop []D }

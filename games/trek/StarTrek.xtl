@@ -101,7 +101,7 @@ l:h_ome := { s -> 1 + (8 * 6 s_elect s) + 7 s_elect s }
 # :: Int -> Char
 ### Where things are, said as the BASIC said it
 ## A row and column (0 to 7) as "C-5".
-l:a_t := { rc -> ((1 + f_irst rc) s_elect "ABCDEFGH") c_at "-" c_at f_ormat 1 + 2 s_elect rc }
+l:a_t := { rc -> ((1 + f_irst rc) s_elect 8 t_ake []A) c_at "-" c_at f_ormat 1 + 2 s_elect rc }
 
 # :: Num a => Unit -> a
 ## The eight courses of the compass, 1 north, clockwise: the step in rows

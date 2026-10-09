@@ -16,7 +16,7 @@ u:r_ace := { p ->
 
 ## Your pick: 1 to 5, 0 to stop, or it asks again.
 u:a_sk := { c ->
-  k := (@ f_ormat< "you have {c} coins; your horse (1 to 5, q to stop):") p:l_etter "12345q"
+  k := (@ f_ormat< "you have {c} coins; your horse (1 to 5, q to stop):") p:l_etter (5 t_ake 1 d_rop []D) c_at "q"
   k <= 5 ? k; k = 6 ? 0; u:a_sk c
 }
 

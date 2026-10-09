@@ -9,7 +9,7 @@ said := p_rint! "TIC-TAC-TOE: YOU ARE X."
 
 ## Your move: the number of an empty square, or it asks again.
 u:a_sk := { b ->
-  k := "YOUR MOVE (1-9) ?" p:l_etter "123456789"
+  k := "YOUR MOVE (1-9) ?" p:l_etter 1 d_rop []D
   (k <= 9) & 0 = k s_elect b c_at 1 ? k; u:a_sk b
 }
 u:v_erdict := { b -> d_isclose (t:s_tatus b) s_elect "YOU WIN!" "I WIN." "A DRAW." }

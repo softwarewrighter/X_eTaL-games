@@ -47,7 +47,7 @@ l:s_tatus := { s r -> f_irst (((0 = l:s_core s) c_at 0 = t_ally s l:m_oves r) r_
 # :: Int -> Char
 ## The tiles as the box shows them: open ones by number, shut ones as .,
 ## spaced (lib/Board).
-l:v_iew := { s -> r_avel b:s_paced (1 9 r_eshape 1 + s * r_ange 9) s_elect ".123456789" }
+l:v_iew := { s -> r_avel b:s_paced (1 9 r_eshape 1 + s * r_ange 9) s_elect "." c_at 1 d_rop []D }
 # :: Truthy a => a -> Char
 ## A move as its tiles, "1 2 4".
 l:t_iles := { m -> f_ormat w_here m }

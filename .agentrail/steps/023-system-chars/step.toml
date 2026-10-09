@@ -1,0 +1,9 @@
+number = 23
+slug = "system-chars"
+status = "in-progress"
+description = "the user (2026-10-08): X_eTaL's []A (the uppercase alphabet) and []D (the dig..."
+role = "production"
+context_files = []
+created_at = "2026-10-08T19:37:38"
+task_type = "vendor"
+commits = []
