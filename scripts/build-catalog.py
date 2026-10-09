@@ -42,6 +42,19 @@ PAGE = """<!doctype html>
 body {{ margin:0; background:var(--bg); color:var(--fg);
   font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }}
 main, footer {{ max-width: 980px; margin: 0 auto; padding: 0 16px; }}
+/* The table of contents: the games by group, alphabetical, at the top
+   left and in view while scrolling; above the cards on a narrow screen. */
+.layout {{ display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 28px; max-width: 1240px; margin: 0 auto; padding: 0 16px; }}
+.layout main {{ max-width: none; margin: 0; padding: 0; }}
+nav.toc {{ position: sticky; top: 16px; align-self: start; padding-top: 24px; font-size: .92rem; }}
+nav.toc h2 {{ font-size: 1rem; margin: 0 0 8px; }}
+nav.toc h3 {{ font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 4px; }}
+nav.toc ul {{ list-style: none; padding: 0; margin: 0; }}
+nav.toc li {{ margin: 3px 0; }}
+nav.toc a {{ color: var(--accent); text-decoration: none; }}
+nav.toc a:hover {{ text-decoration: underline; }}
+nav.toc .draft {{ color: var(--muted); font-size: .8rem; }}
+@media (max-width: 760px) {{ .layout {{ grid-template-columns: 1fr; gap: 0; }} nav.toc {{ position: static; padding-top: 12px; }} }}
 header {{ padding: 48px 0 24px; }}
 h1 {{ font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.01em; }}
 .lede {{ color: var(--muted); max-width: 46rem; margin: 0; }}
@@ -105,6 +118,8 @@ code {{ font-family: ui-monospace, "JuliaMono", Menlo, monospace; }}
 </style>
 </head>
 <body>
+<div class="layout">
+{toc}
 <main>
 <header>
 <div class="brand"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL"><h1>Games</h1></div>
@@ -113,6 +128,7 @@ is written around one array idea and happens to be playable.</p>
 </header>
 {body}
 </main>
+</div>
 <footer>
 <span>Copyright (c) 2026 Michael A Wright</span><span class="sep">&middot;</span>
 <span>MIT License</span><span class="sep">&middot;</span>
@@ -199,6 +215,23 @@ def rendered(expr):
     return subprocess.run([xetal, "render", "--html", "-e", expr], capture_output=True, text=True, check=True).stdout.strip()
 
 
+def toc(games):
+    """The table of contents: each group's games, alphabetical, linking to their cards."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from games import GROUPS as groups
+    parts = ['<nav class="toc" aria-label="Games"><h2>Games</h2>']
+    for g in groups:
+        inside = sorted((m for m in games if m.get("group") == g), key=lambda m: m["title"].lower())
+        if not inside:
+            continue
+        items = "".join(f'<li><a href="#{html.escape(m["slug"])}">{html.escape(m["title"])}</a>'
+                        + ('' if m["status"] == "live" else f' <span class="draft">({html.escape(STATUS[m["status"]].lower())})</span>')
+                        + '</li>' for m in inside)
+        parts.append(f'<h3>{html.escape(g)}</h3><ul>{items}</ul>')
+    parts.append('</nav>')
+    return "".join(parts)
+
+
 def start():
     """The first screen: what this is, why arrays, how to try it, and the family."""
     examples = "".join(f'<figure><code class="xtl">{rendered(e)}</code><figcaption>{html.escape(c)}</figcaption></figure>'
@@ -246,7 +279,7 @@ def main():
         body = '<p class="empty">The first game is on its way.</p>'
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(PAGE.format(
-        body=body, repo=REPO, xetal=XETAL, commit=git("rev-parse", "--short", "HEAD"),
+        body=body, toc=toc(games) if games else "", repo=REPO, xetal=XETAL, commit=git("rev-parse", "--short", "HEAD"),
         xsha=vend["commit"], xshort=vend["commit"][:7], host=socket.gethostname().split(".")[0],
         stamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%S")))
     print(f"catalog: {out} ({len(games)} game(s))")

@@ -6,6 +6,7 @@ summary = "Slide the tiles of a 4 by 4 board; equal tiles merge; make 2048. A mo
 lesson = "compress, merge, compress as a train; turning by powers of 0 or 1"
 concepts = ["s_\\ scans", "t_able", "masks", "o_\\ transpose", "r_ev_2", "m_atch", "libraries"]
 status = "live"
+group = "Puzzles"
 order = 90
 sources = []
 needs = ["[]G_RID numbers"]

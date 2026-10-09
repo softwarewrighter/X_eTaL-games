@@ -1,0 +1,1 @@
+the user (2026-10-09): the catalog gets a table of contents at the top left: the games alphabetical, grouped (puzzles, chance and strategy, adventures, quizzes); a group field in every game.toml (checked by games.py); links to each card; it stays in view while scrolling and sits above the cards on a narrow screen; the browser test follows its links.

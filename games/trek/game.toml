@@ -6,6 +6,7 @@ summary = "The classic: destroy every Klingon in an 8 by 8 galaxy of 8 by 8 sect
 lesson = "a galaxy of planes; paths as tables of steps; windows by selection"
 concepts = ["8 by 8 planes", "t_able paths", "w_here first hit", "windows by index", "g_rade permutations", "r_avel_2", "libraries"]
 status = "live"
+group = "Adventures"
 order = 50
 sources = ["the COR24 BASIC Star Trek"]
 needs = []

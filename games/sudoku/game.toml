@@ -6,6 +6,7 @@ summary = "Fill the 9 by 9 grid so every row, column and box holds 1 to 9. X_eTa
 lesson = "a candidate tensor; every single at once by sums over units; rounds to a fixed point"
 concepts = ["t_able", "s_elect with a table", "r_/_2", "one-hot", "fixed point", "search", "libraries"]
 status = "live"
+group = "Puzzles"
 order = 100
 sources = []
 needs = []

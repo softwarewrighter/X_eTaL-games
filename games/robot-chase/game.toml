@@ -6,6 +6,7 @@ summary = "Twelve robots chase you across a 16 by 16 board and you make them cra
 lesson = "a coordinate matrix moving at once; collisions as an inner product"
 concepts = ["matrices", "sign by comparisons", "t_able", "r_eplicate", "reduce on rank 4", "g_rade", "libraries"]
 status = "live"
+group = "Adventures"
 order = 30
 sources = ["sw-embed/web-sw-cor24-basic (examples/robot-chase.bas)"]
 needs = []

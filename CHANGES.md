@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 15:37 `feat` The catalog's table of contents (the user): at the top left, in view while scrolling (above the cards on a narrow screen), every game by group (puzzles, chance and strategy, adventures, quizzes), alphabetical, each linking to its card; `group` in every game.toml, checked by games.py (the template lists them); the browser test follows every link.
+
 - 13:36 `chore` Saga step dungeon completed.
 
 - 13:33 `game` Dungeon is live, the first game on lib/Ecs: find the way out with the arrow keys or WASD, fight rats and goblins, pick up potions and gold. You, the monsters and the items are rows of one world matrix (laid out by `"h" ec:c_omponents<`); what each is comes from its components, which `dungeon.toml` gives each kind, so a new kind is data (test.sh adds bats and checks they spawn and chase with no code changed); every rule is a system over every entity at once (the monsters' chase all at once, collisions resolved); the state is a tuple. `lib/Ecs.xtlm`: the left side names the namespace (`"u"` in a program, `"h"` or `"l"` in a library). The browser test plays key games by keydown.

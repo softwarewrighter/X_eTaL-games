@@ -6,6 +6,7 @@ summary = "The smallest COR24 BASIC game, at a terminal: higher or lower until y
 lesson = "every candidate against every guess by one table; all games played at once"
 concepts = ["r_oll!", "t_able", "reduce", "masks", "[]R_EAD", "libraries"]
 status = "live"
+group = "Chance and strategy"
 order = 20
 sources = ["sw-embed/web-sw-cor24-basic (examples/guess.bas, examples/guess-random.bas)"]
 needs = []

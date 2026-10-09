@@ -239,7 +239,11 @@ try {
     const problem = await aboutProblems(cat, `[id="${slug}"] h2 a.wiki, [id="${slug}"] h2 button.about-open`, wiki);
     if (problem) { console.log(`FAIL: catalog ${slug}: ${problem}`); failed++; catProblems++; }
   }
-  if (!catProblems) console.log(`ok: catalog (${slugs.length} titles: Wikipedia links and about dialogs)`);
+  // The table of contents: every game once, each link leading to its card.
+  const toc = await cat.evaluate(`(() => { const a = [...document.querySelectorAll("nav.toc a")];
+    return { n: a.length, bad: a.filter((x) => !document.getElementById(x.getAttribute("href").slice(1))).map((x) => x.getAttribute("href")) }; })()`);
+  if (toc.bad.length || toc.n < slugs.length) { console.log(`FAIL: catalog: the table of contents has ${toc.n} links for ${slugs.length} games${toc.bad.length ? `, leading nowhere: ${toc.bad.join(", ")}` : ""}`); failed++; catProblems++; }
+  if (!catProblems) console.log(`ok: catalog (${slugs.length} titles: Wikipedia links and about dialogs; the table of contents leads to every card)`);
   await cat.close();
   for (const slug of games) {
     const dir = join(root, "games", slug);

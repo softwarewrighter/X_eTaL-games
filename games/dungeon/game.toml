@@ -6,6 +6,7 @@ summary = "Find the way out with the arrow keys: fight rats and goblins, pick up
 lesson = "an entity-component system as arrays: entities as rows, components as columns, systems as whole-column expressions"
 concepts = ["Ecs.xtlm macro", "tuples", "[]E_VENT keys", "w_here masks", "t_able", "SVG", "libraries"]
 status = "live"
+group = "Adventures"
 order = 130
 sources = []
 needs = []

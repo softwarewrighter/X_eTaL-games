@@ -6,6 +6,7 @@ summary = "Roll the dice and shut tiles adding up to the roll; shut all nine to 
 lesson = "masks over all 512 subsets at once; sums by one inner product"
 concepts = ["e_ncode", "i_nner", "masks", "o_\\ transpose", "s_elect_2", "libraries"]
 status = "live"
+group = "Puzzles"
 order = 70
 sources = []
 needs = []

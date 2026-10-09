@@ -6,6 +6,7 @@ summary = "Five horses race to 15, each running 1, 2 or 3 a round, all at once. 
 lesson = "a vector of racers moved by one expression; the leaders by a fork"
 concepts = ["vectors", "r_oll!", "reduce", "w_here", "t_able", "libraries"]
 status = "live"
+group = "Chance and strategy"
 order = 10
 sources = ["sw-comp-history/apl-horse-race (src/race.apl, src/idiomatic-race.apl)", "sw-embed/sw-cor24-apl (samples/25-horse-race-simple.apl, samples/26-horse-race.apl)"]
 needs = []

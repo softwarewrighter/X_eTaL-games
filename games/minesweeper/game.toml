@@ -6,6 +6,7 @@ summary = "Open a 9 by 9 field without touching its 10 mines. Every square's cou
 lesson = "neighborhoods by rotate and reduce; flood fill to a fixed point"
 concepts = ["o_-_12 rotations", "reduce", "masks", "fixed point", "g_rade", "[]G_RID", "libraries"]
 status = "live"
+group = "Puzzles"
 order = 80
 sources = []
 needs = []

@@ -24,8 +24,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 STATUSES = {"draft", "live", "deferred"}
+# The catalog's table of contents groups the games, in this order.
+GROUPS = ["Puzzles", "Chance and strategy", "Adventures", "Quizzes"]
 FIELDS = {"slug": str, "title": str, "summary": str, "lesson": str, "concepts": list,
-          "status": str, "order": int, "sources": list, "needs": list}
+          "status": str, "group": str, "order": int, "sources": list, "needs": list}
 
 
 def game_dirs():
@@ -39,6 +41,8 @@ def problems(d, meta):
            if not isinstance(meta.get(k), t)]
     if meta.get("slug") != d.name:
         out.append(f"{d.name}: slug {meta.get('slug')!r} is not the directory name")
+    if meta.get("group") not in GROUPS:
+        out.append(f"{d.name}: group must be one of {GROUPS}")
     if meta.get("status") not in STATUSES:
         out.append(f"{d.name}: status must be one of {sorted(STATUSES)}")
     if not (isinstance(meta.get("wikipedia"), str) or isinstance(meta.get("about"), str)):

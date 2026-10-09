@@ -6,6 +6,7 @@ summary = "Three in a row against the computer. The eight lines are a table of s
 lesson = "lines by indexing; ratings as one inner product; minimax as negamax"
 concepts = ["index tables", "reduce", "m_ember?", "t_able", "recursion", "e_ach", "libraries"]
 status = "live"
+group = "Chance and strategy"
 order = 60
 sources = []
 needs = []

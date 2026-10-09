@@ -6,6 +6,7 @@ summary = "A 5 by 5 board you click: a press toggles a light and its four neighb
 lesson = "a press as a matrix; a board of presses as one product mod 2; Gaussian elimination over GF(2)"
 concepts = ["t_able", "i_nner", "m_od", "[]E_VENT", "SVG", "libraries"]
 status = "live"
+group = "Puzzles"
 order = 105
 sources = []
 needs = []

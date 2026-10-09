@@ -1,0 +1,9 @@
+number = 28
+slug = "catalog-toc"
+status = "in-progress"
+description = "the user (2026-10-09): the catalog gets a table of contents at the top left: ..."
+role = "production"
+context_files = []
+created_at = "2026-10-09T15:00:08"
+task_type = "feature"
+commits = []

@@ -6,6 +6,7 @@ summary = "Star Trek: Decaying Orbit, a text adventure: restore the Enterprise's
 lesson = "text as a table of rows picked by masks; refusals as data"
 concepts = ["string tables", "masks", "w_here", "m_ember?", "t_able", "functional update", "libraries"]
 status = "live"
+group = "Adventures"
 order = 40
 sources = ["the COR24 BASIC trek adventure"]
 needs = []

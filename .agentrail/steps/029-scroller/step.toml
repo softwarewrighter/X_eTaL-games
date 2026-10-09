@@ -1,7 +1,7 @@
 number = 29
-slug = "racer"
+slug = "scroller"
 status = "pending"
-description = "an ECS demo with ticks: a race game: cars as entities, laps and positions as ..."
+description = "an ECS demo with ticks: a side-scroller: gravity, movement and collision syst..."
 role = "production"
 context_files = []
 created_at = "2026-10-09T11:07:12"

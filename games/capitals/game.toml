@@ -6,6 +6,7 @@ summary = "A map you click: each red dot is a national capital inside its unlabe
 lesson = "every distance at once, nearest by grade; a map drawn as SVG text; clicks as events; data from TOML"
 concepts = ["[]T_ABLE", "[]L_IST", "[]E_VENT", "s_in c_os", "g_rade", "f_ormat<", "SVG", "libraries"]
 status = "live"
+group = "Quizzes"
 order = 110
 sources = ["Natural Earth (public domain), fetched by assets/fetch.sh"]
 needs = []
