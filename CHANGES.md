@@ -10,6 +10,10 @@ documentation, `plan` saga planning and reordering, `release`
 milestone release, `chore` agentrail bookkeeping (step complete, saga
 archive), `vendor` a refresh of the vendored X_eTaL.
 
+## 2026-10-09
+
+- 11:05 `refactor` Tuples (X_eTaL Saga 39) where values of different meanings were packed into one argument and picked apart by position: `lib/Svg.xtl`'s `w_ords (x, y, size)` and `l_abeled (view, on)` (their types now say so: `(Float, Float, Float) -> a -> Box Char`), capitals' and stargazer's `s_et (k, v)`, stargazer's `o_ne (i, b)`, lights out's `h:s_tep (r, c)`; every output unchanged; docs/style.md says when (many values of one kind stay arrays).
+
 ## 2026-10-08
 
 - 21:22 `chore` Saga step system-chars completed.

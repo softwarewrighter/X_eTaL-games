@@ -56,6 +56,12 @@ better when it is clearer, never when it is cryptic.
   holds and writes the condition as written to standard error when it
   does not, which fails the tests (the self-test proves it). The control
   macros (`i_f<`, `u_nless<`) are not used: a guard does their job.
+- Values of different meanings passed as one argument are a tuple, named
+  in the parameters: `l:w_ords := { (x, y, z) t -> ... }`, called as
+  `(x, y, size) sv:w_ords t`; X_eTaL then shows the type as
+  `(Float, Float, Float) -> a -> Box Char`. Many values of one kind (a
+  board's squares, a list of index and value pairs, a click's point from
+  `[]E_AT`) stay arrays, so whole-array operations still apply.
 - The digits and the alphabet are X_eTaL's system values `[]D`
   (`0123456789`) and `[]A` (`A` to `Z`), not literals: `1 d_rop []D` for
   the digits 1 to 9, `8 t_ake []A` for the columns A to H.

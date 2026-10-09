@@ -390,7 +390,7 @@ X_eTaL-libraries', which the games do not use.
 | # | Step slug | Delivers | Waits on |
 | - | --------- | -------- | -------- |
 | 1 | screen-control | boards redrawn in place, colors, single keys (`[]A_T`, `[]C_LS`, `[]F_G`, `[]K_EY`, the `Key` enum) | X_eTaL saga 25 step 7 |
-| 2 | enums-tuples-records | state as records, statuses/events/moves as enums with matching, tuples for (row, column) and a move with its score | X_eTaL saga 29 |
+| 2 | enums-tuples-records | PART DONE (launch step 24, tuples): `lib/Svg.xtl`'s `w_ords (x, y, size)` and `l_abeled (view, on)`, the games' `s_et (k, v)`, `o_ne (i, b)`, `h:s_tep (r, c)`; still to do: the map games' state as a tuple (region, open, score, dots, results, last) instead of positions in a vector. Planned: state as records, statuses/events/moves as enums with matching, tuples for (row, column) and a move with its score | X_eTaL saga 29 |
 | 3 | type-signatures | checked `::` signatures (the `# ::` comments become code) | X_eTaL's planned signatures |
 | 4 | errors | invalid input as a typed error or a `Result` | X_eTaL saga 21 |
 | 5 | extensions | a native extension where it helps | X_eTaL saga 23 |

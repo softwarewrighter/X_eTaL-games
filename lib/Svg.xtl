@@ -30,13 +30,13 @@ l:u_nit := { v -> (3 s_elect v) / 1000 }
 ## >> d_isclose (0 0 20 10.0) g:r_ect "fill=\"red\""
 ## <rect x="0" y="0" width="20" height="10" fill="red"/>
 l:r_ect := { r st -> e_nclose @ f_ormat< "<rect x=\"{l:w_hole f_irst r}\" y=\"{l:w_hole 2 s_elect r}\" width=\"{l:w_hole 3 s_elect r}\" height=\"{l:w_hole 4 s_elect r}\" {st}/>" }
-# :: Float -> a -> Box Char
+# :: (Float, Float, Float) -> a -> Box Char
 ## An SVG text at x, y in size z (xyz), with a white halo to read over a
 ## map.
 ## >> "g:" u_se< "Svg"
-## >> d_isclose (10 20 30.0) g:w_ords "hi"
+## >> d_isclose (10.0, 20.0, 30.0) g:w_ords "hi"
 ## <text x="10" y="20" font-size="30" paint-order="stroke" stroke="#ffffff" stroke-width="8">hi</text>
-l:w_ords := { xyz t -> e_nclose @ f_ormat< "<text x=\"{l:w_hole f_irst xyz}\" y=\"{l:w_hole 2 s_elect xyz}\" font-size=\"{l:w_hole 3 s_elect xyz}\" paint-order=\"stroke\" stroke=\"#ffffff\" stroke-width=\"{l:w_hole 0.25 * 3 s_elect xyz}\">{t}</text>" }
+l:w_ords := { (x, y, z) t -> e_nclose @ f_ormat< "<text x=\"{l:w_hole x}\" y=\"{l:w_hole y}\" font-size=\"{l:w_hole z}\" paint-order=\"stroke\" stroke=\"#ffffff\" stroke-width=\"{l:w_hole 0.25 * z}\">{t}</text>" }
 # :: Num a => a -> a -> Int
 ## Which of the rectangles r holds the point xy: 1 to the number of
 ## rows, 0 for none.
@@ -77,19 +77,18 @@ l:m_enu := { v xy ->
 }
 ## A button's fill: the one shown filled.
 h:f_ill := { on -> d_isclose (1 + on) s_elect "#ffffff" "#a8dadc" }
-# :: Float -> Box a -> Box Char
-## Buttons b (rectangles) labeled with the texts names: the one numbered
-## by the view's fifth item (from 1) filled; v is the view and that number.
+# :: (Float, Int) -> Box a -> Box Char
+## A row of buttons along the top of view v, labeled with the texts
+## names, button on (from 1; 0 none) filled.
 ## >> "g:" u_se< "Svg"
-## >> t_ally (0 0 2000 800 1.0) g:l_abeled "a" "b"
+## >> t_ally (0 0 2000 800.0, 1) g:l_abeled "a" "b"
 ## 4
-l:l_abeled := { vb names ->
-  v := 4 t_ake vb
+l:l_abeled := { (v, on) names ->
   u := l:u_nit v
   b := v l:b_uttons t_ally names
   k := r_ange t_ally names
-  r := '{ j -> (j s_elect b) l:r_ect @ f_ormat< "class=\"region\" rx=\"{l:w_hole u * 6}\" fill=\"{h:f_ill (f_loat j) = 5 s_elect vb}\" stroke=\"#264653\"" } e_ach k
-  r c_at '{ j -> (((1 s_elect j s_elect b) + u * 12) c_at ((2 s_elect j s_elect b) + u * 24) c_at u * 18) l:w_ords d_isclose j s_elect names } e_ach k
+  r := '{ j -> (j s_elect b) l:r_ect @ f_ormat< "class=\"region\" rx=\"{l:w_hole u * 6}\" fill=\"{h:f_ill j = on}\" stroke=\"#264653\"" } e_ach k
+  r c_at '{ j -> ((1 s_elect j s_elect b) + u * 12, (2 s_elect j s_elect b) + u * 24, u * 18) l:w_ords d_isclose j s_elect names } e_ach k
 }
 # :: Float -> Box a -> Box Char
 ## A menu m (four rectangles) of the texts names, each a button.
@@ -99,7 +98,7 @@ l:l_abeled := { vb names ->
 l:c_hoices := { m names ->
   u := (3 s_elect 1 s_elect m) / 300
   r := '{ j -> (j s_elect m) l:r_ect @ f_ormat< "class=\"choice\" rx=\"{l:w_hole u * 6}\" fill=\"#fffbe6\" stroke=\"#264653\"" } e_ach r_ange 4
-  r c_at '{ j -> (((1 s_elect j s_elect m) + u * 12) c_at ((2 s_elect j s_elect m) + u * 27) c_at u * 20) l:w_ords d_isclose j s_elect names } e_ach r_ange 4
+  r c_at '{ j -> ((1 s_elect j s_elect m) + u * 12, (2 s_elect j s_elect m) + u * 27, u * 20) l:w_ords d_isclose j s_elect names } e_ach r_ange 4
 }
 # :: Float -> Box Char -> Char
 ## The picture: an SVG document of the view v holding the pieces p.

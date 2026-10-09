@@ -107,15 +107,15 @@ l:a_t := { a i ->
 ## from each brightness band (another star, from anywhere in the sky,
 ## picked by q and i), in the order of right ascension.
 l:c_hoices := { q i ->
-  c := i c_at '{ b -> q h:o_ne i c_at b } e_ach r_ange t_ally mix
+  c := i c_at '{ b -> q h:o_ne (i, b) } e_ach r_ange t_ally mix
   (g_rade c s_elect n_eg ra) s_elect c
 }
 ## Band b's star for star i: a star of that band other than i, at a
 ## place fixed by q, i and b.
-h:o_ne := { q ib ->
-  l := w_here band = 2 s_elect ib
-  l := (l != f_irst ib) r_eplicate l
-  (1 + (q + (7919 * f_irst ib) + 104729 * 2 s_elect ib) m_od t_ally l) s_elect l
+h:o_ne := { q (i, b) ->
+  l := w_here band = b
+  l := (l != i) r_eplicate l
+  (1 + (q + (7919 * i) + 104729 * b) m_od t_ally l) s_elect l
 }
 
 ### The game
@@ -177,17 +177,17 @@ l:c_lick := { s xy ->
   b := ((l:v_iew f_irst s) sv:b_uttons 1 + t_ally l:p_arts @) sv:h_it xy
   b > 0 ? l:n_ew b - 1
   (2 s_elect s) > 0 ? s h:o_pen xy
-  (2 c_at s h:s_tarAt xy) h:s_et s
+  (2, s h:s_tarAt xy) h:s_et s
 }
 ## A click while a menu is open: a choice answers; elsewhere, another
 ## star's menu opens or the menu closes.
 h:o_pen := { s xy ->
   k := (l:m_enu s) sv:h_it xy
   k > 0 ? s h:a_nswer k
-  (2 c_at s h:s_tarAt xy) h:s_et s
+  (2, s h:s_tarAt xy) h:s_et s
 }
-## The state with item k (from 1) replaced by v: kv is k v.
-h:s_et := { kv s -> s + ((2 s_elect kv) - (f_irst kv) s_elect s) * (f_irst kv) = r_ange t_ally s }
+## The state with item k (from 1) replaced by v.
+h:s_et := { (k, v) s -> s + (v - k s_elect s) * k = r_ange t_ally s }
 ## Choice k of the open star: right or wrong, the score, the menu closed.
 h:a_nswer := { s k ->
   d := 2 s_elect s
@@ -195,8 +195,8 @@ h:a_nswer := { s k ->
   pick := k s_elect l:o_ffered s
   right := pick = i
   n := 4 s_elect s
-  t := (5 + n + d) c_at 2 - right
-  s := (2 c_at 0) h:s_et (3 c_at (3 s_elect s) + right) h:s_et t h:s_et s
+  t := (5 + n + d, 2 - right)
+  s := (2, 0) h:s_et (3, (3 s_elect s) + right) h:s_et t h:s_et s
   (-2 d_rop s) c_at d c_at pick
 }
 
@@ -230,19 +230,19 @@ h:r_ings := { s u ->
   y := h:y_s s
   r := l:r_esults s
   rings := '{ k -> e_nclose @ f_ormat< "<circle class=\"dot\" cx=\"{sv:w_hole k s_elect x}\" cy=\"{sv:w_hole k s_elect y}\" r=\"{sv:w_hole u * 13}\" fill=\"none\" stroke=\"{h:r_ingColor k s_elect r}\" stroke-width=\"{sv:w_hole u * 3}\"/>" } e_ach r_ange t_ally x
-  rings c_at '{ k -> (((k s_elect x) + u * 16) c_at ((k s_elect y) + u * 6) c_at u * 18) sv:w_ords l:n_ame k s_elect l:m_arks s } e_ach w_here r > 0
+  rings c_at '{ k -> ((k s_elect x) + u * 16, (k s_elect y) + u * 6, u * 18) sv:w_ords l:n_ame k s_elect l:m_arks s } e_ach w_here r > 0
 }
 ## The parts' buttons (the part shown filled), and the score below them
 ## at the right (seven buttons fill the row).
 h:b_ar := { s v ->
   u := sv:u_nit v
-  score := ((f_irst v) + (3 s_elect v) - u * 190) c_at ((2 s_elect v) + u * 80) c_at u * 22
-  ((v c_at f_loat 1 + f_irst s) sv:l_abeled (e_nclose "All") c_at l:p_arts @) c_at score sv:w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
+  score := ((f_irst v) + (3 s_elect v) - u * 190, (2 s_elect v) + u * 80, u * 22)
+  ((v, 1 + f_irst s) sv:l_abeled (e_nclose "All") c_at l:p_arts @) c_at score sv:w_ords @ f_ormat< "Score {l:s_core s} of {4 s_elect s}"
 }
 ## What happened, along the bottom.
 h:s_aid := { s v ->
   u := sv:u_nit v
-  (((f_irst v) + u * 12) c_at ((2 s_elect v) + (4 s_elect v) - u * 16) c_at u * 22) sv:w_ords l:s_ay s
+  ((f_irst v) + u * 12, (2 s_elect v) + (4 s_elect v) - u * 16, u * 22) sv:w_ords l:s_ay s
 }
 ## The open menu: the four names, each a button.
 h:c_hoose := { s ->

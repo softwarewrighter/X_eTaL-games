@@ -1,0 +1,1 @@
+the user (2026-10-08/09): use X_eTaL's tuples (Saga 39: values and patterns) where values are packed into one argument and picked apart by position: lib/Svg.xtl's w_ords (x, y, size) and l_abeled (view, selected); the games' s_et (k, v), o_ne (i, band), h:s_tep (row, col); the map games' state where tuples carry it cleanly; ## examples and goldens unchanged; docs/style.md.

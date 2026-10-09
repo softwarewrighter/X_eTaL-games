@@ -49,8 +49,8 @@ v := 0 0 2000 800.0
 v g:b_uttons 3
 v g:m_enu 1000 400.0
 v g:r_ect "fill=\"red\""
-(10 20 30.0) g:w_ords "hi"
-t_ally (v c_at 2.0) g:l_abeled "a" "b"
+(10.0, 20.0, 30.0) g:w_ords "hi"
+t_ally (v, 2) g:l_abeled "a" "b"
 t_ally (v g:m_enu 100 100.0) g:c_hoices "w" "x" "y" "z"
 v g:p_icture e_nclose "<circle/>"
 
