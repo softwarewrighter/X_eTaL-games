@@ -1,0 +1,1 @@
+the page passes keys (keydown as key NAME) and, for real-time games, ticks (tick DT each animation frame) to a game's program as []E_VENT lines, opt-in per game; Live feeds them; tests.

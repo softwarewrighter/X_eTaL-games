@@ -1,9 +1,10 @@
 number = 24
 slug = "tuples"
-status = "in-progress"
+status = "completed"
 description = "the user (2026-10-08/09): use X_eTaL's tuples (Saga 39: values and patterns) ..."
 role = "production"
 context_files = []
 created_at = "2026-10-09T10:53:25"
+completed_at = "2026-10-09T11:08:13"
 task_type = "refactor"
-commits = []
+commits = ["5ebf95f64cb30fe42d6a518e7afc2de53a7f4850"]

@@ -1,0 +1,1 @@
+Tuples for packed arguments: Svg w_ords/l_abeled, s_et, o_ne, h:s_tep; outputs unchanged; state-as-tuple deferred in the plan. ECS steps 25-30 inserted after (ecs-lib, events, dungeon, scroller, racer, asteroids).

@@ -1,0 +1,1 @@
+an ECS demo, turn-based: a dungeon crawler (keys): the player, monsters and items as entities; adding a kind of thing means adding components; systems for moving, attacking, picking up.

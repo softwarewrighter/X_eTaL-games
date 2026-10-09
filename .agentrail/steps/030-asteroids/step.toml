@@ -1,0 +1,9 @@
+number = 30
+slug = "asteroids"
+status = "pending"
+description = "an ECS demo with ticks: spawning and despawning (bullets, rocks splitting): e..."
+role = "production"
+context_files = []
+created_at = "2026-10-09T11:07:13"
+task_type = "feature"
+commits = []

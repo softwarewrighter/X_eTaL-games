@@ -1,0 +1,1 @@
+an ECS demo with ticks: spawning and despawning (bullets, rocks splitting): entity churn handled by masks.

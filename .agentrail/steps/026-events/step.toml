@@ -1,0 +1,9 @@
+number = 26
+slug = "events"
+status = "pending"
+description = "the page passes keys (keydown as key NAME) and, for real-time games, ticks (t..."
+role = "production"
+context_files = []
+created_at = "2026-10-09T11:07:12"
+task_type = "feature"
+commits = []

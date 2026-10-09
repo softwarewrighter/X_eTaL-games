@@ -1,0 +1,9 @@
+number = 27
+slug = "dungeon"
+status = "pending"
+description = "an ECS demo, turn-based: a dungeon crawler (keys): the player, monsters and i..."
+role = "production"
+context_files = []
+created_at = "2026-10-09T11:07:12"
+task_type = "feature"
+commits = []
