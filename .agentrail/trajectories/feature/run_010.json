@@ -1,0 +1,11 @@
+{
+  "task_type": "feature",
+  "state": {
+    "number": 27,
+    "step": "dungeon"
+  },
+  "action": "Crawl.xtl prototyped turn by turn, macro namespace added to Ecs.xtlm, browser test keydown, affected gate 158 s.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-09T13:36:48"
+}

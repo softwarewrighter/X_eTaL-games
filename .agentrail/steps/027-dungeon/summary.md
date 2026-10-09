@@ -1,0 +1,1 @@
+Dungeon live on lib/Ecs: data-driven kinds, systems over all entities, tuple state, key events; test.sh proves a new kind needs no code.
