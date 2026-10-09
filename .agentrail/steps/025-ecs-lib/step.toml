@@ -1,9 +1,10 @@
 number = 25
 slug = "ecs-lib"
-status = "in-progress"
+status = "completed"
 description = "the user (2026-10-09): an entity-component-system library, published here (li..."
 role = "production"
 context_files = []
 created_at = "2026-10-09T11:07:12"
+completed_at = "2026-10-09T12:39:26"
 task_type = "feature"
-commits = []
+commits = ["679f16c1d1dddcdcee5234bd2088510b57372897"]

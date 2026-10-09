@@ -1,0 +1,1 @@
+lib/Ecs.xtl + Ecs.xtlm: world matrix, c_omponents< macro (getters/masks/setters/removers/world), spawn/despawn/p_ut/n_ear; doc tests incl. xtlm; in /doc.

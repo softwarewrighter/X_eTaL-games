@@ -1,0 +1,11 @@
+{
+  "task_type": "feature",
+  "state": {
+    "number": 25,
+    "step": "ecs-lib"
+  },
+  "action": "Designed from Bits' f_ields< precedent; generated setters self-contained (macro cannot know the alias); doc-tested; sample+affected gates.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-10-09T12:39:26"
+}
