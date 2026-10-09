@@ -10,6 +10,7 @@ pub fn game() -> Game {
         lede: "A sky you click: five named stars are ringed, mixed bright, middling and faint; click one, then its name among four. X_eTaL reads the Bright Star Catalog and the IAU's star names from TOML and draws the whole sky, menus and all, as SVG; the page only shows the picture and passes your clicks to the program.",
         play: include_str!("../../play.xtl"),
         interactive: true,
+        ticks: false,
         script_name: "stargazer.xtl",
         script: include_str!("../../stargazer.xtl"),
         library_name: "Sky",

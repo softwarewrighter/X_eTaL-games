@@ -10,6 +10,7 @@ pub fn game() -> Game {
         lede: "Minesweeper in X_eTaL: every square's count of neighboring mines at once, as Life counts neighbors (the mines rotated by every offset and summed), and opening an empty square floods by growing the opened region until it stops. Type a row and a column to open, f row column to flag.",
         play: include_str!("../../play.xtl"),
         interactive: false,
+        ticks: false,
         script_name: "minesweeper.xtl",
         script: include_str!("../../minesweeper.xtl"),
         library_name: "Mines",

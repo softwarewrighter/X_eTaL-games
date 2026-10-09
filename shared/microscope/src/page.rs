@@ -26,6 +26,10 @@ pub struct Game {
     /// large dialog and gives it each click as an event line,
     /// `click X Y` in the picture's own coordinates ([]E_VENT).
     pub interactive: bool,
+    /// Whether a game played by clicks is also given the clock: while its
+    /// dialog is open, `tick 0.05` twenty times a second (real-time games;
+    /// keys are always given, as `key NAME`).
+    pub ticks: bool,
     /// The scripted program's file name and text (`<slug>.xtl`).
     pub script_name: &'static str,
     pub script: &'static str,
@@ -305,12 +309,62 @@ fn board(p: &BoardProps) -> Html {
             }
         })
     };
+    // Keys go to the program as `key NAME`, named as X_eTaL names them
+    // (xetal_lineedit::key_name: Up, Down, Left, Right, Enter, a letter);
+    // Escape stays the dialog's own (it closes it), and keys a game uses
+    // do not scroll the page behind it.
+    let onkeydown = {
+        let on_line = p.on_line.clone();
+        Callback::from(move |e: KeyboardEvent| {
+            if e.key() == "Escape" || e.ctrl_key() || e.meta_key() || e.alt_key() {
+                return;
+            }
+            if let Some(name) = xetal_lineedit::key_name(&e.key()).filter(|n| n.trim() == n.as_str()) {
+                e.prevent_default();
+                on_line.emit(format!("key {name}"));
+            }
+        })
+    };
+    // The clock, for a game that asks for it (Game::ticks): while the
+    // dialog is open, `tick 0.05` twenty times a second, fed straight to
+    // the running game (ticks are not kept: nothing replays them).
+    let redraw = use_force_update();
+    {
+        let (live, dialog, ticks) = (live.clone(), dialog.clone(), p.game.ticks);
+        use_effect_with(ticks, move |&ticks| {
+            #[cfg(target_arch = "wasm32")]
+            let handle = ticks.then(|| {
+                use wasm_bindgen::{closure::Closure, JsCast};
+                let tick = Closure::<dyn FnMut()>::new(move || {
+                    let open = dialog.cast::<HtmlDialogElement>().is_some_and(|d| d.open());
+                    if open {
+                        if let Some((_, game, _)) = live.borrow_mut().as_mut() {
+                            game.feed("tick 0.05");
+                        }
+                        redraw.force_update();
+                    }
+                });
+                let id = web_sys::window()
+                    .and_then(|w| w.set_interval_with_callback_and_timeout_and_arguments_0(tick.as_ref().unchecked_ref(), 50).ok());
+                tick.forget();
+                id
+            }).flatten();
+            #[cfg(not(target_arch = "wasm32"))]
+            let _ = (&live, &dialog, &redraw, ticks);
+            move || {
+                #[cfg(target_arch = "wasm32")]
+                if let (Some(id), Some(w)) = (handle, web_sys::window()) {
+                    w.clear_interval_with_handle(id);
+                }
+            }
+        });
+    }
     let picture = t.lines.iter().rev().find_map(|l| match l { Line::Picture(svg) => Some(svg.clone()), _ => None });
     let said: Vec<&String> = t.lines.iter().filter_map(|l| match l { Line::Out(s) => Some(s), _ => None }).collect();
     html! {
         <>
         <button class="board-open" onclick={open}>{"Play"}</button>
-        <dialog class="board" ref={dialog} {onclick}>
+        <dialog class="board" ref={dialog} {onclick} {onkeydown}>
             <button class="close" aria-label="Close" onclick={close}>{"\u{00d7}"}</button>
             // An error stops the program: said first, above the picture it
             // left, so a game that stopped never looks merely unresponsive.

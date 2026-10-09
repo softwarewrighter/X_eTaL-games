@@ -10,6 +10,7 @@ pub fn game() -> Game {
         lede: "The COR24 BASIC robot chase in X_eTaL: twelve robots step toward you every turn, all at once, as one 2 by 12 matrix plus the sign of the difference. Make them crash into each other or into wrecks. Keypad moves (7 8 9 / 4 5 6 / 1 2 3), 0 teleports, 10 scans, 99 resigns.",
         play: include_str!("../../play.xtl"),
         interactive: false,
+        ticks: false,
         script_name: "robot-chase.xtl",
         script: include_str!("../../robot-chase.xtl"),
         library_name: "RobotChase",

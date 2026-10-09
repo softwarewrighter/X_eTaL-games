@@ -1,6 +1,6 @@
 number = 26
 slug = "events"
-status = "pending"
+status = "in-progress"
 description = "the page passes keys (keydown as key NAME) and, for real-time games, ticks (t..."
 role = "production"
 context_files = []

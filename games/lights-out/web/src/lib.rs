@@ -10,6 +10,7 @@ pub fn game() -> Game {
         lede: "A board you click: a press toggles a light and its four neighbors; turn every light off. Hint rings a square of a solution X_eTaL works out by Gaussian elimination over GF(2). The board, the buttons and the words are SVG written by X_eTaL; the page only shows the picture and passes your clicks to the program.",
         play: include_str!("../../play.xtl"),
         interactive: true,
+        ticks: false,
         script_name: "lights-out.xtl",
         script: include_str!("../../lights-out.xtl"),
         library_name: "Lamps",

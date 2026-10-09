@@ -716,6 +716,7 @@ dependencies = [
  "js-sys",
  "wasm-bindgen",
  "web-sys",
+ "xetal-lineedit",
  "xetal-play",
  "xetal-store",
  "yew",
@@ -1522,6 +1523,10 @@ dependencies = [
 
 [[package]]
 name = "xetal-libs"
+version = "0.1.0"
+
+[[package]]
+name = "xetal-lineedit"
 version = "0.1.0"
 
 [[package]]

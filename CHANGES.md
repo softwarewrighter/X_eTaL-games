@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 12:58 `feat` A game played by clicks also gets its keys and, when it asks, the clock (for the ECS games): the dialog sends `key NAME` (X_eTaL's own names, `xetal_lineedit::key_name`: Up, Down, Left, Right, Enter, a letter; Escape still closes it; the keys a game uses no longer scroll the page), and `Game::ticks` games are fed `tick 0.05` twenty times a second while the dialog is open (straight to the running game: ticks are not kept). A shell test feeds a key, a tick and a click to a running event loop.
+
 - 12:39 `chore` Saga step ecs-lib completed.
 
 - 12:39 `feat` `lib/Ecs.xtl` and `lib/Ecs.xtlm`, an entity-component system as arrays (the user: a function and macro library here, packaging later): a world is a matrix, a row per entity and a column per field (column 1 alive); the macro `@ ec:c_omponents< "pos:2 vel:2 hp"` writes each component's getter, mask, setter and remover and the world's constructor from the list, every column number worked out when the program is compiled; the functions spawn, despawn, count, write any cells at once (`ec:p_ut`, by one-hot tables) and find every pair of points within a distance (`ec:n_ear`). Systems are whole-column expressions over the entities a mask picks (lib/test.xtl moves every entity with a position and a velocity in one line). Doc-tested (17 examples, the macro's too: the gate's doc tests now cover .xtlm), in the cross-reference.

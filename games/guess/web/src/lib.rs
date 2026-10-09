@@ -10,6 +10,7 @@ pub fn game() -> Game {
         lede: "The smallest game of the COR24 BASIC demos, in X_eTaL: I am thinking of a number from 1 to 100; you guess, I say higher or lower. The scripted game answers many guesses at once, checks every candidate against every guess, and plays all 100 games in lockstep.",
         play: include_str!("../../play.xtl"),
         interactive: false,
+        ticks: false,
         script_name: "guess.xtl",
         script: include_str!("../../guess.xtl"),
         library_name: "NumberGuess",

@@ -10,6 +10,7 @@ pub fn game() -> Game {
         lede: "A map you click: each red dot is a capital inside its unlabeled country; click it, then its name among four nearby cities. X_eTaL reads the countries, capitals and cities from TOML, finds the nearest cities by computing every distance at once, and draws the whole map, menus and all, as SVG; the page only shows the picture and passes your clicks to the program.",
         play: include_str!("../../play.xtl"),
         interactive: true,
+        ticks: false,
         script_name: "capitals.xtl",
         script: include_str!("../../capitals.xtl"),
         library_name: "Atlas",

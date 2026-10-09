@@ -66,3 +66,20 @@ fn a_data_file_is_stored_by_its_path() {
     assert!(t.error.is_none(), "{:?}", t.error);
     assert_eq!(t.lines.first(), Some(&Line::Out("Lima".into())));
 }
+
+#[test]
+fn keys_ticks_and_clicks_reach_a_running_game() {
+    // The page gives a game played by clicks its keys (key NAME), its
+    // clock (tick DT) and its clicks (click X Y) as []E_VENT lines, fed to
+    // the program where it waits (Live).
+    use microscope::terminal::Live;
+    let src = "u:l_oop := { n ->\n  e := []E_VENT @\n  \"end\" m_atch []E_KIND e ? n\n  said := p_rint! ([]E_KIND e) c_at \" \" c_at f_ormat []E_AT e\n  u:l_oop n + 1\n}\nu:l_oop 0\n";
+    let mut live = Live::start(&[], src, 1);
+    for line in ["key Up", "tick 0.05", "click 12 34"] {
+        live.feed(line);
+    }
+    let t = live.transcript();
+    assert!(t.error.is_none() && t.waiting, "{:?}", t.error);
+    let out: Vec<String> = t.lines.iter().filter_map(|l| match l { Line::Out(s) => Some(s.clone()), _ => None }).collect();
+    assert_eq!(out, vec!["key ", "tick 0.05", "click 12.0 34.0"]);
+}
