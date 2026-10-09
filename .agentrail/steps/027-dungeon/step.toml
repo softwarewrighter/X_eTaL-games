@@ -1,6 +1,6 @@
 number = 27
 slug = "dungeon"
-status = "pending"
+status = "in-progress"
 description = "an ECS demo, turn-based: a dungeon crawler (keys): the player, monsters and i..."
 role = "production"
 context_files = []
