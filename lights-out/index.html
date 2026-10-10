@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lights out</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/lights-out/lights-out-web-abe40d898a20333.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/lights-out/lights-out-web-abe40d898a20333_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/lights-out/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/lights-out/microscope-94b91bba94c6228f.css" integrity="sha384-Qcv90sfTedlwGPtvFmYv7G10S8rkzdQl4E6Ea+Tx6wXaurssUBuGiXqze2rMuOiI"/>
+<link rel="modulepreload" href="/X_eTaL-games/lights-out/lights-out-web-abe40d898a20333.js" crossorigin="anonymous" integrity="sha384-Dtsr5c/ydJg0Fp5G3OUJLpR9T8Y9aeo+F1JpbgH+ygJMos4zRVguaZjb96P1K0S4"><link rel="preload" href="/X_eTaL-games/lights-out/lights-out-web-abe40d898a20333_bg.wasm" crossorigin="anonymous" integrity="sha384-ESeyU9lBV7vadfXNKCUcCN74EG5SuLZ3PCSE+YrS99r5sBx37xPxntnkgMH8XlQH" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

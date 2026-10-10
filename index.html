@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>X_eTaL Games</title>
+<link rel="icon" href="favicon.ico">
+<style>
+:root { --bg:#fbfaf7; --fg:#1d1d1f; --muted:#5f6368; --card:#ffffff; --line:#e3e0d8;
+  --accent:#2457c5; --chip:#eef2fb; --live:#1f7a3a; --draft:#9a6200; --deferred:#8a8a8a; --brand:#1db93a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#141518; --fg:#e8e6e3; --muted:#a0a4ab; --card:#1d1f23; --line:#30333a;
+  --accent:#8fb0ff; --chip:#262b36; --live:#5fcf7f; --draft:#e0a84a; --deferred:#8d9097; --brand:#3ee65f; } }
+:root[data-theme="dark"] { --bg:#141518; --fg:#e8e6e3; --muted:#a0a4ab; --card:#1d1f23;
+  --line:#30333a; --accent:#8fb0ff; --chip:#262b36; --live:#5fcf7f; --draft:#e0a84a; --deferred:#8d9097; --brand:#3ee65f; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main, footer { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+/* The table of contents: the games by group, alphabetical, at the top
+   left and in view while scrolling; above the cards on a narrow screen. */
+.layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 28px; max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+.layout main { max-width: none; margin: 0; padding: 0; }
+nav.toc { position: sticky; top: 16px; align-self: start; padding-top: 24px; font-size: .92rem; }
+nav.toc h2 { font-size: 1rem; margin: 0 0 8px; }
+nav.toc h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 4px; }
+nav.toc ul { list-style: none; padding: 0; margin: 0; }
+nav.toc li { margin: 3px 0; }
+nav.toc a { color: var(--accent); text-decoration: none; }
+nav.toc a:hover { text-decoration: underline; }
+nav.toc .draft { color: var(--muted); font-size: .8rem; }
+@media (max-width: 760px) { .layout { grid-template-columns: 1fr; gap: 0; } nav.toc { position: static; padding-top: 12px; } }
+header { padding: 48px 0 24px; }
+h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+.lede { color: var(--muted); max-width: 46rem; margin: 0; }
+.lede a, footer a { color: var(--accent); }
+.grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; padding: 8px 0 40px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;
+  display:flex; flex-direction:column; gap:10px; }
+.card h2 { font-size:1.15rem; margin:0; }
+.shot img { width:100%; aspect-ratio: 13 / 9; object-fit: cover; object-position: top; border-radius:8px; border:1px solid var(--line); display:block; }
+.card p { margin:0; color:var(--muted); }
+.card p.lesson { color:var(--fg); font-weight:600; font-size:.9rem; }
+.status { font-size:.8rem; font-weight:600; }
+.status.live { color:var(--live); } .status.draft { color:var(--draft); } .status.deferred { color:var(--deferred); }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chip { background:var(--chip); border-radius:999px; padding:2px 10px; font-size:.8rem; }
+.links { margin-top:auto; display:flex; gap:16px; font-weight:600; }
+.links a { color:var(--accent); text-decoration:none; }
+.links a:hover { text-decoration:underline; }
+.card h2 a.wiki { color: inherit; text-decoration: none; }
+.card h2 a.wiki:hover { text-decoration: underline; }
+.card h2 .glyph { color: var(--muted); vertical-align: 0.05em; }
+.card h2 button.about-open { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+  text-align: left; text-decoration: underline dotted; text-underline-offset: 0.2em; }
+dialog.about { border: 1px solid var(--line); border-radius: 12px; padding: 0; max-width: min(36rem, 92vw);
+  background: var(--card); color: var(--fg); }
+dialog.about::backdrop { background: rgba(0, 0, 0, 0.45); }
+dialog.about .about-box { position: relative; padding: 18px 22px 14px; }
+dialog.about h2 { margin: 0 0 8px; font-size: 1.15rem; }
+dialog.about p { margin: 0 0 6px; line-height: 1.55; color: var(--fg); }
+dialog.about .close { position: absolute; top: 6px; right: 8px; font: 1.4rem/1 system-ui, sans-serif;
+  background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+.empty { color:var(--muted); padding: 24px 0 48px; }
+.start { padding: 0 0 24px; }
+.start h2 { font-size: 1.3rem; margin: 0 0 8px; }
+.steps { margin: 0; padding-left: 1.3em; max-width: 50rem; }
+.steps li { margin: 0 0 12px; }
+.steps a { color: var(--accent); }
+.examples { display: grid; gap: 10px; margin: 10px 0 0; }
+.examples figure { margin: 0; padding: 10px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.examples code.xtl { font-size: 1.15rem; display: block; margin-bottom: 4px; }
+.examples figcaption { color: var(--muted); font-size: .9rem; }
+code.xtl .c-builtin { color: var(--accent); } code.xtl .c-number { color: #b7791f; }
+code.xtl .c-symbol { color: #0b7285; } code.xtl .c-libfunc, code.xtl .c-user { color: #2b8a3e; }
+.family { margin: 8px 0 0; }
+.family h3 { font-size: 1rem; margin: 0 0 6px; }
+.family ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.family span { color: var(--muted); font-size: .85rem; }
+.family a { color: var(--accent); font-weight: 600; }
+.idioms { padding: 0 0 24px; }
+.idioms h2 { font-size: 1.2rem; margin: 0 0 6px; }
+.idioms table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: .95rem; }
+.idioms th, .idioms td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+.idioms th { color: var(--muted); font-weight: 600; }
+.idioms a { color: var(--accent); }
+footer { border-top:1px solid var(--line); padding-top:16px; padding-bottom:32px; color:var(--muted); font-size:.85rem; }
+footer .sep { margin: 0 8px; }
+.brand { display:flex; align-items:center; gap:16px; margin-bottom: 8px; }
+.brand h1 { margin: 0; color: var(--brand); }
+/* The logo about 3 lines tall (15 characters wide), its own aspect ratio. */
+.logo { height: 72px; width: auto; border-radius: 8px; }
+code { font-family: ui-monospace, "JuliaMono", Menlo, monospace; }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Games"><h2>Games</h2><h3>Puzzles</h3><ul><li><a href="#2048">2048</a></li><li><a href="#lights-out">Lights out</a></li><li><a href="#minesweeper">Minesweeper</a></li><li><a href="#shut-the-box">Shut the box</a></li><li><a href="#sudoku">Sudoku</a></li></ul><h3>Chance and strategy</h3><ul><li><a href="#guess">Guess the number</a></li><li><a href="#horse-race">Horse race</a></li><li><a href="#tic-tac-toe">Tic-tac-toe</a></li></ul><h3>Adventures</h3><ul><li><a href="#dungeon">Dungeon</a></li><li><a href="#robot-chase">Robot chase</a></li><li><a href="#trek">Star Trek</a></li><li><a href="#trek-adventure">Trek adventure</a></li></ul><h3>Action</h3><ul><li><a href="#asteroids">Asteroids</a></li><li><a href="#racer">Racer</a></li><li><a href="#scroller">Side-scroller</a></li></ul><h3>Quizzes</h3><ul><li><a href="#capitals">Capitals</a></li><li><a href="#stargazer">Stargazer</a></li></ul></nav>
+<main>
+<header>
+<div class="brand"><img class="logo" src="xetal-logo-green.png" alt="X_eTaL"><h1>X_eTaL Games</h1></div>
+<p class="lede">Small games written in <a href="https://github.com/softwarewrighter/X_eTaL">X_eTaL</a>, a typed array language: each one
+is written around one array idea and happens to be playable.</p>
+</header>
+<section class="start">
+<h2>Start here</h2>
+<ol class="steps">
+<li><b>What you are looking at.</b> Small games written in X_eTaL, each running in your browser. A game's
+page plays it in a terminal (type and press Enter), runs its scripted program as a notebook, and shows
+its source: everything on the page is X_eTaL's own output. Every game also runs at the command line
+(<a href="https://github.com/softwarewrighter/X_eTaL-games#readme">the README</a> says how).</li>
+<li><b>Why an array language.</b> These games are about whole boards, all the pieces or every possible
+move at once, and X_eTaL says them that way, with no loop over squares or pieces:
+<div class="examples"><figure><code class="xtl">p <span class="c-symbol">+</span> <span class="c-builtin">r̲oll!</span> <span class="c-number">5</span> <span class="c-builtin">r̲eshape</span> <span class="c-number">3</span></code><figcaption>Every horse moves at once: one roll per horse, added to the vector of positions (horse race).</figcaption></figure><figure><code class="xtl">(<span class="c-symbol">'+</span> <span class="c-builtin">r̲/₁₂</span> <span class="c-number">-1</span> <span class="c-number">0</span> <span class="c-number">1</span> <span class="c-builtin">o̲-₁₂</span> p) <span class="c-symbol">−</span> p</code><figcaption>Every square&#x27;s count of neighboring mines at once: the board rotated by every offset and summed, less itself (minesweeper).</figcaption></figure><figure><code class="xtl">(<span class="c-builtin">r̲ange</span> <span class="c-number">9</span>) <span class="c-symbol">'+</span> <span class="c-symbol">'×</span> <span class="c-builtin">i̲nner</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-number">2</span> <span class="c-builtin">e̲ncode</span> <span class="c-builtin">o̲ffsets</span> <span class="c-number">512</span></code><figcaption>Every set of tiles at once: the 512 subsets of 1 to 9 as bits, and all their sums by one inner product (shut the box).</figcaption></figure></div></li>
+<li><b>Try one.</b> Pick a game below; the table says which array idea each one is written around.
+A title links to the game's history.</li>
+<li><b>Read the code.</b> <a href="doc/">The cross-reference</a>, written by <code>xetal doc</code>:
+every program and library of every game and the shared libraries, each definition with its type,
+its documentation and examples (run by the gate), its source, and every place it is used.</li>
+</ol>
+<nav class="family"><h3>The X_eTaL family</h3><ul><li><a href="https://softwarewrighter.github.io/X_eTaL/">X_eTaL</a> <span>the language: try it live</span></li><li><a href="https://softwarewrighter.github.io/X_eTaL-demos/">Demos</a> <span>visual demos: Life, fractals, waves</span></li><li><a href="https://softwarewrighter.github.io/X_eTaL-ML/">ML</a> <span>machine learning, one array at a time</span></li><li><a href="https://softwarewrighter.github.io/X_eTaL-libraries/">Libraries</a> <span>libraries extend the vocabulary</span></li><li><a href="https://softwarewrighter.github.io/X_eTaL-extensions/">Extensions</a> <span>native extensions extend the machine</span></li></ul></nav>
+</section>
+<section class="idioms"><h2>One array idea per game</h2>
+<p class="lede">Different games, the same few array ideas: each game is written around one.</p>
+<table><thead><tr><th>The array idiom</th><th>Game</th></tr></thead><tbody><tr><td>a vector of racers moved by one expression; the leaders by a fork</td><td><a href="#horse-race">Horse race</a></td></tr><tr><td>every candidate against every guess by one table; all games played at once</td><td><a href="#guess">Guess the number</a></td></tr><tr><td>a coordinate matrix moving at once; collisions as an inner product</td><td><a href="#robot-chase">Robot chase</a></td></tr><tr><td>text as a table of rows picked by masks; refusals as data</td><td><a href="#trek-adventure">Trek adventure</a></td></tr><tr><td>a galaxy of planes; paths as tables of steps; windows by selection</td><td><a href="#trek">Star Trek</a></td></tr><tr><td>lines by indexing; ratings as one inner product; minimax as negamax</td><td><a href="#tic-tac-toe">Tic-tac-toe</a></td></tr><tr><td>masks over all 512 subsets at once; sums by one inner product</td><td><a href="#shut-the-box">Shut the box</a></td></tr><tr><td>neighborhoods by rotate and reduce; flood fill to a fixed point</td><td><a href="#minesweeper">Minesweeper</a></td></tr><tr><td>compress, merge, compress as a train; turning by powers of 0 or 1</td><td><a href="#2048">2048</a></td></tr><tr><td>a candidate tensor; every single at once by sums over units; rounds to a fixed point</td><td><a href="#sudoku">Sudoku</a></td></tr><tr><td>a press as a matrix; a board of presses as one product mod 2; Gaussian elimination over GF(2)</td><td><a href="#lights-out">Lights out</a></td></tr><tr><td>every distance at once, nearest by grade; a map drawn as SVG text; clicks as events; data from TOML</td><td><a href="#capitals">Capitals</a></td></tr><tr><td>brightness bands as a table; every star placed at once; the sky drawn as SVG text; clicks as events; data from TOML</td><td><a href="#stargazer">Stargazer</a></td></tr><tr><td>an entity-component system as arrays: entities as rows, components as columns, systems as whole-column expressions</td><td><a href="#dungeon">Dungeon</a></td></tr><tr><td>systems over every body at once: gravity, movement and collision with the ground as whole-column expressions, ticked by the clock</td><td><a href="#scroller">Side-scroller</a></td></tr><tr><td>laps and places as systems: every car against every segment of the track, every pair of cars compared at once, ticked by the clock</td><td><a href="#racer">Racer</a></td></tr><tr><td>entities that come and go: spawning and despawning by masks, every shot against every rock at once, ticked by the clock</td><td><a href="#asteroids">Asteroids</a></td></tr></tbody></table></section>
+<section class="grid">
+<article class="card" id="horse-race">
+<a class="shot" href="horse-race/"><img src="horse-race/screenshot.png" alt="Horse race" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><button class="about-open" data-dialog="about-horse-race" title="About this game">Horse race</button><dialog class="about" id="about-horse-race"><div class="about-box"><button class="close" aria-label="Close">&times;</button><h2>Horse race</h2><p>Horse races were among the first games people wrote for computers: a row of horses, each moved forward by a random amount every round, until one crosses the finish line. They were natural programs for the time-sharing terminals of the 1970s, in BASIC and in APL, where the whole field fits in one vector. Here five horses run to 15, each moving 1, 2 or 3 a round; at the terminal you start with 10 coins, back a horse for a coin each race, and win 4 back if it wins.</p></div></dialog></h2>
+<p class="lesson">a vector of racers moved by one expression; the leaders by a fork</p>
+<p>Five horses race to 15, each running 1, 2 or 3 a round, all at once. The field is one vector of positions and a round is one expression; the track is a character matrix drawn by a table. Bet on a horse at the terminal.</p>
+<div class="chips"><span class="chip">vectors</span><span class="chip">r_oll!</span><span class="chip">reduce</span><span class="chip">w_here</span><span class="chip">t_able</span><span class="chip">libraries</span></div>
+<div class="links"><a href="horse-race/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/horse-race#readme">How it works</a></div>
+</article>
+<article class="card" id="guess">
+<a class="shot" href="guess/"><img src="guess/screenshot.png" alt="Guess the number" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><button class="about-open" data-dialog="about-guess" title="About this game">Guess the number</button><dialog class="about" id="about-guess"><div class="about-box"><button class="close" aria-label="Close">&times;</button><h2>Guess the number</h2><p>Guess the number is one of the oldest computer games and often the first program a beginner writes: the computer thinks of a number from 1 to 100 and answers each guess with higher or lower. It is also the classic first lesson in searching: always guessing the middle of what is still possible (a binary search) finds any number in at most seven guesses. Type a number and press Enter.</p></div></dialog></h2>
+<p class="lesson">every candidate against every guess by one table; all games played at once</p>
+<p>The smallest COR24 BASIC game, at a terminal: higher or lower until you have it. Its scripted game checks every candidate from 1 to 100 against every guess at once, and plays all 100 games in lockstep.</p>
+<div class="chips"><span class="chip">r_oll!</span><span class="chip">t_able</span><span class="chip">reduce</span><span class="chip">masks</span><span class="chip">[]R_EAD</span><span class="chip">libraries</span></div>
+<div class="links"><a href="guess/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/guess#readme">How it works</a></div>
+</article>
+<article class="card" id="robot-chase">
+<a class="shot" href="robot-chase/"><img src="robot-chase/screenshot.png" alt="Robot chase" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Chase_(video_game)" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Robot chase <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">a coordinate matrix moving at once; collisions as an inner product</p>
+<p>Twelve robots chase you across a 16 by 16 board and you make them crash. Every robot steps at once: the robots are one 2 by 12 matrix and a turn adds the sign of the difference; crashes are found by a table of every robot against every other.</p>
+<div class="chips"><span class="chip">matrices</span><span class="chip">sign by comparisons</span><span class="chip">t_able</span><span class="chip">r_eplicate</span><span class="chip">reduce on rank 4</span><span class="chip">g_rade</span><span class="chip">libraries</span></div>
+<div class="links"><a href="robot-chase/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/robot-chase#readme">How it works</a></div>
+</article>
+<article class="card" id="trek-adventure">
+<a class="shot" href="trek-adventure/"><img src="trek-adventure/screenshot.png" alt="Trek adventure" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><button class="about-open" data-dialog="about-trek-adventure" title="About this game">Trek adventure</button><dialog class="about" id="about-trek-adventure"><div class="about-box"><button class="close" aria-label="Close">&times;</button><h2>Trek adventure</h2><p>Star Trek: Decaying Orbit is a short text adventure in the style of the type-in listings that computer magazines printed for home computers: rooms, a few items and a clock, played by picking numbered commands. You wake alone on the bridge of the Enterprise with the ship falling out of orbit; find the toolkit and the engine coupler, prep the relay in engineering and install the coupler within 30 turns, while Klingon boarders roam the ship. Pick a command by number (8 is help); GO, TAKE and USE then ask for a room or an item.</p></div></dialog></h2>
+<p class="lesson">text as a table of rows picked by masks; refusals as data</p>
+<p>Star Trek: Decaying Orbit, a text adventure: restore the Enterprise&#x27;s engines before its orbit decays, past a locked armory and Klingon boarders. No branching code for the story: every line is a row of a table with a key and a condition, a room is one mask, a turn updates the state vector.</p>
+<div class="chips"><span class="chip">string tables</span><span class="chip">masks</span><span class="chip">w_here</span><span class="chip">m_ember?</span><span class="chip">t_able</span><span class="chip">functional update</span><span class="chip">libraries</span></div>
+<div class="links"><a href="trek-adventure/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/trek-adventure#readme">How it works</a></div>
+</article>
+<article class="card" id="trek">
+<a class="shot" href="trek/"><img src="trek/screenshot.png" alt="Star Trek" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Star_Trek_(1971_video_game)" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Star Trek <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">a galaxy of planes; paths as tables of steps; windows by selection</p>
+<p>The classic: destroy every Klingon in an 8 by 8 galaxy of 8 by 8 sectors before the stardate runs out, with warp, impulse, phasers, torpedoes and shields. The galaxy is three planes made at once, a course is a whole path at once, and phasers hit every Klingon in one subtraction.</p>
+<div class="chips"><span class="chip">8 by 8 planes</span><span class="chip">t_able paths</span><span class="chip">w_here first hit</span><span class="chip">windows by index</span><span class="chip">g_rade permutations</span><span class="chip">r_avel_2</span><span class="chip">libraries</span></div>
+<div class="links"><a href="trek/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/trek#readme">How it works</a></div>
+</article>
+<article class="card" id="tic-tac-toe">
+<a class="shot" href="tic-tac-toe/"><img src="tic-tac-toe/screenshot.png" alt="Tic-tac-toe" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Tic-tac-toe <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">lines by indexing; ratings as one inner product; minimax as negamax</p>
+<p>Three in a row against the computer. The eight lines are a table of square numbers: used as indices into the board it gives every line at once, and a reduce gives every line&#x27;s sum. The computer rates every empty square at once; a minimax player searches by recursion.</p>
+<div class="chips"><span class="chip">index tables</span><span class="chip">reduce</span><span class="chip">m_ember?</span><span class="chip">t_able</span><span class="chip">recursion</span><span class="chip">e_ach</span><span class="chip">libraries</span></div>
+<div class="links"><a href="tic-tac-toe/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/tic-tac-toe#readme">How it works</a></div>
+</article>
+<article class="card" id="shut-the-box">
+<a class="shot" href="shut-the-box/"><img src="shut-the-box/screenshot.png" alt="Shut the box" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Shut_the_box" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Shut the box <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">masks over all 512 subsets at once; sums by one inner product</p>
+<p>Roll the dice and shut tiles adding up to the roll; shut all nine to win. All 512 subsets of the tiles are one 9 by 512 matrix of bits, their sums one inner product, and the legal moves are the columns that fit the open tiles and add up to the roll.</p>
+<div class="chips"><span class="chip">e_ncode</span><span class="chip">i_nner</span><span class="chip">masks</span><span class="chip">o_\ transpose</span><span class="chip">s_elect_2</span><span class="chip">libraries</span></div>
+<div class="links"><a href="shut-the-box/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/shut-the-box#readme">How it works</a></div>
+</article>
+<article class="card" id="minesweeper">
+<a class="shot" href="minesweeper/"><img src="minesweeper/screenshot.png" alt="Minesweeper" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Minesweeper <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">neighborhoods by rotate and reduce; flood fill to a fixed point</p>
+<p>Open a 9 by 9 field without touching its 10 mines. Every square&#x27;s count of neighboring mines is computed at once, as Life counts neighbors, and opening an empty square floods: the opened region grows ring by ring until it stops.</p>
+<div class="chips"><span class="chip">o_-_12 rotations</span><span class="chip">reduce</span><span class="chip">masks</span><span class="chip">fixed point</span><span class="chip">g_rade</span><span class="chip">[]G_RID</span><span class="chip">libraries</span></div>
+<div class="links"><a href="minesweeper/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/minesweeper#readme">How it works</a></div>
+</article>
+<article class="card" id="2048">
+<a class="shot" href="2048/"><img src="2048/screenshot.png" alt="2048" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/2048_(video_game)" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">2048 <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">compress, merge, compress as a train; turning by powers of 0 or 1</p>
+<p>Slide the tiles of a 4 by 4 board; equal tiles merge; make 2048. A move left slides and merges every row at once: compress by running counts and a table, merge by each tile&#x27;s place in its run, found by a max-scan; the other moves turn the board with reverse and transpose.</p>
+<div class="chips"><span class="chip">s_\ scans</span><span class="chip">t_able</span><span class="chip">masks</span><span class="chip">o_\ transpose</span><span class="chip">r_ev_2</span><span class="chip">m_atch</span><span class="chip">libraries</span></div>
+<div class="links"><a href="2048/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/2048#readme">How it works</a></div>
+</article>
+<article class="card" id="sudoku">
+<a class="shot" href="sudoku/"><img src="sudoku/screenshot.png" alt="Sudoku" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Sudoku" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Sudoku <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">a candidate tensor; every single at once by sums over units; rounds to a fixed point</p>
+<p>Fill the 9 by 9 grid so every row, column and box holds 1 to 9. X_eTaL keeps every cell&#x27;s candidates as one 81 by 9 array, finds every single at once by summing over the 27 units, repeats until nothing changes, and searches only when that stalls: Arto Inkala&#x27;s &quot;hardest&quot; puzzle in under a second.</p>
+<div class="chips"><span class="chip">t_able</span><span class="chip">s_elect with a table</span><span class="chip">r_/_2</span><span class="chip">one-hot</span><span class="chip">fixed point</span><span class="chip">search</span><span class="chip">libraries</span></div>
+<div class="links"><a href="sudoku/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/sudoku#readme">How it works</a></div>
+</article>
+<article class="card" id="lights-out">
+<a class="shot" href="lights-out/"><img src="lights-out/screenshot.png" alt="Lights out" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Lights_Out_(game)" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Lights out <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">a press as a matrix; a board of presses as one product mod 2; Gaussian elimination over GF(2)</p>
+<p>A 5 by 5 board you click: a press toggles a light and its four neighbors; turn every light off. Every puzzle can be solved, and Hint rings a square of a solution X_eTaL works out by Gaussian elimination over GF(2): a press is a row of a matrix, a board of presses one product with it, mod 2.</p>
+<div class="chips"><span class="chip">t_able</span><span class="chip">i_nner</span><span class="chip">m_od</span><span class="chip">[]E_VENT</span><span class="chip">SVG</span><span class="chip">libraries</span></div>
+<div class="links"><a href="lights-out/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/lights-out#readme">How it works</a></div>
+</article>
+<article class="card" id="capitals">
+<a class="shot" href="capitals/"><img src="capitals/screenshot.png" alt="Capitals" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/List_of_national_capitals" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Capitals <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">every distance at once, nearest by grade; a map drawn as SVG text; clicks as events; data from TOML</p>
+<p>A map you click: each red dot is a national capital inside its unlabeled country; click it, then its name among four nearby cities; choose a region or the whole world. X_eTaL reads the countries, capitals and cities from TOML, finds the nearest cities by computing every distance at once, and draws the map, its menus and the score as SVG; the page passes your clicks to the program as events.</p>
+<div class="chips"><span class="chip">[]T_ABLE</span><span class="chip">[]L_IST</span><span class="chip">[]E_VENT</span><span class="chip">s_in c_os</span><span class="chip">g_rade</span><span class="chip">f_ormat&lt;</span><span class="chip">SVG</span><span class="chip">libraries</span></div>
+<div class="links"><a href="capitals/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/capitals#readme">How it works</a></div>
+</article>
+<article class="card" id="stargazer">
+<a class="shot" href="stargazer/"><img src="stargazer/screenshot.png" alt="Stargazer" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/List_of_proper_names_of_stars" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Stargazer <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">brightness bands as a table; every star placed at once; the sky drawn as SVG text; clicks as events; data from TOML</p>
+<p>A sky you click: five named stars ringed, mixed bright, middling and faint; click one, then its name among four (one star from each brightness band besides it); choose a part of the sky or all of it. X_eTaL reads the Bright Star Catalog and the IAU&#x27;s star names from TOML, draws the whole sky as SVG, and the page passes your clicks to the program as events.</p>
+<div class="chips"><span class="chip">[]T_ABLE</span><span class="chip">[]L_IST</span><span class="chip">[]E_VENT</span><span class="chip">t_able</span><span class="chip">g_rade</span><span class="chip">f_ormat&lt;</span><span class="chip">SVG</span><span class="chip">libraries</span></div>
+<div class="links"><a href="stargazer/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/stargazer#readme">How it works</a></div>
+</article>
+<article class="card" id="dungeon">
+<a class="shot" href="dungeon/"><img src="dungeon/screenshot.png" alt="Dungeon" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Entity_component_system" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Dungeon <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">an entity-component system as arrays: entities as rows, components as columns, systems as whole-column expressions</p>
+<p>Find the way out with the arrow keys: fight rats and goblins, pick up potions and gold. Built on lib/Ecs, an entity-component system as arrays: you, the monsters and the items are rows of one matrix, what each is comes from its components (a new kind is a table in dungeon.toml, not new code), and every rule is one expression over all of them.</p>
+<div class="chips"><span class="chip">Ecs.xtlm macro</span><span class="chip">tuples</span><span class="chip">[]E_VENT keys</span><span class="chip">w_here masks</span><span class="chip">t_able</span><span class="chip">SVG</span><span class="chip">libraries</span></div>
+<div class="links"><a href="dungeon/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/dungeon#readme">How it works</a></div>
+</article>
+<article class="card" id="scroller">
+<a class="shot" href="scroller/"><img src="scroller/screenshot.png" alt="Side-scroller" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Side-scrolling_video_game" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Side-scroller <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">systems over every body at once: gravity, movement and collision with the ground as whole-column expressions, ticked by the clock</p>
+<p>Run and jump to the flag with the arrow keys: land on walkers, jump the pits, pick up coins. The game moves with the clock, twenty ticks a second. Built on lib/Ecs: you and the walkers are bodies, and gravity, movement and collision with the ground are each one expression over every body at once.</p>
+<div class="chips"><span class="chip">Ecs.xtlm macro</span><span class="chip">tuples</span><span class="chip">[]E_VENT ticks and keys</span><span class="chip">masks as numbers</span><span class="chip">t_able</span><span class="chip">SVG</span></div>
+<div class="links"><a href="scroller/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/scroller#readme">How it works</a></div>
+</article>
+<article class="card" id="racer">
+<a class="shot" href="racer/"><img src="racer/screenshot.png" alt="Racer" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Racing_video_game" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Racer <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">laps and places as systems: every car against every segment of the track, every pair of cars compared at once, ticked by the clock</p>
+<p>Three laps against three rivals with the arrow keys: steer, keep off the grass, finish first. The race moves with the clock, twenty ticks a second. Built on lib/Ecs: your car and the rivals are rows of one matrix, and driving, the grass, bumping, laps and places are each one expression over every car at once.</p>
+<div class="chips"><span class="chip">Ecs.xtlm macro</span><span class="chip">tuples</span><span class="chip">[]E_VENT ticks and keys</span><span class="chip">t_able</span><span class="chip">ranks by comparison</span><span class="chip">SVG</span></div>
+<div class="links"><a href="racer/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/racer#readme">How it works</a></div>
+</article>
+<article class="card" id="asteroids">
+<a class="shot" href="asteroids/"><img src="asteroids/screenshot.png" alt="Asteroids" loading="lazy"></a>
+<span class="status live">Live</span>
+<h2><a class="wiki" href="https://en.wikipedia.org/wiki/Asteroids_(video_game)" target="_blank" rel="noopener noreferrer" title="Wikipedia (opens in a new tab)">Asteroids <svg class="glyph" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 1.5h6.5L13 5v9.5H3z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></a></h2>
+<p class="lesson">entities that come and go: spawning and despawning by masks, every shot against every rock at once, ticked by the clock</p>
+<p>Break every rock, three waves of them, with the arrow keys and the space bar: big rocks break into medium ones, medium into small. The game moves with the clock, twenty ticks a second. Built on lib/Ecs: shots and rocks are spawned and despawned all the time, in the slots a mask says are free, and every rule is one expression over every entity at once.</p>
+<div class="chips"><span class="chip">Ecs.xtlm macro</span><span class="chip">tuples</span><span class="chip">[]E_VENT ticks and keys</span><span class="chip">s_pawn and d_espawn</span><span class="chip">t_able</span><span class="chip">SVG</span></div>
+<div class="links"><a href="asteroids/">Play</a> <a href="https://github.com/softwarewrighter/X_eTaL-games/tree/main/games/asteroids#readme">How it works</a></div>
+</article>
+</section>
+</main>
+</div>
+<footer>
+<span>Copyright (c) 2026 Michael A Wright</span><span class="sep">&middot;</span>
+<span>MIT License</span><span class="sep">&middot;</span>
+<a href="https://github.com/softwarewrighter/X_eTaL-games" target="_blank">Repository</a><span class="sep">&middot;</span>
+<span>X_eTaL <a href="https://github.com/softwarewrighter/X_eTaL/commit/4952874376dfac849f7a1b8a3a60384030b8928c" target="_blank">4952874</a></span><span class="sep">&middot;</span>
+<span>build (host max, sha 75320a9, 20261010T234721)</span>
+</footer>
+<script>
+// A title without a Wikipedia article opens a dialog: Escape closes it
+// (the browser does), as do a click outside it and its X.
+for (const b of document.querySelectorAll("button.about-open")) {
+  const d = document.getElementById(b.dataset.dialog);
+  b.addEventListener("click", () => d.showModal());
+  d.addEventListener("click", (e) => { if (e.target === d) d.close(); });
+  d.querySelector(".close").addEventListener("click", () => d.close());
+}
+</script>
+</body>
+</html>

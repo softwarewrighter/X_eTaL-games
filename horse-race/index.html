@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Horse Race</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/horse-race/horse-race-web-9a05263538e17413.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/horse-race/horse-race-web-9a05263538e17413_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/horse-race/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/horse-race/microscope-94b91bba94c6228f.css" integrity="sha384-Qcv90sfTedlwGPtvFmYv7G10S8rkzdQl4E6Ea+Tx6wXaurssUBuGiXqze2rMuOiI"/>
+<link rel="modulepreload" href="/X_eTaL-games/horse-race/horse-race-web-9a05263538e17413.js" crossorigin="anonymous" integrity="sha384-vQeKCLHkfKZTey2Kn/YH5KeHmZtwWK0lCVoU7LlEXaMyjxdwZ1Cfzm0dvDZKTtPM"><link rel="preload" href="/X_eTaL-games/horse-race/horse-race-web-9a05263538e17413_bg.wasm" crossorigin="anonymous" integrity="sha384-vNMiyQiYNm8qHIO8Uq0RVB/cL4eY8JEzVaB9DJtkAx9lfv8GbD/pdQ+gAfrG7m3Q" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

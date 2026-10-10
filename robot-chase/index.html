@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robot Chase</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/robot-chase/robot-chase-web-2a30211e732f731e.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/robot-chase/robot-chase-web-2a30211e732f731e_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/robot-chase/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/robot-chase/microscope-94b91bba94c6228f.css" integrity="sha384-Qcv90sfTedlwGPtvFmYv7G10S8rkzdQl4E6Ea+Tx6wXaurssUBuGiXqze2rMuOiI"/>
+<link rel="modulepreload" href="/X_eTaL-games/robot-chase/robot-chase-web-2a30211e732f731e.js" crossorigin="anonymous" integrity="sha384-dtirfRajpyPhkXJ4dzyX/Mp4OY9SFr7IUGH7tfeB7wC7kV9WV4WVzmMHTz4hgH+X"><link rel="preload" href="/X_eTaL-games/robot-chase/robot-chase-web-2a30211e732f731e_bg.wasm" crossorigin="anonymous" integrity="sha384-6C95xUxFIq11660NRO6wsGXjmkIiNfV1vct0GjT5cDpQMMjofyqyXFmwiuHRQEbI" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>
