@@ -1,4 +1,6 @@
-# X_eTaL games
+<p align="center"><img src="images/xetal-logo-green.png" width="126" alt="X_eTaL logo"></p>
+
+# X_eTaL Games
 
 <p align="center">
   <b><a href="https://softwarewrighter.github.io/X_eTaL-games/">The live game catalog</a></b>

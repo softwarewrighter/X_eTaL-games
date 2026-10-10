@@ -452,7 +452,7 @@ pub fn game_page(g: &Game) -> Html {
         <>
         <header>
             <div class="brand">
-                <a href="../" title="All games"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL" /></a>
+                <a href="../" title="All games"><img class="logo" src="xetal-logo-green.png" alt="X_eTaL" /></a>
                 <Title title={g.title} wikipedia={field(g.toml, "wikipedia")} about={field(g.toml, "about")} />
             </div>
             <p class="lede">{g.lede}</p>

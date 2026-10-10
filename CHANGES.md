@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 18:05 `docs` The green X_eTaL logo (the user): X_eTaL's xetal-logo-green.png, resized into images/, in the README and on the catalog and every game page in place of modern-xetal-logo.jpg (removed), about 3 lines tall with its own aspect ratio; the catalog heading now reads "X_eTaL Games" in bright green (a --brand color, light and dark).
+
 - 17:02 `chore` Saga step dungeon-new-games completed.
 
 - 16:35 `game` The dungeon, a new dungeon every game (the user: the same map on every reload, and Play reopened a finished game): three maps in dungeon.toml, one picked from the seed, with you, the way out (now a `goal` entity, as far from you as the map allows) and every monster and item placed at random on the floor; a win or a loss ends the program, and on the page Play or any key after the end starts a new game (a new seed); the golden now wins (30 keys) and the browser test checks a key after the end starts over; stray picture files committed with the dungeon removed (and ignored).

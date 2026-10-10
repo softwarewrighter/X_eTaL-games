@@ -38,7 +38,7 @@ done < <("$root/scripts/games.py" list)
   s="$(basename "$d")"
   printf '%s\n' ${keep[@]+"${keep[@]}"} | grep -qx "$s" || { echo "removing pages/$s/"; rm -rf "$d"; }
 done
-cp "$root/images/modern-xetal-logo.jpg" "$root/images/favicon.ico" "$root/pages/"
+cp "$root/images/xetal-logo-green.png" "$root/images/favicon.ico" "$root/pages/"
 "$root/scripts/build-catalog.py"
 "$root/scripts/build-docs.sh"
 echo "pages/ built; just publish puts it on the gh-pages branch (the live site)."

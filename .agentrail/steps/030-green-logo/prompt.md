@@ -1,0 +1,1 @@
+launch step 30 (the user's request): the green X_eTaL logo (../X_eTaL/images/xetal-logo-green.png, resized into images/) in the README and on every page in place of modern-xetal-logo.jpg, about 3 lines tall (15 characters wide) with its own aspect ratio; the catalog heading reads X_eTaL Games (spelled out, for grep) in bright green, light and dark.

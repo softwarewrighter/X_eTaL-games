@@ -32,12 +32,12 @@ PAGE = """<!doctype html>
 <link rel="icon" href="favicon.ico">
 <style>
 :root {{ --bg:#fbfaf7; --fg:#1d1d1f; --muted:#5f6368; --card:#ffffff; --line:#e3e0d8;
-  --accent:#2457c5; --chip:#eef2fb; --live:#1f7a3a; --draft:#9a6200; --deferred:#8a8a8a; }}
+  --accent:#2457c5; --chip:#eef2fb; --live:#1f7a3a; --draft:#9a6200; --deferred:#8a8a8a; --brand:#1db93a; }}
 @media (prefers-color-scheme: dark) {{ :root:not([data-theme="light"]) {{
   --bg:#141518; --fg:#e8e6e3; --muted:#a0a4ab; --card:#1d1f23; --line:#30333a;
-  --accent:#8fb0ff; --chip:#262b36; --live:#5fcf7f; --draft:#e0a84a; --deferred:#8d9097; }} }}
+  --accent:#8fb0ff; --chip:#262b36; --live:#5fcf7f; --draft:#e0a84a; --deferred:#8d9097; --brand:#3ee65f; }} }}
 :root[data-theme="dark"] {{ --bg:#141518; --fg:#e8e6e3; --muted:#a0a4ab; --card:#1d1f23;
-  --line:#30333a; --accent:#8fb0ff; --chip:#262b36; --live:#5fcf7f; --draft:#e0a84a; --deferred:#8d9097; }}
+  --line:#30333a; --accent:#8fb0ff; --chip:#262b36; --live:#5fcf7f; --draft:#e0a84a; --deferred:#8d9097; --brand:#3ee65f; }}
 * {{ box-sizing: border-box; }}
 body {{ margin:0; background:var(--bg); color:var(--fg);
   font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }}
@@ -112,8 +112,9 @@ code.xtl .c-symbol {{ color: #0b7285; }} code.xtl .c-libfunc, code.xtl .c-user {
 footer {{ border-top:1px solid var(--line); padding-top:16px; padding-bottom:32px; color:var(--muted); font-size:.85rem; }}
 footer .sep {{ margin: 0 8px; }}
 .brand {{ display:flex; align-items:center; gap:16px; margin-bottom: 8px; }}
-.brand h1 {{ margin: 0; }}
-.logo {{ height: 56px; width: auto; border-radius: 8px; }}
+.brand h1 {{ margin: 0; color: var(--brand); }}
+/* The logo about 3 lines tall (15 characters wide), its own aspect ratio. */
+.logo {{ height: 72px; width: auto; border-radius: 8px; }}
 code {{ font-family: ui-monospace, "JuliaMono", Menlo, monospace; }}
 </style>
 </head>
@@ -122,7 +123,7 @@ code {{ font-family: ui-monospace, "JuliaMono", Menlo, monospace; }}
 {toc}
 <main>
 <header>
-<div class="brand"><img class="logo" src="modern-xetal-logo.jpg" alt="X_eTaL"><h1>Games</h1></div>
+<div class="brand"><img class="logo" src="xetal-logo-green.png" alt="X_eTaL"><h1>X_eTaL Games</h1></div>
 <p class="lede">Small games written in <a href="{xetal}">X_eTaL</a>, a typed array language: each one
 is written around one array idea and happens to be playable.</p>
 </header>
