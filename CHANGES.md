@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 18:03 `chore` Saga step green-logo completed.
+
 - 18:05 `docs` The green X_eTaL logo (the user): X_eTaL's xetal-logo-green.png, resized into images/, in the README and on the catalog and every game page in place of modern-xetal-logo.jpg (removed), about 3 lines tall with its own aspect ratio; the catalog heading now reads "X_eTaL Games" in bright green (a --brand color, light and dark).
 
 - 17:02 `chore` Saga step dungeon-new-games completed.

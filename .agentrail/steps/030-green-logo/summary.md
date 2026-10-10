@@ -1,0 +1,1 @@
+Green X_eTaL logo in the README and on every page, about 3 lines tall; catalog heading X_eTaL Games in bright green (light and dark)
