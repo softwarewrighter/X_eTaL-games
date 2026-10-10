@@ -176,6 +176,29 @@ const CLICK = (lines, ended) => `(async () => {
   const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
   return { out, restarted, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
 })()`;
+// Runs in the page, for a game moved by the clock (Game::ticks): open its
+// dialog and let the clock run (the program's ticks are real time, so
+// no golden can be compared); the game's own clock, in its top line,
+// must keep up with the page's, and right-arrow keys must move you
+// (the program draws you as the rect of class "you").
+const TICKS = `(async () => {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const until = async (f, what) => { for (let i = 0; i < 500; i++) { const v = f(); if (v) return v; await sleep(20); } throw new Error("timed out waiting for " + what); };
+  const pic = () => document.querySelector("dialog.board .board-pic svg");
+  const seconds = () => { const m = (pic()?.textContent || "").match(/Time (\\d+) s/); return m ? +m[1] : -1; };
+  const where = () => +(pic()?.querySelector("rect.you")?.getAttribute("x") ?? NaN);
+  (await until(() => document.querySelector("button.board-open"), "the Play button")).click();
+  await until(() => document.querySelector("dialog.board[open] .board-pic svg"), "the picture in the dialog");
+  await sleep(3000);
+  const played = seconds();
+  const x0 = where();
+  const d = document.querySelector("dialog.board[open]");
+  for (let i = 0; i < 10; i++) { d.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true })); await sleep(50); }
+  await sleep(300);
+  const err = document.querySelector("dialog.board .err")?.textContent || "";
+  const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
+  return { played, moved: where() > x0, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
+})()`;
 const BOARD_OPEN = `(() => { if (!document.querySelector("dialog.board[open]")) document.querySelector("button.board-open").click(); return !!document.querySelector("dialog.board[open]"); })()`;
 const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
 const BOARD_BACKDROP = `(() => { document.querySelector("dialog.board[open]").click(); return true; })()`;
@@ -261,16 +284,20 @@ try {
     try {
       const t0 = performance.now();
       const interactive = readFileSync(join(dir, "web/src/lib.rs"), "utf8").includes("interactive: true");
-      const got = await page.evaluate(interactive ? CLICK(typed) : PLAY(typed));
-      timings[slug] = Math.round(performance.now() - t0);
       // A game played by clicks keeps running on the page (it is never
       // given the end of events), so its golden's last line, the program's
-      // answer to that end, is not on the page.
+      // answer to that end, is not on the page; a golden without it ends
+      // the game, and a key must then start a new one.
       const golden = readFileSync(join(dir, "expected/play.out"), "utf8");
+      const ticks = readFileSync(join(dir, "web/src/lib.rs"), "utf8").includes("ticks: true");
+      const got = await page.evaluate(ticks ? TICKS : interactive ? CLICK(typed, !golden.endsWith("THE END\n")) : PLAY(typed));
+      timings[slug] = Math.round(performance.now() - t0);
       const want = interactive ? golden.replace(/THE END\n$/, "") : golden;
       const wantNb = readFileSync(join(dir, `expected/${slug}.out`), "utf8");
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
-      else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
+      else if (ticks && got.played < 2) { console.log(`FAIL: ${slug} (browser): the game's clock fell behind (${got.played} s played in 3 s open)`); failed++; }
+      else if (ticks && !got.moved) { console.log(`FAIL: ${slug} (browser): right-arrow keys did not move you`); failed++; }
+      else if (!ticks && got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
       else if (got.restarted === false) { console.log(`FAIL: ${slug} (browser): a key after the game ended did not start a new game`); failed++; }
       else if (interactive && got.controls) { console.log(`FAIL: ${slug} (browser): a game played by clicks shows New game and Restart (only Play belongs)`); failed++; }
@@ -282,7 +309,8 @@ try {
         const problem = (xrefs.bad.length && `cross-reference links lead nowhere: ${xrefs.bad.join(", ")}`) || (!xrefs.n && "no cross-reference links")
           || (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
         if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
-        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks and keys in its dialog, transcript and notebook match the goldens, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else if (ticks) console.log(`ok: ${slug} (browser: the clock ran in its dialog, ${got.played} s of play in 3 s, keys moved you, notebook matches the golden, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks and keys in its dialog, transcript and notebook match the goldens,${got.restarted ? " a key after the end started a new game," : ""} closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
         else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
     } catch (e) { console.log(`FAIL: ${slug} (browser): ${e.message}`); failed++; }

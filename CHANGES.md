@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 19:40 `game` The side-scroller, the first game moved by the clock: run and jump to the flag (Jump.xtl on lib/Ecs: gravity, movement and collision with the ground as systems over every body, you and the walkers alike; stomping walkers, coins, pits; the level and physics in scroller.toml); a winning golden of 198 ticks found by a search run on X_eTaL itself; test.sh drops a walker from the sky and checks it lands; microscope's Live gains a lean mode for ticked games (no tick lines, only the latest picture kept); the browser test checks a ticked game's clock keeps up and keys move you, and now really passes `ended` to the click check (the dungeon's restart check had been skipped); a catalog group "Action".
+
 - 18:03 `chore` Saga step green-logo completed.
 
 - 18:05 `docs` The green X_eTaL logo (the user): X_eTaL's xetal-logo-green.png, resized into images/, in the README and on the catalog and every game page in place of modern-xetal-logo.jpg (removed), about 3 lines tall with its own aspect ratio; the catalog heading now reads "X_eTaL Games" in bright green (a --brand color, light and dark).

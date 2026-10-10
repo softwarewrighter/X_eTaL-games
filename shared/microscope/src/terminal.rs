@@ -205,6 +205,7 @@ pub struct Live {
     lines: Vec<Line>,
     error: Option<String>,
     over: bool,
+    lean: bool,
 }
 
 /// Transitions per slice: a slice ends where the program waits, so this
@@ -227,9 +228,32 @@ impl Live {
             Ok(run) => (Some(run), None),
             Err(r) => (None, Some(r.err.trim().to_string()).filter(|e| !e.is_empty())),
         };
-        let mut live = Live { run, store, shared, lines: vec![], error, over: false };
+        let mut live = Live { run, store, shared, lines: vec![], error, over: false, lean: false };
         live.go();
         live
+    }
+
+    /// For a game moved by the clock (Game::ticks): its ticks are not kept
+    /// in the transcript, nor any picture but the latest, so twenty
+    /// pictures a second do not pile up while it is played.
+    pub fn lean(mut self) -> Live {
+        self.lean = true;
+        self.trim();
+        self
+    }
+
+    /// The latest picture only, when lean.
+    fn trim(&mut self) {
+        if !self.lean {
+            return;
+        }
+        if let Some(last) = self.lines.iter().rposition(|l| matches!(l, Line::Picture(_))) {
+            let mut i = 0;
+            self.lines.retain(|l| {
+                i += 1;
+                !matches!(l, Line::Picture(_)) || i - 1 == last
+            });
+        }
     }
 
     /// Run until the program waits, ends or stops on an error.
@@ -237,6 +261,7 @@ impl Live {
         let Some(run) = self.run.as_mut() else {
             self.over = true;
             self.lines.extend(take(&self.shared));
+            self.trim();
             return;
         };
         xetal_store::install(self.store.clone());
@@ -254,6 +279,7 @@ impl Live {
             }
         }
         self.lines.extend(take(&self.shared));
+        self.trim();
     }
 
     /// A line (an event, `click X Y`) for the waiting program, and its
@@ -263,7 +289,9 @@ impl Live {
             return;
         }
         let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
-        self.lines.push(Line::In(line.to_string()));
+        if !(self.lean && line.starts_with("tick ")) {
+            self.lines.push(Line::In(line.to_string()));
+        }
         if let Some(run) = self.run.as_mut() {
             run.feed(line.to_string());
         }

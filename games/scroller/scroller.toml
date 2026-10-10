@@ -1,0 +1,23 @@
+# The side-scroller's level and physics, read by Jump.xtl (X_eTaL's
+# []L_IST). The level: rows of equal length, top to bottom; # ground (a
+# solid tile), . open sky, @ where you start, o a coin, w a walker (a
+# monster that walks until it meets a wall, then turns), F the flag at
+# the end. A row past the bottom is a pit. Make the level longer or
+# change it by editing the rows; every entity comes from its character.
+# Every value is a string.
+level = [
+  "................................................................",
+  "................................................................",
+  "................................................................",
+  "...........................oo...................................",
+  ".............oo...........####...........oo.....................",
+  "............####........................####....................",
+  "...................o...........#...oo...................oo......",
+  "..@...ooo.............#...w....#............w..#..........w...F.",
+  "##################..##############...#############..############",
+  "##################..##############...#############..############",]
+
+# In tiles and seconds: gravity, the speed of a jump, your running
+# speed, a walker's speed, the fastest fall, and how much of your speed
+# is kept each tick (0.05 s) once you let go.
+physics = ["40", "15", "7", "2", "18", "0.9"]

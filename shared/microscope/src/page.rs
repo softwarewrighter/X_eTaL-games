@@ -262,7 +262,8 @@ fn board(p: &BoardProps) -> Html {
         let lines = &p.typed[before.min(p.typed.len())..];
         let mut slot = live.borrow_mut();
         if !matches!(&*slot, Some((s, _, fed)) if *s == seed && *fed <= lines.len()) {
-            *slot = Some((seed, Live::start(&p.game.libraries(), p.game.play, seed), 0));
+            let game = Live::start(&p.game.libraries(), p.game.play, seed);
+            *slot = Some((seed, if p.game.ticks { game.lean() } else { game }, 0));
         }
         let (_, game, fed) = slot.as_mut().expect("started above");
         for line in &lines[*fed..] {

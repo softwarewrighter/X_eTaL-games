@@ -50,6 +50,7 @@ and is tested by its expected output.
 | [Capitals](games/capitals/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/capitals/)) | a map you click: every distance at once, nearest by grade; the map drawn as SVG text; clicks as events; data from TOML | live |
 | [Stargazer](games/stargazer/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/stargazer/)) | a sky you click: brightness bands as a table; the sky drawn as SVG text; clicks as events; data from TOML | live |
 | [Dungeon](games/dungeon/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/dungeon/)) | an entity-component system as arrays (lib/Ecs): entities as rows, components as columns, systems as whole-column expressions | live |
+| [Side-scroller](games/scroller/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/scroller/)) | gravity, movement and collision as systems over every body at once (lib/Ecs), ticked by the clock | live |
 | Battleship | placement masks, a probability map | planned |
 
 A game's name links to its own page (`games/<name>/README.md`) once it
@@ -77,6 +78,7 @@ its idiom in the code.
 | every cell's candidates as one array; every unit counted at once by selecting with a table; rounds to a fixed point | [Sudoku](games/sudoku/README.md) |
 | every distance at once, nearest by grade; a map, its menus and score written as SVG text; clicks as events (`[]E_VENT`) | [Capitals](games/capitals/README.md) |
 | you, the monsters and the items as rows of one matrix; what each is from its components; every rule one expression over all of them (lib/Ecs) | [Dungeon](games/dungeon/README.md) |
+| gravity, movement and collision with the ground for every body at once; a hit as a mask used as a number (`x * (1 - hit) + snap * hit`); the clock's ticks as events | [Side-scroller](games/scroller/README.md) |
 | a press as a row of a 25 by 25 matrix; a board of presses one product mod 2; solved by elimination over GF(2) | [Lights out](games/lights-out/README.md) |
 | every star's brightness band by one table; 2887 stars placed at once; the same picture-and-click pieces (`lib/Svg.xtl`) | [Stargazer](games/stargazer/README.md) |
 

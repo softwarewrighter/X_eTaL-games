@@ -1,0 +1,42 @@
+#!/usr/bin/env xetal
+## The side-scroller, scripted (seed 1), with the rules of Jump.xtl on
+## lib/Ecs: the world as a matrix, and gravity, movement and collision as
+## systems over every body at once.
+"j:" u_se< "Jump"
+"ec:" u_se< "Ecs"
+
+# A new game: an entity for every character of the level in
+# scroller.toml that is one. The world: a row per entity slot (64) and a
+# column per field (alive, then for each component whether the entity
+# has it, then its fields).
+s := j:n_ew 0
+(W, g, t, st) := s
+s_hape W
+ec:c_ount W
+
+# What is alive: you, the walkers, the coins, the flag; and the bodies
+# (you and the walkers), on which gravity and the ground act.
+j:c_ounts s
+
+# Where you are (x and y in tiles, y down), the coins and the seconds.
+j:y_ou s
+
+# Run right for ten ticks of the clock (a second is twenty): the right
+# key sets your speed, and each tick moves every body by its own.
+u:r_un := { s n -> n = 0 ? s; ((s j:k_ey "RIGHT") j:t_ick 0.05) u:r_un n - 1 }
+s := s u:r_un 10
+j:y_ou s
+
+# Jump: up sets your speed upward; gravity slows you, turns you and
+# brings you down to the ground. Your height (y) tick by tick:
+u:h_eight := { s -> 2 s_elect j:y_ou s }
+u:a_ir := { s n -> n = 0 ? 0 r_eshape 0.0; (u:h_eight s) c_at (s j:t_ick 0.05) u:a_ir n - 1 }
+s := s j:k_ey "UP"
+y := s u:a_ir 16
+f_loor 0.5 + 100 * y
+pic := []S_HOW j:d_raw s
+
+# What the game guarantees, checked by a_ssert< (silent when it holds).
+ok := "1 = f_irst j:c_ounts j:n_ew 0" a_ssert< "one of you in a new game"
+ok := "(f_irst y) = 'm_ax r_/ y" a_ssert< "a jump goes up and comes back down to where it started"
+ok := "0 = j:s_tatus s" a_ssert< "still playing"

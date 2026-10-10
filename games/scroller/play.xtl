@@ -1,0 +1,35 @@
+#!/usr/bin/env xetal
+## The side-scroller: run right to the flag. Left and right (or a and d)
+## run, up (or w) jumps; land on a walker to beat it, touch one otherwise
+## and you are caught; mind the pits; pick up the coins; r starts again.
+## The game moves with the clock: on the page it is in a dialog, and the
+## clock's ticks (twenty a second) and your keys come to the program as
+## events; at the command line, lines such as "tick 0.05" and "key UP"
+## on standard input. A game won or lost ends the program (on the page,
+## Play or any key then starts a new one). The rules are Jump.xtl's,
+## built on lib/Ecs.
+"j:" u_se< "Jump"
+
+## Show the game, then wait for the next event.
+u:s_how := { s ->
+  pic := []S_HOW j:d_raw s
+  0 < j:s_tatus s ? u:e_nd s
+  u:l_oop s
+}
+## The next event: a tick moves the game on and shows it; a key acts.
+u:l_oop := { s ->
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? "THE END"
+  "tick" m_atch []E_KIND e ? u:s_how s j:t_ick f_irst []E_AT e
+  n_ot "key" m_atch []E_KIND e ? u:l_oop s
+  name := f_ormat []E_KEY e
+  "r" m_atch name ? u:s_how j:n_ew 0
+  u:l_oop s j:k_ey name
+}
+## How the game ended (the program ends with it).
+u:e_nd := { s ->
+  y := j:y_ou s
+  1 = j:s_tatus s ? @ f_ormat< "You reached the flag with {f_loor 3 s_elect y} coins in {f_loor 4 s_elect y} seconds!"
+  @ f_ormat< "Caught! {f_loor 3 s_elect y} coins in {f_loor 4 s_elect y} seconds."
+}
+u:s_how j:n_ew 0

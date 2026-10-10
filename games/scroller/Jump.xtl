@@ -1,0 +1,247 @@
+## The side-scroller's rules, a library: scroller.xtl (scripted),
+## play.xtl (the game: keys and the clock) and the web page all use
+## these. Built on lib/Ecs: a world is a matrix, a row per entity, and
+## every rule is a system, one expression over every entity with the
+## components it needs. You, the walkers, the coins and the flag are
+## entities; gravity, movement and collision with the ground act on
+## every body at once, you and the walkers alike. A game's state is a
+## tuple: (the world, the coins picked up, the seconds played, how it
+## stands: 0 playing, 1 you reached the flag, 2 you were caught or fell).
+
+"ec:" u_se< "Ecs"
+"sv:" u_se< "Svg"
+"t:" u_se< "Text"
+
+### The data
+
+## The layout: where it is (x then y, in tiles, y down), how fast it
+## moves, whether gravity and the ground act on it, and what it is.
+"h" ec:c_omponents< "pos:2 vel:2 body walker coin player goal"
+## The level: R rows of C tiles, row by row; which tiles are ground.
+rows := "scroller.toml" []L_IST "level"
+cells := t:j_oin rows
+R := t_ally rows
+C := (t_ally cells) d_iv R
+solid := cells = f_irst "#"
+## The physics: gravity, a jump's speed, running speed, a walker's
+## speed, the fastest fall, the speed kept each tick.
+phys := 'sv:n_um e_ach "scroller.toml" []L_IST "physics"
+GRAVITY := f_irst phys
+JUMP := 2 s_elect phys
+RUN := 3 s_elect phys
+WALK := 4 s_elect phys
+FALL := 5 s_elect phys
+KEEP := 6 s_elect phys
+## Every entity is a square this many tiles wide.
+SIZE := 0.8
+
+### A new game
+
+## n by 2 from two columns (x and y, or two speeds).
+h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
+# :: (Any a, Num b, Num c) => a -> (Float, b, Float, c)
+## A new game: an entity for each character of the level that is one
+## (you, the coins, the walkers, the flag), standing on its tile; the
+## walkers set off to the left. Gravity and the ground act on you and the
+## walkers (body); the coins and the flag stay where they are.
+l:n_ew := { z ->
+  at := w_here cells m_ember? "@owF"
+  ch := at s_elect cells
+  (W, ids) := (h:w_orld 64) ec:s_pawn t_ally at
+  x := 0.1 + f_loat (at - 1) m_od C
+  y := (1.0 - SIZE) + f_loat (at - 1) d_iv C
+  W := W h:s_etPos (ids, h:p_air (x, y))
+  me := (ch = f_irst "@") r_eplicate ids
+  walk := (ch = f_irst "w") r_eplicate ids
+  W := W h:s_etVel (me, 0.0 0.0)
+  W := W h:s_etVel (walk, (n_eg WALK) c_at 0.0)
+  W := W h:s_etBody (me c_at walk, 1.0)
+  W := W h:s_etPlayer (me, 1.0)
+  W := W h:s_etWalker (walk, 1.0)
+  W := W h:s_etCoin ((ch = f_irst "o") r_eplicate ids, 1.0)
+  W := W h:s_etGoal ((ch = f_irst "F") r_eplicate ids, 1.0)
+  (W, 0, 0.0, 0)
+}
+
+### The systems
+
+## Whether the tiles at rows r and columns c (whole numbers, any number
+## of them) are ground: past the left or right end is a wall, above the
+## top or below the bottom is open.
+h:s_olid := { (r, c) ->
+  side := (c < 0) | c >= C
+  in := (n_ot side) & (r >= 0) & r < R
+  k := 1 + (C * 0 m_ax r m_in R - 1) + 0 m_ax c m_in C - 1
+  side | in & k s_elect solid
+}
+## The bodies alive: you and the walkers.
+h:b_odies := { W -> w_here (ec:a_live W) & h:h_asBody W }
+## Your entity.
+h:m_e := { W -> f_irst w_here (ec:a_live W) & h:h_asPlayer W }
+
+## Gravity: every body falls faster, up to the fastest fall.
+h:g_ravity := { W dt ->
+  b := h:b_odies W
+  V := b s_elect h:v_el W
+  W h:s_etVel (b, h:p_air (1 s_elect_2 V, FALL m_in (2 s_elect_2 V) + GRAVITY * dt))
+}
+## Your speed, kept a little less each tick once you let go.
+h:s_low := { W -> me := h:m_e W; W h:s_etVel (me, (KEEP * 1 s_elect me s_elect h:v_el W) c_at 2 s_elect me s_elect h:v_el W) }
+## Across: every body moves by its speed, stopped at the ground in its
+## way (its edge put against the tile); a walker stopped turns back.
+h:a_cross := { W dt ->
+  b := h:b_odies W
+  P := b s_elect h:p_os W
+  V := b s_elect h:v_el W
+  y := 2 s_elect_2 P
+  vx := 1 s_elect_2 V
+  ahead := vx > 0.0
+  nx := (1 s_elect_2 P) + vx * dt
+  c := f_loor nx + SIZE * f_loat ahead
+  hit := (vx != 0.0) & (h:s_olid (f_loor y + 0.01, c)) | h:s_olid (f_loor y + SIZE - 0.01, c)
+  h := f_loat hit
+  snap := (f_loat c) + (f_loat n_ot ahead) - SIZE * f_loat ahead
+  nx := (nx * 1.0 - h) + snap * h
+  vx := vx * 1.0 - h * 1.0 + f_loat b s_elect h:h_asWalker W
+  W := W h:s_etPos (b, h:p_air (nx, y))
+  W h:s_etVel (b, h:p_air (vx, 2 s_elect_2 V))
+}
+## Down (or up): every body moves by its speed, landing on the ground
+## below it or stopped by the ground above, its speed then 0.
+h:d_own := { W dt ->
+  b := h:b_odies W
+  P := b s_elect h:p_os W
+  V := b s_elect h:v_el W
+  x := 1 s_elect_2 P
+  vy := 2 s_elect_2 V
+  down := vy > 0.0
+  ny := (2 s_elect_2 P) + vy * dt
+  r := f_loor ny + SIZE * f_loat down
+  hit := (vy != 0.0) & (h:s_olid (r, f_loor x + 0.01)) | h:s_olid (r, f_loor x + SIZE - 0.01)
+  h := f_loat hit
+  snap := (f_loat r) + (f_loat n_ot down) - SIZE * f_loat down
+  ny := (ny * 1.0 - h) + snap * h
+  W := W h:s_etPos (b, h:p_air (x, ny))
+  W h:s_etVel (b, h:p_air (1 s_elect_2 V, vy * 1.0 - h))
+}
+## Which entities of ids touch you (at p, one row of x and y).
+h:t_ouching := { W (ids, p) -> (r_avel ec:n_ear (ids s_elect h:p_os W, 1 2 r_eshape p, SIZE)) r_eplicate ids }
+## Whether any of m holds.
+h:a_ny := { m -> 0 < '+ r_/ 0 c_at 0 + m }
+## How it stands: caught or fallen 2, at the flag 1, else 0.
+h:o_utcome := { (caught, won) -> caught ? 2; won ? 1; 0 }
+## What touches you: coins are picked up; a walker you land on is beaten
+## (and you bounce), one that meets you otherwise catches you; the flag
+## wins. A walker that falls out of the level goes; so do you, caught.
+h:t_ouch := { W g ->
+  me := h:m_e W
+  p := me s_elect h:p_os W
+  got := W h:t_ouching (w_here (ec:a_live W) & h:h_asCoin W, p)
+  W := W ec:d_espawn got
+  met := W h:t_ouching (w_here (ec:a_live W) & h:h_asWalker W, p)
+  vy := 2 s_elect me s_elect h:v_el W
+  beat := (vy > 0.0) & (0.3 + 2 s_elect p) < 2 s_elect_2 met s_elect h:p_os W
+  b := f_loat h:a_ny beat
+  W := W h:s_etVel (me, (1 s_elect me s_elect h:v_el W) c_at (vy * 1.0 - b) - 0.6 * JUMP * b)
+  W := W ec:d_espawn beat r_eplicate met
+  gone := w_here (ec:a_live W) & (h:h_asWalker W) & (2 s_elect_2 h:p_os W) > f_loat R + 1
+  W := W ec:d_espawn gone
+  caught := (h:a_ny n_ot beat) | (2 s_elect p) > f_loat R
+  won := 0 < t_ally W h:t_ouching (w_here (ec:a_live W) & h:h_asGoal W, p)
+  (W, g + t_ally got, h:o_utcome (caught, won))
+}
+# :: Num a => (Float, Int, Float, a) -> Float -> (Float, Int, Float, a)
+## A tick of the clock, dt seconds: gravity, then every body across and
+## down, then what touches you; each a system over every entity at once.
+## A game over stays as it is.
+l:t_ick := { (W, g, t, st) dt ->
+  st > 0 ? (W, g, t, st)
+  W := (h:s_low W h:g_ravity dt) h:a_cross dt
+  W := W h:d_own dt
+  (W, g, st) := W h:t_ouch g
+  (W, g, t + dt, st)
+}
+
+### Your keys
+
+## Whether you stand on the ground (it is just below your feet).
+h:s_tanding? := { W me ->
+  p := me s_elect h:p_os W
+  r := f_loor (2 s_elect p) + SIZE + 0.05
+  '| r_/ (h:s_olid (r, f_loor (f_irst p) + 0.01)) c_at h:s_olid (r, f_loor (f_irst p) + SIZE - 0.01)
+}
+# :: (Any a, Any b, Num c) => (Float, a, b, c) -> Char -> (Float, a, b, c)
+## A key: left or right (or a and d) runs that way, up (or w) jumps when
+## you stand on the ground; other keys do nothing.
+l:k_ey := { s name ->
+  (W, g, t, st) := s
+  me := h:m_e W
+  V := me s_elect h:v_el W
+  k := ("LEFT" "RIGHT" "a" "d" "UP" "w") i_ndexOf e_nclose name
+  (k > 6) | st > 0 ? s
+  (k > 4) & n_ot W h:s_tanding? me ? s
+  k > 4 ? (W h:s_etVel (me, (f_irst V) c_at n_eg JUMP), g, t, st)
+  (W h:s_etVel (me, (RUN * f_loat (2 * (k - 1) m_od 2) - 1) c_at 2 s_elect V), g, t, st)
+}
+
+### What it shows
+
+# :: (Any a, Any b, Any c, Any d) => (a, b, c, d) -> d
+## 0 playing, 1 you reached the flag, 2 you were caught or fell.
+l:s_tatus := { (W, g, t, st) -> st }
+# :: (Num a, Any b, Any c, Any d, Num e, Truthy e) => (a, b, c, d) -> e
+## How many of each are alive: you, walkers, coins, flags; and how many
+## of them gravity and the ground act on (bodies).
+l:c_ounts := { (W, g, t, st) ->
+  n := 5 c_at t_ally W
+  M := n r_eshape 0 + (h:h_asPlayer W) c_at (h:h_asWalker W) c_at (h:h_asCoin W) c_at (h:h_asGoal W) c_at h:h_asBody W
+  '+ r_/_2 M * n r_eshape 0 + ec:a_live W
+}
+# :: (Num a, Any b, Any c, Any d) => (a, b, c, d) -> a
+## Where every body is (you and the walkers): a row each, x then y.
+l:b_odies := { (W, g, t, st) -> (h:b_odies W) s_elect h:p_os W }
+# :: (Num a, Any b) => (Float, a, Float, b) -> Float
+## Where you are (x then y, in tiles), the coins and the seconds.
+l:y_ou := { (W, g, t, st) -> ((h:m_e W) s_elect h:p_os W) c_at (f_loat g) c_at t }
+## A tile of ground, drawn: grass on top where open sky is above it.
+h:t_ile := { k ->
+  top := (k > C) & (1 m_ax k - C) s_elect n_ot solid
+  fill := d_isclose (1 + top | k <= C) s_elect "#8d5a34" "#4caf50"
+  e_nclose @ f_ormat< "<rect x=\"{50 * (k - 1) m_od C}\" y=\"{60 + 50 * (k - 1) d_iv C}\" width=\"50\" height=\"50\" fill=\"{fill}\" stroke=\"#5b3a1e\" stroke-width=\"2\"/>"
+}
+## The whole level drawn once; each picture slides it under the view.
+level := t:j_oin 'h:t_ile e_ach w_here solid
+## An entity, drawn at x, y (tiles) by what it is: 1 you, 2 a walker, 3 a
+## coin, 4 the flag.
+h:s_prite := { (x, y, k) ->
+  X := 50.0 * x
+  Y := 60.0 + 50.0 * y
+  k = 1 ? @ f_ormat< "<rect class=\"entity you\" x=\"{sv:w_hole X}\" y=\"{sv:w_hole Y}\" width=\"40\" height=\"40\" rx=\"8\" fill=\"#e63946\" stroke=\"#1d1d1f\" stroke-width=\"3\"/><rect x=\"{sv:w_hole X + 24}\" y=\"{sv:w_hole Y + 10}\" width=\"8\" height=\"10\" fill=\"#ffffff\"/>"
+  k = 2 ? @ f_ormat< "<rect class=\"entity\" x=\"{sv:w_hole X}\" y=\"{sv:w_hole Y + 8}\" width=\"40\" height=\"32\" rx=\"14\" fill=\"#6d4c41\" stroke=\"#1d1d1f\" stroke-width=\"3\"/>"
+  k = 3 ? @ f_ormat< "<circle class=\"entity\" cx=\"{sv:w_hole X + 20}\" cy=\"{sv:w_hole Y + 20}\" r=\"12\" fill=\"#ffd166\" stroke=\"#b8860b\" stroke-width=\"3\"/>"
+  @ f_ormat< "<rect x=\"{sv:w_hole X + 18}\" y=\"{sv:w_hole Y - 110}\" width=\"5\" height=\"150\" fill=\"#333333\"/><polygon class=\"entity\" points=\"{sv:w_hole X + 23},{sv:w_hole Y - 110} {sv:w_hole X + 63},{sv:w_hole Y - 92} {sv:w_hole X + 23},{sv:w_hole Y - 74}\" fill=\"#2a9d8f\"/>"
+}
+## What the top line says.
+h:s_ays := { (g, t, st) ->
+  st = 1 ? @ f_ormat< "You reached the flag! | Coins {g} | Time {f_loor t} s"
+  st = 2 ? @ f_ormat< "Caught! | Coins {g} | Time {f_loor t} s"
+  @ f_ormat< "Coins {g} | Time {f_loor t} s | Arrows: run and jump"
+}
+# :: (Num b, Num c) => (Float, a, b, c) -> Char
+## The picture, as SVG text: the sky, then the level and every entity
+## alive slid so that you stay in view (16 tiles wide, the rest cut
+## off), then the top line.
+l:d_raw := { (W, g, t, st) ->
+  v := 0.0 0.0 800.0 c_at 60.0 + 50.0 * f_loat R
+  me := h:m_e W
+  cx := 0.0 m_ax (f_loat C - 16) m_in (f_irst me s_elect h:p_os W) - 7.0
+  live := w_here ec:a_live W
+  P := live s_elect h:p_os W
+  k := (0 + live s_elect h:h_asPlayer W) + (2 * 0 + live s_elect h:h_asWalker W) + (3 * 0 + live s_elect h:h_asCoin W) + 4 * 0 + live s_elect h:h_asGoal W
+  order := g_rade k = 1
+  ents := '{ i -> e_nclose h:s_prite (i s_elect 1 s_elect_2 P, i s_elect 2 s_elect_2 P, i s_elect k) } e_ach order
+  slide := e_nclose @ f_ormat< "<g transform=\"translate({sv:w_hole n_eg 50.0 * cx} 0)\">"
+  top := (20.0, 42.0, 30.0) sv:w_ords h:s_ays (g, t, st)
+  clip := e_nclose @ f_ormat< "<clipPath id=\"view\"><rect width=\"800\" height=\"{sv:w_hole 4 s_elect v}\"/></clipPath><g clip-path=\"url(#view)\">"
+  v sv:p_icture (v sv:r_ect "fill=\"#8ecae6\"") c_at clip c_at slide c_at (e_nclose level) c_at ents c_at (e_nclose "</g></g>") c_at top
+}

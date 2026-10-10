@@ -382,7 +382,9 @@ a side-scroller and a race game (ticks), an asteroids-style shooter
 (entities spawned and despawned). Step 25, the library: DONE. Step
 26, keys and ticks from the page: DONE. Step 27, the dungeon
 crawler: DONE (kinds as data, systems over every entity, a test that
-adds bats with no code).
+adds bats with no code)). Step 31, the side-scroller: DONE (the first game
+moved by the clock; the page keeps only its latest picture; the
+browser test checks its clock keeps up and keys move you).
 
 ## Saga 6 -- macros
 
