@@ -334,7 +334,8 @@ fn board(p: &BoardProps) -> Html {
         })
     };
     // Keys go to the program as `key NAME`, named as X_eTaL names them
-    // (xetal_lineedit::key_name: Up, Down, Left, Right, Enter, a letter);
+    // (xetal_lineedit::key_name: Up, Down, Left, Right, Enter, a letter,
+    // and space);
     // Escape stays the dialog's own (it closes it), and keys a game uses
     // do not scroll the page behind it.
     let onkeydown = {
@@ -348,7 +349,10 @@ fn board(p: &BoardProps) -> Html {
                 again();
                 return;
             }
-            if let Some(name) = xetal_lineedit::key_name(&e.key()).filter(|n| n.trim() == n.as_str()) {
+            // The space bar is `key space` (a line cannot end in a space),
+            // which X_eTaL reads as the space key.
+            let key = if e.key() == " " { Some("space".to_string()) } else { xetal_lineedit::key_name(&e.key()) };
+            if let Some(name) = key.filter(|n| n.trim() == n.as_str()) {
                 e.prevent_default();
                 on_line.emit(format!("key {name}"));
             }

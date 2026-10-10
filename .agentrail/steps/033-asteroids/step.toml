@@ -1,6 +1,6 @@
 number = 33
 slug = "asteroids"
-status = "pending"
+status = "in-progress"
 description = "an ECS demo with ticks: spawning and despawning (bullets, rocks splitting): e..."
 role = "production"
 context_files = []

@@ -1,0 +1,13 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "asteroids"
+title = "Asteroids"
+summary = "Break every rock, three waves of them, with the arrow keys and the space bar: big rocks break into medium ones, medium into small. The game moves with the clock, twenty ticks a second. Built on lib/Ecs: shots and rocks are spawned and despawned all the time, in the slots a mask says are free, and every rule is one expression over every entity at once."
+lesson = "entities that come and go: spawning and despawning by masks, every shot against every rock at once, ticked by the clock"
+concepts = ["Ecs.xtlm macro", "tuples", "[]E_VENT ticks and keys", "s_pawn and d_espawn", "t_able", "SVG"]
+status = "live"
+group = "Action"
+order = 160
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Asteroids_(video_game)"   # the title links here (opens in a new tab)

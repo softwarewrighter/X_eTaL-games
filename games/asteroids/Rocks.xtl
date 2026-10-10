@@ -1,0 +1,261 @@
+## Asteroids' rules, a library: asteroids.xtl (scripted), play.xtl (the
+## game: keys and the clock) and the web page all use these. Built on
+## lib/Ecs: a world is a matrix, a row per entity slot, and every rule is
+## a system over every entity at once. The entities come and go all the
+## time: every shot is spawned and spent, every rock hit is despawned
+## and its two halves spawned in the slots that freed. Which slots hold
+## what is only masks (alive, rock, shot), so the churn needs no lists
+## kept. A game's state is a tuple: (the world, the score, the lives
+## left, the wave, the seconds played, how it stands: 0 playing, 1 every
+## wave cleared, 2 no lives left, the seconds the ship cannot be hit).
+
+"ec:" u_se< "Ecs"
+"sv:" u_se< "Svg"
+
+### The data
+
+## The layout: where it is (x then y, in tiles, y down), how fast it
+## moves, the ship's heading (radians, 0 to the right), a rock's size
+## (1 small to 3 big), a shot's time left, and what it is.
+"h" ec:c_omponents< "pos:2 vel:2 dir size life ship rock shot"
+## A list of numbers from asteroids.toml.
+h:n_ums := { k -> 'sv:n_um e_ach "asteroids.toml" []L_IST k }
+FIELD := h:n_ums "field"
+FX := f_irst FIELD
+FY := 2 s_elect FIELD
+WAVES := f_loor h:n_ums "waves"
+RADII := h:n_ums "radii"
+SPEEDS := h:n_ums "speeds"
+POINTS := f_loor h:n_ums "points"
+ship := h:n_ums "ship"
+TURN := f_irst ship
+THRUST := 2 s_elect ship
+FAST := 3 s_elect ship
+DRAG := 4 s_elect ship
+LIVES := f_loor 5 s_elect ship
+SAFE := 6 s_elect ship
+gun := h:n_ums "gun"
+SHOT := f_irst gun
+FLIGHT := 2 s_elect gun
+SHOTS := 3 s_elect gun
+
+### A new game
+
+## n by 2 from two columns.
+h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
+## Angles in radians from a number of degrees.
+h:r_adians := { d -> (p_i @) * (f_loat d) / 180.0 }
+## A wave of big rocks (wave k says how many): each on a ring around the
+## middle, flying off in a direction of its own, all drawn at random.
+h:w_ave := { W k ->
+  n := k s_elect WAVES
+  (W, ids) := W ec:s_pawn n
+  a := h:r_adians r_oll! n r_eshape 360
+  b := h:r_adians r_oll! n r_eshape 360
+  W := W h:s_etPos (ids, h:p_air ((0.5 * FX) + 7.0 * c_os a, (0.5 * FY) + 7.0 * s_in a))
+  W := W h:s_etVel (ids, h:p_air ((3 s_elect SPEEDS) * c_os b, (3 s_elect SPEEDS) * s_in b))
+  W := W h:s_etSize (ids, 3.0)
+  W h:s_etRock (ids, 1.0)
+}
+## The ship put in the middle, still, heading up.
+h:c_enter := { W me ->
+  W := W h:s_etPos (me, (0.5 * FX) c_at 0.5 * FY)
+  W := W h:s_etVel (me, 0.0 0.0)
+  W h:s_etDir (me, n_eg 0.5 * p_i @)
+}
+# :: (Any a, Num b, Num c, Num d) => a -> (Float, b, Int, c, Float, d, Float)
+## A new game: the ship in the middle and the first wave of rocks.
+l:n_ew := { z ->
+  (W, ids) := (h:w_orld 64) ec:s_pawn 1
+  W := (W h:c_enter ids) h:s_etShip (ids, 1.0)
+  (W h:w_ave 1, 0, LIVES, 1, 0.0, 0, SAFE)
+}
+
+### The systems
+
+## The ship, the rocks, the shots alive.
+h:m_e := { W -> f_irst w_here (ec:a_live W) & h:h_asShip W }
+h:r_ocks := { W -> w_here (ec:a_live W) & h:h_asRock W }
+h:s_hots := { W -> w_here (ec:a_live W) & h:h_asShot W }
+## Every entity moves by its speed, wrapping around the field's edges;
+## the ship keeps a little less of its speed.
+h:m_ove := { W dt ->
+  c := w_here ec:a_live W
+  P := (c s_elect h:p_os W) + dt * c s_elect h:v_el W
+  x := 1 s_elect_2 P
+  y := 2 s_elect_2 P
+  W := W h:s_etPos (c, h:p_air (x - FX * f_loat f_loor x / FX, y - FY * f_loat f_loor y / FY))
+  me := h:m_e W
+  W h:s_etVel (me, DRAG * me s_elect h:v_el W)
+}
+## Every shot's time runs down; the spent shots go.
+h:a_ge := { W dt ->
+  s := h:s_hots W
+  W := W h:s_etLife (s, (s s_elect h:l_ife W) - dt)
+  W ec:d_espawn ((s s_elect h:l_ife W) <= 0.0) r_eplicate s
+}
+## Which of the points P lie within reach of which rocks r (each its
+## radius plus more): a table, P's rows down, the rocks across.
+h:w_ithin := { W (P, r, more) ->
+  R := r s_elect h:p_os W
+  dx := (1 s_elect_2 P) '- t_able 1 s_elect_2 R
+  dy := (2 s_elect_2 P) '- t_able 2 s_elect_2 R
+  reach := more + (f_loor r s_elect h:s_ize W) s_elect RADII
+  ((dx * dx) + dy * dy) < (s_hape dx) r_eshape reach * reach
+}
+## The world without the entities gone, and with the two halves of each
+## rock of ids (one of them): where it was, a size smaller, flying at the
+## smaller size's speed, one turned left of its way and one right,
+## spawned in the first free slots (the ones just freed among them).
+h:h_alves := { W (ids, gone) ->
+  0 = t_ally ids ? W ec:d_espawn gone
+  two := ((t_ally ids) r_eshape 2) r_eplicate ids
+  n := t_ally two
+  V := two s_elect h:v_el W
+  sz := (two s_elect h:s_ize W) - 1.0
+  a := 0.7 * 1.0 - 2.0 * f_loat (r_ange n) m_od 2
+  vx := ((1 s_elect_2 V) * c_os a) - (2 s_elect_2 V) * s_in a
+  vy := ((1 s_elect_2 V) * s_in a) + (2 s_elect_2 V) * c_os a
+  k := ((f_loor sz) s_elect SPEEDS) / 0.001 m_ax ((vx * vx) + vy * vy) ^ 0.5
+  P := two s_elect h:p_os W
+  (W, kids) := (W ec:d_espawn gone) ec:s_pawn n
+  W := W h:s_etPos (kids, P)
+  W := W h:s_etVel (kids, h:p_air (k * vx, k * vy))
+  W := W h:s_etSize (kids, sz)
+  W h:s_etRock (kids, 1.0)
+}
+## Shots that reach a rock: the shots are spent, the rocks go (their
+## points scored), and the rocks bigger than small leave two halves each,
+## spawned in the slots just freed. Every shot against every rock at
+## once.
+h:s_hoot := { W ->
+  s := h:s_hots W
+  r := h:r_ocks W
+  0 = (t_ally s) * t_ally r ? (W, 0)
+  H := W h:w_ithin (s s_elect h:p_os W, r, 0.0)
+  hit := ('| r_/_1 H) r_eplicate r
+  sz := f_loor hit s_elect h:s_ize W
+  big := (sz > 1) r_eplicate hit
+  W := W h:h_alves (big, (('| r_/_2 H) r_eplicate s) c_at hit)
+  (W, '+ r_/ 0 c_at sz s_elect POINTS)
+}
+## A rock that reaches the ship, unless it cannot be hit: a life lost,
+## the ship back in the middle, safe for a while.
+h:c_rash := { (W, lives, safe) ->
+  safe > 0.0 ? (W, lives, safe)
+  me := h:m_e W
+  r := h:r_ocks W
+  0 = t_ally r ? (W, lives, safe)
+  n_ot '| r_/ r_avel W h:w_ithin (1 2 r_eshape me s_elect h:p_os W, r, 0.35) ? (W, lives, safe)
+  (W h:c_enter me, lives - 1, SAFE)
+}
+## When the rocks are all gone: the next wave, or, after the last, won.
+h:n_ext := { (W, wave) ->
+  0 < t_ally h:r_ocks W ? (W, wave, 0)
+  wave = t_ally WAVES ? (W, wave, 1)
+  (W h:w_ave wave + 1, wave + 1, 0)
+}
+## How it stands: won 1, no lives left 2, else 0.
+h:s_tanding := { (won, lives) -> won = 1 ? 1; lives <= 0 ? 2; 0 }
+# :: (Num a, Num b) => (Float, Int, a, Int, Float, b, Float) -> Float -> (Float, Int, a, Int, Float, b, Float)
+## A tick of the clock, dt seconds: everything moves, the shots age, the
+## shots that reach rocks break them, a rock that reaches the ship costs
+## a life, and a field cleared brings the next wave; each a system over
+## every entity at once. A game over stays as it is.
+l:t_ick := { (W, sc, lv, wv, t, st, sf) dt ->
+  st > 0 ? (W, sc, lv, wv, t, st, sf)
+  W := (W h:m_ove dt) h:a_ge dt
+  (W, pts) := h:s_hoot W
+  (W, lv, sf) := h:c_rash (W, lv, 0.0 m_ax sf - dt)
+  (W, wv, won) := h:n_ext (W, wv)
+  (W, sc + pts, lv, wv, t + dt, h:s_tanding (won, lv), sf)
+}
+
+### Your keys
+
+## A shot from the ship's nose, at the ship's speed plus the gun's, unless
+## the most shots are already in flight.
+h:f_ire := { W me ->
+  SHOTS <= f_loat t_ally h:s_hots W ? W
+  d := me s_elect h:d_ir W
+  u := (c_os d) c_at s_in d
+  (W, ids) := W ec:s_pawn 1
+  W := W h:s_etPos (ids, (me s_elect h:p_os W) + 0.6 * u)
+  W := W h:s_etVel (ids, (me s_elect h:v_el W) + SHOT * u)
+  W := W h:s_etLife (ids, FLIGHT)
+  W h:s_etShot (ids, 1.0)
+}
+## The ship's speed with an up key's added along its heading, no faster
+## than the fastest.
+h:t_hrust := { W me ->
+  d := me s_elect h:d_ir W
+  v := (me s_elect h:v_el W) + THRUST * (c_os d) c_at s_in d
+  W h:s_etVel (me, v * 1.0 m_in FAST / 0.001 m_ax ('+ r_/ v * v) ^ 0.5)
+}
+# :: (Any a, Any b, Any c, Any d, Num e, Any f) => (Float, a, b, c, d, e, f) -> Char -> (Float, a, b, c, d, e, f)
+## A key: left and right (or a and d) turn the ship, up (or w) thrusts,
+## the space bar (or f) fires; other keys, and keys after the game is
+## over, do nothing.
+l:k_ey := { s name ->
+  (W, sc, lv, wv, t, st, sf) := s
+  me := h:m_e W
+  k := ("LEFT" "RIGHT" "a" "d" "UP" "w" " " "f") i_ndexOf e_nclose name
+  (k > 8) | st > 0 ? s
+  k > 6 ? (W h:f_ire me, sc, lv, wv, t, st, sf)
+  k > 4 ? (W h:t_hrust me, sc, lv, wv, t, st, sf)
+  (W h:s_etDir (me, (me s_elect h:d_ir W) + TURN * f_loat (2 * (k - 1) m_od 2) - 1), sc, lv, wv, t, st, sf)
+}
+
+### What it shows
+
+# :: (Any a, Any b, Any c, Any d, Any e, Any f, Any g) => (a, b, c, d, e, f, g) -> f
+## 0 playing, 1 every wave cleared, 2 no lives left.
+l:s_tatus := { (W, sc, lv, wv, t, st, sf) -> st }
+# :: (Any a, Any c, Any d, Any e) => (a, b, b, b, c, d, e) -> b
+## The score, the lives left, the wave.
+l:s_core := { (W, sc, lv, wv, t, st, sf) -> sc c_at lv c_at wv }
+# :: (Num a, Any b, Any c, Any d, Any e, Any f, Any g) => (a, b, c, d, e, f, g) -> Int
+## How many are alive: the ship, rocks, shots; and the slots in use.
+l:c_ounts := { (W, sc, lv, wv, t, st, sf) -> ('+ r_/ 0 + (ec:a_live W) & h:h_asShip W) c_at (t_ally h:r_ocks W) c_at (t_ally h:s_hots W) c_at ec:c_ount W }
+# :: (Num a, Any b, Any c, Any d, Any e, Any f, Any g) => (a, b, c, d, e, f, g) -> a
+## The ship: where it is, its heading, and its speed across and down.
+l:s_hip := { (W, sc, lv, wv, t, st, sf) ->
+  me := h:m_e W
+  (me s_elect h:p_os W) c_at (me s_elect h:d_ir W) c_at me s_elect h:v_el W
+}
+# :: (Num a, Any b, Any c, Any d, Any e, Any f, Any g) => (a, b, c, d, e, f, g) -> a
+## The rocks: where each is, a row each.
+l:r_ocks := { (W, sc, lv, wv, t, st, sf) -> (h:r_ocks W) s_elect h:p_os W }
+## A number of tiles as units of the picture (40 a tile).
+h:u_nits := { x -> sv:w_hole 40.0 * x }
+## A rock at x, y of radius z; a shot at x, y.
+h:d_rawRock := { (x, y, z) -> e_nclose @ f_ormat< "<circle class=\"entity\" cx=\"{h:u_nits x}\" cy=\"{h:u_nits y}\" r=\"{h:u_nits z}\" fill=\"#5c636a\" stroke=\"#ced4da\" stroke-width=\"3\"/>" }
+h:d_rawShot := { (x, y) -> e_nclose @ f_ormat< "<circle class=\"entity\" cx=\"{h:u_nits x}\" cy=\"{h:u_nits y}\" r=\"4\" fill=\"#ffd166\"/>" }
+## The ship at x, y heading d; faint while it cannot be hit.
+h:d_rawShip := { (x, y, d, safe) ->
+  o := d_isclose (1 + safe > 0.0) s_elect "1" "0.45"
+  e_nclose @ f_ormat< "<g class=\"entity you\" opacity=\"{o}\" transform=\"translate({h:u_nits x} {h:u_nits y}) rotate({sv:w_hole d * 180.0 / p_i @})\"><polygon points=\"20,0 -14,-12 -8,0 -14,12\" fill=\"#e9ecef\" stroke=\"#4cc9f0\" stroke-width=\"3\"/></g>"
+}
+## What the top line says.
+h:s_ays := { (sc, lv, wv, t, st) ->
+  st = 1 ? @ f_ormat< "Every wave cleared! Score {sc} | Time {f_loor t} s"
+  st = 2 ? @ f_ormat< "Game over. Score {sc} | Time {f_loor t} s"
+  @ f_ormat< "Score {sc} | Lives {lv} | Wave {wv} of {t_ally WAVES} | Time {f_loor t} s | Arrows, space"
+}
+# :: (Num d, Num e) => (Float, a, b, c, d, e, Float) -> Char
+## The picture, as SVG text: the field (what crosses an edge cut off),
+## the rocks, the shots and the ship, and the top line above.
+l:d_raw := { (W, sc, lv, wv, t, st, sf) ->
+  v := 0.0 0.0 c_at (40.0 * FX) c_at 60.0 + 40.0 * FY
+  r := h:r_ocks W
+  R := r s_elect h:p_os W
+  z := (f_loor r s_elect h:s_ize W) s_elect RADII
+  rocks := '{ i -> h:d_rawRock (i s_elect 1 s_elect_2 R, i s_elect 2 s_elect_2 R, i s_elect z) } e_ach r_ange t_ally r
+  S := (h:s_hots W) s_elect h:p_os W
+  shots := '{ i -> h:d_rawShot (i s_elect 1 s_elect_2 S, i s_elect 2 s_elect_2 S) } e_ach r_ange t_ally S
+  me := l:s_hip (W, sc, lv, wv, t, st, sf)
+  you := h:d_rawShip (f_irst me, 2 s_elect me, 3 s_elect me, sf)
+  clip := e_nclose @ f_ormat< "<clipPath id=\"field\"><rect width=\"{h:u_nits FX}\" height=\"{h:u_nits FY}\"/></clipPath><g transform=\"translate(0 60)\" clip-path=\"url(#field)\">"
+  top := (20.0, 42.0, 30.0) sv:w_ords h:s_ays (sc, lv, wv, t, st)
+  v sv:p_icture (v sv:r_ect "fill=\"#0b0c1a\"") c_at clip c_at rocks c_at shots c_at you c_at (e_nclose "</g>") c_at top
+}

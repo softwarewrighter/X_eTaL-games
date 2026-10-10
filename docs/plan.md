@@ -386,7 +386,9 @@ adds bats with no code)). Step 31, the side-scroller: DONE (the first game
 moved by the clock; the page keeps only its latest picture; the
 browser test checks its clock keeps up and keys move you). Step 32, the racer: DONE (cars as
 entities, the grass as a cars-by-segments table, places by comparing
-every pair; a golden won by a one-key-a-tick driving rule).
+every pair; a golden won by a one-key-a-tick driving rule). Step 33, asteroids: DONE (shots and
+rock halves spawned and despawned by masks; the page sends the space
+bar as `key space`).
 
 ## Saga 6 -- macros
 

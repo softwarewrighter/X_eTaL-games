@@ -1,0 +1,21 @@
+# Asteroids' field, waves, rocks, ship and gun, read by Rocks.xtl (X_eTaL's
+# []L_IST). Every value is a string; sizes are in tiles, speeds in tiles
+# a second.
+#
+# The field, wide and high; it wraps around at its edges.
+field = ["24", "16"]
+# How many big rocks each wave brings; clearing the last wave wins.
+waves = ["3", "4", "5"]
+# By a rock's size (small, medium, big): its radius, its speed, and the
+# points for breaking it. A big rock breaks into two medium ones, a
+# medium into two small; a small one is gone.
+radii = ["0.4", "0.75", "1.2"]
+speeds = ["3.2", "2.2", "1.4"]
+points = ["100", "50", "20"]
+# The ship: how far a left or right key turns it (radians), the speed an
+# up key adds, its fastest speed, the speed it keeps each tick, its
+# lives, and the seconds it cannot be hit after starting or a crash.
+ship = ["0.22", "0.9", "9", "0.99", "3", "2"]
+# The gun: a shot's speed, how long a shot flies (seconds), and the most
+# shots in flight at once.
+gun = ["12", "1", "6"]

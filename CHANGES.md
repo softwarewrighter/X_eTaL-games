@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-10
 
+- 16:41 `game` Asteroids, entities that come and go: three waves of rocks to break with the arrow keys and the space bar (Rocks.xtl on lib/Ecs: shots spawned when fired and despawned when spent, rocks hit despawned and their halves spawned in the freed slots, all by masks; every shot against every rock as one table; a field that wraps); the field, waves, rocks, ship and gun in asteroids.toml; test.sh clears a one-rock wave for exactly 520 points; the golden is fifteen seconds of an aiming gunner, ending with the score; the page now sends the space bar as `key space` (it was dropped).
+
 - 13:44 `chore` Saga step racer completed.
 
 - 13:40 `game` The racer: three laps against three rivals with the arrow keys (Race.xtl on lib/Ecs: your car and the rivals one kind of entity; steering, the grass, bumping, the points passed, laps and places each a system over every car at once; the grass from every car's distance to every segment of the track as one table; places by comparing every pair); the track, cars and race numbers in racer.toml; a golden won by a one-key-a-tick driving rule; test.sh adds a fifth rival with no code; the browser test's clock check now looks for any change in how you are drawn after up and right keys.
