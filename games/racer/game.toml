@@ -1,0 +1,13 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "racer"
+title = "Racer"
+summary = "Three laps against three rivals with the arrow keys: steer, keep off the grass, finish first. The race moves with the clock, twenty ticks a second. Built on lib/Ecs: your car and the rivals are rows of one matrix, and driving, the grass, bumping, laps and places are each one expression over every car at once."
+lesson = "laps and places as systems: every car against every segment of the track, every pair of cars compared at once, ticked by the clock"
+concepts = ["Ecs.xtlm macro", "tuples", "[]E_VENT ticks and keys", "t_able", "ranks by comparison", "SVG"]
+status = "live"
+group = "Action"
+order = 150
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Racing_video_game"   # the title links here (opens in a new tab)

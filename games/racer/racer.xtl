@@ -1,0 +1,43 @@
+#!/usr/bin/env xetal
+## The racer, scripted (seed 1), with the rules of Race.xtl on lib/Ecs:
+## the cars as rows of one matrix, and driving, the grass, bumping, laps
+## and places as systems over every car at once.
+"rc:" u_se< "Race"
+"ec:" u_se< "Ecs"
+
+# A new race: a car for each paint in racer.toml (yours is the first),
+# on the grid behind the start line. The world: a row per slot (8) and a
+# column per field.
+s := rc:n_ew 0
+(W, t, st, pl) := s
+s_hape W
+ec:c_ount W
+
+# Every car: laps done, the point of the track it heads for, its place
+# (one more than the cars ahead of it, every pair compared at once).
+rc:c_ars s
+
+# The lights go after two seconds; then the rivals steer for the points
+# of the track. Twelve seconds in (240 ticks), every car again:
+u:w_ait := { s n -> n = 0 ? s; (s rc:t_ick 0.05) u:w_ait n - 1 }
+s := s u:w_ait 240
+rc:c_ars s
+
+# Your car never moved (no keys): still on the grid, heading right at
+# speed 0, the second point of the track ahead. Your lap, your place and
+# the seconds:
+f_loor 0.5 + 100 * rc:c_ar s
+rc:y_ou s
+
+# Up three times: your speed, then a second later where you are.
+s := ((s rc:k_ey "UP") rc:k_ey "UP") rc:k_ey "UP"
+4 s_elect rc:c_ar s
+s := s u:w_ait 20
+f_loor 0.5 + 100 * 2 t_ake rc:c_ar s
+pic := []S_HOW rc:d_raw s
+
+# What the race guarantees, checked by a_ssert< (silent when it holds).
+u:w_orld := { (W, t, st, pl) -> W }
+ok := "4 = ec:c_ount u:w_orld rc:n_ew 0" a_ssert< "four cars in a new race"
+ok := "'& r_/ 1 2 3 4.0 = s_ort 3 s_elect_2 rc:c_ars s" a_ssert< "the places are one to four"
+ok := "0 = rc:s_tatus s" a_ssert< "still racing"

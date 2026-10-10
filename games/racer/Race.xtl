@@ -1,0 +1,236 @@
+## The racer's rules, a library: racer.xtl (scripted), play.xtl (the
+## game: keys and the clock) and the web page all use these. Built on
+## lib/Ecs: a world is a matrix, a row per car, and every rule is a
+## system over every car at once. Your car and the rivals are the same
+## kind of entity: the rivals steer for the next point of the track, you
+## steer with your keys, and the rest (moving, the grass, bumping, the
+## points passed, the laps and the places) is the same for all. A race's
+## state is a tuple: (the world, the seconds since the lights, how it
+## stands: 0 racing, 1 you finished, your place at the finish).
+
+"ec:" u_se< "Ecs"
+"sv:" u_se< "Svg"
+"t:" u_se< "Text"
+
+### The data
+
+## The layout: where a car is (x then y, in tiles, y down), its heading
+## (radians, 0 to the right, turning right as it grows), its speed, its
+## top speed (0 for yours), the point of the track it heads for, the laps
+## it has done, whether it is yours, and its paint.
+"h" ec:c_omponents< "pos:2 dir speed top next lap player paint"
+## The track: the points of its middle line, each segment from a point to
+## the next (the last back to the first), and how wide the road is.
+X := 'sv:n_um e_ach "racer.toml" []L_IST "x"
+Y := 'sv:n_um e_ach "racer.toml" []L_IST "y"
+N := t_ally X
+BX := (1 d_rop X) c_at f_irst X
+BY := (1 d_rop Y) c_at f_irst Y
+WIDTH := f_irst 'sv:n_um e_ach "racer.toml" []L_IST "width"
+## The cars: paints and top speeds.
+colors := "racer.toml" []L_IST "colors"
+TOPS := 'sv:n_um e_ach "racer.toml" []L_IST "tops"
+## The race: laps, seconds before the start, your fastest speed, the
+## speed an up key adds, a left or right key's turn, the speed kept each
+## tick, a rival's turning a second, the fastest on the grass, how near a
+## point a car must pass.
+race := 'sv:n_um e_ach "racer.toml" []L_IST "race"
+LAPS := f_irst race
+GO := 2 s_elect race
+FAST := 3 s_elect race
+ACCEL := 4 s_elect race
+TURN := 5 s_elect race
+KEEP := 6 s_elect race
+STEER := 7 s_elect race
+GRASS := 8 s_elect race
+NEAR := 9 s_elect race
+
+### A new race
+
+## n by 2 from two columns.
+h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
+# :: (Any a, Num b, Num c) => a -> (Float, Float, b, c)
+## A new race: a car for each paint, on the grid behind the start line
+## in pairs, all heading for the second point of the track.
+l:n_ew := { z ->
+  (W, ids) := (h:w_orld 8) ec:s_pawn t_ally colors
+  i := f_loat r_ange t_ally ids
+  W := W h:s_etPos (ids, h:p_air ((f_irst X) - 1.1 * i, (f_irst Y) + 0.5 - f_loat (r_ange t_ally ids) m_od 2))
+  W := W h:s_etDir (ids, 0.0)
+  W := W h:s_etSpeed (ids, 0.0)
+  W := W h:s_etTop (ids, TOPS)
+  W := W h:s_etNext (ids, 2.0)
+  W := W h:s_etLap (ids, 0.0)
+  W := W h:s_etPlayer (f_irst ids, 1.0)
+  W := W h:s_etPaint (ids, i)
+  (W, 0.0, 0, 0)
+}
+
+### The systems
+
+## The cars.
+h:c_ars := { W -> w_here ec:a_live W }
+## Your car.
+h:m_e := { W -> f_irst w_here (ec:a_live W) & h:h_asPlayer W }
+## Where each car heads for: the point of the track, a row each.
+h:t_arget := { W c -> h:p_air ((f_loor c s_elect h:n_ext W) s_elect X, (f_loor c s_elect h:n_ext W) s_elect Y) }
+## How far each car (a row of P) is from the road's middle line, squared:
+## every car against every segment of the track at once (a table, cars
+## down, segments across), the nearest kept.
+h:o_ffLine := { P ->
+  dx := (1 s_elect_2 P) '- t_able X
+  dy := (2 s_elect_2 P) '- t_able Y
+  s := s_hape dx
+  ex := s r_eshape BX - X
+  ey := s r_eshape BY - Y
+  t := 0.0 m_ax 1.0 m_in ((dx * ex) + dy * ey) / (ex * ex) + ey * ey
+  qx := dx - t * ex
+  qy := dy - t * ey
+  'm_in r_/_2 (qx * qx) + qy * qy
+}
+## The rivals steer for the point they head for (turning by at most
+## their turning in dt, less the more nearly they face it) and speed up
+## or slow down toward their top speed; your car only loses a little
+## speed. Then every car on the grass is held to the grass's speed.
+h:d_rive := { W dt ->
+  c := h:c_ars W
+  P := c s_elect h:p_os W
+  d := c s_elect h:d_ir W
+  v := c s_elect h:s_peed W
+  top := c s_elect h:t_op W
+  rival := top > 0.0
+  T := (W h:t_arget c) - P
+  far := 0.001 m_ax ((1 s_elect_2 T) * 1 s_elect_2 T) + (2 s_elect_2 T) * 2 s_elect_2 T
+  side := (((c_os d) * 2 s_elect_2 T) - (s_in d) * 1 s_elect_2 T) / far ^ 0.5
+  d := d + (f_loat rival) * STEER * dt * -1.0 m_ax 1.0 m_in 3.0 * side
+  v := (v * KEEP + (f_loat rival) * 1.0 - KEEP) + (f_loat rival) * 0.05 * top - v
+  off := (h:o_ffLine P) > (WIDTH * WIDTH) / 4.0
+  v := (v * f_loat n_ot off) + (f_loat off) * v m_in GRASS
+  W := W h:s_etDir (c, d)
+  W h:s_etSpeed (c, v)
+}
+## Cars that touch another (within 0.7 tiles) are slowed, every pair at
+## once; then every car moves along its heading by its speed.
+h:m_ove := { W dt ->
+  c := h:c_ars W
+  P := c s_elect h:p_os W
+  bump := 1 < '+ r_/_2 0 + ec:n_ear (P, P, 0.7)
+  v := (c s_elect h:s_peed W) * 1.0 - 0.1 * f_loat bump
+  d := c s_elect h:d_ir W
+  W := W h:s_etSpeed (c, v)
+  W h:s_etPos (c, P + h:p_air (v * dt * c_os d, v * dt * s_in d))
+}
+## Every car that comes near the point it heads for heads for the next
+## one; passing the first point (the line) is a lap done.
+h:p_ass := { W ->
+  c := h:c_ars W
+  T := (W h:t_arget c) - c s_elect h:p_os W
+  at := (NEAR * NEAR) > ((1 s_elect_2 T) * 1 s_elect_2 T) + (2 s_elect_2 T) * 2 s_elect_2 T
+  k := f_loor c s_elect h:n_ext W
+  W := W h:s_etLap (c, (c s_elect h:l_ap W) + f_loat at & k = 1)
+  W h:s_etNext (c, f_loat k + (f_loor at) * (1 + k m_od N) - k)
+}
+## How far each car is in the race: laps, points passed in this lap, less
+## a little for the way still to go to the next.
+h:p_rogress := { W ->
+  c := h:c_ars W
+  T := (W h:t_arget c) - c s_elect h:p_os W
+  k := f_loor c s_elect h:n_ext W
+  ((c s_elect h:l_ap W) * f_loat N) + (f_loat (k - 2) m_od N) - 0.001 * ((1 s_elect_2 T) * 1 s_elect_2 T) + (2 s_elect_2 T) * 2 s_elect_2 T
+}
+## Each car's place: one more than the cars ahead of it, every pair of
+## cars compared at once.
+h:p_laces := { W -> p := h:p_rogress W; 1 + '+ r_/_2 0 + p '< t_able p }
+## How it stands once you have done the laps: finished, at your place.
+h:f_inish := { (W, t, st, pl) ->
+  me := h:m_e W
+  LAPS > me s_elect h:l_ap W ? (W, t, 0, 0)
+  (W, t, 1, me s_elect h:p_laces W)
+}
+# :: (Num a, Num b, Truthy b) => (Float, Float, a, b) -> Float -> (Float, Float, a, b)
+## A tick of the clock, dt seconds: before the lights go only the time
+## moves; then the cars drive, move and pass points of the track, each a
+## system over every car at once. A race finished stays as it is.
+l:t_ick := { (W, t, st, pl) dt ->
+  st > 0 ? (W, t, st, pl)
+  t < GO ? (W, t + dt, st, pl)
+  W := h:p_ass (W h:d_rive dt) h:m_ove dt
+  h:f_inish (W, t + dt, st, pl)
+}
+
+### Your keys
+
+# :: (Num a, Any b) => (Float, Float, a, b) -> Char -> (Float, Float, a, b)
+## A key: up (or w) speeds you up, down (or s) slows you, left and right
+## (or a and d) turn you; other keys, and keys before the lights or after
+## the finish, do nothing.
+l:k_ey := { s name ->
+  (W, t, st, pl) := s
+  me := h:m_e W
+  v := me s_elect h:s_peed W
+  d := me s_elect h:d_ir W
+  k := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d") i_ndexOf e_nclose name
+  (k > 8) | (st > 0) | t < GO ? s
+  k := 1 + (k - 1) m_od 4
+  k = 1 ? (W h:s_etSpeed (me, FAST m_in v + ACCEL), t, st, pl)
+  k = 2 ? (W h:s_etSpeed (me, 0.0 m_ax v - 1.5 * ACCEL), t, st, pl)
+  (W h:s_etDir (me, d + TURN * f_loat (2 * k) - 7), t, st, pl)
+}
+
+### What it shows
+
+# :: (Any a, Any b, Any c, Any d) => (a, b, c, d) -> c
+## 0 racing, 1 you finished.
+l:s_tatus := { (W, t, st, pl) -> st }
+# :: (Any a, Any b, Any c, Any d) => (a, b, c, d) -> d
+## Your place at the finish (0 while racing).
+l:p_lace := { (W, t, st, pl) -> pl }
+# :: (Any a, Any b) => (Float, Float, a, b) -> Float
+## Your lap (counting the one you are on), your place now, the seconds.
+l:y_ou := { (W, t, st, pl) ->
+  me := h:m_e W
+  (LAPS m_in 1.0 + me s_elect h:l_ap W) c_at (f_loat me s_elect h:p_laces W) c_at t
+}
+# :: (Any a, Any b, Any c) => (Float, a, b, c) -> Float
+## Your car: where it is, its heading, its speed, and the point of the
+## track it heads for.
+l:c_ar := { (W, t, st, pl) ->
+  me := h:m_e W
+  (me s_elect h:p_os W) c_at (me s_elect h:d_ir W) c_at (me s_elect h:s_peed W) c_at r_avel W h:t_arget me
+}
+# :: (Any a, Any b, Any c) => (Float, a, b, c) -> Float
+## Every car: laps done, the point it heads for, its place.
+l:c_ars := { (W, t, st, pl) ->
+  c := h:c_ars W
+  o_\ (3 c_at t_ally c) r_eshape (c s_elect h:l_ap W) c_at (c s_elect h:n_ext W) c_at f_loat h:p_laces W
+}
+## The track, drawn once: the grass, the road along its middle line, and
+## the start line across it.
+road := t:j_oin '{ i -> e_nclose @ f_ormat< "{sv:w_hole 40.0 * i s_elect X},{sv:w_hole 60.0 + 40.0 * i s_elect Y} " } e_ach (r_ange N) c_at 1
+track := @ f_ormat< "<rect y=\"60\" width=\"960\" height=\"640\" fill=\"#3a7d44\"/><polyline points=\"{road}\" fill=\"none\" stroke=\"#5c5c66\" stroke-width=\"{sv:w_hole 40.0 * WIDTH}\" stroke-linejoin=\"round\"/><rect x=\"{sv:w_hole (40.0 * f_irst X) - 4.0}\" y=\"{sv:w_hole 60.0 + 40.0 * (f_irst Y) - WIDTH / 2.0}\" width=\"8\" height=\"{sv:w_hole 40.0 * WIDTH}\" fill=\"#ffffff\"/>"
+## A car, drawn at x, y (tiles) turned to d, in paint k; yours is "you".
+h:c_ar := { (x, y, d, k, you) ->
+  cls := d_isclose (1 + you) s_elect "entity" "entity you"
+  @ f_ormat< "<g class=\"{cls}\" transform=\"translate({sv:w_hole 40.0 * x} {sv:w_hole 60.0 + 40.0 * y}) rotate({sv:w_hole d * 180.0 / p_i @})\"><rect x=\"-20\" y=\"-11\" width=\"40\" height=\"22\" rx=\"6\" fill=\"{d_isclose k s_elect colors}\" stroke=\"#111111\" stroke-width=\"2\"/><rect x=\"6\" y=\"-8\" width=\"7\" height=\"16\" fill=\"#cfe8ff\"/></g>"
+}
+## What the top line says.
+h:s_ays := { (y, t, st, pl, n) ->
+  st = 1 ? @ f_ormat< "Finished: place {pl} of {n} | Time {f_loor t} s"
+  t < GO ? @ f_ormat< "Ready... {c_eiling GO - t} | Time {f_loor t} s | Up to go, left and right to steer"
+  @ f_ormat< "Lap {f_loor f_irst y} of {f_loor LAPS} | Place {f_loor 2 s_elect y} of {n} | Time {f_loor t} s"
+}
+# :: Num a => (Float, Float, a, b) -> Char
+## The picture, as SVG text: the track, every car (yours on top), and the
+## top line.
+l:d_raw := { (W, t, st, pl) ->
+  v := 0.0 0.0 960.0 700.0
+  c := h:c_ars W
+  P := c s_elect h:p_os W
+  d := c s_elect h:d_ir W
+  k := f_loor c s_elect h:p_aint W
+  you := c s_elect h:h_asPlayer W
+  order := g_rade you
+  cars := '{ i -> e_nclose h:c_ar (i s_elect 1 s_elect_2 P, i s_elect 2 s_elect_2 P, i s_elect d, i s_elect k, i s_elect you) } e_ach order
+  top := (20.0, 42.0, 30.0) sv:w_ords h:s_ays (l:y_ou (W, t, st, pl), t, st, pl, t_ally c)
+  v sv:p_icture (v sv:r_ect "fill=\"#2b2d42\"") c_at (e_nclose track) c_at cars c_at top
+}

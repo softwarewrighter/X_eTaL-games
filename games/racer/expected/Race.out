@@ -1,0 +1,9 @@
+l:n_ew : (Any a, Num b, Num c) => a -> (Float, Float, b, c)
+l:t_ick : (Num a, Num b, Truthy b) => (Float, Float, a, b) -> Float -> (Float, Float, a, b)
+l:k_ey : (Num a, Any b) => (Float, Float, a, b) -> Char -> (Float, Float, a, b)
+l:s_tatus : (Any a, Any b, Any c, Any d) => (a, b, c, d) -> c
+l:p_lace : (Any a, Any b, Any c, Any d) => (a, b, c, d) -> d
+l:y_ou : (Any a, Any b) => (Float, Float, a, b) -> Float
+l:c_ar : (Any a, Any b, Any c) => (Float, a, b, c) -> Float
+l:c_ars : (Any a, Any b, Any c) => (Float, a, b, c) -> Float
+l:d_raw : Num a => (Float, Float, a, b) -> Char

@@ -1,0 +1,23 @@
+# The racer's track, cars and physics, read by Race.xtl (X_eTaL's
+# []L_IST). Every value is a string.
+#
+# The track: the points of its middle line, in tiles (x right, y down),
+# in racing order, closing back on the first, which is the start and
+# finish line. The road is `width` tiles wide around that line. Change
+# the track by moving, adding or removing points.
+x = ["12", "17", "20.5", "22", "21.5", "18.5", "16", "16", "19", "15", "8", "4", "2.4", "2.4", "3.4", "6.5"]
+y = ["2.2", "2.2", "2.6", "4.5", "7", "8", "9", "11.5", "12.8", "14.2", "14", "13.2", "11", "6", "3.4", "2.2"]
+width = ["2.4"]
+
+# The cars, one per item: its color, and its top speed in tiles a second
+# (the first car is yours: 0, as your speed is your keys'). Add a rival
+# by adding a color and a speed.
+colors = ["#e63946", "#457b9d", "#f4a261", "#9b5de5"]
+tops = ["0", "7.4", "7.8", "8.2"]
+
+# Laps to race; seconds before the start; your fastest speed, the speed
+# each up key adds, how far each left or right key turns you (radians),
+# the speed kept each tick, a rival's turning (radians a second), the
+# fastest speed on the grass; how near a point of the track a car must
+# pass (tiles).
+race = ["3", "2", "9", "1.2", "0.16", "0.985", "3.5", "3", "2.6"]

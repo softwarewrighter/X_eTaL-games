@@ -179,25 +179,25 @@ const CLICK = (lines, ended) => `(async () => {
 // Runs in the page, for a game moved by the clock (Game::ticks): open its
 // dialog and let the clock run (the program's ticks are real time, so
 // no golden can be compared); the game's own clock, in its top line,
-// must keep up with the page's, and right-arrow keys must move you
-// (the program draws you as the rect of class "you").
+// must keep up with the page's, and up and right-arrow keys must move
+// you (the program draws you as the element of class "you").
 const TICKS = `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const until = async (f, what) => { for (let i = 0; i < 500; i++) { const v = f(); if (v) return v; await sleep(20); } throw new Error("timed out waiting for " + what); };
   const pic = () => document.querySelector("dialog.board .board-pic svg");
   const seconds = () => { const m = (pic()?.textContent || "").match(/Time (\\d+) s/); return m ? +m[1] : -1; };
-  const where = () => +(pic()?.querySelector("rect.you")?.getAttribute("x") ?? NaN);
+  const where = () => pic()?.querySelector(".you")?.outerHTML ?? "";
   (await until(() => document.querySelector("button.board-open"), "the Play button")).click();
   await until(() => document.querySelector("dialog.board[open] .board-pic svg"), "the picture in the dialog");
   await sleep(3000);
   const played = seconds();
   const x0 = where();
   const d = document.querySelector("dialog.board[open]");
-  for (let i = 0; i < 10; i++) { d.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true })); await sleep(50); }
+  for (let i = 0; i < 10; i++) { d.dispatchEvent(new KeyboardEvent("keydown", { key: i % 2 ? "ArrowRight" : "ArrowUp", bubbles: true })); await sleep(50); }
   await sleep(300);
   const err = document.querySelector("dialog.board .err")?.textContent || "";
   const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
-  return { played, moved: where() > x0, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
+  return { played, moved: !!x0 && where() !== x0, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
 })()`;
 const BOARD_OPEN = `(() => { if (!document.querySelector("dialog.board[open]")) document.querySelector("button.board-open").click(); return !!document.querySelector("dialog.board[open]"); })()`;
 const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
@@ -296,7 +296,7 @@ try {
       const wantNb = readFileSync(join(dir, `expected/${slug}.out`), "utf8");
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
       else if (ticks && got.played < 2) { console.log(`FAIL: ${slug} (browser): the game's clock fell behind (${got.played} s played in 3 s open)`); failed++; }
-      else if (ticks && !got.moved) { console.log(`FAIL: ${slug} (browser): right-arrow keys did not move you`); failed++; }
+      else if (ticks && !got.moved) { console.log(`FAIL: ${slug} (browser): up and right-arrow keys did not move you`); failed++; }
       else if (!ticks && got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
       else if (got.restarted === false) { console.log(`FAIL: ${slug} (browser): a key after the game ended did not start a new game`); failed++; }

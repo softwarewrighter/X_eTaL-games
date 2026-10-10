@@ -10,6 +10,10 @@ documentation, `plan` saga planning and reordering, `release`
 milestone release, `chore` agentrail bookkeeping (step complete, saga
 archive), `vendor` a refresh of the vendored X_eTaL.
 
+## 2026-10-10
+
+- 13:40 `game` The racer: three laps against three rivals with the arrow keys (Race.xtl on lib/Ecs: your car and the rivals one kind of entity; steering, the grass, bumping, the points passed, laps and places each a system over every car at once; the grass from every car's distance to every segment of the track as one table; places by comparing every pair); the track, cars and race numbers in racer.toml; a golden won by a one-key-a-tick driving rule; test.sh adds a fifth rival with no code; the browser test's clock check now looks for any change in how you are drawn after up and right keys.
+
 ## 2026-10-09
 
 - 23:39 `chore` Saga step scroller completed.
