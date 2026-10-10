@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-10
 
+- 16:48 `chore` Saga step asteroids completed.
+
 - 16:41 `game` Asteroids, entities that come and go: three waves of rocks to break with the arrow keys and the space bar (Rocks.xtl on lib/Ecs: shots spawned when fired and despawned when spent, rocks hit despawned and their halves spawned in the freed slots, all by masks; every shot against every rock as one table; a field that wraps); the field, waves, rocks, ship and gun in asteroids.toml; test.sh clears a one-rock wave for exactly 520 points; the golden is fifteen seconds of an aiming gunner, ending with the score; the page now sends the space bar as `key space` (it was dropped).
 
 - 13:44 `chore` Saga step racer completed.

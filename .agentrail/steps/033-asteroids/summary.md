@@ -1,0 +1,1 @@
+Asteroids live: Rocks.xtl on lib/Ecs (shots and rock halves spawned/despawned by masks, shots x rocks table, wrapping field), asteroids.toml, test.sh one-rock wave = 520, page sends key space
