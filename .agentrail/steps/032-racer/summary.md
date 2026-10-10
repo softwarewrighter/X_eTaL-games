@@ -1,0 +1,1 @@
+Racer live: Race.xtl on lib/Ecs (steering, grass as cars-by-segments table, bumping, laps, places by pairwise comparison), racer.toml data, winning golden from a driving rule, test.sh fifth rival
