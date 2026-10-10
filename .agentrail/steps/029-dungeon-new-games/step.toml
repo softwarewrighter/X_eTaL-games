@@ -1,9 +1,10 @@
 number = 29
 slug = "dungeon-new-games"
-status = "in-progress"
+status = "completed"
 description = "the user (2026-10-09): the dungeon was the same every time, and Play reopened..."
 role = "production"
 context_files = []
 created_at = "2026-10-09T15:41:30"
+completed_at = "2026-10-09T17:02:23"
 task_type = "feature"
-commits = []
+commits = ["b0574f5f4d95597a530b67abfc41ee375501318c"]

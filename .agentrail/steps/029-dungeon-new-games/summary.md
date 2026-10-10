@@ -1,0 +1,1 @@
+Dungeon: three maps, random placement by seed, goal entity, the program ends on a win or loss; on the page Play or a key after the end starts a new game; winning golden; browser test checks restart

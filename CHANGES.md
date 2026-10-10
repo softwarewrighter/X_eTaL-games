@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-09
 
+- 17:02 `chore` Saga step dungeon-new-games completed.
+
 - 16:35 `game` The dungeon, a new dungeon every game (the user: the same map on every reload, and Play reopened a finished game): three maps in dungeon.toml, one picked from the seed, with you, the way out (now a `goal` entity, as far from you as the map allows) and every monster and item placed at random on the floor; a win or a loss ends the program, and on the page Play or any key after the end starts a new game (a new seed); the golden now wins (30 keys) and the browser test checks a key after the end starts over; stray picture files committed with the dungeon removed (and ignored).
 
 - 15:41 `chore` Saga step catalog-toc completed.
