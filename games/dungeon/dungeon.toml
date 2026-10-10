@@ -1,21 +1,42 @@
 # The dungeon, read by Crawl.xtl (X_eTaL's []L_IST and []T_ABLE). The
-# map: one string a row, 25 wide; # a wall, . a floor, + a door (a
-# floor), > the way out, @ where you start, and any kind's glyph below
-# puts one of that kind there. Every value is a string.
+# maps: 9 strings each, 25 wide, one after another (a new game picks one
+# at random); # a wall, . a floor, + a door (a floor), and a kind's glyph
+# for one of that kind. Where you start, the way out, and where each
+# monster and item stands are drawn at random on the floor for each new
+# game (from its seed): the map says only how many of each. Add a map by
+# adding 9 rows. Every value is a string.
 #
 # A kind is a set of components: hp and atk make it fight, chase makes
 # it come after you, heal and gold make it something to pick up. Adding
 # a kind of monster or item is adding a table here (and its glyph to the
 # map): the systems in Crawl.xtl act on components, never on kinds.
-map = [
+maps = [
   "#########################",
-  "#@...#.......r......#...#",
+  "#....#.......r......#...#",
   "#....#..###.....#...#.!.#",
   "#.r..+..#$#.....#...+...#",
   "#....#..#.#..g..#####...#",
   "##.###..........#..$....#",
   "#.......#####...+.......#",
-  "#...!...#...#...#....g.>#",
+  "#...!...#...#...#....g..#",
+  "#########################",
+  "#########################",
+  "#.......#.......#.......#",
+  "#.r.....+...g...+.....$.#",
+  "#.......#.......#.......#",
+  "####+#######+#######+####",
+  "#.......#.......#.......#",
+  "#.!.....+...$...+..r..g.#",
+  "#.......#.......#.....!.#",
+  "#########################",
+  "#########################",
+  "#...........#...........#",
+  "#.#####.###.#.###.#####.#",
+  "#.#..r#...#...#...#g..#.#",
+  "#.#.$.#.#.#####.#.#.!.#.#",
+  "#.#...#.#...$...#.#...#.#",
+  "#.##+##.###.#.###.##+##.#",
+  "#.....g.....#.....!..r..#",
   "#########################",
 ]
 

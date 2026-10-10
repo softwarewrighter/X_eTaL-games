@@ -136,7 +136,7 @@ const PLAY = (lines) => `(async () => {
 // open its dialog, then for each line "click X Y" (the picture's own
 // coordinates) click the matching point on the screen, waiting for the
 // program to answer; X_eTaL's transcript and the picture come back.
-const CLICK = (lines) => `(async () => {
+const CLICK = (lines, ended) => `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const until = async (f, what) => { for (let i = 0; i < 500; i++) { const v = f(); if (v) return v; await sleep(20); } throw new Error("timed out waiting for " + what); };
   const said = () => document.querySelector("dialog.board pre.transcript")?.textContent || "";
@@ -163,9 +163,18 @@ const CLICK = (lines) => `(async () => {
     await until(() => said() !== before, "the program to answer " + line);
     await sleep(30);
   }
+  // A game that ended by itself (its golden does not end with the end of
+  // input's "THE END") is started again by any key: the transcript starts over.
+  const out = said();
+  let restarted = null;
+  if (${ended}) {
+    document.querySelector("dialog.board[open]").dispatchEvent(new KeyboardEvent("keydown", { key: "x", bubbles: true }));
+    await until(() => said() !== out, "a new game after the end");
+    restarted = said().length < out.length;
+  }
   const err = document.querySelector("dialog.board .err")?.textContent || "";
   const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
-  return { out: said(), err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
+  return { out, restarted, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
 })()`;
 const BOARD_OPEN = `(() => { if (!document.querySelector("dialog.board[open]")) document.querySelector("button.board-open").click(); return !!document.querySelector("dialog.board[open]"); })()`;
 const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
@@ -258,11 +267,12 @@ try {
       // given the end of events), so its golden's last line, the program's
       // answer to that end, is not on the page.
       const golden = readFileSync(join(dir, "expected/play.out"), "utf8");
-      const want = interactive ? golden.replace(/[^\n]*\n$/, "") : golden;
+      const want = interactive ? golden.replace(/THE END\n$/, "") : golden;
       const wantNb = readFileSync(join(dir, `expected/${slug}.out`), "utf8");
       if (got.err) { console.log(`FAIL: ${slug} (browser): X_eTaL stopped: ${got.err}`); failed++; }
       else if (got.out !== want) { console.log(`FAIL: ${slug} (browser): ${interactive ? "the transcript" : "the terminal"} differs from expected/play.out`); console.log(got.out); failed++; }
       else if (got.nb !== wantNb) { console.log(`FAIL: ${slug} (browser): the notebook differs from expected/${slug}.out`); failed++; }
+      else if (got.restarted === false) { console.log(`FAIL: ${slug} (browser): a key after the game ended did not start a new game`); failed++; }
       else if (interactive && got.controls) { console.log(`FAIL: ${slug} (browser): a game played by clicks shows New game and Restart (only Play belongs)`); failed++; }
       else if (readFileSync(join(dir, "play.xtl"), "utf8").includes("[]S_HOW") && !got.pics) { console.log(`FAIL: ${slug} (browser): play.xtl shows pictures but none appeared`); failed++; }
       else {

@@ -1,4 +1,4 @@
-number = 31
+number = 32
 slug = "asteroids"
 status = "pending"
 description = "an ECS demo with ticks: spawning and despawning (bullets, rocks splitting): e..."

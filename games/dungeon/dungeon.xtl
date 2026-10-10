@@ -5,12 +5,13 @@
 "cr:" u_se< "Crawl"
 "ec:" u_se< "Ecs"
 
-# A new game: the world, a row per entity slot (32) and a column per
-# field (18: alive, then for each component whether the entity has it,
-# then its fields); 9 entities are alive: you, two rats, two goblins,
-# two potions, two piles of gold.
+# A new game (seed 1): one of the maps, with you, the way out, two rats,
+# two goblins, two potions and two piles of gold placed on its floor at
+# random. The world: a row per entity slot (32) and a column per field
+# (20: alive, then for each component whether the entity has it, then
+# its fields); 10 entities are alive.
 s := cr:n_ew 0
-(W, g, n, m) := s
+(W, g, n, m, lv) := s
 s_hape W
 ec:c_ount W
 
@@ -19,8 +20,8 @@ ec:c_ount W
 # dungeon.toml gives it those; nothing in the code names a kind).
 cr:h_as s
 
-# A few turns: right twice, down twice, left twice; the rat that
-# sees you comes, you trade blows, and you beat it.
+# A few turns (right twice, down twice, left twice): what happens is
+# said, and the monsters that see you come closer.
 u:g_o := { s d -> s cr:t_urn d }
 s := s u:g_o 0 1.0
 s := s u:g_o 0 1.0
@@ -28,12 +29,12 @@ s := s u:g_o 1 0.0
 s := s u:g_o 1 0.0
 s := s u:g_o 0 -1.0
 s := s u:g_o 0 -1.0
-(W, g, n, m) := s
+(W, g, n, m, lv) := s
 m
 cr:y_ou s
 pic := []S_HOW cr:d_raw s
 
 # What the game guarantees, checked by a_ssert< (silent when it holds).
-u:w_orld := { (W, g, n, m) -> W }
-ok := "9 = ec:c_ount u:w_orld cr:n_ew 0" a_ssert< "a new dungeon holds nine entities"
-ok := "0 = cr:s_tatus s" a_ssert< "six turns in, still playing"
+u:w_orld := { (W, g, n, m, lv) -> W }
+ok := "10 = ec:c_ount u:w_orld cr:n_ew 0" a_ssert< "a new dungeon holds ten entities"
+ok := "6 = 3 s_elect cr:y_ou s" a_ssert< "six turns taken"

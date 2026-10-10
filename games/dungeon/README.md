@@ -4,6 +4,11 @@ Find the way out (`>`) with the arrow keys or WASD. Walk into a monster
 to fight it; rats and goblins come after you when they see you. Walk
 over potions (`!`) and gold (`$`) to pick them up. `r` starts again.
 
+Every game is a new dungeon: one of the maps, with where you start, the
+way out, and every monster and item drawn at random from the game's
+seed (the way out as far from you as the map allows). Winning or losing
+ends the game; on the page, Play or any key then starts a new one.
+
 The first game built on [`lib/Ecs`](../../lib/README.md), an
 entity-component system written in X_eTaL as arrays.
 
@@ -18,7 +23,7 @@ opens it at once.
 
 - **The world is a matrix.** A row per entity (you, each monster, each
   item), a column per field. `"h" ec:c_omponents< "pos:2 hp atk kind
-  chase heal gold player"` (the macro in `lib/Ecs.xtlm`) writes the
+  chase heal gold player goal"` (the macro in `lib/Ecs.xtlm`) writes the
   layout when the program is compiled: for each component a getter, a
   mask, a setter and a remover.
 - **What an entity is comes from its components.** A rat has hit
@@ -33,7 +38,9 @@ opens it at once.
   monster that sees you comes a step closer, all at once (not into a
   wall, another monster, or the same cell as another), or hits you when
   next to you.
-- **The state is a tuple:** `(world, gold, turns, what happened)`.
+- **The way out is an entity too** (component `goal`): the game is won
+  when you stand on it, lost when your hit points run out.
+- **The state is a tuple:** `(world, gold, turns, what happened, map)`.
 - Keys come to `play.xtl` as `[]E_VENT` events (`key UP`), on the page
   as in the terminal.
 
@@ -54,10 +61,11 @@ just test-game dungeon  # compare with the expected output
 
 ## Changing the dungeon
 
-`dungeon.toml` holds the map (25 by 9: `#` wall, `.` floor, `+` door,
-`>` the way out, `@` you, a kind's glyph for one of that kind), your hit
-points and attack, and each kind's components. Add a kind by adding its
-table, its name to `kinds`, and its glyph to the map.
+`dungeon.toml` holds the maps (each 25 by 9: `#` wall, `.` floor, `+`
+door, a kind's glyph for one of that kind; only how many count, as
+every entity is placed at random), your hit points and attack, and each
+kind's components. Add a map by adding 9 rows; add a kind by adding its
+table, its name to `kinds`, and its glyph to the maps.
 
 ## Assets
 

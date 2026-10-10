@@ -49,7 +49,8 @@ fn a_new_game_shows_its_map() {
 fn clicks_fed_one_at_a_time_give_the_replayed_game() {
     // The page keeps the program running between clicks (Live); each
     // click fed to it must leave the same transcript as a replay of every
-    // click from the start, but for the end of events the replay reads.
+    // click from the start. The golden's keys win the game, which ends
+    // the program: no longer waiting, no end of events read.
     use microscope::terminal::Live;
     let g = game();
     let clicks: Vec<String> = include_str!("../../expected/play.in").lines().map(str::to_string).collect();
@@ -58,9 +59,8 @@ fn clicks_fed_one_at_a_time_give_the_replayed_game() {
         live.feed(c);
     }
     let t = live.transcript();
-    assert!(t.error.is_none() && t.waiting, "{:?}", t.error);
+    assert!(t.error.is_none() && !t.waiting, "{:?}", t.error);
     let replay = session(&g.libraries(), g.play, &clicks, 1);
-    let mut want = replay.lines.clone();
-    assert_eq!(want.pop(), Some(Line::Out("THE END".into())));
-    assert_eq!(t.lines, want);
+    assert_eq!(t.lines.last(), Some(&Line::Out("You found the way out with 3 gold in 30 turns!".into())));
+    assert_eq!(t.lines, replay.lines);
 }

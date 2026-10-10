@@ -251,18 +251,36 @@ fn board(p: &BoardProps) -> Html {
     // The game keeps running between clicks (Live): only the clicks it has
     // not been given yet are fed to it, so a click costs its own work, not
     // a replay of every click before it. A new seed starts a new game.
+    // A game whose program has ended (won, lost) starts again, on a new
+    // seed, when Play is clicked or a key or click comes: `base` is the
+    // seed of the game being played and how many of the page's lines came
+    // before it.
     let live = use_mut_ref(|| None::<(u64, Live, usize)>);
+    let base = use_mut_ref(|| (p.seed, 0usize));
     let t = {
+        let (seed, before) = *base.borrow();
+        let lines = &p.typed[before.min(p.typed.len())..];
         let mut slot = live.borrow_mut();
-        if !matches!(&*slot, Some((seed, _, fed)) if *seed == p.seed && *fed <= p.typed.len()) {
-            *slot = Some((p.seed, Live::start(&p.game.libraries(), p.game.play, p.seed), 0));
+        if !matches!(&*slot, Some((s, _, fed)) if *s == seed && *fed <= lines.len()) {
+            *slot = Some((seed, Live::start(&p.game.libraries(), p.game.play, seed), 0));
         }
         let (_, game, fed) = slot.as_mut().expect("started above");
-        for line in &p.typed[*fed..] {
+        for line in &lines[*fed..] {
             game.feed(line);
         }
-        *fed = p.typed.len();
+        *fed = lines.len();
         game.transcript()
+    };
+    let ended = !t.waiting && t.error.is_none();
+    let redraw = use_force_update();
+    let again = {
+        let (base, live, redraw, n) = (base.clone(), live.clone(), redraw.clone(), p.typed.len());
+        move || {
+            let seed = base.borrow().0;
+            *base.borrow_mut() = (clock().max(seed + 1), n);
+            *live.borrow_mut() = None;
+            redraw.force_update();
+        }
     };
     let dialog = use_node_ref();
     {
@@ -281,8 +299,11 @@ fn board(p: &BoardProps) -> Html {
         });
     }
     let open = {
-        let dialog = dialog.clone();
+        let (dialog, again) = (dialog.clone(), again.clone());
         Callback::from(move |_: MouseEvent| {
+            if ended {
+                again();
+            }
             if let Some(d) = dialog.cast::<HtmlDialogElement>() {
                 let _ = d.show_modal();
             }
@@ -297,13 +318,15 @@ fn board(p: &BoardProps) -> Html {
         })
     };
     let onclick = {
-        let (dialog, on_line) = (dialog.clone(), p.on_line.clone());
+        let (dialog, on_line, again) = (dialog.clone(), p.on_line.clone(), again.clone());
         Callback::from(move |e: MouseEvent| {
             let on_backdrop = e.target().and_then(|t| t.dyn_into::<Element>().ok()).is_some_and(|t| t.tag_name() == "DIALOG");
             if on_backdrop {
                 if let Some(d) = dialog.cast::<HtmlDialogElement>() {
                     d.close();
                 }
+            } else if ended {
+                again();
             } else if let Some((x, y)) = picture_point(&e) {
                 on_line.emit(format!("click {} {}", x.round(), y.round()));
             }
@@ -314,9 +337,14 @@ fn board(p: &BoardProps) -> Html {
     // Escape stays the dialog's own (it closes it), and keys a game uses
     // do not scroll the page behind it.
     let onkeydown = {
-        let on_line = p.on_line.clone();
+        let (on_line, again) = (p.on_line.clone(), again.clone());
         Callback::from(move |e: KeyboardEvent| {
             if e.key() == "Escape" || e.ctrl_key() || e.meta_key() || e.alt_key() {
+                return;
+            }
+            if ended {
+                e.prevent_default();
+                again();
                 return;
             }
             if let Some(name) = xetal_lineedit::key_name(&e.key()).filter(|n| n.trim() == n.as_str()) {
@@ -328,7 +356,6 @@ fn board(p: &BoardProps) -> Html {
     // The clock, for a game that asks for it (Game::ticks): while the
     // dialog is open, `tick 0.05` twenty times a second, fed straight to
     // the running game (ticks are not kept: nothing replays them).
-    let redraw = use_force_update();
     {
         let (live, dialog, ticks) = (live.clone(), dialog.clone(), p.game.ticks);
         use_effect_with(ticks, move |&ticks| {

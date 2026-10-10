@@ -1,7 +1,10 @@
 #!/usr/bin/env xetal
 ## The dungeon: find the way out (>). Arrow keys or WASD move you; walk
 ## into a monster to fight it; walk over potions (!) and gold ($) to pick
-## them up; r starts again. On the page the dungeon is in a dialog and
+## them up; r starts again. Each game is a new dungeon (a map and
+## places drawn from its seed); a game won or lost ends the program (on
+## the page, Play or any key then starts a new one). On the page the
+## dungeon is in a dialog and
 ## your keys come to the program as events; at the command line, lines
 ## such as "key Up" on standard input. The rules are Crawl.xtl's, built
 ## on lib/Ecs.
@@ -14,15 +17,21 @@ u:s_tep := { name ->
 }
 ## Show the dungeon, read the next event, act on a key, again.
 u:l_oop := { s ->
-  (W, g, n, m) := s
+  (W, g, n, m, lv) := s
   said := p_rint! m
   pic := []S_HOW cr:d_raw s
+  0 < cr:s_tatus s ? u:e_nd s
   e := []E_VENT @
   "end" m_atch []E_KIND e ? "THE END"
   n_ot "key" m_atch []E_KIND e ? u:l_oop s
   name := f_ormat []E_KEY e
   "r" m_atch name ? u:l_oop cr:n_ew 0
-  0 < cr:s_tatus s ? u:l_oop s
   u:l_oop s cr:t_urn f_loat u:s_tep name
+}
+## How the game ended (the program ends with it).
+u:e_nd := { s ->
+  y := cr:y_ou s
+  1 = cr:s_tatus s ? @ f_ormat< "You found the way out with {2 s_elect y} gold in {3 s_elect y} turns!"
+  "You were beaten."
 }
 u:l_oop cr:n_ew 0

@@ -6,7 +6,9 @@
 ## comes from its components (dungeon.toml gives each kind its own), so
 ## a new kind of monster or item is a new table there, not new code here.
 ## A game's state is a tuple: (the world, the gold found, the turns
-## taken, what just happened).
+## taken, what just happened, the map it is played on). Each new game
+## picks a map and places you, the way out, the monsters and the items
+## on its floor at random, from its seed.
 
 "ec:" u_se< "Ecs"
 "sv:" u_se< "Svg"
@@ -16,14 +18,17 @@
 
 ## The layout: where it is, how much it can take and how hard it hits,
 ## its kind, whether it comes after you, and what it gives when picked up
-## (or drops when beaten).
-"h" ec:c_omponents< "pos:2 hp atk kind chase heal gold player"
+## (or drops when beaten), you, and the way out.
+"h" ec:c_omponents< "pos:2 hp atk kind chase heal gold player goal"
 ## A cell's first character, and a column of the kinds' table as numbers.
 h:f_irstChar := { x -> f_irst d_isclose x }
 h:c_olumn := { j -> 'sv:n_um e_ach j s_elect_2 kinds }
-## The map: 9 rows of 25, from dungeon.toml.
-grid := 9 25 r_eshape t:j_oin "dungeon.toml" []L_IST "map"
-walls := grid = f_irst "#"
+## The maps: 9 rows of 25 each, one after another in dungeon.toml.
+cells := t:j_oin "dungeon.toml" []L_IST "maps"
+maps := (t_ally cells) d_iv 225
+## Map lv's cells (225, row by row), and its walls.
+h:g_rid := { lv -> 225 t_ake (225 * lv - 1) d_rop cells }
+h:w_alls := { lv -> (h:g_rid lv) = f_irst "#" }
 kinds := ("dungeon.toml" "kind") []T_ABLE ("kinds" "fields")
 glyphs := 'h:f_irstChar e_ach 1 s_elect_2 kinds
 colors := 7 s_elect_2 kinds
@@ -38,23 +43,38 @@ GO := 0.0 c_at h:c_olumn 6
 
 ### A new game
 
-# :: (Any a, Num b, Num c) => a -> (Float, b, c, Char)
-## The world from the map: an entity for you and for every glyph of a
-## kind, each given its kind's components, all at once (a kind with no
-## heal has no heal component, and so on).
+## Steps between cell a and every cell of c (rows and columns apart).
+h:s_teps := { a c -> (a_bs ((a - 1) d_iv 25) - (c - 1) d_iv 25) + a_bs ((a - 1) m_od 25) - (c - 1) m_od 25 }
+# :: (Any a, Num b, Num c) => a -> (Float, b, c, Char, Int)
+## A new game on a map drawn at random: you on a random floor cell, the
+## way out on the floor cell farthest from you, and the map's monsters
+## and items (it says how many of each kind) on random floor cells at
+## least 4 steps from you; every entity given its kind's components, all
+## at once (a kind with no heal has no heal component, and so on).
 l:n_ew := { x ->
-  cells := w_here (r_avel grid) m_ember? "@" c_at glyphs
-  k := ("@" c_at glyphs) i_ndexOf cells s_elect r_avel grid
-  (W, ids) := (h:w_orld 32) ec:s_pawn t_ally cells
-  W := W h:s_etPos (ids, f_loat o_\ (2 c_at t_ally cells) r_eshape ((cells - 1) d_iv 25) c_at (cells - 1) m_od 25)
-  W := W h:s_etKind (ids, f_loat k - 1)
+  lv := r_oll! maps
+  g := h:g_rid lv
+  ents := w_here g m_ember? glyphs
+  kk := glyphs i_ndexOf ents s_elect g
+  floor := w_here g != f_irst "#"
+  order := (g_rade r_oll! (t_ally floor) r_eshape 1000000) s_elect floor
+  me := f_irst order
+  goal := f_irst (g_rade n_eg me h:s_teps floor) s_elect floor
+  far := ((4 <= me h:s_teps order) & order != goal) r_eplicate order
+  at := me c_at goal c_at (t_ally ents) t_ake far
+  (W, ids) := (h:w_orld 32) ec:s_pawn t_ally at
+  W := W h:s_etPos (ids, f_loat o_\ (2 c_at t_ally at) r_eshape ((at - 1) d_iv 25) c_at (at - 1) m_od 25)
+  W := W h:s_etGoal (2 s_elect ids, 1.0)
+  mob := ((r_ange t_ally ids) != 2) r_eplicate ids
+  k := 1 c_at 1 + kk
+  W := W h:s_etKind (mob, f_loat k - 1)
   W := W h:s_etPlayer (f_irst ids, 1.0)
-  W := W h:p_utSome (ids, k, HP, 1)
-  W := W h:p_utSome (ids, k, AT, 2)
-  W := W h:p_utSome (ids, k, CH, 3)
-  W := W h:p_utSome (ids, k, HE, 4)
-  W := W h:p_utSome (ids, k, GO, 5)
-  (W, 0, 0, "Find the way out (>). Arrow keys or WASD to move; walk into a monster to fight.")
+  W := W h:p_utSome (mob, k, HP, 1)
+  W := W h:p_utSome (mob, k, AT, 2)
+  W := W h:p_utSome (mob, k, CH, 3)
+  W := W h:p_utSome (mob, k, HE, 4)
+  W := W h:p_utSome (mob, k, GO, 5)
+  (W, 0, 0, "Find the way out (>). Arrow keys or WASD to move; walk into a monster to fight.", lv)
 }
 ## Component c (1 hp, 2 atk, 3 chase, 4 heal, 5 gold) for the entities
 ## ids whose kind k gives it a value above 0, every one at once.
@@ -82,21 +102,21 @@ h:f_oes := { W -> w_here (ec:a_live W) & (h:h_asHp W) & 0 = h:p_layer W }
 ## Your entity.
 h:m_e := { W -> f_irst w_here 0 < h:p_layer W }
 
-# :: (Num a, Any b) => (Float, Int, a, b) -> Float -> (Float, Int, a, Char)
+# :: (Num a, Any b) => (Float, Int, a, b, Int) -> Float -> (Float, Int, a, Char, Int)
 ## A turn: you move by d (a row and a column step) or hit the monster in
 ## the way, then pick up what lies where you stand, the beaten monsters
 ## drop their gold and go, and every monster that sees you comes a step
 ## closer or hits you: each a system over every entity at once.
-l:t_urn := { (W, g, n, m) d ->
+l:t_urn := { (W, g, n, m, lv) d ->
   me := h:m_e W
   to := (me s_elect h:p_os W) + d
   foe := w_here (ec:a_live W) & (h:h_asHp W) & (0 = h:p_layer W) & W h:a_t to
-  wall := (h:c_ell 1 2 r_eshape to) s_elect r_avel walls
+  wall := (h:c_ell 1 2 r_eshape to) s_elect h:w_alls lv
   (W, said) := h:y_ou (W, me, to, foe, f_irst wall)
   (W, g, picked) := h:p_ickUp (W, g, me)
   (W, g, beaten) := h:b_eaten (W, g)
-  (W, hurt) := h:m_onsters (W, me)
-  (W, g, n + 1, t:j_oin (e_nclose said) c_at picked c_at beaten c_at e_nclose hurt)
+  (W, hurt) := h:m_onsters (W, me, lv)
+  (W, g, n + 1, t:j_oin (e_nclose said) c_at picked c_at beaten c_at e_nclose hurt, lv)
 }
 ## You: a hit on the monster in the way, else a step (not into a wall).
 h:y_ou := { (W, me, to, foe, wall) ->
@@ -123,7 +143,7 @@ h:b_eaten := { (W, g) ->
 ## Every monster that chases and is within 6 steps comes a step closer
 ## (the longer way first), all at once: not into a wall, nor into
 ## another, nor two into one cell; one next to you hits you instead.
-h:m_onsters := { (W, me) ->
+h:m_onsters := { (W, me, lv) ->
   ms := ((h:f_oes W) s_elect h:h_asChase W) r_eplicate h:f_oes W
   0 = t_ally ms ? (W, "")
   P := ms s_elect h:p_os W
@@ -139,7 +159,7 @@ h:m_onsters := { (W, me) ->
   Q := P + f_loat step * go '* t_able 1 1
   c := h:c_ell Q
   taken := h:c_ell (w_here (ec:a_live W) & h:h_asHp W) s_elect h:p_os W
-  ok := go & (n_ot c s_elect r_avel walls) & (n_ot c m_ember? taken) & (c i_ndexOf c) = r_ange t_ally c
+  ok := go & (n_ot c s_elect h:w_alls lv) & (n_ot c m_ember? taken) & (c i_ndexOf c) = r_ange t_ally c
   Q := (P * f_loat n_ot ok '* t_able 1 1) + Q * f_loat ok '* t_able 1 1
   (W h:s_etPos (ms, Q), h:o_uch hit)
 }
@@ -151,43 +171,56 @@ h:o_uch := { hit ->
 
 ### What it shows
 
-# :: (Num a, Any b, Any c, Any d, Num e) => (a, b, c, d) -> e
+# :: (Num a, Any b, Any c, Any d, Any e, Num f) => (a, b, c, d, e) -> f
 ## 0 playing, 1 you found the way out, 2 you were beaten.
-l:s_tatus := { (W, g, n, m) ->
+l:s_tatus := { (W, g, n, m, lv) ->
   me := h:m_e W
   0 >= me s_elect h:h_p W ? 2
-  (f_irst h:c_ell 1 2 r_eshape me s_elect h:p_os W) = f_irst w_here (r_avel grid) = f_irst ">" ? 1
+  goal := f_irst w_here 0 < h:g_oal W
+  '& r_/ (me s_elect h:p_os W) = goal s_elect h:p_os W ? 1
   0
 }
-# :: (Num a, Any b) => (a, Int, Int, b) -> Int
+# :: (Num a, Any b, Any c) => (a, Int, Int, b, c) -> Int
 ## Your hit points, gold and turns.
-l:y_ou := { (W, g, n, m) -> (f_loor (h:m_e W) s_elect h:h_p W) c_at g c_at n }
-## A cell's fill: a wall, the floor, the way out.
-h:f_ill := { c -> d_isclose (1 + (c = f_irst "#") + 2 * c = f_irst ">") s_elect "#22223b" "#4a4e69" "#2a9d8f" }
-h:s_quare := { (x, y, w, h) k -> e_nclose @ f_ormat< "<rect x=\"{sv:w_hole x}\" y=\"{sv:w_hole y}\" width=\"100\" height=\"100\" fill=\"{h:f_ill k s_elect r_avel grid}\" stroke=\"#000000\" stroke-width=\"2\"/>" }
-## The map, drawn once: 225 cells of 100 units, below a row for words.
-floor := t:j_oin '{ k -> ((100.0 * f_loat (k - 1) m_od 25), (100.0 + 100.0 * f_loat (k - 1) d_iv 25), 100.0, 100.0) h:s_quare k } e_ach r_ange 225
+l:y_ou := { (W, g, n, m, lv) -> (f_loor (h:m_e W) s_elect h:h_p W) c_at g c_at n }
+## A cell's fill: a wall or the floor.
+h:f_ill := { c -> d_isclose (1 + c = f_irst "#") s_elect "#22223b" "#4a4e69" }
+## A cell of the map: x, y and its character.
+h:s_quare := { (x, y, c) -> e_nclose @ f_ormat< "<rect x=\"{sv:w_hole x}\" y=\"{sv:w_hole y}\" width=\"100\" height=\"100\" fill=\"{h:f_ill c}\" stroke=\"#000000\" stroke-width=\"2\"/>" }
+## Map lv drawn once: 225 cells of 100 units, below a row for words.
+h:l_ayer := { lv ->
+  g := h:g_rid lv
+  t:j_oin '{ k -> h:s_quare (100.0 * f_loat (k - 1) m_od 25, 100.0 + 100.0 * f_loat (k - 1) d_iv 25, k s_elect g) } e_ach r_ange 225
+}
+layers := 'h:l_ayer m_ap r_ange maps
 ## An entity's glyph and color: you an @, a kind its own.
 h:g_lyph := { k -> 0 = k ? "@"; (k s_elect glyphs) c_at "" }
 h:c_olor := { k -> 0 = k ? "#ffffff"; d_isclose k s_elect colors }
-# :: (Float, Int, Int, a) -> Char
+## An entity as SVG: the way out a teal cell with >, the others a glyph.
+h:e_ntity := { (x, y, k, goal) ->
+  goal ? @ f_ormat< "<rect x=\"{sv:w_hole x}\" y=\"{sv:w_hole y + 100}\" width=\"100\" height=\"100\" fill=\"#2a9d8f\"/><text class=\"entity\" x=\"{sv:w_hole x + 50}\" y=\"{sv:w_hole y + 180}\" font-size=\"84\" text-anchor=\"middle\" font-family=\"monospace\" font-weight=\"bold\" fill=\"#ffffff\">&gt;</text>"
+  @ f_ormat< "<text class=\"entity\" x=\"{sv:w_hole x + 50}\" y=\"{sv:w_hole y + 180}\" font-size=\"84\" text-anchor=\"middle\" font-family=\"monospace\" font-weight=\"bold\" fill=\"{h:c_olor k}\">{h:g_lyph k}</text>"
+}
+# :: (Float, Int, Int, a, Int) -> Char
 ## The picture, as SVG text: what you have and what just happened, the
-## map, and every entity alive as its glyph in its kind's color.
-l:d_raw := { (W, g, n, m) ->
+## map, and every entity alive (the way out first, under the others).
+l:d_raw := { (W, g, n, m, lv) ->
   v := 0.0 0.0 2500.0 1000.0
-  y := l:y_ou (W, g, n, m)
+  y := l:y_ou (W, g, n, m, lv)
   top := (20.0, 70.0, 44.0) sv:w_ords @ f_ormat< "HP {f_irst y}   Gold {2 s_elect y}   Turn {3 s_elect y}   {m}"
   live := w_here ec:a_live W
+  live := (g_rade n_eg live s_elect h:g_oal W) s_elect live
   P := live s_elect h:p_os W
   k := f_loor live s_elect h:k_ind W
-  ents := '{ i -> e_nclose @ f_ormat< "<text class=\"entity\" x=\"{sv:w_hole 50 + 100 * i s_elect 2 s_elect_2 P}\" y=\"{sv:w_hole 180 + 100 * i s_elect 1 s_elect_2 P}\" font-size=\"84\" text-anchor=\"middle\" font-family=\"monospace\" font-weight=\"bold\" fill=\"{h:c_olor i s_elect k}\">{h:g_lyph i s_elect k}</text>" } e_ach r_ange t_ally live
-  v sv:p_icture (v sv:r_ect "fill=\"#0b0b14\"") c_at (e_nclose floor) c_at ents c_at top
+  o := live s_elect h:g_oal W
+  ents := '{ i -> e_nclose h:e_ntity (100.0 * i s_elect 2 s_elect_2 P, 100.0 * i s_elect 1 s_elect_2 P, i s_elect k, 0 < i s_elect o) } e_ach r_ange t_ally live
+  v sv:p_icture (v sv:r_ect "fill=\"#0b0b14\"") c_at (e_nclose d_isclose lv s_elect layers) c_at ents c_at top
 }
-# :: (Num a, Any b, Any c, Any d, Num e, Truthy e) => (a, b, c, d) -> e
+# :: (Num a, Any b, Any c, Any d, Any e, Num f, Truthy f) => (a, b, c, d, e) -> f
 ## Which components each living entity has, a row each: hit points,
 ## attack, chase, heal, gold (1 where it has it), from the masks the
 ## macro wrote.
-l:h_as := { (W, g, n, m) ->
+l:h_as := { (W, g, n, m, lv) ->
   M := o_\ (5 c_at t_ally W) r_eshape 0 + (h:h_asHp W) c_at (h:h_asAtk W) c_at (h:h_asChase W) c_at (h:h_asHeal W) c_at h:h_asGold W
   (w_here ec:a_live W) s_elect M
 }

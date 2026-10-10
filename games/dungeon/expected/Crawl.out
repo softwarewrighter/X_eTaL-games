@@ -1,6 +1,6 @@
-l:n_ew : (Any a, Num b, Num c) => a -> (Float, b, c, Char)
-l:t_urn : (Num a, Any b) => (Float, Int, a, b) -> Float -> (Float, Int, a, Char)
-l:s_tatus : (Num a, Any b, Any c, Any d, Num e) => (a, b, c, d) -> e
-l:y_ou : (Num a, Any b) => (a, Int, Int, b) -> Int
-l:d_raw : (Float, Int, Int, a) -> Char
-l:h_as : (Num a, Any b, Any c, Any d, Num e, Truthy e) => (a, b, c, d) -> e
+l:n_ew : (Any a, Num b, Num c) => a -> (Float, b, c, Char, Int)
+l:t_urn : (Num a, Any b) => (Float, Int, a, b, Int) -> Float -> (Float, Int, a, Char, Int)
+l:s_tatus : (Num a, Any b, Any c, Any d, Any e, Num f) => (a, b, c, d, e) -> f
+l:y_ou : (Num a, Any b, Any c) => (a, Int, Int, b, c) -> Int
+l:d_raw : (Float, Int, Int, a, Int) -> Char
+l:h_as : (Num a, Any b, Any c, Any d, Any e, Num f, Truthy f) => (a, b, c, d, e) -> f
