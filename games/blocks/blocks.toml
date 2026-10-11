@@ -1,0 +1,23 @@
+# The falling blocks' pieces, colors and speeds, read by Stack.xtl
+# (X_eTaL's []L_IST). Every value is a string.
+#
+# The pieces, by name: each a square of rows, # a block. A piece turns
+# about the middle of its square. Add a piece by adding its rows under a
+# new name, its name to `pieces` and a color to `colors`.
+pieces = ["I", "O", "T", "S", "Z", "J", "L"]
+colors = ["#4cc9f0", "#ffd166", "#b5179e", "#06d6a0", "#ef476f", "#4361ee", "#f8961e"]
+I = ["....", "####", "....", "...."]
+O = ["##", "##"]
+T = [".#.", "###", "..."]
+S = [".##", "##.", "..."]
+Z = ["##.", ".##", "..."]
+J = ["#..", "###", "..."]
+L = ["..#", "###", "..."]
+
+# The well, wide and deep; the seconds between steps down at level 1,
+# how much faster each level is, the fastest; lines to a level; the
+# points for 1, 2, 3 and 4 lines at once (times the level).
+well = ["10", "20"]
+speed = ["0.8", "0.07", "0.1"]
+level = ["10"]
+points = ["100", "300", "500", "800"]

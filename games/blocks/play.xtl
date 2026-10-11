@@ -1,0 +1,37 @@
+#!/usr/bin/env xetal
+## Falling blocks: fill whole rows to clear them. Left and right (or a
+## and d) move the piece, up (or w) turns it, down (or s) moves it down
+## a row, the space bar drops it; h lets the computer player place it;
+## r starts again. The pieces fall faster every ten lines. The game moves
+## with the clock: on the page it is in a dialog, and the clock's ticks
+## (twenty a second) and your keys come to the program as events; at the
+## command line, lines such as "tick 0.05", "key LEFT" and "key space" on
+## standard input. When the well is full the program ends with the score
+## (on the page, Play or any key then starts a new game). The rules are
+## Stack.xtl's.
+"st:" u_se< "Stack"
+
+## Show the game, then wait for the next event.
+u:s_how := { s ->
+  pic := []S_HOW st:d_raw s
+  0 < st:s_tatus s ? u:e_nd s
+  u:l_oop s
+}
+## The next event: a tick moves the game on and shows it; a key acts.
+u:l_oop := { s ->
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? u:q_uit s
+  "tick" m_atch []E_KIND e ? u:s_how s st:t_ick f_irst []E_AT e
+  n_ot "key" m_atch []E_KIND e ? u:l_oop s
+  name := f_ormat []E_KEY e
+  "r" m_atch name ? u:s_how st:n_ew 0
+  u:l_oop s st:k_ey name
+}
+## The end of the events: the score so far.
+u:q_uit := { s ->
+  said := p_rint! @ f_ormat< "Score {f_irst st:s_core s}, lines {2 s_elect st:s_core s}, level {3 s_elect st:s_core s}."
+  "THE END"
+}
+## How the game ended (the program ends with it).
+u:e_nd := { s -> @ f_ormat< "Game over. Score {f_irst st:s_core s}, lines {2 s_elect st:s_core s}." }
+u:s_how st:n_ew 0

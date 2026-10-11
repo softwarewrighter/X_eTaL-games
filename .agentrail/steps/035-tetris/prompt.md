@@ -1,0 +1,1 @@
+new game (the user, 2026-10-11: queue Tetris, tower defense, raycaster): games/tetris/: falling blocks with the clock and keys; a piece turned by transposing and reversing its matrix, full rows by a row-wise and, cleared by filtering rows out; pieces and speeds in a data file; goldens; page interactive with ticks.

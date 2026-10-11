@@ -1,0 +1,1 @@
+new game (the user, 2026-10-11): games/raycaster/: a first-person view by ray casting, one ray per screen column, every ray stepped through the grid at once until it hits a wall (a fixed point); keys and ticks; reuse the maze idea; a performance test of X_eTaL per frame (asks for what is slow); goldens; page interactive with ticks.

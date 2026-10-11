@@ -1,0 +1,11 @@
+l:c_lear : Num a => a -> a
+l:n_ew : (Any a, Num b, Num c, Num d, Num e, Num f) => a -> (b, Int, Int, c, Int, Int, d, e, Float, Float, f)
+l:t_ick : Num a => (Int, Int, Int, Int, Int, Int, Int, Int, Float, Float, a) -> Float -> (Int, Int, Int, Int, Int, Int, Int, Int, Float, Float, a)
+l:t_urn : a -> a
+l:a_i : (Any a, Num b) => (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -> (Int, Int)
+l:k_ey : (Any a, Num b) => (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -> Char -> (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b)
+l:s_tatus : (Any a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k) => (a, b, c, d, e, f, g, h, i, j, k) -> k
+l:s_core : (Any a, Num b) => (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -> Int
+l:w_ell : (Num a, Truthy a, Num b, Any c, Any d, Any e, Any f, Any g, Any h) => (a, b, a, Int, Int, c, d, e, f, g, h) -> a
+l:p_iece : (Any a, Any b, Any c, Any e, Any f, Any g, Any h, Any i, Any j) => (a, b, c, d, d, e, f, g, h, i, j) -> (b, d, e)
+l:d_raw : (Num a, Any c, Num d, Num e) => (Int, a, Int, Int, Int, Int, b, Int, c, d, e) -> Char

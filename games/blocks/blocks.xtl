@@ -1,0 +1,49 @@
+#!/usr/bin/env xetal
+## Falling blocks, scripted (seed 1), with the rules of Stack.xtl: the
+## well a matrix, a piece a small square of 0s and 1s, turning by
+## reversing and transposing, full rows cleared by keeping the others.
+"st:" u_se< "Stack"
+
+# A piece turns a quarter clockwise by reversing its rows and
+# transposing: the T, and the T turned once and twice.
+T := 3 3 r_eshape 0 1 0 1 1 1 0 0 0
+T
+st:t_urn T
+st:t_urn st:t_urn T
+
+# Full rows are found by a row-wise and, and cleared by keeping only the
+# other rows (as many empty rows go on top): a small well of 4 rows, the
+# second and fourth full.
+w := 4 3 r_eshape 0 0 1 2 2 2 0 3 0 4 4 4
+w
+st:c_lear w
+
+# A new game: the first piece at the top of the 10 by 20 well, its row
+# and column, and the next piece's kind.
+s := st:n_ew 0
+st:p_iece s
+
+# Two seconds of the clock: the piece steps down every 0.8 seconds at
+# level 1. Then left twice, a turn, and the space bar: it drops to where
+# it lands, two points a row. The well, with the next piece at the top:
+u:w_ait := { s n -> n = 0 ? s; (s st:t_ick 0.05) u:w_ait n - 1 }
+s := s u:w_ait 40
+u:p_ress := { s k -> s st:k_ey k }
+s := (((s u:p_ress "LEFT") u:p_ress "LEFT") u:p_ress "UP") u:p_ress " "
+st:w_ell s
+
+# The computer player: for the piece, every turn and every column tried,
+# each worked out to where it lands, and the well it leaves weighed
+# (lines for it; heights, holes and bumps against). Its move (quarter
+# turns, columns over), then thirty pieces placed by it: the score,
+# lines and level.
+st:a_i s
+u:a_uto := { s n -> (n = 0) | 0 < st:s_tatus s ? s; (s u:p_ress "h") u:a_uto n - 1 }
+s := s u:a_uto 30
+st:s_core s
+pic := []S_HOW st:d_raw s
+
+# What the game guarantees, checked by a_ssert< (silent when it holds).
+ok := "'& r_/_12 (st:t_urn^4 T) = T" a_ssert< "four quarter turns are no turn"
+ok := "0 = '+ r_/ '& r_/_2 0 < st:c_lear w" a_ssert< "no full row is left after clearing"
+ok := "0 = st:s_tatus s" a_ssert< "still playing"

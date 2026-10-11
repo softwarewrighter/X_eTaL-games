@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-11
 
+- 14:31 `game` Falling blocks (in the style of Tetris; the user queued it with tower defense and a raycaster): Stack.xtl keeps the well as a matrix and a piece as a small square of 0s and 1s; a piece turns by `o_\ r_ev`, fits where every block lands on an empty cell, lands at the first of every row tried at once; full rows by a row-wise and, cleared by keeping the others; a computer player (`l:a_i`, the `h` key) weighs every turn and column; pieces, colors, well, speeds and points in blocks.toml (test.sh adds an eighth piece); the golden places three pieces by keys and 37 by the computer player.
+
 - 09:33 `chore` Saga step maze completed.
 
 - 09:27 `game` The maze (the user: a first-person view of corridors with a mini map): Walls.xtl carves a new maze from each game's seed in one go (sidewinder: runs by a running sum, the way north in each run by a table of every pair), puts the way out at the farthest block by a flood to a fixed point, and draws the view ahead as SVG from lookups at every depth at once (slanted side walls, the faces beyond openings, the wall ahead, the way out in sight), cut off at its edges; `m` shows a mini map of the blocks seen; the golden walks out in 58 steps (a shortest path); test.sh carves a 12 by 5 maze from maze.toml; the browser test now also takes a redrawn picture as the program's answer to a key; an ask for a comparison that is a number in one place and Bool in another.

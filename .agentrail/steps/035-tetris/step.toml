@@ -1,0 +1,8 @@
+number = 35
+slug = "tetris"
+status = "in-progress"
+description = "new game (the user, 2026-10-11: queue Tetris, tower defense, raycaster): game..."
+role = "production"
+context_files = []
+created_at = "2026-10-11T10:16:16"
+commits = []

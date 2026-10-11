@@ -390,7 +390,10 @@ every pair; a golden won by a one-key-a-tick driving rule). Step 33, asteroids: 
 rock halves spawned and despawned by masks; the page sends the space
 bar as `key space`). Step 34, the maze (the user,
 2026-10-10): DONE (a first-person view of a maze carved from the seed,
-with a mini map of what has been seen).
+with a mini map of what has been seen). Steps 35 to 37 (the user, 2026-10-11):
+falling blocks (DONE: turning by reversing and transposing, rows
+cleared by keeping the others, a computer player), tower defense, a
+raycaster.
 
 ## Saga 6 -- macros
 

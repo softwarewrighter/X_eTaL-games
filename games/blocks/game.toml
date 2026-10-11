@@ -1,0 +1,13 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "blocks"
+title = "Falling blocks"
+summary = "Fill whole rows to clear them as the pieces fall faster: move, turn and drop with the arrow keys and the space bar, or let the computer player place a piece. The well is a matrix and a piece a small square of 0s and 1s: it turns by reversing its rows and transposing, and full rows are found by a row-wise and and cleared by keeping the others."
+lesson = "a piece turned by reversing and transposing; full rows by a row-wise and, cleared by keeping the others; a computer player that tries every turn and column at once"
+concepts = ["o_\\ transpose", "r_ev", "r_/_2 row-wise", "r_eplicate rows", "s_\\ scans", "tuples", "[]E_VENT ticks and keys", "SVG"]
+status = "live"
+group = "Action"
+order = 145
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Tetris"   # the title links here (opens in a new tab)

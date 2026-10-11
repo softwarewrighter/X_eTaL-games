@@ -1,0 +1,1 @@
+new game (the user, 2026-10-11): games/tower-defense/ on lib/Ecs: enemies along a path found by a flood, towers placed by clicks, every tower against every enemy in one table, shots spawned and despawned, money and waves; the first game with clicks and ticks together; goldens; page interactive with ticks.

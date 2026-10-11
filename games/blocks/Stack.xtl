@@ -1,0 +1,260 @@
+## The falling blocks' rules, a library: blocks.xtl (scripted), play.xtl
+## (the game: keys and the clock) and the web page all use these. The
+## well is a matrix (0 empty, else the color of the piece that left a
+## block there) and a piece is a small square matrix of 0s and 1s: it
+## turns by reversing its rows and transposing, it fits where every one
+## of its blocks lands on an empty cell, full rows are found by a
+## row-wise and, and cleared by keeping only the other rows. A game's
+## state is a tuple: (the well, the piece's shape, its kind, its row and
+## column, the next kind, the score, the lines, the seconds toward the
+## next step down, the seconds played, how it stands: 0 playing, 2 the
+## well full).
+
+"sv:" u_se< "Svg"
+"t:" u_se< "Text"
+
+### The data
+
+## A list of numbers from blocks.toml.
+h:n_ums := { k -> 'sv:n_um e_ach "blocks.toml" []L_IST k }
+names := "blocks.toml" []L_IST "pieces"
+colors := "blocks.toml" []L_IST "colors"
+well := f_loor h:n_ums "well"
+WIDE := f_irst well
+DEEP := 2 s_elect well
+speed := h:n_ums "speed"
+PER := f_loor f_irst h:n_ums "level"
+POINTS := 0 c_at f_loor h:n_ums "points"
+## Piece k's shape: its rows from blocks.toml as a square of 0s and 1s.
+h:r_ead := { k ->
+  rows := "blocks.toml" []L_IST d_isclose k s_elect names
+  n := t_ally rows
+  (n c_at n) r_eshape 0 + (t:j_oin rows) = f_irst "#"
+}
+SHAPES := 'h:r_ead m_ap r_ange t_ally names
+## A piece's shape as it first comes.
+h:s_hape := { k -> d_isclose k s_elect SHAPES }
+
+### Pieces in the well
+
+## The well's cells under the blocks of shape M at row r, column c (from
+## 0): their rows and their columns.
+h:c_ells := { (M, r, c) ->
+  i := (w_here r_avel 0 < M) - 1
+  n := t_ally M
+  (r + i d_iv n, c + i m_od n)
+}
+## Whether shape M fits at row r, column c: every block inside the well
+## and on an empty cell.
+h:f_its := { (W, M, r, c) ->
+  (i, j) := h:c_ells (M, r, c)
+  n_ot '& r_/ (i >= 0) & (i < DEEP) & (j >= 0) & j < WIDE ? 0 = 1
+  '& r_/ 0 = (1 + (WIDE * i) + j) s_elect r_avel W
+}
+## The lowest row at or below r where M fits at column c.
+h:l_anding := { (W, M, r, c) ->
+  q := r + (r_ange DEEP + 1) - 1
+  ok := '{ x -> h:f_its (W, M, x, c) } e_ach q
+  r + (f_irst (w_here n_ot ok) c_at 1 + t_ally q) - 2
+}
+## The well with shape M of kind k left at row r, column c.
+h:l_eave := { (W, M, k, r, c) ->
+  (i, j) := h:c_ells (M, r, c)
+  (s_hape W) r_eshape (r_avel W) + k * 0 + (r_ange WIDE * DEEP) m_ember? 1 + (WIDE * i) + j
+}
+# :: Num a => a -> a
+## The well with its full rows cleared, and how many: the rows kept, and
+## as many empty rows on top.
+## >> "st:" u_se< "Stack"
+## >> st:c_lear 3 2 r_eshape 1 1 0 1 2 2
+## 0 0
+## 0 0
+## 0 1
+l:c_lear := { W ->
+  full := '& r_/_2 0 < W
+  n := '+ r_/ 0 + full
+  ((n c_at 2 s_elect s_hape W) r_eshape 0) c_at (n_ot full) r_eplicate W
+}
+## How many rows of W are full.
+h:f_ull := { W -> '+ r_/ 0 + '& r_/_2 0 < W }
+## The level, from the lines; the seconds between steps down there.
+h:l_evel := { ln -> 1 + ln d_iv PER }
+h:p_ause := { ln -> (3 s_elect speed) m_ax (f_irst speed) - (2 s_elect speed) * f_loat (h:l_evel ln) - 1 }
+## 0 when the next piece fits, 2 when it does not (the game over).
+h:o_ver := { ok -> ok ? 0; 2 }
+## The next piece into the well at the top, in the middle, the one after
+## drawn at random; the game over if it does not fit.
+h:n_ext := { (W, nx, sc, ln, t) ->
+  M := h:s_hape nx
+  c := (WIDE - t_ally M) d_iv 2
+  (W, M, nx, 0, c, r_oll! t_ally names, sc, ln, 0.0, t, h:o_ver h:f_its (W, M, 0, c))
+}
+# :: (Any a, Num b, Num c, Num d, Num e, Num f) => a -> (b, Int, Int, c, Int, Int, d, e, Float, Float, f)
+## A new game: an empty well and the first piece.
+l:n_ew := { z -> h:n_ext ((DEEP c_at WIDE) r_eshape 0, r_oll! t_ally names, 0, 0, 0.0) }
+## The piece left where it is: full rows cleared and scored, the next
+## piece in.
+h:s_ettle := { (W, M, k, r, c, nx, sc, ln, acc, t, st) ->
+  W := h:l_eave (W, M, k, r, c)
+  n := h:f_ull W
+  h:n_ext (l:c_lear W, nx, sc + (h:l_evel ln) * (1 + n) s_elect POINTS, ln + n, t)
+}
+## A step down, or, where it cannot go down, settled.
+h:d_own := { s ->
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) := s
+  h:f_its (W, M, r + 1, c) ? (W, M, k, r + 1, c, nx, sc, ln, acc, t, st)
+  h:s_ettle s
+}
+# :: Num a => (Int, Int, Int, Int, Int, Int, Int, Int, Float, Float, a) -> Float -> (Int, Int, Int, Int, Int, Int, Int, Int, Float, Float, a)
+## A tick of the clock, dt seconds: the piece steps down each time its
+## level's pause has gone by. A game over stays as it is.
+l:t_ick := { s dt ->
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) := s
+  st > 0 ? s
+  (acc + dt) < h:p_ause ln ? (W, M, k, r, c, nx, sc, ln, acc + dt, t + dt, st)
+  h:d_own (W, M, k, r, c, nx, sc, ln, 0.0, t + dt, st)
+}
+
+### Your keys
+
+# :: a -> a
+## Shape M turned a quarter clockwise: its rows reversed, then
+## transposed.
+## >> "st:" u_se< "Stack"
+## >> st:t_urn 2 3 r_eshape 1 1 1 0 1 0
+## 0 1
+## 1 1
+## 0 1
+l:t_urn := { M -> o_\ r_ev M }
+## The piece turned, if it fits there or a column to either side.
+h:t_urned := { s ->
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) := s
+  N := l:t_urn M
+  h:f_its (W, N, r, c) ? (W, N, k, r, c, nx, sc, ln, acc, t, st)
+  h:f_its (W, N, r, c - 1) ? (W, N, k, r, c - 1, nx, sc, ln, acc, t, st)
+  h:f_its (W, N, r, c + 1) ? (W, N, k, r, c + 1, nx, sc, ln, acc, t, st)
+  s
+}
+## The piece a column over (d: -1 or 1), if it fits.
+h:s_lid := { s d ->
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) := s
+  h:f_its (W, M, r, c + d) ? (W, M, k, r, c + d, nx, sc, ln, acc, t, st)
+  s
+}
+## The piece dropped to where it lands, two points a row, and settled.
+h:d_ropped := { (W, M, k, r, c, nx, sc, ln, acc, t, st) ->
+  q := h:l_anding (W, M, r, c)
+  h:s_ettle (W, M, k, q, c, nx, sc + 2 * q - r, ln, acc, t, st)
+}
+### The computer player
+
+## The piece turned q times and moved dx columns (each as far as it
+## fits), then dropped.
+h:t_urns := { s q -> q = 0 ? s; (h:t_urned s) h:t_urns q - 1 }
+h:s_lides := { s d -> d = 0 ? s; (s h:s_lid (d > 0) - d < 0) h:s_lides d - (d > 0) - d < 0 }
+h:a_fter := { s (q, dx) -> h:d_ropped (s h:t_urns q) h:s_lides dx }
+## What a well is worth to the computer player: the lines a move cleared
+## count for it; the columns' heights, the holes (empty cells under a
+## block) and the bumps between neighboring columns count against it.
+h:w_orth := { (W, lines) ->
+  F := 0 < W
+  top := '| s_\ F
+  h := '+ r_/ 0 + top
+  holes := '+ r_/ 0 + r_avel top & n_ot F
+  bump := '+ r_/ a_bs (1 d_rop h) - (WIDE - 1) t_ake h
+  (0.76 * f_loat lines) - (0.51 * f_loat '+ r_/ h) + (0.36 * f_loat holes) + 0.18 * f_loat bump
+}
+## A move's worth: the well it leaves (far below any other if it ends
+## the game).
+h:v_alue := { s (q, dx) ->
+  t := s h:a_fter (q, dx)
+  (W, M, k, r, c, nx, sc, ln, acc, u, st) := t
+  st > 0 ? -1000.0
+  h:w_orth (W, ln - 2 s_elect l:s_core s)
+}
+# :: (Any a, Num b) => (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -> (Int, Int)
+## The computer player's move for the piece: how many quarter turns and
+## how many columns over (negative to the left), the best of every turn
+## and every column tried, each worked out to where the piece lands.
+l:a_i := { s ->
+  i := (r_ange 4 * 1 + WIDE) - 1
+  q := i d_iv 1 + WIDE
+  dx := (i m_od 1 + WIDE) - WIDE d_iv 2
+  w := '{ n -> s h:v_alue (n s_elect q, n s_elect dx) } e_ach 1 + i
+  b := f_irst g_rade n_eg w
+  (b s_elect q, b s_elect dx)
+}
+# :: (Any a, Num b) => (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -> Char -> (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b)
+## A key: left and right (or a and d) move the piece, up (or w) turns
+## it, down (or s) moves it a row down, the space bar drops it, h lets
+## the computer player place it; other keys, and keys after the game is
+## over, do nothing.
+l:k_ey := { s name ->
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) := s
+  q := ("LEFT" "RIGHT" "UP" "DOWN" "a" "d" "w" "s" " " "h") i_ndexOf e_nclose name
+  (q > 10) | st > 0 ? s
+  q = 10 ? s h:a_fter l:a_i s
+  q = 9 ? h:d_ropped s
+  q := 1 + (q - 1) m_od 4
+  q < 3 ? s h:s_lid (2 * q) - 3
+  q = 3 ? h:t_urned s
+  h:d_own s
+}
+
+### What it shows
+
+# :: (Any a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k) => (a, b, c, d, e, f, g, h, i, j, k) -> k
+## 0 playing, 2 the well full.
+l:s_tatus := { (W, M, k, r, c, nx, sc, ln, acc, t, st) -> st }
+# :: (Any a, Num b) => (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -> Int
+## The score, the lines, the level.
+l:s_core := { (W, M, k, r, c, nx, sc, ln, acc, t, st) -> sc c_at ln c_at h:l_evel ln }
+# :: (Num a, Truthy a, Num b, Any c, Any d, Any e, Any f, Any g, Any h) => (a, b, a, Int, Int, c, d, e, f, g, h) -> a
+## The well with the piece in it (its kind where its blocks are).
+l:w_ell := { (W, M, k, r, c, nx, sc, ln, acc, t, st) -> h:l_eave (W, M, k, r, c) }
+# :: (Any a, Any b, Any c, Any e, Any f, Any g, Any h, Any i, Any j) => (a, b, c, d, d, e, f, g, h, i, j) -> (b, d, e)
+## The piece: its shape, then its row and column, and the next kind.
+l:p_iece := { (W, M, k, r, c, nx, sc, ln, acc, t, st) -> (M, r c_at c, nx) }
+## The size of a cell, and where the well is drawn.
+CELL := 28.0
+X0 := 24.0
+Y0 := 76.0
+## A block's fill: its color, or none for an outline.
+h:f_ill := { (col, ghost) -> ghost = 1 ? "none"; col }
+## A block of kind k at row i, column j of the well (x0, y0 its corner);
+## ghost: only an outline, where the piece would land.
+h:b_lock := { (i, j, k, x0, y0, ghost) ->
+  col := d_isclose k s_elect colors
+  fill := h:f_ill (col, ghost)
+  e_nclose @ f_ormat< "<rect x=\"{sv:w_hole x0 + CELL * f_loat j}\" y=\"{sv:w_hole y0 + CELL * f_loat i}\" width=\"{sv:w_hole CELL - 2.0}\" height=\"{sv:w_hole CELL - 2.0}\" rx=\"4\" fill=\"{fill}\" stroke=\"{col}\" stroke-width=\"2\"/>"
+}
+## Blocks of kind k at the cells (i, j), all at once.
+h:b_locks := { (i, j, k, x0, y0, ghost) -> '{ n -> h:b_lock (n s_elect i, n s_elect j, k, x0, y0, ghost) } e_ach r_ange t_ally i }
+## The blocks left in the well, each its kind's color.
+h:s_ettled := { W ->
+  at := (w_here r_avel 0 < W) - 1
+  '{ n -> h:b_lock (n d_iv WIDE, n m_od WIDE, (n + 1) s_elect r_avel W, X0, Y0, 0) } e_ach at
+}
+## What the top line says.
+h:s_ays := { (sc, ln, t, st) ->
+  st = 2 ? @ f_ormat< "Game over. Score {sc} | Lines {ln} | Time {f_loor t} s"
+  @ f_ormat< "Score {sc} | Lines {ln} | Level {h:l_evel ln} | Time {f_loor t} s"
+}
+# :: (Num a, Any c, Num d, Num e) => (Int, a, Int, Int, Int, Int, b, Int, c, d, e) -> Char
+## The picture, as SVG text: the well and the blocks in it, where the
+## piece would land (an outline), the piece, the next piece beside the
+## well, and the top line.
+l:d_raw := { (W, M, k, r, c, nx, sc, ln, acc, t, st) ->
+  v := 0.0 0.0 480.0 c_at Y0 + 16.0 + CELL * f_loat DEEP
+  box := e_nclose @ f_ormat< "<rect x=\"{sv:w_hole X0 - 4.0}\" y=\"{sv:w_hole Y0 - 4.0}\" width=\"{sv:w_hole 6.0 + CELL * f_loat WIDE}\" height=\"{sv:w_hole 6.0 + CELL * f_loat DEEP}\" fill=\"#11121c\" stroke=\"#5c5f77\" stroke-width=\"3\"/>"
+  (i, j) := h:c_ells (M, h:l_anding (W, M, r, c), c)
+  ghost := h:b_locks (i, j, k, X0, Y0, 1)
+  (i, j) := h:c_ells (M, r, c)
+  piece := (e_nclose "<g class=\"you\">") c_at (h:b_locks (i, j, k, X0, Y0, 0)) c_at e_nclose "</g>"
+  N := h:s_hape nx
+  (i, j) := h:c_ells (N, 0, 0)
+  nxt := h:b_locks (i, j, nx, X0 + 40.0 + CELL * f_loat WIDE, Y0 + 40.0, 0)
+  label := (X0 + 40.0 + CELL * f_loat WIDE, Y0 + 22.0, 22.0) sv:w_ords "Next"
+  top := (16.0, 42.0, 24.0) sv:w_ords h:s_ays (sc, ln, t, st)
+  v sv:p_icture (v sv:r_ect "fill=\"#1d1f2b\"") c_at box c_at (h:s_ettled W) c_at ghost c_at piece c_at label c_at nxt c_at top
+}
