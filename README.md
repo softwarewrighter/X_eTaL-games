@@ -50,6 +50,7 @@ and is tested by its expected output.
 | [Capitals](games/capitals/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/capitals/)) | a map you click: every distance at once, nearest by grade; the map drawn as SVG text; clicks as events; data from TOML | live |
 | [Stargazer](games/stargazer/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/stargazer/)) | a sky you click: brightness bands as a table; the sky drawn as SVG text; clicks as events; data from TOML | live |
 | [Dungeon](games/dungeon/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/dungeon/)) | an entity-component system as arrays (lib/Ecs): entities as rows, components as columns, systems as whole-column expressions | live |
+| [Maze](games/maze/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/maze/)) | a maze carved in one go (runs by a scan, one way north per run by a table); distances by a flood to a fixed point; a first-person view as lookups at every depth at once | live |
 | [Side-scroller](games/scroller/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/scroller/)) | gravity, movement and collision as systems over every body at once (lib/Ecs), ticked by the clock | live |
 | [Racer](games/racer/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/racer/)) | laps and places as systems (lib/Ecs): every car against every segment of the track, every pair of cars compared at once | live |
 | [Asteroids](games/asteroids/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/asteroids/)) | entities that come and go (lib/Ecs): spawning and despawning by masks, every shot against every rock at once | live |
@@ -80,6 +81,7 @@ its idiom in the code.
 | every cell's candidates as one array; every unit counted at once by selecting with a table; rounds to a fixed point | [Sudoku](games/sudoku/README.md) |
 | every distance at once, nearest by grade; a map, its menus and score written as SVG text; clicks as events (`[]E_VENT`) | [Capitals](games/capitals/README.md) |
 | you, the monsters and the items as rows of one matrix; what each is from its components; every rule one expression over all of them (lib/Ecs) | [Dungeon](games/dungeon/README.md) |
+| a maze carved with whole-array operations (`('+ s_\ ends) - ends` for the runs); every distance by a flood to a fixed point; the corridors ahead looked up at every depth at once and drawn far to near | [Maze](games/maze/README.md) |
 | gravity, movement and collision with the ground for every body at once; a hit as a mask used as a number (`x * (1 - hit) + snap * hit`); the clock's ticks as events | [Side-scroller](games/scroller/README.md) |
 | every car's distance to every segment of the track as one table; places from every pair of cars compared (`1 + '+ r_/_2 0 + p '< t_able p`) | [Racer](games/racer/README.md) |
 | shots and rocks spawned and despawned in the slots a mask says are free; every shot against every rock as one table; a rock's halves by `r_eplicate` and one rotation over all of them | [Asteroids](games/asteroids/README.md) |

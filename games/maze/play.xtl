@@ -1,0 +1,29 @@
+#!/usr/bin/env xetal
+## The maze: find the way out (>). Up (or w) steps ahead, down (or s)
+## steps back, left and right (or a and d) turn a quarter; m shows or
+## hides a mini map of what you have seen; r starts a new maze. Each game
+## is a new maze, carved from its seed. Finding the way out ends the
+## program (on the page, Play or any key then starts a new one). On the
+## page the maze is in a dialog and your keys come to the program as
+## events; at the command line, lines such as "key UP" on standard input.
+## The rules are Walls.xtl's.
+"mz:" u_se< "Walls"
+
+## Show the view, then wait for the next key.
+u:s_how := { s ->
+  pic := []S_HOW mz:d_raw s
+  0 < mz:s_tatus s ? u:e_nd s
+  u:l_oop s
+}
+## The next event: a key acts; the end of the events ends the game.
+u:l_oop := { s ->
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? "THE END"
+  n_ot "key" m_atch []E_KIND e ? u:l_oop s
+  name := f_ormat []E_KEY e
+  "r" m_atch name ? u:s_how mz:n_ew 0
+  u:s_how s mz:k_ey name
+}
+## The way out found (the program ends with it).
+u:e_nd := { s -> @ f_ormat< "You found the way out in {f_irst mz:y_ou s} steps!" }
+u:s_how mz:n_ew 0

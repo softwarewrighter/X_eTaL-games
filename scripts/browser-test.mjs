@@ -140,6 +140,9 @@ const CLICK = (lines, ended) => `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const until = async (f, what) => { for (let i = 0; i < 500; i++) { const v = f(); if (v) return v; await sleep(20); } throw new Error("timed out waiting for " + what); };
   const said = () => document.querySelector("dialog.board pre.transcript")?.textContent || "";
+  // The program's answer: what it says, or (for a game that only redraws)
+  // its picture.
+  const answer = () => said() + (document.querySelector("dialog.board .board-pic")?.innerHTML || "");
   (await until(() => document.querySelector("button.board-open"), "the Play button")).click();
   await until(() => document.querySelector("dialog.board[open] .board-pic svg"), "the picture in the dialog");
   const arrows = { UP: "ArrowUp", DOWN: "ArrowDown", LEFT: "ArrowLeft", RIGHT: "ArrowRight" };
@@ -148,8 +151,9 @@ const CLICK = (lines, ended) => `(async () => {
     if (line.startsWith("key ")) {
       // A key line: a keydown on the dialog, as a player's key would be.
       const name = line.slice(4);
+      const seen = answer();
       document.querySelector("dialog.board[open]").dispatchEvent(new KeyboardEvent("keydown", { key: arrows[name] || name, bubbles: true }));
-      await until(() => said() !== before, "the program to answer " + line);
+      await until(() => answer() !== seen, "the program to answer " + line);
       await sleep(30);
       continue;
     }

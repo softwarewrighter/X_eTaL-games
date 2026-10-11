@@ -1,0 +1,8 @@
+l:n_ew : (Any a, Num b, Num c, Truthy d, Num e) => a -> (Int, Int, b, c, d, e, Int)
+l:k_ey : (Num a, Truthy b, Num c, Any d) => (Int, Int, Int, a, b, c, d) -> Char -> (Int, Int, Int, a, b, c, d)
+l:s_tatus : (Any a, Eq b, Any c, Any d, Any e, Any f, Num g, Truthy g) => (a, b, c, d, e, f, b) -> g
+l:y_ou : (Any a, Any c, Any d) => (a, b, b, b, c, d, b) -> b
+l:g_rid : (Num a, Any b, Any c, Any d, Any e, Any f, Any g) => (a, b, c, d, e, f, g) -> a
+l:d_istances : (Any a, Any b, Any c, Any d, Any e) => (Int, Int, a, b, c, d, e) -> Int
+l:s_een : (Any a, Any b, Any c, Any d, Any f, Any g) => (a, b, c, d, e, f, g) -> e
+l:d_raw : (Truthy b, Num c) => (Int, Int, Int, a, b, c, Int) -> Char

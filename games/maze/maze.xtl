@@ -1,0 +1,38 @@
+#!/usr/bin/env xetal
+## The maze, scripted (seed 1), with the rules of Walls.xtl: a maze carved
+## with whole-array operations, the way out found by a flood, and the
+## view ahead looked up at every depth at once.
+"mz:" u_se< "Walls"
+
+# A new maze (seed 1), 8 cells by 8 in maze.toml: 17 blocks by 17, 1 a
+# wall, 0 open. Carved row by row in one go: each cell joins its east
+# neighbor at random, cutting each row into runs, and each run below the
+# top opens north from one cell picked at random.
+s := mz:n_ew 0
+mz:g_rid s
+
+# Every open block's distance from you (bottom left), by a flood: each
+# block one more than its nearest neighbor, all at once, until nothing
+# changes. The way out is put at the farthest.
+mz:d_istances s
+
+# The steps taken, which way you face (0 north), your block, the way
+# out's block.
+mz:y_ou s
+
+# A few keys: the mini map on, then up the left side and turn right.
+u:p_ress := { s k -> s mz:k_ey k }
+s := s u:p_ress "m"
+s := s u:p_ress "UP"
+s := s u:p_ress "UP"
+s := s u:p_ress "RIGHT"
+mz:y_ou s
+
+# The blocks seen so far: what has been in view.
+mz:s_een s
+pic := []S_HOW mz:d_raw s
+
+# What the maze guarantees, checked by a_ssert< (silent when it holds).
+t := mz:n_ew 0
+ok := "'& r_/ (0 <= r_avel mz:d_istances t) = r_avel 0 = mz:g_rid t" a_ssert< "every open block can be reached"
+ok := "0 = mz:s_tatus s" a_ssert< "still looking"

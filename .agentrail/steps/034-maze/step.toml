@@ -1,0 +1,8 @@
+number = 34
+slug = "maze"
+status = "in-progress"
+description = "new game (the user, 2026-10-10: 'how about a maze game? first person view of ..."
+role = "production"
+context_files = []
+created_at = "2026-10-10T17:52:22"
+commits = []

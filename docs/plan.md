@@ -388,7 +388,9 @@ browser test checks its clock keeps up and keys move you). Step 32, the racer: D
 entities, the grass as a cars-by-segments table, places by comparing
 every pair; a golden won by a one-key-a-tick driving rule). Step 33, asteroids: DONE (shots and
 rock halves spawned and despawned by masks; the page sends the space
-bar as `key space`).
+bar as `key space`). Step 34, the maze (the user,
+2026-10-10): DONE (a first-person view of a maze carved from the seed,
+with a mini map of what has been seen).
 
 ## Saga 6 -- macros
 

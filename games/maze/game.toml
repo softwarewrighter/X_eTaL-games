@@ -1,0 +1,13 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "maze"
+title = "Maze"
+summary = "Find the way out of a maze seen from inside: step and turn with the arrow keys, m for a mini map of what you have seen. A new maze every game, carved from its seed with whole-array operations; the way out is put at the farthest point by a flood, and the corridors ahead are looked up at every depth at once and drawn as SVG."
+lesson = "a maze carved in one go (runs by a running sum, one way north per run by a table), distances by a flood to a fixed point, the view as lookups at every depth at once"
+concepts = ["s_\\ scans", "t_able", "fixed point", "tuples", "[]E_VENT keys", "SVG"]
+status = "live"
+group = "Adventures"
+order = 135
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Maze_generation_algorithm"   # the title links here (opens in a new tab)

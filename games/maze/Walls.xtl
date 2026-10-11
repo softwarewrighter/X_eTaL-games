@@ -1,0 +1,234 @@
+## The maze's rules, a library: maze.xtl (scripted), play.xtl (the game:
+## arrow keys) and the web page all use these. A maze is a grid of
+## blocks, wall or open, kept as one vector of 0s and 1s, row by row; a
+## new one is carved from the game's seed with whole-array operations,
+## and the way out is put at the open block farthest from the start.
+## What you see is worked out the same way: the blocks ahead and to each
+## side, every depth looked up at once, then drawn far to near. A game's
+## state is a tuple: (the walls, where you are, which way you face (0
+## north, 1 east, 2 south, 3 west), the steps taken, the blocks seen,
+## whether the mini map shows, the way out).
+
+"sv:" u_se< "Svg"
+
+### The data
+
+## The maze's size in cells, and so in blocks: a block per cell, a block
+## between neighbors (a wall or a way through), and a wall all around.
+size := f_loor 'sv:n_um e_ach "maze.toml" []L_IST "size"
+CW := f_irst size
+CH := 2 s_elect size
+B := 1 + 2 * CW
+BH := 1 + 2 * CH
+NB := B * BH
+## The colors: the walls by depth, the floor, the ceiling.
+WALLS := "maze.toml" []L_IST "walls"
+FLOOR := d_isclose f_irst "maze.toml" []L_IST "floor"
+CEILING := d_isclose f_irst "maze.toml" []L_IST "ceiling"
+## A step north, east, south, west, as a move along the vector.
+STEPS := (n_eg B) c_at 1 c_at B c_at -1
+## A distance beyond any in the maze.
+FAR := 1000000
+
+### A new maze
+
+## The walls of a new maze, carved row by row in one go (the sidewinder
+## way): each cell joins its east neighbor at random (the top row always,
+## the last column never), which cuts each row into runs; each run below
+## the top row opens north from one of its cells, picked at random. The
+## runs are a running sum of where they end; the cell picked in each run
+## is the one with the highest random key in it, every pair of cells
+## compared in one table.
+h:c_arve := { z ->
+  n := CW * CH
+  k := (r_ange n) - 1
+  i := k d_iv CW
+  j := k m_od CW
+  east := (j < CW - 1) & (i = 0) | 1 = r_oll! n r_eshape 2
+  ends := 0 + n_ot east
+  run := ('+ s_\ ends) - ends
+  key := g_rade r_oll! n r_eshape 1000000
+  best := 'm_ax r_/_2 (0 + run '= t_able run) * (n c_at n) r_eshape key
+  north := (i > 0) & key = best
+  cell := 1 + (B * 1 + 2 * i) + 1 + 2 * j
+  open := cell c_at (east r_eplicate cell + 1) c_at north r_eplicate cell - B
+  n_ot (r_ange NB) m_ember? open
+}
+## The vector d moved k places (the block k further along in each place),
+## FAR shifted in at the end.
+h:s_hift := { d k ->
+  k > 0 ? (k d_rop d) c_at k r_eshape FAR
+  ((n_eg k) r_eshape FAR) c_at (NB + k) t_ake d
+}
+## Every open block's distance from the start, by a flood: each block one
+## more than its nearest neighbor, all at once, again until nothing
+## changes (walls stay FAR).
+h:f_lood := { (G, d) ->
+  e := (FAR * 0 + G) m_ax d m_in 1 + (d h:s_hift 1) m_in (d h:s_hift -1) m_in (d h:s_hift B) m_in d h:s_hift n_eg B
+  '& r_/ e = d ? d
+  h:f_lood (G, e)
+}
+# :: (Any a, Num b, Num c, Truthy d, Num e) => a -> (Int, Int, b, c, d, e, Int)
+## A new game: a new maze, you in its bottom left cell facing north, the
+## way out at the open block farthest from you.
+l:n_ew := { z ->
+  G := h:c_arve z
+  at := 2 + B * BH - 2
+  d := h:f_lood (G, FAR * 0 + (r_ange NB) != at)
+  goal := f_irst g_rade n_eg d * 0 + d < FAR
+  (G, at, 0, 0, h:s_ee (G, at, 0, 0 < NB r_eshape 0), 0, goal)
+}
+
+### Looking
+
+## Whether the blocks i are walls (beyond the maze counts as wall).
+h:w_all := { (G, i) -> (i < 1) | (i > NB) | (1 m_ax NB m_in i) s_elect G }
+## What you see from at facing f, depths 0 to 5 at once: the blocks ahead
+## (F), to their left (L) and to their right (R), as block numbers.
+h:l_ook := { (at, f) ->
+  k := (r_ange 6) - 1
+  F := at + k * (1 + f) s_elect STEPS
+  L := F + (1 + (f + 3) m_od 4) s_elect STEPS
+  R := F + (1 + (f + 1) m_od 4) s_elect STEPS
+  (F, L, R)
+}
+## The depth of the first wall ahead (5 when none is that near).
+h:d_epth := { (G, F) -> f_irst (w_here 1 d_rop h:w_all (G, F)) c_at 5 }
+## The blocks seen with what is in view from at facing f added: the
+## blocks ahead up to the first wall, and those beside them.
+h:s_ee := { (G, at, f, seen) ->
+  (F, L, R) := h:l_ook (at, f)
+  D := h:d_epth (G, F)
+  i := ((1 + D) t_ake F) c_at (D t_ake L) c_at D t_ake R
+  seen | (r_ange NB) m_ember? i
+}
+
+### Your keys
+
+## You at to (unless it is a wall, where you stay), a step more.
+h:m_oved := { (G, at, to, f, n, seen, mp, goal) ->
+  h:w_all (G, to) ? (G, at, f, n, seen, mp, goal)
+  (G, to, f, n + 1, h:s_ee (G, to, f, seen), mp, goal)
+}
+# :: (Num a, Truthy b, Num c, Any d) => (Int, Int, Int, a, b, c, d) -> Char -> (Int, Int, Int, a, b, c, d)
+## A key: up (or w) steps ahead, down (or s) steps back, left and right
+## (or a and d) turn a quarter, m shows or hides the mini map; other keys
+## do nothing.
+l:k_ey := { s name ->
+  (G, at, f, n, seen, mp, goal) := s
+  k := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d" "m") i_ndexOf e_nclose name
+  k > 9 ? s
+  k = 9 ? (G, at, f, n, seen, 1 - mp, goal)
+  k := 1 + (k - 1) m_od 4
+  t := (4 + f + (2 * k) - 7) m_od 4
+  k > 2 ? (G, at, t, n, h:s_ee (G, at, t, seen), mp, goal)
+  h:m_oved (G, at, at + (1 + (f + 2 * k - 1) m_od 4) s_elect STEPS, f, n, seen, mp, goal)
+}
+
+### What it shows
+
+# :: (Any a, Eq b, Any c, Any d, Any e, Any f, Num g, Truthy g) => (a, b, c, d, e, f, b) -> g
+## 1 once you stand on the way out, else 0.
+l:s_tatus := { (G, at, f, n, seen, mp, goal) -> 0 + at = goal }
+# :: (Any a, Any c, Any d) => (a, b, b, b, c, d, b) -> b
+## The steps taken, which way you face, your block, the way out's block.
+l:y_ou := { (G, at, f, n, seen, mp, goal) -> n c_at f c_at at c_at goal }
+# :: (Num a, Any b, Any c, Any d, Any e, Any f, Any g) => (a, b, c, d, e, f, g) -> a
+## The maze as a matrix of blocks, 1 a wall, 0 open.
+l:g_rid := { (G, at, f, n, seen, mp, goal) -> (BH c_at B) r_eshape 0 + G }
+# :: (Any a, Any b, Any c, Any d, Any e) => (Int, Int, a, b, c, d, e) -> Int
+## Every open block's distance in steps from where you are (the flood),
+## walls -1, as a matrix.
+l:d_istances := { (G, at, f, n, seen, mp, goal) ->
+  d := h:f_lood (G, FAR * 0 + (r_ange NB) != at)
+  (BH c_at B) r_eshape d - (1 + FAR) * 0 + G
+}
+# :: (Any a, Any b, Any c, Any d, Any f, Any g) => (a, b, c, d, e, f, g) -> e
+## The blocks seen so far, as a matrix of 0s and 1s.
+l:s_een := { (G, at, f, n, seen, mp, goal) -> (BH c_at B) r_eshape seen }
+## The view's planes: a block at depth k spans from plane k to plane k+1;
+## each plane's half width and half height, nearest first.
+H := 400.0 230.0 130.0 74.0 42.0 24.0 14.0
+V := 0.75 * H
+CX := 400.0
+CY := 310.0
+## A wall's color at depth k.
+h:c_olor := { k -> d_isclose (1 + k m_in 4) s_elect WALLS }
+## A side of depth k (s: -1 left, 1 right): a wall beside you there (a
+## slanted panel), or, where that side is open, the face of the wall
+## beyond the opening.
+h:s_ide := { (k, s, wall, face) ->
+  a := (k + 1) s_elect H
+  b := (k + 2) s_elect H
+  va := (k + 1) s_elect V
+  vb := (k + 2) s_elect V
+  wall ? @ f_ormat< "<polygon points=\"{sv:w_hole CX + s * a},{sv:w_hole CY - va} {sv:w_hole CX + s * b},{sv:w_hole CY - vb} {sv:w_hole CX + s * b},{sv:w_hole CY + vb} {sv:w_hole CX + s * a},{sv:w_hole CY + va}\" fill=\"{h:c_olor k}\" stroke=\"#000000\" stroke-width=\"2\"/>"
+  face ? @ f_ormat< "<rect x=\"{sv:w_hole (CX + s * 2.0 * b) - b}\" y=\"{sv:w_hole CY - vb}\" width=\"{sv:w_hole 2.0 * b}\" height=\"{sv:w_hole 2.0 * vb}\" fill=\"{h:c_olor k + 1}\" stroke=\"#000000\" stroke-width=\"2\"/>"
+  ""
+}
+## The wall facing you at depth k (on plane k; at depth 5, darkness), and
+## the way out where it stands ahead (g: its depth plus 1, or nothing),
+## on the near plane of its block.
+h:f_ront := { k ->
+  k >= 5 ? @ f_ormat< "<rect x=\"{sv:w_hole CX - 6 s_elect H}\" y=\"{sv:w_hole CY - 6 s_elect V}\" width=\"{sv:w_hole 2.0 * 6 s_elect H}\" height=\"{sv:w_hole 2.0 * 6 s_elect V}\" fill=\"#000000\"/>"
+  a := (k + 1) s_elect H
+  v := (k + 1) s_elect V
+  @ f_ormat< "<rect x=\"{sv:w_hole CX - a}\" y=\"{sv:w_hole CY - v}\" width=\"{sv:w_hole 2.0 * a}\" height=\"{sv:w_hole 2.0 * v}\" fill=\"{h:c_olor k}\" stroke=\"#000000\" stroke-width=\"2\"/>"
+}
+h:d_oor := { g ->
+  0 = t_ally g ? ""
+  k := f_irst g
+  a := (k + 1) s_elect H
+  v := (k + 1) s_elect V
+  @ f_ormat< "<rect class=\"entity\" x=\"{sv:w_hole CX - 0.45 * a}\" y=\"{sv:w_hole CY - 0.7 * v}\" width=\"{sv:w_hole 0.9 * a}\" height=\"{sv:w_hole 1.7 * v}\" fill=\"#2a9d8f\" stroke=\"#a8f0e6\" stroke-width=\"3\"/><text x=\"{sv:w_hole CX}\" y=\"{sv:w_hole CY + 0.5 * v}\" font-size=\"{sv:w_hole 0.9 * a}\" text-anchor=\"middle\" font-family=\"monospace\" font-weight=\"bold\" fill=\"#ffffff\">&gt;</text>"
+}
+## The view: the ceiling and the floor, the wall ahead, the way out if it
+## is in sight, then each depth's sides from far to near.
+h:v_iew := { (G, at, f, goal) ->
+  (F, L, R) := h:l_ook (at, f)
+  D := h:d_epth (G, F)
+  Lw := h:w_all (G, L)
+  Rw := h:w_all (G, R)
+  back := @ f_ormat< "<rect y=\"60\" width=\"800\" height=\"250\" fill=\"{CEILING}\"/><rect y=\"310\" width=\"800\" height=\"250\" fill=\"{FLOOR}\"/>"
+  front := h:f_ront D
+  door := h:d_oor w_here goal = D t_ake F
+  ks := r_ev (r_ange D) - 1
+  sides := '{ k -> e_nclose (h:s_ide (k, -1.0, (k + 1) s_elect Lw, (k + 2) s_elect Lw)) c_at h:s_ide (k, 1.0, (k + 1) s_elect Rw, (k + 2) s_elect Rw) } e_ach ks
+  (e_nclose back) c_at (e_nclose front) c_at (e_nclose door) c_at sides
+}
+## A block of the mini map: a wall or the floor, the way out teal.
+h:b_lock := { (i, wall, out, x0, y0) ->
+  fill := d_isclose (1 + wall + 2 * out) s_elect "#2b2d42" "#c9a66b" "#2a9d8f"
+  e_nclose @ f_ormat< "<rect x=\"{sv:w_hole x0 + 12.0 * f_loat (i - 1) m_od B}\" y=\"{sv:w_hole y0 + 12.0 * f_loat (i - 1) d_iv B}\" width=\"12\" height=\"12\" fill=\"{fill}\"/>"
+}
+## The mini map in the top right corner: the blocks seen, and you, an
+## arrow the way you face.
+h:m_ap := { (G, at, f, seen, goal) ->
+  x0 := 788.0 - 12.0 * f_loat B
+  y0 := 72.0
+  frame := e_nclose @ f_ormat< "<rect x=\"{sv:w_hole x0 - 6.0}\" y=\"{sv:w_hole y0 - 6.0}\" width=\"{sv:w_hole 12.0 + 12.0 * f_loat B}\" height=\"{sv:w_hole 12.0 + 12.0 * f_loat BH}\" fill=\"#000000\" opacity=\"0.75\" stroke=\"#888888\"/>"
+  ids := w_here seen
+  blocks := '{ i -> h:b_lock (i, i s_elect G, i = goal, x0, y0) } e_ach ids
+  x := x0 + 6.0 + 12.0 * f_loat (at - 1) m_od B
+  y := y0 + 6.0 + 12.0 * f_loat (at - 1) d_iv B
+  you := e_nclose @ f_ormat< "<g class=\"entity you\" transform=\"translate({sv:w_hole x} {sv:w_hole y}) rotate({(90 * f) - 90})\"><polygon points=\"8,0 -5,-5 -5,5\" fill=\"#e63946\"/></g>"
+  frame c_at blocks c_at you
+}
+## The mini map when it shows, else nothing.
+h:m_apIf := { (G, at, f, seen, goal, mp) -> mp = 0 ? 0 r_eshape e_nclose ""; h:m_ap (G, at, f, seen, goal) }
+## What the top line says.
+h:s_ays := { (n, f, won, mp) ->
+  won = 1 ? @ f_ormat< "You found the way out in {n} steps!"
+  face := (1 + f) s_elect "NESW"
+  @ f_ormat< "Steps {n} | Facing {face} | Arrows: step and turn | m: map"
+}
+# :: (Truthy b, Num c) => (Int, Int, Int, a, b, c, Int) -> Char
+## The picture, as SVG text: the view ahead (cut off at the picture's
+## edges), the mini map when it shows, and the top line.
+l:d_raw := { (G, at, f, n, seen, mp, goal) ->
+  v := 0.0 0.0 800.0 560.0
+  m := h:m_apIf (G, at, f, seen, goal, mp)
+  top := (20.0, 42.0, 28.0) sv:w_ords h:s_ays (n, f, 0 + at = goal, mp)
+  clip := e_nclose "<clipPath id=\"view\"><rect width=\"800\" height=\"560\"/></clipPath><g clip-path=\"url(#view)\">"
+  v sv:p_icture (v sv:r_ect "fill=\"#111111\"") c_at clip c_at (h:v_iew (G, at, f, goal)) c_at (e_nclose "</g>") c_at m c_at top
+}

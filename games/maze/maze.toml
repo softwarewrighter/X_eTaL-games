@@ -1,0 +1,11 @@
+# The maze's size and colors, read by Maze.xtl (X_eTaL's []L_IST). Every
+# value is a string.
+#
+# How many cells wide and high the maze is (a new maze each game, from
+# its seed). Bigger is harder; the view and the mini map fit any size.
+size = ["8", "8"]
+# The walls' color at each depth of the view, nearest first, then the
+# floor's and the ceiling's.
+walls = ["#c9a66b", "#a8875a", "#866b48", "#655136", "#463826"]
+floor = ["#3b3a36"]
+ceiling = ["#1c1d26"]
