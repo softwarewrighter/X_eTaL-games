@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-11
 
+- 14:35 `chore` Saga step tetris completed.
+
 - 14:31 `game` Falling blocks (in the style of Tetris; the user queued it with tower defense and a raycaster): Stack.xtl keeps the well as a matrix and a piece as a small square of 0s and 1s; a piece turns by `o_\ r_ev`, fits where every block lands on an empty cell, lands at the first of every row tried at once; full rows by a row-wise and, cleared by keeping the others; a computer player (`l:a_i`, the `h` key) weighs every turn and column; pieces, colors, well, speeds and points in blocks.toml (test.sh adds an eighth piece); the golden places three pieces by keys and 37 by the computer player.
 
 - 09:33 `chore` Saga step maze completed.
