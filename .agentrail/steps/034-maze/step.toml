@@ -1,8 +1,9 @@
 number = 34
 slug = "maze"
-status = "in-progress"
+status = "completed"
 description = "new game (the user, 2026-10-10: 'how about a maze game? first person view of ..."
 role = "production"
 context_files = []
 created_at = "2026-10-10T17:52:22"
-commits = []
+completed_at = "2026-10-11T09:33:43"
+commits = ["2e7429495a42b36c2e07191317a466cbdd27ba68"]

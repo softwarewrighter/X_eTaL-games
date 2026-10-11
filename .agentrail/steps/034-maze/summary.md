@@ -1,0 +1,1 @@
+Maze live: Walls.xtl carves a sidewinder maze in one go, flood distances, first-person SVG view from depth lookups, mini map of seen blocks; shortest-path golden; test.sh 12x5; browser-test accepts redraws; ask for Bool/number inconsistency
