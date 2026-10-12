@@ -1,8 +1,9 @@
 number = 40
 slug = "raycaster"
-status = "in-progress"
+status = "completed"
 description = "new game (the user, 2026-10-11): games/raycaster/: a first-person view by ray..."
 role = "production"
 context_files = []
 created_at = "2026-10-11T10:16:17"
-commits = []
+completed_at = "2026-10-12T11:43:38"
+commits = ["447a5651c227ea09ded3b9fa931edf7bede9b926"]

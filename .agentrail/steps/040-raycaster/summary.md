@@ -1,0 +1,1 @@
+Raycaster live: 120 rays stepped through the grid at once to a fixed point, SVG columns, mini map, raycaster.toml; shortest-path golden
