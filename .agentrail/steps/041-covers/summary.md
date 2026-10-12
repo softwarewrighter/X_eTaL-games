@@ -1,0 +1,1 @@
+Covers: just covers resizes the user's art (ESRB acronym blurred) into images/covers; cards show screenshot + cover; catalog in group sections; Puzzles section headed by its cover
