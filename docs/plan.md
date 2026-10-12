@@ -395,7 +395,10 @@ falling blocks (DONE: turning by reversing and transposing, rows
 cleared by keeping the others, a computer player), tower defense
 (DONE in 2D/2.5D SVG: clicks, waves, upgrades, a grimoire, speed;
 its 3D art asked of X_eTaL-extensions in docs/extensions-ask.md, and a
-three.js view of a scene the X_eTaL program describes to follow), a
+three.js view of a scene the X_eTaL program describes to follow), the
+pieces' art (DONE: X_eTaL-extensions delivered twelve animated .glb
+models with previews; fetched by assets/fetch.sh, the previews drawn
+on the board and in the grimoire), the three.js view (next), a
 raycaster.
 
 ## Saga 6 -- macros

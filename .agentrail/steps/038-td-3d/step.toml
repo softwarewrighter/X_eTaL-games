@@ -1,0 +1,8 @@
+number = 38
+slug = "td-3d"
+status = "pending"
+description = "tower defense (the user, 2026-10-11): a three.js view (from a CDN) of a scene..."
+role = "production"
+context_files = []
+created_at = "2026-10-11T19:04:07"
+commits = []

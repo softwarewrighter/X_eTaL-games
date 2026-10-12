@@ -41,7 +41,7 @@ waves = ["rrrrrr", "rrrrbrrrr", "rrssrrss", "bbrrrrbb", "ssssbbss", "rrrrrrrrrrb
 # Whether the pieces are drawn with the 3D art published by
 # X_eTaL-extensions (fetched by assets/fetch.sh into assets/cache/art/;
 # see docs/extensions-ask.md) or with the game's own shapes: "1" or "0".
-art = ["0"]
+art = ["1"]
 
 [tower.arrow-1]
 name = "Arrow tower"

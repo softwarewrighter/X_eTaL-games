@@ -63,14 +63,23 @@ opens it at once. When the game ends, Play or any key starts a new one.
 
 ## The pieces' art
 
-The towers and creeps are drawn by the game's own X_eTaL as boxes and
-balls for now. Their 3D models are asked of
-[X_eTaL-extensions](https://github.com/softwarewrighter/X_eTaL-extensions)
-(its Blender extension, driven by an X_eTaL program): see
-[docs/extensions-ask.md](../../docs/extensions-ask.md). When they are
-published, `assets/fetch.sh` will fetch them (never committed here),
-`td.toml`'s `art` switch turns them on, and the board will also be
-drawn as a three.js scene that the X_eTaL program describes.
+The towers and creeps are 3D models made by
+[X_eTaL-extensions](https://github.com/softwarewrighter/X_eTaL-extensions):
+an X_eTaL program drives Blender to build, animate, render and export
+them ([`game-assets.xtl`](https://github.com/softwarewrighter/X_eTaL-extensions/blob/main/extensions/blender/demos/game-assets.xtl),
+the pieces in [`Td.xtl`](https://github.com/softwarewrighter/X_eTaL-extensions/blob/main/extensions/blender/demos/Td.xtl);
+see them turning and playing their clips on
+[the extensions' page](https://softwarewrighter.github.io/X_eTaL-extensions/blender/td/)).
+What was asked is in [docs/extensions-ask.md](../../docs/extensions-ask.md).
+
+`assets/fetch.sh` fetches the twelve pieces (a `.glb` and a preview
+picture each, pinned by commit and SHA-256) into the git-ignored
+`assets/cache/art/`; the pages build copies them next to the page.
+With `art = "1"` in `td.toml`, the game's X_eTaL draws each piece's
+picture on the board and in the grimoire; with `"0"` it draws its own
+boxes and balls. Next: the board as a three.js scene that the X_eTaL
+program describes, playing the models' clips (towers `idle` and
+`fire`, creeps `walk` and `hit`).
 
 ## Play it
 
@@ -92,4 +101,5 @@ a number in one place and Bool in another).
 
 ## Assets
 
-None yet (see The pieces' art).
+The twelve pieces from X_eTaL-extensions (MIT), fetched by
+`assets/fetch.sh` (see The pieces' art); never committed here.

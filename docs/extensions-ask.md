@@ -1,5 +1,16 @@
 # Ask for X_eTaL-extensions: tower defense art
 
+Status: delivered (2026-10-11). X_eTaL-extensions made the twelve
+pieces (`extensions/blender/demos/game-assets.xtl` at f231c88) and
+published them at
+https://softwarewrighter.github.io/X_eTaL-extensions/blender/td/
+(commit 3a14f1e): a `.glb` each, with clips (towers `idle` 2 s and
+`fire` 0.4 s; creeps `idle` 2 s, `walk` 1 s and `hit` 0.3 s), a
+320-pixel preview picture each (not the turntable and map sheets asked
+for below; the three.js view turns the models instead), and
+`manifest.toml` with the SHA-256s and the license (MIT). The game
+fetches them with `games/tower-defense/assets/fetch.sh`.
+
 From X_eTaL-games (the tower defense game, `games/tower-defense/`) to
 X_eTaL-extensions (the `blender` extension). The user's plan,
 2026-10-11: the extensions repository draws the pieces (an X_eTaL

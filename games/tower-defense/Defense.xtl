@@ -76,6 +76,9 @@ LETTERS := t:j_oin 7 s_elect_2 CT
 WAVES := "td.toml" []L_IST "waves"
 start := f_loor 'sv:n_um e_ach "td.toml" []L_IST "start"
 ART := "1" m_atch d_isclose f_irst "td.toml" []L_IST "art"
+## The pieces' names in the art: the towers by kind and level, then the
+## creeps (the grimoire's pages are in this order too).
+PIECES := "arrow-1" "arrow-2" "arrow-3" "cannon-1" "cannon-2" "cannon-3" "frost-1" "frost-2" "frost-3" "runner" "brute" "shield"
 ## A shot's speed, tiles a second; the seconds between creeps.
 SHOT := 9.0
 GAP := 1.0
@@ -256,13 +259,16 @@ h:t_owerAt := { W xy ->
   P := tw s_elect h:p_os W
   sx := h:s_x (1 s_elect_2 P, 2 s_elect_2 P)
   sy := h:s_y (1 s_elect_2 P, 2 s_elect_2 P, 0.0)
-  z := 26.0 + 10.0 * tw s_elect h:l_evel W
+  z := h:b_oxZ tw s_elect h:l_evel W
   x := f_irst xy
   y := 2 s_elect xy
   in := ((a_bs x - sx) <= 18.0) & (y <= sy + 10.0) & y >= sy - z
   n_ot '| r_/ in ? 0
   (f_irst g_rade n_eg ((f_loat in) * 1000.0) + '+ r_/_2 P) s_elect tw
 }
+## How tall a tower stands in the picture, by level: its picture, or
+## its box.
+h:b_oxZ := { l -> ART ? (s_hape l) r_eshape 0.85 * SPRITE; 26.0 + 10.0 * l }
 ## The tower on tile k (a number from 1), or 0.
 h:o_n := { W k ->
   tw := h:t_owers W
@@ -463,10 +469,24 @@ h:u_pLabel := { (x, y, j, mo) ->
   cost := (1 + j m_in 8) s_elect COST
   words := h:u_pWords (top, cost)
   fill := d_isclose (1 + (n_ot top) & cost <= mo) s_elect "#adb5bd" "#ffd166"
-  z := 30.0 + 10.0 * f_loat 1 + (j - 1) m_od 3
+  z := h:l_abelZ j
   @ f_ormat< "<text x=\"{sv:w_hole h:s_x (x, y)}\" y=\"{sv:w_hole (h:s_y (x, y, z)) - 8.0}\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"{fill}\" stroke=\"#1d1f2b\" stroke-width=\"3\" paint-order=\"stroke\">{words}</text>"
 }
+## How high over its tile a tower's label stands: over its picture, or
+## over its box (taller each level).
+h:l_abelZ := { j -> ART ? 0.6 * SPRITE; 30.0 + 10.0 * f_loat 1 + (j - 1) m_od 3 }
 h:u_pWords := { (top, cost) -> top ? "top"; @ f_ormat< "up {cost}" }
+## A piece drawn from the art (td.toml art = "1"): its picture from
+## X_eTaL-extensions (a 3D model rendered in Blender), every piece at one
+## scale, standing on its tile.
+SPRITE := 112.0
+h:s_prite := { (x, y, name) -> @ f_ormat< "<image class=\"entity\" href=\"art/{name}.png\" x=\"{sv:w_hole (h:s_x (x, y)) - 0.5 * SPRITE}\" y=\"{sv:w_hole (h:s_y (x, y, 0.0)) - 0.85 * SPRITE}\" width=\"{sv:w_hole SPRITE}\" height=\"{sv:w_hole SPRITE}\"/>" }
+## A creep's hit points, as a bar over it.
+h:h_pBar := { (x, y, kind, hp, z) ->
+  frac := 0.0 m_ax 1.0 m_in hp / kind s_elect HP
+  sy := h:s_y (x, y, z)
+  @ f_ormat< "<rect x=\"{sv:w_hole (h:s_x (x, y)) - 10.0}\" y=\"{sv:w_hole sy}\" width=\"20\" height=\"3\" fill=\"#3a0d0d\"/><rect x=\"{sv:w_hole (h:s_x (x, y)) - 10.0}\" y=\"{sv:w_hole sy}\" width=\"{sv:w_hole 20.0 * frac}\" height=\"3\" fill=\"#ff595e\"/>"
+}
 ## A creep drawn: a shadow, a body by its kind, its hit points as a bar.
 CREEPCOLORS := "#80ed99" "#c1440e" "#5c7aa6"
 h:d_rawCreep := { (x, y, kind, hp) ->
@@ -490,6 +510,8 @@ h:t_hings := { (W, mo) ->
 h:t_hing := { (W, n, p, mo) ->
   x := f_irst p
   y := 2 s_elect p
+  ART & n s_elect h:h_asTower W ? (h:s_prite (x, y, d_isclose (W h:r_ow n) s_elect PIECES)) c_at h:u_pLabel (x, y, W h:r_ow n, mo)
+  ART & n s_elect h:h_asCreep W ? (h:s_prite (x, y, d_isclose (9 + f_loor n s_elect h:k_ind W) s_elect PIECES)) c_at h:h_pBar (x, y, f_loor n s_elect h:k_ind W, n s_elect h:h_p W, 44.0)
   n s_elect h:h_asTower W ? (h:p_laced (x, y, W h:r_ow n)) c_at h:u_pLabel (x, y, W h:r_ow n, mo)
   n s_elect h:h_asCreep W ? h:d_rawCreep (x, y, f_loor n s_elect h:k_ind W, n s_elect h:h_p W)
   h:s_hotAt (x, y)
@@ -531,17 +553,12 @@ h:p_age := { (pg, t) ->
   hint := (440.0, 500.0, 15.0) h:w_ords "Left, right: pages | g, Enter, x or a click outside: close"
   panel c_at pic c_at (r_avel lines) c_at buttons c_at hint
 }
-## The piece on page pg, turning with the time: the art's turntable frame
-## when the art is in use, else the game's own drawing, turned.
+## The piece on page pg: its picture when the art is in use (it turns in
+## the 3D view), else the game's own drawing, turned with the time.
 h:s_pin := { (pg, t) ->
-  ART ? e_nclose h:f_rame (pg, (f_loor 8.0 * t) m_od 16)
+  ART ? e_nclose @ f_ormat< "<image class=\"entity\" href=\"art/{d_isclose pg s_elect PIECES}.png\" x=\"70\" y=\"130\" width=\"340\" height=\"340\"/>"
   pg <= 9 ? e_nclose "<g transform=\"translate(-816 -504) scale(3)\">" c_at (h:d_rawTower (6.0, 6.0, 1 + (pg - 1) d_iv 3, 1 + (pg - 1) m_od 3, t)) c_at "</g>"
   e_nclose "<g transform=\"translate(-992 -623) scale(3.5)\">" c_at (h:d_rawCreep (5.6, 5.6, pg - 9, 1000.0)) c_at "</g>"
-}
-## The art's turntable frame f of page pg's piece, cut from its sheet.
-PIECES := "arrow-1" "arrow-2" "arrow-3" "cannon-1" "cannon-2" "cannon-3" "frost-1" "frost-2" "frost-3" "runner" "brute" "shield"
-h:f_rame := { (pg, f) ->
-  @ f_ormat< "<svg x=\"80\" y=\"140\" width=\"320\" height=\"320\" viewBox=\"{256 * f m_od 4} {256 * f d_iv 4} 256 256\"><image href=\"art/{d_isclose pg s_elect PIECES}-turn.png\" width=\"1024\" height=\"1024\"/></svg>"
 }
 ## What page pg says: a tower's name, level, numbers, words and its next
 ## upgrade; a creep's name, numbers and words.
