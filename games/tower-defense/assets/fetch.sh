@@ -11,6 +11,7 @@
 #   What was asked: docs/extensions-ask.md.
 # License: MIT (the X_eTaL-extensions repository's, per its manifest.toml)
 set -euo pipefail
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/scripts/venv.sh"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cache="$here/cache/art"
 commit=3a14f1e3b09245ca2ec8801f8d9fda3e184b01b2

@@ -14,6 +14,7 @@
 # Checked by SHA-256: an upstream update fails here until the sum is
 # updated on purpose.
 set -euo pipefail
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/scripts/venv.sh"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cache="$here/cache"
 mkdir -p "$cache"

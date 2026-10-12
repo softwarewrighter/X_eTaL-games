@@ -17,6 +17,7 @@
 # XETAL_GAMES_DIR overrides games/ (scripts/selftest-games.sh uses it).
 #   scripts/test-games.sh [SLUG...]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 "$root/scripts/games.py" check
 xetal="$("$root/scripts/build-xetal.sh")"

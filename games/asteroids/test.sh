@@ -5,6 +5,7 @@
 # those to nothing: every wave cleared, for 20 + 2 x 50 + 4 x 100 = 520
 # points, with every rock spawned and despawned in the world's slots.
 set -euo pipefail
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/venv.sh"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 root="$(cd "$here/../.." && pwd)"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT

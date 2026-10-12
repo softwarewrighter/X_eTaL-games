@@ -4,6 +4,7 @@
 # can use xetal-play from the clone natively and for wasm32.
 #   scripts/check-vendor.sh
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 xetal="$("$root/scripts/build-xetal.sh")"
 sha="$(cut -c1-7 "$root/XETAL_COMMIT")"

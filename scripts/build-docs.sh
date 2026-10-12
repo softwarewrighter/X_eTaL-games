@@ -7,6 +7,7 @@
 # and its uses (X_eTaL's lang-choices S9).
 #   scripts/build-docs.sh
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 xetal="$(scripts/build-xetal.sh)"

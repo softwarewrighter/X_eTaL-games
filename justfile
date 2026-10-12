@@ -13,7 +13,7 @@ default:
 
 # Make the Python environment the scripts use (.venv, with uv; standard library only)
 venv:
-    uv venv .venv --python 3.14
+    uv venv .venv --python 3.14 --managed-python
 
 # Get and build xetal at the known-good commit in XETAL_COMMIT (work/xetal, bin/xetal)
 xetal:

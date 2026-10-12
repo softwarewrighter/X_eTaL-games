@@ -5,6 +5,7 @@
 # (docs/plan.md A9): only the scripts that fetch them are.
 #   scripts/fetch-assets.sh [SLUG...]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 if [ $# -gt 0 ]; then slugs=("$@"); else
   slugs=(); while IFS= read -r s; do [ -n "$s" ] && slugs+=("$s"); done < <("$root/scripts/games.py" list)

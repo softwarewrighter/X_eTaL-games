@@ -5,6 +5,7 @@
 # as the card's picture.
 #   scripts/screenshots.sh [SLUG...]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 chrome="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 [ -x "$chrome" ] || { echo "screenshots: no Chrome at $chrome (set CHROME)" >&2; exit 1; }

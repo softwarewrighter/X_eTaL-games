@@ -6,6 +6,7 @@
 # machine fail for the wrong reason, so the gate checks first.
 #   scripts/check-busy.sh
 set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 serving="$(pgrep -f "trunk serve" | while read -r p; do lsof -p "$p" 2>/dev/null | grep -q "$root" && echo "$p"; done | head -1)"
 if [ -n "$serving" ]; then

@@ -9,6 +9,7 @@
 # (the affected gate): just those are built, the others left as they are.
 #   scripts/build-pages.sh [SLUG...]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 base="/X_eTaL-games"
 "$root/scripts/games.py" check

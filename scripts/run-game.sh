@@ -5,6 +5,7 @@
 #   scripts/run-game.sh SLUG [FILE]
 #   scripts/run-game.sh --echo SLUG [FILE]     # as a notebook
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 flags=()
 if [ "${1:-}" = "--echo" ]; then flags+=(--echo); shift; fi

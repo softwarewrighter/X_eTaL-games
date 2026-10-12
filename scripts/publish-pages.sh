@@ -7,6 +7,7 @@
 # site always matches a commit of main.
 #   scripts/publish-pages.sh
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 git diff --quiet HEAD -- || { echo "publish: commit your changes first (the site must match a commit)" >&2; exit 1; }

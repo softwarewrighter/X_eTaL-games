@@ -3,6 +3,7 @@
 # game.toml, README.md, SLUG.xtl and expected/SLUG.out.
 #   scripts/new-game.sh SLUG "Title"
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 base="${XETAL_GAMES_DIR:-$root/games}"
 slug="${1:?usage: new-game.sh SLUG \"Title\"}"

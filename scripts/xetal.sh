@@ -6,6 +6,7 @@
 #   scripts/xetal.sh
 #   XETAL_SOURCE=../X_eTaL scripts/xetal.sh   # clone from a local checkout
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 commit="$(tr -d '[:space:]' < "$root/XETAL_COMMIT")"
 source="${XETAL_SOURCE:-https://github.com/softwarewrighter/X_eTaL.git}"

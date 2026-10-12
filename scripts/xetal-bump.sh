@@ -5,6 +5,7 @@
 # XETAL_COMMIT with whatever the new version changed.
 #   scripts/xetal-bump.sh [REF]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ref="${1:-origin/main}"
 "$root/scripts/xetal.sh" >/dev/null 2>&1 || true

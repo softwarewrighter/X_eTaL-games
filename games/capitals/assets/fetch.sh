@@ -9,6 +9,7 @@
 #   https://github.com/nvkelso/natural-earth-vector, pinned below)
 # License: public domain (https://www.naturalearthdata.com/about/terms-of-use/)
 set -euo pipefail
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/scripts/venv.sh"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cache="$here/cache"
 commit=ca96624a56bd078437bca8184e78163e5039ad19

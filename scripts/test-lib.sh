@@ -5,6 +5,7 @@
 # XETAL_BLESS=1 rewrites the expected files (review the diff!).
 #   scripts/test-lib.sh
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 xetal="$("$root/scripts/build-xetal.sh")"
 cd "$root/lib"

@@ -19,6 +19,7 @@
 #                                after an X_eTaL move (just xetal-bump).
 # Every step of 5 seconds or more prints its time.
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 mode=sample

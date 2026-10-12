@@ -8,6 +8,7 @@
 # bad game.toml is rejected.
 #   scripts/selftest-games.sh
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 XETAL_GAMES_DIR="$(mktemp -d)"; export XETAL_GAMES_DIR
 trap 'rm -rf "$XETAL_GAMES_DIR"' EXIT

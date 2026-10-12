@@ -3,6 +3,7 @@
 # /X_eTaL-games/: http://127.0.0.1:PORT/X_eTaL-games/ (default 8473, this repository's port).
 #   scripts/serve-pages.sh [PORT]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 port="${1:-8473}"
 site="$root/target/serve-pages"

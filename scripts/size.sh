@@ -5,6 +5,7 @@
 # exists. A markdown table, for the plan and the READMEs.
 #   scripts/size.sh [SLUG...]
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/venv.sh"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 xetal="$("$root/scripts/build-xetal.sh")"
 if [ $# -gt 0 ]; then slugs=("$@"); else
