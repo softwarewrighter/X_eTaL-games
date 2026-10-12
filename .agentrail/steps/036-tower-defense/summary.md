@@ -1,0 +1,1 @@
+Tower defense live in 2D/2.5D SVG: isometric board, flood road, tower x creep and shot x creep tables, waves, upgrades with costs shown, grimoire, speed; click mapping through letterboxed SVG fixed; extensions-ask for 3D art; uv venv
