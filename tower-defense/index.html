@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tower defense</title>
+  <!-- three.js (a CDN, the user's choice) for the 3D view of the scene the program describes -->
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+  
+  <script type="module" src="scene.js"></script>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/tower-defense/tower-defense-web-4073ba2672e8e94a.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/tower-defense/tower-defense-web-4073ba2672e8e94a_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  
+  <link rel="icon" href="/X_eTaL-games/tower-defense/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/tower-defense/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/tower-defense/tower-defense-web-4073ba2672e8e94a.js" crossorigin="anonymous" integrity="sha384-hbr7uLR+SvUBy4KN7X99KTUAmjHmsJmic2dqRStbdyNkq0Myf4sYoZJukKvHE9YI"><link rel="preload" href="/X_eTaL-games/tower-defense/tower-defense-web-4073ba2672e8e94a_bg.wasm" crossorigin="anonymous" integrity="sha384-6GhTyk3uPRxMcW1zy2pOAJ3ivM0SJvtFz+TV+NqUrAc9MndU/e2Rs4BfWudKiNro" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

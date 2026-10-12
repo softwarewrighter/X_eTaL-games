@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tic-tac-toe</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/tic-tac-toe/tic-tac-toe-web-dd1e7872fe43fc91.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/tic-tac-toe/tic-tac-toe-web-dd1e7872fe43fc91_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/tic-tac-toe/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/tic-tac-toe/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/tic-tac-toe/tic-tac-toe-web-dd1e7872fe43fc91.js" crossorigin="anonymous" integrity="sha384-ApR5OcRDW4PPz5+75m0J8ZhJvWF7BTk90CiFRp352HS8K66QRi+AqhbCQdvh636N"><link rel="preload" href="/X_eTaL-games/tic-tac-toe/tic-tac-toe-web-dd1e7872fe43fc91_bg.wasm" crossorigin="anonymous" integrity="sha384-J0OBEdXvz8ceko08f8ZhEYJ3NFb1wFExDCXXT5MUDFmkSIsQAlQxzg/i/KrrwuE/" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

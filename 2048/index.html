@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2048</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/2048/twenty48-web-574d98c0ed571cd8.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/2048/twenty48-web-574d98c0ed571cd8_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/2048/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/2048/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/2048/twenty48-web-574d98c0ed571cd8.js" crossorigin="anonymous" integrity="sha384-4Mp2aXap8cxZdFL4Ev2sL2m8uLy4NpWsqbiQCZG1hbcB8ik1xWnMEDa5uYPq2AZF"><link rel="preload" href="/X_eTaL-games/2048/twenty48-web-574d98c0ed571cd8_bg.wasm" crossorigin="anonymous" integrity="sha384-sWfoAXwTEZRlh+uyNQvfuyzlKQsJGpRGZRnTbiqwwa9BOpTgmRVRBB9wncKZKP8v" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

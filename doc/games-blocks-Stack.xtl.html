@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>games/blocks/Stack.xtl - X_eTaL doc</title>
+<link rel="stylesheet" href="style.css">
+<script src="theme.js"></script>
+<script defer src="search-index.js"></script>
+<script defer src="search.js"></script>
+</head>
+<body>
+<nav class="side">
+<a class="home" href="index.html">X_eTaL doc</a>
+<input id="search" type="search" autocomplete="off" placeholder="Search: a name, or a type" title="A name (mean finds m_ean), or a type: Num a =&gt; a -&gt; a -&gt; a finds +, m_ax ...">
+<h2>Files</h2>
+<h3>games/2048/</h3>
+<ul>
+<li><a href="games-2048-2048.xtl.html">2048.xtl</a></li>
+<li><a href="games-2048-play.xtl.html">play.xtl</a></li>
+<li><a href="games-2048-Twenty48.xtl.html">Twenty48.xtl</a></li>
+</ul>
+<h3>games/asteroids/</h3>
+<ul>
+<li><a href="games-asteroids-asteroids.xtl.html">asteroids.xtl</a></li>
+<li><a href="games-asteroids-play.xtl.html">play.xtl</a></li>
+<li><a href="games-asteroids-Rocks.xtl.html">Rocks.xtl</a></li>
+</ul>
+<h3>games/blocks/</h3>
+<ul>
+<li><a href="games-blocks-blocks.xtl.html">blocks.xtl</a></li>
+<li><a href="games-blocks-play.xtl.html">play.xtl</a></li>
+<li><a href="games-blocks-Stack.xtl.html">Stack.xtl</a></li>
+</ul>
+<h3>games/capitals/</h3>
+<ul>
+<li><a href="games-capitals-Atlas.xtl.html">Atlas.xtl</a></li>
+<li><a href="games-capitals-capitals.xtl.html">capitals.xtl</a></li>
+<li><a href="games-capitals-play.xtl.html">play.xtl</a></li>
+</ul>
+<h3>games/dungeon/</h3>
+<ul>
+<li><a href="games-dungeon-Crawl.xtl.html">Crawl.xtl</a></li>
+<li><a href="games-dungeon-dungeon.xtl.html">dungeon.xtl</a></li>
+<li><a href="games-dungeon-play.xtl.html">play.xtl</a></li>
+</ul>
+<h3>games/guess/</h3>
+<ul>
+<li><a href="games-guess-guess.xtl.html">guess.xtl</a></li>
+<li><a href="games-guess-NumberGuess.xtl.html">NumberGuess.xtl</a></li>
+<li><a href="games-guess-play.xtl.html">play.xtl</a></li>
+</ul>
+<h3>games/horse-race/</h3>
+<ul>
+<li><a href="games-horse-race-horse-race.xtl.html">horse-race.xtl</a></li>
+<li><a href="games-horse-race-HorseRace.xtl.html">HorseRace.xtl</a></li>
+<li><a href="games-horse-race-play.xtl.html">play.xtl</a></li>
+</ul>
+<h3>games/lights-out/</h3>
+<ul>
+<li><a href="games-lights-out-Lamps.xtl.html">Lamps.xtl</a></li>
+<li><a href="games-lights-out-lights-out.xtl.html">lights-out.xtl</a></li>
+<li><a href="games-lights-out-play.xtl.html">play.xtl</a></li>
+</ul>
+<h3>games/maze/</h3>
+<ul>
+<li><a href="games-maze-maze.xtl.html">maze.xtl</a></li>
+<li><a href="games-maze-play.xtl.html">play.xtl</a></li>
+<li><a href="games-maze-Walls.xtl.html">Walls.xtl</a></li>
+</ul>
+<h3>games/minesweeper/</h3>
+<ul>
+<li><a href="games-minesweeper-Mines.xtl.html">Mines.xtl</a></li>
+<li><a href="games-minesweeper-minesweeper.xtl.html">minesweeper.xtl</a></li>
+<li><a href="games-minesweeper-play.xtl.html">play.xtl</a></li>
+</ul>
+<h3>games/racer/</h3>
+<ul>
+<li><a href="games-racer-play.xtl.html">play.xtl</a></li>
+<li><a href="games-racer-Race.xtl.html">Race.xtl</a></li>
+<li><a href="games-racer-racer.xtl.html">racer.xtl</a></li>
+</ul>
+<h3>games/raycaster/</h3>
+<ul>
+<li><a href="games-raycaster-play.xtl.html">play.xtl</a></li>
+<li><a href="games-raycaster-raycaster.xtl.html">raycaster.xtl</a></li>
+<li><a href="games-raycaster-Rays.xtl.html">Rays.xtl</a></li>
+</ul>
+<h3>games/robot-chase/</h3>
+<ul>
+<li><a href="games-robot-chase-play.xtl.html">play.xtl</a></li>
+<li><a href="games-robot-chase-robot-chase.xtl.html">robot-chase.xtl</a></li>
+<li><a href="games-robot-chase-RobotChase.xtl.html">RobotChase.xtl</a></li>
+</ul>
+<h3>games/scroller/</h3>
+<ul>
+<li><a href="games-scroller-Jump.xtl.html">Jump.xtl</a></li>
+<li><a href="games-scroller-play.xtl.html">play.xtl</a></li>
+<li><a href="games-scroller-scroller.xtl.html">scroller.xtl</a></li>
+</ul>
+<h3>games/shut-the-box/</h3>
+<ul>
+<li><a href="games-shut-the-box-play.xtl.html">play.xtl</a></li>
+<li><a href="games-shut-the-box-shut-the-box.xtl.html">shut-the-box.xtl</a></li>
+<li><a href="games-shut-the-box-ShutTheBox.xtl.html">ShutTheBox.xtl</a></li>
+</ul>
+<h3>games/stargazer/</h3>
+<ul>
+<li><a href="games-stargazer-play.xtl.html">play.xtl</a></li>
+<li><a href="games-stargazer-Sky.xtl.html">Sky.xtl</a></li>
+<li><a href="games-stargazer-stargazer.xtl.html">stargazer.xtl</a></li>
+</ul>
+<h3>games/sudoku/</h3>
+<ul>
+<li><a href="games-sudoku-play.xtl.html">play.xtl</a></li>
+<li><a href="games-sudoku-sudoku.xtl.html">sudoku.xtl</a></li>
+<li><a href="games-sudoku-SudokuGrid.xtl.html">SudokuGrid.xtl</a></li>
+</ul>
+<h3>games/tic-tac-toe/</h3>
+<ul>
+<li><a href="games-tic-tac-toe-play.xtl.html">play.xtl</a></li>
+<li><a href="games-tic-tac-toe-tic-tac-toe.xtl.html">tic-tac-toe.xtl</a></li>
+<li><a href="games-tic-tac-toe-TicTacToe.xtl.html">TicTacToe.xtl</a></li>
+</ul>
+<h3>games/tower-defense/</h3>
+<ul>
+<li><a href="games-tower-defense-Defense.xtl.html">Defense.xtl</a></li>
+<li><a href="games-tower-defense-play.xtl.html">play.xtl</a></li>
+<li><a href="games-tower-defense-tower-defense.xtl.html">tower-defense.xtl</a></li>
+</ul>
+<h3>games/trek-adventure/</h3>
+<ul>
+<li><a href="games-trek-adventure-play.xtl.html">play.xtl</a></li>
+<li><a href="games-trek-adventure-trek-adventure.xtl.html">trek-adventure.xtl</a></li>
+<li><a href="games-trek-adventure-TrekAdventure.xtl.html">TrekAdventure.xtl</a></li>
+</ul>
+<h3>games/trek/</h3>
+<ul>
+<li><a href="games-trek-play.xtl.html">play.xtl</a></li>
+<li><a href="games-trek-StarTrek.xtl.html">StarTrek.xtl</a></li>
+<li><a href="games-trek-trek.xtl.html">trek.xtl</a></li>
+</ul>
+<h3>lib/</h3>
+<ul>
+<li><a href="lib-Board.xtl.html">Board.xtl</a></li>
+<li><a href="lib-Ecs.xtl.html">Ecs.xtl</a></li>
+<li><a href="lib-Ecs.xtlm.html">Ecs.xtlm</a></li>
+<li><a href="lib-Play.xtl.html">Play.xtl</a></li>
+<li><a href="lib-State.xtl.html">State.xtl</a></li>
+<li><a href="lib-Svg.xtl.html">Svg.xtl</a></li>
+<li><a href="lib-Text.xtl.html">Text.xtl</a></li>
+</ul>
+<h3>std/</h3>
+<ul>
+<li><a href="std-System.xtlm.html">System.xtlm</a></li>
+</ul>
+<ul>
+<li><a href="builtins.html">built-ins</a></li>
+</ul>
+<h2>On this page</h2>
+<ul>
+<li><a href="#section-1">The data</a></li>
+<li class="item"><a href="#h.n_ums"><span class="c-libfunc">ʰn̲ums</span></a></li>
+<li class="item"><a href="#names">names</a></li>
+<li class="item"><a href="#colors">colors</a></li>
+<li class="item"><a href="#well">well</a></li>
+<li class="item"><a href="#WIDE">WIDE</a></li>
+<li class="item"><a href="#DEEP">DEEP</a></li>
+<li class="item"><a href="#speed">speed</a></li>
+<li class="item"><a href="#PER">PER</a></li>
+<li class="item"><a href="#POINTS">POINTS</a></li>
+<li class="item"><a href="#h.r_ead"><span class="c-libfunc">ʰr̲ead</span></a></li>
+<li class="item"><a href="#SHAPES">SHAPES</a></li>
+<li class="item"><a href="#h.s_hape"><span class="c-libfunc">ʰs̲hape</span></a></li>
+<li><a href="#section-2">Pieces in the well</a></li>
+<li class="item"><a href="#h.c_ells"><span class="c-libfunc">ʰc̲ells</span></a></li>
+<li class="item"><a href="#h.f_its"><span class="c-libfunc">ʰf̲its</span></a></li>
+<li class="item"><a href="#h.l_anding"><span class="c-libfunc">ʰl̲anding</span></a></li>
+<li class="item"><a href="#h.l_eave"><span class="c-libfunc">ʰl̲eave</span></a></li>
+<li class="item"><a href="#l.c_lear"><span class="c-libfunc">ˡc̲lear</span></a></li>
+<li class="item"><a href="#h.f_ull"><span class="c-libfunc">ʰf̲ull</span></a></li>
+<li class="item"><a href="#h.l_evel"><span class="c-libfunc">ʰl̲evel</span></a></li>
+<li class="item"><a href="#h.p_ause"><span class="c-libfunc">ʰp̲ause</span></a></li>
+<li class="item"><a href="#h.o_ver"><span class="c-libfunc">ʰo̲ver</span></a></li>
+<li class="item"><a href="#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a></li>
+<li class="item"><a href="#l.n_ew"><span class="c-libfunc">ˡn̲ew</span></a></li>
+<li class="item"><a href="#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a></li>
+<li class="item"><a href="#h.d_own"><span class="c-libfunc">ʰd̲own</span></a></li>
+<li class="item"><a href="#l.t_ick"><span class="c-libfunc">ˡt̲ick</span></a></li>
+<li><a href="#section-3">Your keys</a></li>
+<li class="item"><a href="#l.t_urn"><span class="c-libfunc">ˡt̲urn</span></a></li>
+<li class="item"><a href="#h.t_urned"><span class="c-libfunc">ʰt̲urned</span></a></li>
+<li class="item"><a href="#h.s_lid"><span class="c-libfunc">ʰs̲lid</span></a></li>
+<li class="item"><a href="#h.d_ropped"><span class="c-libfunc">ʰd̲ropped</span></a></li>
+<li><a href="#section-4">The computer player</a></li>
+<li class="item"><a href="#h.t_urns"><span class="c-libfunc">ʰt̲urns</span></a></li>
+<li class="item"><a href="#h.s_lides"><span class="c-libfunc">ʰs̲lides</span></a></li>
+<li class="item"><a href="#h.a_fter"><span class="c-libfunc">ʰa̲fter</span></a></li>
+<li class="item"><a href="#h.w_orth"><span class="c-libfunc">ʰw̲orth</span></a></li>
+<li class="item"><a href="#h.v_alue"><span class="c-libfunc">ʰv̲alue</span></a></li>
+<li class="item"><a href="#l.a_i"><span class="c-libfunc">ˡa̲i</span></a></li>
+<li class="item"><a href="#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></li>
+<li><a href="#section-5">What it shows</a></li>
+<li class="item"><a href="#l.s_tatus"><span class="c-libfunc">ˡs̲tatus</span></a></li>
+<li class="item"><a href="#l.s_core"><span class="c-libfunc">ˡs̲core</span></a></li>
+<li class="item"><a href="#l.w_ell"><span class="c-libfunc">ˡw̲ell</span></a></li>
+<li class="item"><a href="#l.p_iece"><span class="c-libfunc">ˡp̲iece</span></a></li>
+<li class="item"><a href="#CELL">CELL</a></li>
+<li class="item"><a href="#X0">X0</a></li>
+<li class="item"><a href="#Y0">Y0</a></li>
+<li class="item"><a href="#h.f_ill"><span class="c-libfunc">ʰf̲ill</span></a></li>
+<li class="item"><a href="#h.b_lock"><span class="c-libfunc">ʰb̲lock</span></a></li>
+<li class="item"><a href="#h.b_locks"><span class="c-libfunc">ʰb̲locks</span></a></li>
+<li class="item"><a href="#h.s_ettled"><span class="c-libfunc">ʰs̲ettled</span></a></li>
+<li class="item"><a href="#h.s_ays"><span class="c-libfunc">ʰs̲ays</span></a></li>
+<li class="item"><a href="#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></li>
+</ul>
+</nav>
+<main>
+<button class="theme" title="Light or dark">theme</button>
+<section id="results"></section>
+<h1><span class="kind">library</span>games/blocks/Stack.xtl</h1>
+<div class="doc">
+<p>The falling blocks' rules, a library: blocks.xtl (scripted), play.xtl
+(the game: keys and the clock) and the web page all use these. The
+well is a matrix (0 empty, else the color of the piece that left a
+block there) and a piece is a small square matrix of 0s and 1s: it
+turns by reversing its rows and transposing, it fits where every one
+of its blocks lands on an empty cell, full rows are found by a
+row-wise and, and cleared by keeping only the other rows. A game's
+state is a tuple: (the well, the piece's shape, its kind, its row and
+column, the next kind, the score, the lines, the seconds toward the
+next step down, the seconds played, how it stands: 0 playing, 2 the
+well full).</p>
+</div>
+<p class="meta"><a href="games-blocks-Stack.xtl.src.html">source</a> &middot; imports <code><span class="c-error">sv:</span></code> <a href="lib-Svg.xtl.html">lib/Svg.xtl</a>; <code><span class="c-error">t:</span></code> <a href="lib-Text.xtl.html">lib/Text.xtl</a></p>
+<h2 class="section" id="section-1">The data</h2>
+<div class="item" id="h.n_ums">
+<h3><a href="#h.n_ums"><span class="c-libfunc">ʰn̲ums</span></a> <span class="type">: Char -&gt; Float</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L19">line 19</a></div>
+<div class="doc">
+<p>A list of numbers from blocks.toml.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰn̲ums</span> ← { k → <span class="c-libfunc">'</span><a href="lib-Svg.xtl.html#l.n_um" class="c-libfunc">ˢᵛn̲um</a> <a href="builtins.html#e_ach" class="c-builtin">e̲ach</a> <span class="c-string">&quot;blocks.toml&quot;</span> <a href="builtins.html#-5b-5dL_IST" class="c-builtin">⎕L̲IST</a> k }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#well">well</a>, <a href="games-blocks-Stack.xtl.html#speed">speed</a>, <a href="games-blocks-Stack.xtl.html#PER">PER</a>, <a href="games-blocks-Stack.xtl.html#POINTS">POINTS</a></div>
+</div>
+<div class="item" id="names">
+<h3><a href="#names">names</a> <span class="type">: Box Char</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L20">line 20</a></div>
+<pre class="code">names ← <span class="c-string">&quot;blocks.toml&quot;</span> <a href="builtins.html#-5b-5dL_IST" class="c-builtin">⎕L̲IST</a> <span class="c-string">&quot;pieces&quot;</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.r_ead"><span class="c-libfunc">ʰr̲ead</span></a>, <a href="games-blocks-Stack.xtl.html#SHAPES">SHAPES</a>, <a href="games-blocks-Stack.xtl.html#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a>, <a href="games-blocks-Stack.xtl.html#l.n_ew"><span class="c-libfunc">ˡn̲ew</span></a></div>
+</div>
+<div class="item" id="colors">
+<h3><a href="#colors">colors</a> <span class="type">: Box Char</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L21">line 21</a></div>
+<pre class="code">colors ← <span class="c-string">&quot;blocks.toml&quot;</span> <a href="builtins.html#-5b-5dL_IST" class="c-builtin">⎕L̲IST</a> <span class="c-string">&quot;colors&quot;</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.b_lock"><span class="c-libfunc">ʰb̲lock</span></a></div>
+</div>
+<div class="item" id="well">
+<h3><a href="#well">well</a> <span class="type">: Int</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L22">line 22</a></div>
+<pre class="code">well ← <a href="builtins.html#f_loor" class="c-builtin">f̲loor</a> <a href="games-blocks-Stack.xtl.html#h.n_ums" class="c-libfunc">ʰn̲ums</a> <span class="c-string">&quot;well&quot;</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>, <a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a></div>
+</div>
+<div class="item" id="WIDE">
+<h3><a href="#WIDE">WIDE</a> <span class="type">: Int</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L23">line 23</a></div>
+<pre class="code">WIDE ← <a href="builtins.html#f_irst" class="c-builtin">f̲irst</a> <a href="games-blocks-Stack.xtl.html#well">well</a></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.f_its"><span class="c-libfunc">ʰf̲its</span></a>, <a href="games-blocks-Stack.xtl.html#h.l_eave"><span class="c-libfunc">ʰl̲eave</span></a>, <a href="games-blocks-Stack.xtl.html#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a>, <a href="games-blocks-Stack.xtl.html#l.n_ew"><span class="c-libfunc">ˡn̲ew</span></a>, <a href="games-blocks-Stack.xtl.html#h.w_orth"><span class="c-libfunc">ʰw̲orth</span></a>, <a href="games-blocks-Stack.xtl.html#l.a_i"><span class="c-libfunc">ˡa̲i</span></a>, <a href="games-blocks-Stack.xtl.html#h.s_ettled"><span class="c-libfunc">ʰs̲ettled</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="DEEP">
+<h3><a href="#DEEP">DEEP</a> <span class="type">: Int</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L24">line 24</a></div>
+<pre class="code">DEEP ← <span class="c-number">2</span> <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#well">well</a></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.f_its"><span class="c-libfunc">ʰf̲its</span></a>, <a href="games-blocks-Stack.xtl.html#h.l_anding"><span class="c-libfunc">ʰl̲anding</span></a>, <a href="games-blocks-Stack.xtl.html#h.l_eave"><span class="c-libfunc">ʰl̲eave</span></a>, <a href="games-blocks-Stack.xtl.html#l.n_ew"><span class="c-libfunc">ˡn̲ew</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="speed">
+<h3><a href="#speed">speed</a> <span class="type">: Float</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L25">line 25</a></div>
+<pre class="code">speed ← <a href="games-blocks-Stack.xtl.html#h.n_ums" class="c-libfunc">ʰn̲ums</a> <span class="c-string">&quot;speed&quot;</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.p_ause"><span class="c-libfunc">ʰp̲ause</span></a></div>
+</div>
+<div class="item" id="PER">
+<h3><a href="#PER">PER</a> <span class="type">: Int</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L26">line 26</a></div>
+<pre class="code">PER ← <a href="builtins.html#f_loor" class="c-builtin">f̲loor</a> <a href="builtins.html#f_irst" class="c-builtin">f̲irst</a> <a href="games-blocks-Stack.xtl.html#h.n_ums" class="c-libfunc">ʰn̲ums</a> <span class="c-string">&quot;level&quot;</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.l_evel"><span class="c-libfunc">ʰl̲evel</span></a></div>
+</div>
+<div class="item" id="POINTS">
+<h3><a href="#POINTS">POINTS</a> <span class="type">: Int</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L27">line 27</a></div>
+<pre class="code">POINTS ← <span class="c-number">0</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <a href="builtins.html#f_loor" class="c-builtin">f̲loor</a> <a href="games-blocks-Stack.xtl.html#h.n_ums" class="c-libfunc">ʰn̲ums</a> <span class="c-string">&quot;points&quot;</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a></div>
+</div>
+<div class="item" id="h.r_ead">
+<h3><a href="#h.r_ead"><span class="c-libfunc">ʰr̲ead</span></a> <span class="type">: (Num a, Truthy a) =&gt; Int -&gt; a</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L29">line 29</a></div>
+<div class="doc">
+<p>Piece k's shape: its rows from blocks.toml as a square of 0s and 1s.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰr̲ead</span> ← { k →
+  rows ← <span class="c-string">&quot;blocks.toml&quot;</span> <a href="builtins.html#-5b-5dL_IST" class="c-builtin">⎕L̲IST</a> <a href="builtins.html#d_isclose" class="c-builtin">d̲isclose</a> k <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#names">names</a>
+  n ← <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> rows
+  (n <a href="builtins.html#c_at" class="c-builtin">c̲at</a> n) <a href="builtins.html#r_eshape" class="c-builtin">r̲eshape</a> <span class="c-number">0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="lib-Text.xtl.html#l.j_oin" class="c-libfunc">ᵗj̲oin</a> rows) <a href="builtins.html#-3d" class="c-symbol">=</a> <a href="builtins.html#f_irst" class="c-builtin">f̲irst</a> <span class="c-string">&quot;#&quot;</span>
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#SHAPES">SHAPES</a></div>
+</div>
+<div class="item" id="SHAPES">
+<h3><a href="#SHAPES">SHAPES</a> <span class="type">: Box Int</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L34">line 34</a></div>
+<pre class="code">SHAPES ← <span class="c-libfunc">'</span><a href="games-blocks-Stack.xtl.html#h.r_ead" class="c-libfunc">ʰr̲ead</a> <a href="builtins.html#m_ap" class="c-builtin">m̲ap</a> <a href="builtins.html#r_ange" class="c-builtin">r̲ange</a> <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> <a href="games-blocks-Stack.xtl.html#names">names</a></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_hape"><span class="c-libfunc">ʰs̲hape</span></a></div>
+</div>
+<div class="item" id="h.s_hape">
+<h3><a href="#h.s_hape"><span class="c-libfunc">ʰs̲hape</span></a> <span class="type">: Int -&gt; Int</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L36">line 36</a></div>
+<div class="doc">
+<p>A piece's shape as it first comes.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰs̲hape</span> ← { k → <a href="builtins.html#d_isclose" class="c-builtin">d̲isclose</a> k <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#SHAPES">SHAPES</a> }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<h2 class="section" id="section-2">Pieces in the well</h2>
+<div class="item" id="h.c_ells">
+<h3><a href="#h.c_ells"><span class="c-libfunc">ʰc̲ells</span></a> <span class="type">: Num a =&gt; (a, Int, Int) -&gt; (Int, Int)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L42">line 42</a></div>
+<div class="doc">
+<p>The well's cells under the blocks of shape M at row r, column c (from
+0): their rows and their columns.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰc̲ells</span> ← { (M, r, c) →
+  i ← (<a href="builtins.html#w_here" class="c-builtin">w̲here</a> <a href="builtins.html#r_avel" class="c-builtin">r̲avel</a> <span class="c-number">0</span> <a href="builtins.html#-3c" class="c-symbol">&lt;</a> M) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>
+  n ← <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> M
+  (r <a href="builtins.html#-2b" class="c-symbol">+</a> i <a href="builtins.html#d_iv" class="c-builtin">d̲iv</a> n, c <a href="builtins.html#-2b" class="c-symbol">+</a> i <a href="builtins.html#m_od" class="c-builtin">m̲od</a> n)
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.f_its"><span class="c-libfunc">ʰf̲its</span></a>, <a href="games-blocks-Stack.xtl.html#h.l_eave"><span class="c-libfunc">ʰl̲eave</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="h.f_its">
+<h3><a href="#h.f_its"><span class="c-libfunc">ʰf̲its</span></a> <span class="type">: (Num a, Num b, Truthy c) =&gt; (a, b, Int, Int) -&gt; c</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L49">line 49</a></div>
+<div class="doc">
+<p>Whether shape M fits at row r, column c: every block inside the well
+and on an empty cell.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰf̲its</span> ← { (W, M, r, c) →
+  (i, j) ← <a href="games-blocks-Stack.xtl.html#h.c_ells" class="c-libfunc">ʰc̲ells</a> (M, r, c)
+  <a href="builtins.html#n_ot" class="c-builtin">n̲ot</a> <span class="c-symbol">'</span><a href="builtins.html#-26" class="c-symbol">∧</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> (i <a href="builtins.html#-3e-3d" class="c-symbol">≥</a> <span class="c-number">0</span>) <a href="builtins.html#-26" class="c-symbol">∧</a> (i <a href="builtins.html#-3c" class="c-symbol">&lt;</a> <a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a>) <a href="builtins.html#-26" class="c-symbol">∧</a> (j <a href="builtins.html#-3e-3d" class="c-symbol">≥</a> <span class="c-number">0</span>) <a href="builtins.html#-26" class="c-symbol">∧</a> j <a href="builtins.html#-3c" class="c-symbol">&lt;</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> ? <span class="c-number">0</span> <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">1</span>
+  <span class="c-symbol">'</span><a href="builtins.html#-26" class="c-symbol">∧</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> <span class="c-number">0</span> <a href="builtins.html#-3d" class="c-symbol">=</a> (<span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> <a href="builtins.html#-2a" class="c-symbol">×</a> i) <a href="builtins.html#-2b" class="c-symbol">+</a> j) <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="builtins.html#r_avel" class="c-builtin">r̲avel</a> W
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.l_anding"><span class="c-libfunc">ʰl̲anding</span></a>, <a href="games-blocks-Stack.xtl.html#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a>, <a href="games-blocks-Stack.xtl.html#h.d_own"><span class="c-libfunc">ʰd̲own</span></a>, <a href="games-blocks-Stack.xtl.html#h.t_urned"><span class="c-libfunc">ʰt̲urned</span></a>, <a href="games-blocks-Stack.xtl.html#h.s_lid"><span class="c-libfunc">ʰs̲lid</span></a></div>
+</div>
+<div class="item" id="h.l_anding">
+<h3><a href="#h.l_anding"><span class="c-libfunc">ʰl̲anding</span></a> <span class="type">: (Num a, Num b) =&gt; (a, b, Int, Int) -&gt; Int</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L55">line 55</a></div>
+<div class="doc">
+<p>The lowest row at or below r where M fits at column c.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰl̲anding</span> ← { (W, M, r, c) →
+  q ← r <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="builtins.html#r_ange" class="c-builtin">r̲ange</a> <a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">1</span>) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>
+  ok ← <span class="c-quote">'</span>{ x → <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, M, x, c) } <a href="builtins.html#e_ach" class="c-builtin">e̲ach</a> q
+  r <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="builtins.html#f_irst" class="c-builtin">f̲irst</a> (<a href="builtins.html#w_here" class="c-builtin">w̲here</a> <a href="builtins.html#n_ot" class="c-builtin">n̲ot</a> ok) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> q) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">2</span>
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.d_ropped"><span class="c-libfunc">ʰd̲ropped</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="h.l_eave">
+<h3><a href="#h.l_eave"><span class="c-libfunc">ʰl̲eave</span></a> <span class="type">: (Num a, Truthy a, Num b) =&gt; (a, b, a, Int, Int) -&gt; a</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L61">line 61</a></div>
+<div class="doc">
+<p>The well with shape M of kind k left at row r, column c.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰl̲eave</span> ← { (W, M, k, r, c) →
+  (i, j) ← <a href="games-blocks-Stack.xtl.html#h.c_ells" class="c-libfunc">ʰc̲ells</a> (M, r, c)
+  (<a href="builtins.html#s_hape" class="c-builtin">s̲hape</a> W) <a href="builtins.html#r_eshape" class="c-builtin">r̲eshape</a> (<a href="builtins.html#r_avel" class="c-builtin">r̲avel</a> W) <a href="builtins.html#-2b" class="c-symbol">+</a> k <a href="builtins.html#-2a" class="c-symbol">×</a> <span class="c-number">0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="builtins.html#r_ange" class="c-builtin">r̲ange</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a>) <a href="builtins.html#m_ember-3f" class="c-builtin">m̲ember?</a> <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> <a href="builtins.html#-2a" class="c-symbol">×</a> i) <a href="builtins.html#-2b" class="c-symbol">+</a> j
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a>, <a href="games-blocks-Stack.xtl.html#l.w_ell"><span class="c-libfunc">ˡw̲ell</span></a></div>
+</div>
+<div class="item" id="l.c_lear">
+<h3><a href="#l.c_lear"><span class="c-libfunc">ˡc̲lear</span></a> <span class="type">: Num a =&gt; a -&gt; a</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L73">line 73</a></div>
+<div class="doc">
+<p>The well with its full rows cleared, and how many: the rows kept, and
+as many empty rows on top.</p>
+<pre class="example"><span class="prompt">      </span><span class="c-libfunc">ˢᵗ⁼</span><a href="std-System.xtlm.html#s.u_se-3c" class="c-macro">u̲se&lt;</a> <a href="games-blocks-Stack.xtl.html" class="c-string">&quot;Stack&quot;</a></pre>
+<pre class="example"><span class="prompt">      </span><a href="games-blocks-Stack.xtl.html#l.c_lear" class="c-libfunc">ˢᵗc̲lear</a> <span class="c-number">3</span> <span class="c-number">2</span> <a href="builtins.html#r_eshape" class="c-builtin">r̲eshape</a> <span class="c-number">1</span> <span class="c-number">1</span> <span class="c-number">0</span> <span class="c-number">1</span> <span class="c-number">2</span> <span class="c-number">2</span>
+0 0
+0 0
+0 1</pre>
+</div>
+<pre class="code"><span class="c-libfunc">ˡc̲lear</span> ← { W →
+  full ← <span class="c-symbol">'</span><a href="builtins.html#-26" class="c-symbol">∧</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/₂</a> <span class="c-number">0</span> <a href="builtins.html#-3c" class="c-symbol">&lt;</a> W
+  n ← <span class="c-symbol">'</span><a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> <span class="c-number">0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> full
+  ((n <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-number">2</span> <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="builtins.html#s_hape" class="c-builtin">s̲hape</a> W) <a href="builtins.html#r_eshape" class="c-builtin">r̲eshape</a> <span class="c-number">0</span>) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#n_ot" class="c-builtin">n̲ot</a> full) <a href="builtins.html#r_eplicate" class="c-builtin">r̲eplicate</a> W
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.src.html#L19">games/blocks/blocks.xtl:19</a>, <a href="games-blocks-blocks.xtl.html#ok">ok</a>, <a href="games-blocks-Stack.xtl.html#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a></div>
+</div>
+<div class="item" id="h.f_ull">
+<h3><a href="#h.f_ull"><span class="c-libfunc">ʰf̲ull</span></a> <span class="type">: (Num a, Num b, Truthy b) =&gt; a -&gt; b</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L79">line 79</a></div>
+<div class="doc">
+<p>How many rows of W are full.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰf̲ull</span> ← { W → <span class="c-symbol">'</span><a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> <span class="c-number">0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-symbol">'</span><a href="builtins.html#-26" class="c-symbol">∧</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/₂</a> <span class="c-number">0</span> <a href="builtins.html#-3c" class="c-symbol">&lt;</a> W }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a></div>
+</div>
+<div class="item" id="h.l_evel">
+<h3><a href="#h.l_evel"><span class="c-libfunc">ʰl̲evel</span></a> <span class="type">: Int -&gt; Int</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L81">line 81</a></div>
+<div class="doc">
+<p>The level, from the lines; the seconds between steps down there.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰl̲evel</span> ← { ln → <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> ln <a href="builtins.html#d_iv" class="c-builtin">d̲iv</a> <a href="games-blocks-Stack.xtl.html#PER">PER</a> }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.p_ause"><span class="c-libfunc">ʰp̲ause</span></a>, <a href="games-blocks-Stack.xtl.html#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a>, <a href="games-blocks-Stack.xtl.html#l.s_core"><span class="c-libfunc">ˡs̲core</span></a>, <a href="games-blocks-Stack.xtl.html#h.s_ays"><span class="c-libfunc">ʰs̲ays</span></a></div>
+</div>
+<div class="item" id="h.p_ause">
+<h3><a href="#h.p_ause"><span class="c-libfunc">ʰp̲ause</span></a> <span class="type">: Int -&gt; Float</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L82">line 82</a></div>
+<pre class="code"><span class="c-libfunc">ʰp̲ause</span> ← { ln → (<span class="c-number">3</span> <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#speed">speed</a>) <a href="builtins.html#m_ax" class="c-builtin">m̲ax</a> (<a href="builtins.html#f_irst" class="c-builtin">f̲irst</a> <a href="games-blocks-Stack.xtl.html#speed">speed</a>) <a href="builtins.html#-2d" class="c-symbol">−</a> (<span class="c-number">2</span> <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#speed">speed</a>) <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> (<a href="games-blocks-Stack.xtl.html#h.l_evel" class="c-libfunc">ʰl̲evel</a> ln) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span> }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.t_ick"><span class="c-libfunc">ˡt̲ick</span></a></div>
+</div>
+<div class="item" id="h.o_ver">
+<h3><a href="#h.o_ver"><span class="c-libfunc">ʰo̲ver</span></a> <span class="type">: (Truthy a, Num b) =&gt; a -&gt; b</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L84">line 84</a></div>
+<div class="doc">
+<p>0 when the next piece fits, 2 when it does not (the game over).</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰo̲ver</span> ← { ok → ok ? <span class="c-number">0</span>◆ <span class="c-number">2</span> }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a></div>
+</div>
+<div class="item" id="h.n_ext">
+<h3><a href="#h.n_ext"><span class="c-libfunc">ʰn̲ext</span></a> <span class="type">: (Num a, Any b, Any c, Any d, Num e, Num f) =&gt; (a, Int, b, c, d) -&gt; (a, Int, Int, e, Int, Int, b, c, Float, d, f)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L87">line 87</a></div>
+<div class="doc">
+<p>The next piece into the well at the top, in the middle, the one after
+drawn at random; the game over if it does not fit.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰn̲ext</span> ← { (W, nx, sc, ln, t) →
+  M ← <a href="games-blocks-Stack.xtl.html#h.s_hape" class="c-libfunc">ʰs̲hape</a> nx
+  c ← (<a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> <a href="builtins.html#-2d" class="c-symbol">−</a> <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> M) <a href="builtins.html#d_iv" class="c-builtin">d̲iv</a> <span class="c-number">2</span>
+  (W, M, nx, <span class="c-number">0</span>, c, <a href="builtins.html#r_oll-21" class="c-builtin">r̲oll!</a> <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> <a href="games-blocks-Stack.xtl.html#names">names</a>, sc, ln, <span class="c-number">0.0</span>, t, <a href="games-blocks-Stack.xtl.html#h.o_ver" class="c-libfunc">ʰo̲ver</a> <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, M, <span class="c-number">0</span>, c))
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.n_ew"><span class="c-libfunc">ˡn̲ew</span></a>, <a href="games-blocks-Stack.xtl.html#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a></div>
+</div>
+<div class="item" id="l.n_ew">
+<h3><a href="#l.n_ew"><span class="c-libfunc">ˡn̲ew</span></a> <span class="type">: (Any a, Num b, Num c, Num d, Num e, Num f) =&gt; a -&gt; (b, Int, Int, c, Int, Int, d, e, Float, Float, f)</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L94">line 94</a></div>
+<div class="doc">
+<p>A new game: an empty well and the first piece.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡn̲ew</span> ← { z → <a href="games-blocks-Stack.xtl.html#h.n_ext" class="c-libfunc">ʰn̲ext</a> ((<a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>) <a href="builtins.html#r_eshape" class="c-builtin">r̲eshape</a> <span class="c-number">0</span>, <a href="builtins.html#r_oll-21" class="c-builtin">r̲oll!</a> <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> <a href="games-blocks-Stack.xtl.html#names">names</a>, <span class="c-number">0</span>, <span class="c-number">0</span>, <span class="c-number">0.0</span>) }</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.html#s">s</a>, <a href="games-blocks-play.xtl.html#u.l_oop"><span class="c-userfunc">ᵘl̲oop</span></a>, <a href="games-blocks-play.xtl.src.html#L37">games/blocks/play.xtl:37</a></div>
+</div>
+<div class="item" id="h.s_ettle">
+<h3><a href="#h.s_ettle"><span class="c-libfunc">ʰs̲ettle</span></a> <span class="type">: (Num a, Truthy a, Num b, Any c, Any d, Any e, Num f, Num g) =&gt; (a, b, a, Int, Int, Int, Int, Int, c, d, e) -&gt; (a, Int, Int, f, Int, Int, Int, Int, Float, d, g)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L97">line 97</a></div>
+<div class="doc">
+<p>The piece left where it is: full rows cleared and scored, the next
+piece in.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰs̲ettle</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) →
+  W ← <a href="games-blocks-Stack.xtl.html#h.l_eave" class="c-libfunc">ʰl̲eave</a> (W, M, k, r, c)
+  n ← <a href="games-blocks-Stack.xtl.html#h.f_ull" class="c-libfunc">ʰf̲ull</a> W
+  <a href="games-blocks-Stack.xtl.html#h.n_ext" class="c-libfunc">ʰn̲ext</a> (<a href="games-blocks-Stack.xtl.html#l.c_lear" class="c-libfunc">ˡc̲lear</a> W, nx, sc <a href="builtins.html#-2b" class="c-symbol">+</a> (<a href="games-blocks-Stack.xtl.html#h.l_evel" class="c-libfunc">ʰl̲evel</a> ln) <a href="builtins.html#-2a" class="c-symbol">×</a> (<span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> n) <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#POINTS">POINTS</a>, ln <a href="builtins.html#-2b" class="c-symbol">+</a> n, t)
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.d_own"><span class="c-libfunc">ʰd̲own</span></a>, <a href="games-blocks-Stack.xtl.html#h.d_ropped"><span class="c-libfunc">ʰd̲ropped</span></a></div>
+</div>
+<div class="item" id="h.d_own">
+<h3><a href="#h.d_own"><span class="c-libfunc">ʰd̲own</span></a> <span class="type">: (Any a, Num b) =&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L103">line 103</a></div>
+<div class="doc">
+<p>A step down, or, where it cannot go down, settled.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰd̲own</span> ← { s →
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) ← s
+  <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, M, r <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">1</span>, c) ? (W, M, k, r <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">1</span>, c, nx, sc, ln, acc, t, st)
+  <a href="games-blocks-Stack.xtl.html#h.s_ettle" class="c-libfunc">ʰs̲ettle</a> s
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.t_ick"><span class="c-libfunc">ˡt̲ick</span></a>, <a href="games-blocks-Stack.xtl.html#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></div>
+</div>
+<div class="item" id="l.t_ick">
+<h3><a href="#l.t_ick"><span class="c-libfunc">ˡt̲ick</span></a> <span class="type">: Num a =&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, Float, a) -&gt; Float -&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, Float, a)</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L111">line 111</a></div>
+<div class="doc">
+<p>A tick of the clock, dt seconds: the piece steps down each time its
+level's pause has gone by. A game over stays as it is.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡt̲ick</span> ← { s dt →
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) ← s
+  st <a href="builtins.html#-3e" class="c-symbol">&gt;</a> <span class="c-number">0</span> ? s
+  (acc <a href="builtins.html#-2b" class="c-symbol">+</a> dt) <a href="builtins.html#-3c" class="c-symbol">&lt;</a> <a href="games-blocks-Stack.xtl.html#h.p_ause" class="c-libfunc">ʰp̲ause</a> ln ? (W, M, k, r, c, nx, sc, ln, acc <a href="builtins.html#-2b" class="c-symbol">+</a> dt, t <a href="builtins.html#-2b" class="c-symbol">+</a> dt, st)
+  <a href="games-blocks-Stack.xtl.html#h.d_own" class="c-libfunc">ʰd̲own</a> (W, M, k, r, c, nx, sc, ln, <span class="c-number">0.0</span>, t <a href="builtins.html#-2b" class="c-symbol">+</a> dt, st)
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.html#u.w_ait"><span class="c-userfunc">ᵘw̲ait</span></a>, <a href="games-blocks-play.xtl.html#u.l_oop"><span class="c-userfunc">ᵘl̲oop</span></a></div>
+</div>
+<h2 class="section" id="section-3">Your keys</h2>
+<div class="item" id="l.t_urn">
+<h3><a href="#l.t_urn"><span class="c-libfunc">ˡt̲urn</span></a> <span class="type">: a -&gt; a</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L128">line 128</a></div>
+<div class="doc">
+<p>Shape M turned a quarter clockwise: its rows reversed, then
+transposed.</p>
+<pre class="example"><span class="prompt">      </span><span class="c-libfunc">ˢᵗ⁼</span><a href="std-System.xtlm.html#s.u_se-3c" class="c-macro">u̲se&lt;</a> <a href="games-blocks-Stack.xtl.html" class="c-string">&quot;Stack&quot;</a></pre>
+<pre class="example"><span class="prompt">      </span><a href="games-blocks-Stack.xtl.html#l.t_urn" class="c-libfunc">ˢᵗt̲urn</a> <span class="c-number">2</span> <span class="c-number">3</span> <a href="builtins.html#r_eshape" class="c-builtin">r̲eshape</a> <span class="c-number">1</span> <span class="c-number">1</span> <span class="c-number">1</span> <span class="c-number">0</span> <span class="c-number">1</span> <span class="c-number">0</span>
+0 1
+1 1
+0 1</pre>
+</div>
+<pre class="code"><span class="c-libfunc">ˡt̲urn</span> ← { M → <a href="builtins.html#o_-5c" class="c-builtin">o̲\</a> <a href="builtins.html#r_ev" class="c-builtin">r̲ev</a> M }</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.src.html#L11">games/blocks/blocks.xtl:11</a>, <a href="games-blocks-blocks.xtl.src.html#L12">games/blocks/blocks.xtl:12</a>, <a href="games-blocks-blocks.xtl.html#ok">ok</a>, <a href="games-blocks-Stack.xtl.html#h.t_urned"><span class="c-libfunc">ʰt̲urned</span></a></div>
+</div>
+<div class="item" id="h.t_urned">
+<h3><a href="#h.t_urned"><span class="c-libfunc">ʰt̲urned</span></a> <span class="type">: (Num a, Num b, Any c, Any d, Any e, Any f, Any g, Any h, Any i) =&gt; (a, b, c, Int, Int, d, e, f, g, h, i) -&gt; (a, b, c, Int, Int, d, e, f, g, h, i)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L130">line 130</a></div>
+<div class="doc">
+<p>The piece turned, if it fits there or a column to either side.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰt̲urned</span> ← { s →
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) ← s
+  N ← <a href="games-blocks-Stack.xtl.html#l.t_urn" class="c-libfunc">ˡt̲urn</a> M
+  <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, N, r, c) ? (W, N, k, r, c, nx, sc, ln, acc, t, st)
+  <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, N, r, c <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>) ? (W, N, k, r, c <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>, nx, sc, ln, acc, t, st)
+  <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, N, r, c <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">1</span>) ? (W, N, k, r, c <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">1</span>, nx, sc, ln, acc, t, st)
+  s
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.t_urns"><span class="c-libfunc">ʰt̲urns</span></a>, <a href="games-blocks-Stack.xtl.html#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></div>
+</div>
+<div class="item" id="h.s_lid">
+<h3><a href="#h.s_lid"><span class="c-libfunc">ʰs̲lid</span></a> <span class="type">: (Num a, Num b, Any c, Any d, Any e, Any f, Any g, Any h, Any i) =&gt; (a, b, c, Int, Int, d, e, f, g, h, i) -&gt; Int -&gt; (a, b, c, Int, Int, d, e, f, g, h, i)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L139">line 139</a></div>
+<div class="doc">
+<p>The piece a column over (d: -1 or 1), if it fits.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰs̲lid</span> ← { s d →
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) ← s
+  <a href="games-blocks-Stack.xtl.html#h.f_its" class="c-libfunc">ʰf̲its</a> (W, M, r, c <a href="builtins.html#-2b" class="c-symbol">+</a> d) ? (W, M, k, r, c <a href="builtins.html#-2b" class="c-symbol">+</a> d, nx, sc, ln, acc, t, st)
+  s
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_lides"><span class="c-libfunc">ʰs̲lides</span></a>, <a href="games-blocks-Stack.xtl.html#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></div>
+</div>
+<div class="item" id="h.d_ropped">
+<h3><a href="#h.d_ropped"><span class="c-libfunc">ʰd̲ropped</span></a> <span class="type">: (Num a, Truthy a, Num b, Any c, Any d, Any e, Num f, Num g) =&gt; (a, b, a, Int, Int, Int, Int, Int, c, d, e) -&gt; (a, Int, Int, f, Int, Int, Int, Int, Float, d, g)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L145">line 145</a></div>
+<div class="doc">
+<p>The piece dropped to where it lands, two points a row, and settled.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰd̲ropped</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) →
+  q ← <a href="games-blocks-Stack.xtl.html#h.l_anding" class="c-libfunc">ʰl̲anding</a> (W, M, r, c)
+  <a href="games-blocks-Stack.xtl.html#h.s_ettle" class="c-libfunc">ʰs̲ettle</a> (W, M, k, q, c, nx, sc <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">2</span> <a href="builtins.html#-2a" class="c-symbol">×</a> q <a href="builtins.html#-2d" class="c-symbol">−</a> r, ln, acc, t, st)
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.a_fter"><span class="c-libfunc">ʰa̲fter</span></a>, <a href="games-blocks-Stack.xtl.html#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></div>
+</div>
+<h2 class="section" id="section-4">The computer player</h2>
+<div class="item" id="h.t_urns">
+<h3><a href="#h.t_urns"><span class="c-libfunc">ʰt̲urns</span></a> <span class="type">: (Num a, Num b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Num j) =&gt; (a, b, c, Int, Int, d, e, f, g, h, i) -&gt; j -&gt; (a, b, c, Int, Int, d, e, f, g, h, i)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L153">line 153</a></div>
+<div class="doc">
+<p>The piece turned q times and moved dx columns (each as far as it
+fits), then dropped.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰt̲urns</span> ← { s q → q <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">0</span> ? s◆ (<a href="games-blocks-Stack.xtl.html#h.t_urned" class="c-libfunc">ʰt̲urned</a> s) <a href="games-blocks-Stack.xtl.html#h.t_urns" class="c-libfunc">ʰt̲urns</a> q <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span> }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.t_urns"><span class="c-libfunc">ʰt̲urns</span></a>, <a href="games-blocks-Stack.xtl.html#h.a_fter"><span class="c-libfunc">ʰa̲fter</span></a></div>
+</div>
+<div class="item" id="h.s_lides">
+<h3><a href="#h.s_lides"><span class="c-libfunc">ʰs̲lides</span></a> <span class="type">: (Num a, Num b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Num j, Truthy j) =&gt; (a, b, c, Int, Int, d, e, f, g, h, i) -&gt; j -&gt; (a, b, c, Int, Int, d, e, f, g, h, i)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L154">line 154</a></div>
+<pre class="code"><span class="c-libfunc">ʰs̲lides</span> ← { s d → d <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">0</span> ? s◆ (s <a href="games-blocks-Stack.xtl.html#h.s_lid" class="c-libfunc">ʰs̲lid</a> (d <a href="builtins.html#-3e" class="c-symbol">&gt;</a> <span class="c-number">0</span>) <a href="builtins.html#-2d" class="c-symbol">−</a> d <a href="builtins.html#-3c" class="c-symbol">&lt;</a> <span class="c-number">0</span>) <a href="games-blocks-Stack.xtl.html#h.s_lides" class="c-libfunc">ʰs̲lides</a> d <a href="builtins.html#-2d" class="c-symbol">−</a> (d <a href="builtins.html#-3e" class="c-symbol">&gt;</a> <span class="c-number">0</span>) <a href="builtins.html#-2d" class="c-symbol">−</a> d <a href="builtins.html#-3c" class="c-symbol">&lt;</a> <span class="c-number">0</span> }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_lides"><span class="c-libfunc">ʰs̲lides</span></a>, <a href="games-blocks-Stack.xtl.html#h.a_fter"><span class="c-libfunc">ʰa̲fter</span></a></div>
+</div>
+<div class="item" id="h.a_fter">
+<h3><a href="#h.a_fter"><span class="c-libfunc">ʰa̲fter</span></a> <span class="type">: (Num a, Truthy a, Num b, Any c, Any d, Any e, Num f, Num g, Truthy g, Num h, Num i) =&gt; (a, b, a, Int, Int, Int, Int, Int, c, d, e) -&gt; (f, g) -&gt; (a, Int, Int, h, Int, Int, Int, Int, Float, d, i)</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L155">line 155</a></div>
+<pre class="code"><span class="c-libfunc">ʰa̲fter</span> ← { s (q, dx) → <a href="games-blocks-Stack.xtl.html#h.d_ropped" class="c-libfunc">ʰd̲ropped</a> (s <a href="games-blocks-Stack.xtl.html#h.t_urns" class="c-libfunc">ʰt̲urns</a> q) <a href="games-blocks-Stack.xtl.html#h.s_lides" class="c-libfunc">ʰs̲lides</a> dx }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.v_alue"><span class="c-libfunc">ʰv̲alue</span></a>, <a href="games-blocks-Stack.xtl.html#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></div>
+</div>
+<div class="item" id="h.w_orth">
+<h3><a href="#h.w_orth"><span class="c-libfunc">ʰw̲orth</span></a> <span class="type">: (Num a, Num b) =&gt; (a, b) -&gt; Float</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L159">line 159</a></div>
+<div class="doc">
+<p>What a well is worth to the computer player: the lines a move cleared
+count for it; the columns' heights, the holes (empty cells under a
+block) and the bumps between neighboring columns count against it.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰw̲orth</span> ← { (W, lines) →
+  F ← <span class="c-number">0</span> <a href="builtins.html#-3c" class="c-symbol">&lt;</a> W
+  top ← <span class="c-symbol">'</span><a href="builtins.html#-7c" class="c-symbol">∨</a> <a href="builtins.html#s_-5c" class="c-builtin">s̲\</a> F
+  h ← <span class="c-symbol">'</span><a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> <span class="c-number">0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> top
+  holes ← <span class="c-symbol">'</span><a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> <span class="c-number">0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_avel" class="c-builtin">r̲avel</a> top <a href="builtins.html#-26" class="c-symbol">∧</a> <a href="builtins.html#n_ot" class="c-builtin">n̲ot</a> F
+  bump ← <span class="c-symbol">'</span><a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> <a href="builtins.html#a_bs" class="c-builtin">a̲bs</a> (<span class="c-number">1</span> <a href="builtins.html#d_rop" class="c-builtin">d̲rop</a> h) <a href="builtins.html#-2d" class="c-symbol">−</a> (<a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>) <a href="builtins.html#t_ake" class="c-builtin">t̲ake</a> h
+  (<span class="c-number">0.76</span> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> lines) <a href="builtins.html#-2d" class="c-symbol">−</a> (<span class="c-number">0.51</span> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> <span class="c-symbol">'</span><a href="builtins.html#-2b" class="c-symbol">+</a> <a href="builtins.html#r_-2f" class="c-builtin">r̲/</a> h) <a href="builtins.html#-2b" class="c-symbol">+</a> (<span class="c-number">0.36</span> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> holes) <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">0.18</span> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> bump
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.v_alue"><span class="c-libfunc">ʰv̲alue</span></a></div>
+</div>
+<div class="item" id="h.v_alue">
+<h3><a href="#h.v_alue"><span class="c-libfunc">ʰv̲alue</span></a> <span class="type">: (Any a, Num b) =&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -&gt; (Int, Int) -&gt; Float</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L169">line 169</a></div>
+<div class="doc">
+<p>A move's worth: the well it leaves (far below any other if it ends
+the game).</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰv̲alue</span> ← { s (q, dx) →
+  t ← s <a href="games-blocks-Stack.xtl.html#h.a_fter" class="c-libfunc">ʰa̲fter</a> (q, dx)
+  (W, M, k, r, c, nx, sc, ln, acc, u, st) ← t
+  st <a href="builtins.html#-3e" class="c-symbol">&gt;</a> <span class="c-number">0</span> ? <span class="c-number">-1000.0</span>
+  <a href="games-blocks-Stack.xtl.html#h.w_orth" class="c-libfunc">ʰw̲orth</a> (W, ln <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">2</span> <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#l.s_core" class="c-libfunc">ˡs̲core</a> s)
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.a_i"><span class="c-libfunc">ˡa̲i</span></a></div>
+</div>
+<div class="item" id="l.a_i">
+<h3><a href="#l.a_i"><span class="c-libfunc">ˡa̲i</span></a> <span class="type">: (Any a, Num b) =&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -&gt; (Int, Int)</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L179">line 179</a></div>
+<div class="doc">
+<p>The computer player's move for the piece: how many quarter turns and
+how many columns over (negative to the left), the best of every turn
+and every column tried, each worked out to where the piece lands.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡa̲i</span> ← { s →
+  i ← (<a href="builtins.html#r_ange" class="c-builtin">r̲ange</a> <span class="c-number">4</span> <a href="builtins.html#-2a" class="c-symbol">×</a> <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>
+  q ← i <a href="builtins.html#d_iv" class="c-builtin">d̲iv</a> <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>
+  dx ← (i <a href="builtins.html#m_od" class="c-builtin">m̲od</a> <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>) <a href="builtins.html#-2d" class="c-symbol">−</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a> <a href="builtins.html#d_iv" class="c-builtin">d̲iv</a> <span class="c-number">2</span>
+  w ← <span class="c-quote">'</span>{ n → s <a href="games-blocks-Stack.xtl.html#h.v_alue" class="c-libfunc">ʰv̲alue</a> (n <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> q, n <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> dx) } <a href="builtins.html#e_ach" class="c-builtin">e̲ach</a> <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> i
+  b ← <a href="builtins.html#f_irst" class="c-builtin">f̲irst</a> <a href="builtins.html#g_rade" class="c-builtin">g̲rade</a> <a href="builtins.html#n_eg" class="c-builtin">n̲eg</a> w
+  (b <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> q, b <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> dx)
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.src.html#L40">games/blocks/blocks.xtl:40</a>, <a href="games-blocks-Stack.xtl.html#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a></div>
+</div>
+<div class="item" id="l.k_ey">
+<h3><a href="#l.k_ey"><span class="c-libfunc">ˡk̲ey</span></a> <span class="type">: (Any a, Num b) =&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -&gt; Char -&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b)</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L192">line 192</a></div>
+<div class="doc">
+<p>A key: left and right (or a and d) move the piece, up (or w) turns
+it, down (or s) moves it a row down, the space bar drops it, h lets
+the computer player place it; other keys, and keys after the game is
+over, do nothing.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡk̲ey</span> ← { s name →
+  (W, M, k, r, c, nx, sc, ln, acc, t, st) ← s
+  q ← (<span class="c-string">&quot;LEFT&quot;</span> <span class="c-string">&quot;RIGHT&quot;</span> <span class="c-string">&quot;UP&quot;</span> <span class="c-string">&quot;DOWN&quot;</span> <span class="c-string">&quot;a&quot;</span> <span class="c-string">&quot;d&quot;</span> <span class="c-string">&quot;w&quot;</span> <span class="c-string">&quot;s&quot;</span> <span class="c-string">&quot; &quot;</span> <span class="c-string">&quot;h&quot;</span>) <a href="builtins.html#i_ndexOf" class="c-builtin">i̲ndexOf</a> <a href="builtins.html#e_nclose" class="c-builtin">e̲nclose</a> name
+  (q <a href="builtins.html#-3e" class="c-symbol">&gt;</a> <span class="c-number">10</span>) <a href="builtins.html#-7c" class="c-symbol">∨</a> st <a href="builtins.html#-3e" class="c-symbol">&gt;</a> <span class="c-number">0</span> ? s
+  q <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">10</span> ? s <a href="games-blocks-Stack.xtl.html#h.a_fter" class="c-libfunc">ʰa̲fter</a> <a href="games-blocks-Stack.xtl.html#l.a_i" class="c-libfunc">ˡa̲i</a> s
+  q <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">9</span> ? <a href="games-blocks-Stack.xtl.html#h.d_ropped" class="c-libfunc">ʰd̲ropped</a> s
+  q ← <span class="c-number">1</span> <a href="builtins.html#-2b" class="c-symbol">+</a> (q <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>) <a href="builtins.html#m_od" class="c-builtin">m̲od</a> <span class="c-number">4</span>
+  q <a href="builtins.html#-3c" class="c-symbol">&lt;</a> <span class="c-number">3</span> ? s <a href="games-blocks-Stack.xtl.html#h.s_lid" class="c-libfunc">ʰs̲lid</a> (<span class="c-number">2</span> <a href="builtins.html#-2a" class="c-symbol">×</a> q) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">3</span>
+  q <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">3</span> ? <a href="games-blocks-Stack.xtl.html#h.t_urned" class="c-libfunc">ʰt̲urned</a> s
+  <a href="games-blocks-Stack.xtl.html#h.d_own" class="c-libfunc">ʰd̲own</a> s
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.html#u.p_ress"><span class="c-userfunc">ᵘp̲ress</span></a>, <a href="games-blocks-play.xtl.html#u.l_oop"><span class="c-userfunc">ᵘl̲oop</span></a></div>
+</div>
+<h2 class="section" id="section-5">What it shows</h2>
+<div class="item" id="l.s_tatus">
+<h3><a href="#l.s_tatus"><span class="c-libfunc">ˡs̲tatus</span></a> <span class="type">: (Any a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k) =&gt; (a, b, c, d, e, f, g, h, i, j, k) -&gt; k</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L208">line 208</a></div>
+<div class="doc">
+<p>0 playing, 2 the well full.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡs̲tatus</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) → st }</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.html#u.a_uto"><span class="c-userfunc">ᵘa̲uto</span></a>, <a href="games-blocks-blocks.xtl.html#ok">ok</a>, <a href="games-blocks-play.xtl.html#u.s_how"><span class="c-userfunc">ᵘs̲how</span></a></div>
+</div>
+<div class="item" id="l.s_core">
+<h3><a href="#l.s_core"><span class="c-libfunc">ˡs̲core</span></a> <span class="type">: (Any a, Num b) =&gt; (Int, Int, Int, Int, Int, Int, Int, Int, Float, a, b) -&gt; Int</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L211">line 211</a></div>
+<div class="doc">
+<p>The score, the lines, the level.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡs̲core</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) → sc <a href="builtins.html#c_at" class="c-builtin">c̲at</a> ln <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <a href="games-blocks-Stack.xtl.html#h.l_evel" class="c-libfunc">ʰl̲evel</a> ln }</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.src.html#L43">games/blocks/blocks.xtl:43</a>, <a href="games-blocks-Stack.xtl.html#h.v_alue"><span class="c-libfunc">ʰv̲alue</span></a>, <a href="games-blocks-play.xtl.html#u.q_uit"><span class="c-userfunc">ᵘq̲uit</span></a>, <a href="games-blocks-play.xtl.html#u.e_nd"><span class="c-userfunc">ᵘe̲nd</span></a></div>
+</div>
+<div class="item" id="l.w_ell">
+<h3><a href="#l.w_ell"><span class="c-libfunc">ˡw̲ell</span></a> <span class="type">: (Num a, Truthy a, Num b, Any c, Any d, Any e, Any f, Any g, Any h) =&gt; (a, b, a, Int, Int, c, d, e, f, g, h) -&gt; a</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L214">line 214</a></div>
+<div class="doc">
+<p>The well with the piece in it (its kind where its blocks are).</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡw̲ell</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) → <a href="games-blocks-Stack.xtl.html#h.l_eave" class="c-libfunc">ʰl̲eave</a> (W, M, k, r, c) }</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.src.html#L33">games/blocks/blocks.xtl:33</a></div>
+</div>
+<div class="item" id="l.p_iece">
+<h3><a href="#l.p_iece"><span class="c-libfunc">ˡp̲iece</span></a> <span class="type">: (Any a, Any b, Any c, Any e, Any f, Any g, Any h, Any i, Any j) =&gt; (a, b, c, d, d, e, f, g, h, i, j) -&gt; (b, d, e)</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L217">line 217</a></div>
+<div class="doc">
+<p>The piece: its shape, then its row and column, and the next kind.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡp̲iece</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) → (M, r <a href="builtins.html#c_at" class="c-builtin">c̲at</a> c, nx) }</pre>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.src.html#L24">games/blocks/blocks.xtl:24</a></div>
+</div>
+<div class="item" id="CELL">
+<h3><a href="#CELL">CELL</a> <span class="type">: Float</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L219">line 219</a></div>
+<div class="doc">
+<p>The size of a cell, and where the well is drawn.</p>
+</div>
+<pre class="code">CELL ← <span class="c-number">28.0</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.b_lock"><span class="c-libfunc">ʰb̲lock</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="X0">
+<h3><a href="#X0">X0</a> <span class="type">: Float</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L220">line 220</a></div>
+<pre class="code">X0 ← <span class="c-number">24.0</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_ettled"><span class="c-libfunc">ʰs̲ettled</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="Y0">
+<h3><a href="#Y0">Y0</a> <span class="type">: Float</span></h3>
+<div class="meta">value <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L221">line 221</a></div>
+<pre class="code">Y0 ← <span class="c-number">76.0</span></pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.s_ettled"><span class="c-libfunc">ʰs̲ettled</span></a>, <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="h.f_ill">
+<h3><a href="#h.f_ill"><span class="c-libfunc">ʰf̲ill</span></a> <span class="type">: Num a =&gt; (Char, a) -&gt; Char</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L223">line 223</a></div>
+<div class="doc">
+<p>A block's fill: its color, or none for an outline.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰf̲ill</span> ← { (col, ghost) → ghost <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">1</span> ? <span class="c-string">&quot;none&quot;</span>◆ col }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.b_lock"><span class="c-libfunc">ʰb̲lock</span></a></div>
+</div>
+<div class="item" id="h.b_lock">
+<h3><a href="#h.b_lock"><span class="c-libfunc">ʰb̲lock</span></a> <span class="type">: (Num a, Num b, Num c) =&gt; (a, b, Int, Float, Float, c) -&gt; Box Char</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L226">line 226</a></div>
+<div class="doc">
+<p>A block of kind k at row i, column j of the well (x0, y0 its corner);
+ghost: only an outline, where the piece would land.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰb̲lock</span> ← { (i, j, k, x0, y0, ghost) →
+  col ← <a href="builtins.html#d_isclose" class="c-builtin">d̲isclose</a> k <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="games-blocks-Stack.xtl.html#colors">colors</a>
+  fill ← <a href="games-blocks-Stack.xtl.html#h.f_ill" class="c-libfunc">ʰf̲ill</a> (col, ghost)
+  <a href="builtins.html#e_nclose" class="c-builtin">e̲nclose</a> @ <a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a> <span class="c-string">&quot;&lt;rect x=\&quot;{sv:w_hole x0 + CELL * f_loat j}\&quot; y=\&quot;{sv:w_hole y0 + CELL * f_loat i}\&quot; width=\&quot;{sv:w_hole CELL - 2.0}\&quot; height=\&quot;{sv:w_hole CELL - 2.0}\&quot; rx=\&quot;4\&quot; fill=\&quot;{fill}\&quot; stroke=\&quot;{col}\&quot; stroke-width=\&quot;2\&quot;/&gt;&quot;</span>
+}</pre>
+<details class="expansion"><summary><code><a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a></code> expands to</summary><pre class="code">(<span class="c-string">&quot;&lt;rect x=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> x0 <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> j)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; y=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> y0 <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> i)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; width=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">2.0</span>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; height=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">2.0</span>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; rx=\&quot;4\&quot; fill=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (fill)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; stroke=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (col)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; stroke-width=\&quot;2\&quot;/&gt;&quot;</span>)</pre></details>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#h.b_locks"><span class="c-libfunc">ʰb̲locks</span></a>, <a href="games-blocks-Stack.xtl.html#h.s_ettled"><span class="c-libfunc">ʰs̲ettled</span></a></div>
+</div>
+<div class="item" id="h.b_locks">
+<h3><a href="#h.b_locks"><span class="c-libfunc">ʰb̲locks</span></a> <span class="type">: (Num a, Num b, Num c) =&gt; (a, b, Int, Float, Float, c) -&gt; Box Char</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L232">line 232</a></div>
+<div class="doc">
+<p>Blocks of kind k at the cells (i, j), all at once.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰb̲locks</span> ← { (i, j, k, x0, y0, ghost) → <span class="c-quote">'</span>{ n → <a href="games-blocks-Stack.xtl.html#h.b_lock" class="c-libfunc">ʰb̲lock</a> (n <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> i, n <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> j, k, x0, y0, ghost) } <a href="builtins.html#e_ach" class="c-builtin">e̲ach</a> <a href="builtins.html#r_ange" class="c-builtin">r̲ange</a> <a href="builtins.html#t_ally" class="c-builtin">t̲ally</a> i }</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="h.s_ettled">
+<h3><a href="#h.s_ettled"><span class="c-libfunc">ʰs̲ettled</span></a> <span class="type">: Int -&gt; Box Char</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L234">line 234</a></div>
+<div class="doc">
+<p>The blocks left in the well, each its kind's color.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰs̲ettled</span> ← { W →
+  at ← (<a href="builtins.html#w_here" class="c-builtin">w̲here</a> <a href="builtins.html#r_avel" class="c-builtin">r̲avel</a> <span class="c-number">0</span> <a href="builtins.html#-3c" class="c-symbol">&lt;</a> W) <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">1</span>
+  <span class="c-quote">'</span>{ n → <a href="games-blocks-Stack.xtl.html#h.b_lock" class="c-libfunc">ʰb̲lock</a> (n <a href="builtins.html#d_iv" class="c-builtin">d̲iv</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>, n <a href="builtins.html#m_od" class="c-builtin">m̲od</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>, (n <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">1</span>) <a href="builtins.html#s_elect" class="c-builtin">s̲elect</a> <a href="builtins.html#r_avel" class="c-builtin">r̲avel</a> W, <a href="games-blocks-Stack.xtl.html#X0">X0</a>, <a href="games-blocks-Stack.xtl.html#Y0">Y0</a>, <span class="c-number">0</span>) } <a href="builtins.html#e_ach" class="c-builtin">e̲ach</a> at
+}</pre>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="h.s_ays">
+<h3><a href="#h.s_ays"><span class="c-libfunc">ʰs̲ays</span></a> <span class="type">: (Num b, Num c) =&gt; (a, Int, b, c) -&gt; Char</span></h3>
+<div class="meta">function <span class="private">(private)</span> &middot; <a href="games-blocks-Stack.xtl.src.html#L239">line 239</a></div>
+<div class="doc">
+<p>What the top line says.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ʰs̲ays</span> ← { (sc, ln, t, st) →
+  st <a href="builtins.html#-3d" class="c-symbol">=</a> <span class="c-number">2</span> ? @ <a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a> <span class="c-string">&quot;Game over. Score {sc} | Lines {ln} | Time {f_loor t} s&quot;</span>
+  @ <a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a> <span class="c-string">&quot;Score {sc} | Lines {ln} | Level {h:l_evel ln} | Time {f_loor t} s&quot;</span>
+}</pre>
+<details class="expansion"><summary><code><a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a></code> expands to</summary><pre class="code">(<span class="c-string">&quot;Game over. Score &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (sc)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; | Lines &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (ln)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; | Time &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="builtins.html#f_loor" class="c-builtin">f̲loor</a> t)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; s&quot;</span>)</pre></details>
+<details class="expansion"><summary><code><a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a></code> expands to</summary><pre class="code"><span class="c-string">&quot;Score &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (sc)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; | Lines &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (ln)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; | Level &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="games-blocks-Stack.xtl.html#h.l_evel" class="c-libfunc">ʰl̲evel</a> ln)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; | Time &quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="builtins.html#f_loor" class="c-builtin">f̲loor</a> t)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot; s&quot;</span></pre></details>
+<div class="uses">Used in: <a href="games-blocks-Stack.xtl.html#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a></div>
+</div>
+<div class="item" id="l.d_raw">
+<h3><a href="#l.d_raw"><span class="c-libfunc">ˡd̲raw</span></a> <span class="type">: (Num a, Any c, Num d, Num e) =&gt; (Int, a, Int, Int, Int, Int, b, Int, c, d, e) -&gt; Char</span></h3>
+<div class="meta">function &middot; <a href="games-blocks-Stack.xtl.src.html#L247">line 247</a></div>
+<div class="doc">
+<p>The picture, as SVG text: the well and the blocks in it, where the
+piece would land (an outline), the piece, the next piece beside the
+well, and the top line.</p>
+</div>
+<pre class="code"><span class="c-libfunc">ˡd̲raw</span> ← { (W, M, k, r, c, nx, sc, ln, acc, t, st) →
+  v ← <span class="c-number">0.0</span> <span class="c-number">0.0</span> <span class="c-number">480.0</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <a href="games-blocks-Stack.xtl.html#Y0">Y0</a> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">16.0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> <a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a>
+  box ← <a href="builtins.html#e_nclose" class="c-builtin">e̲nclose</a> @ <a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a> <span class="c-string">&quot;&lt;rect x=\&quot;{sv:w_hole X0 - 4.0}\&quot; y=\&quot;{sv:w_hole Y0 - 4.0}\&quot; width=\&quot;{sv:w_hole 6.0 + CELL * f_loat WIDE}\&quot; height=\&quot;{sv:w_hole 6.0 + CELL * f_loat DEEP}\&quot; fill=\&quot;#11121c\&quot; stroke=\&quot;#5c5f77\&quot; stroke-width=\&quot;3\&quot;/&gt;&quot;</span>
+  (i, j) ← <a href="games-blocks-Stack.xtl.html#h.c_ells" class="c-libfunc">ʰc̲ells</a> (M, <a href="games-blocks-Stack.xtl.html#h.l_anding" class="c-libfunc">ʰl̲anding</a> (W, M, r, c), c)
+  ghost ← <a href="games-blocks-Stack.xtl.html#h.b_locks" class="c-libfunc">ʰb̲locks</a> (i, j, k, <a href="games-blocks-Stack.xtl.html#X0">X0</a>, <a href="games-blocks-Stack.xtl.html#Y0">Y0</a>, <span class="c-number">1</span>)
+  (i, j) ← <a href="games-blocks-Stack.xtl.html#h.c_ells" class="c-libfunc">ʰc̲ells</a> (M, r, c)
+  piece ← (<a href="builtins.html#e_nclose" class="c-builtin">e̲nclose</a> <span class="c-string">&quot;&lt;g class=\&quot;you\&quot;&gt;&quot;</span>) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="games-blocks-Stack.xtl.html#h.b_locks" class="c-libfunc">ʰb̲locks</a> (i, j, k, <a href="games-blocks-Stack.xtl.html#X0">X0</a>, <a href="games-blocks-Stack.xtl.html#Y0">Y0</a>, <span class="c-number">0</span>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <a href="builtins.html#e_nclose" class="c-builtin">e̲nclose</a> <span class="c-string">&quot;&lt;/g&gt;&quot;</span>
+  N ← <a href="games-blocks-Stack.xtl.html#h.s_hape" class="c-libfunc">ʰs̲hape</a> nx
+  (i, j) ← <a href="games-blocks-Stack.xtl.html#h.c_ells" class="c-libfunc">ʰc̲ells</a> (N, <span class="c-number">0</span>, <span class="c-number">0</span>)
+  nxt ← <a href="games-blocks-Stack.xtl.html#h.b_locks" class="c-libfunc">ʰb̲locks</a> (i, j, nx, <a href="games-blocks-Stack.xtl.html#X0">X0</a> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">40.0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>, <a href="games-blocks-Stack.xtl.html#Y0">Y0</a> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">40.0</span>, <span class="c-number">0</span>)
+  label ← (<a href="games-blocks-Stack.xtl.html#X0">X0</a> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">40.0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>, <a href="games-blocks-Stack.xtl.html#Y0">Y0</a> <a href="builtins.html#-2b" class="c-symbol">+</a> <span class="c-number">22.0</span>, <span class="c-number">22.0</span>) <a href="lib-Svg.xtl.html#l.w_ords" class="c-libfunc">ˢᵛw̲ords</a> <span class="c-string">&quot;Next&quot;</span>
+  top ← (<span class="c-number">16.0</span>, <span class="c-number">42.0</span>, <span class="c-number">24.0</span>) <a href="lib-Svg.xtl.html#l.w_ords" class="c-libfunc">ˢᵛw̲ords</a> <a href="games-blocks-Stack.xtl.html#h.s_ays" class="c-libfunc">ʰs̲ays</a> (sc, ln, t, st)
+  v <a href="lib-Svg.xtl.html#l.p_icture" class="c-libfunc">ˢᵛp̲icture</a> (v <a href="lib-Svg.xtl.html#l.r_ect" class="c-libfunc">ˢᵛr̲ect</a> <span class="c-string">&quot;fill=\&quot;#1d1f2b\&quot;&quot;</span>) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> box <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="games-blocks-Stack.xtl.html#h.s_ettled" class="c-libfunc">ʰs̲ettled</a> W) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> ghost <a href="builtins.html#c_at" class="c-builtin">c̲at</a> piece <a href="builtins.html#c_at" class="c-builtin">c̲at</a> label <a href="builtins.html#c_at" class="c-builtin">c̲at</a> nxt <a href="builtins.html#c_at" class="c-builtin">c̲at</a> top
+}</pre>
+<details class="expansion"><summary><code><a href="std-System.xtlm.html#s.f_ormat-3c" class="c-macro">f̲ormat&lt;</a></code> expands to</summary><pre class="code">(<span class="c-string">&quot;&lt;rect x=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> <a href="games-blocks-Stack.xtl.html#X0">X0</a> <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">4.0</span>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; y=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> <a href="games-blocks-Stack.xtl.html#Y0">Y0</a> <a href="builtins.html#-2d" class="c-symbol">−</a> <span class="c-number">4.0</span>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; width=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> <span class="c-number">6.0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> <a href="games-blocks-Stack.xtl.html#WIDE">WIDE</a>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; height=\&quot;&quot;</span> <a href="builtins.html#c_at" class="c-builtin">c̲at</a> (<a href="builtins.html#f_ormat" class="c-builtin">f̲ormat</a> (<a href="lib-Svg.xtl.html#l.w_hole" class="c-libfunc">ˢᵛw̲hole</a> <span class="c-number">6.0</span> <a href="builtins.html#-2b" class="c-symbol">+</a> <a href="games-blocks-Stack.xtl.html#CELL">CELL</a> <a href="builtins.html#-2a" class="c-symbol">×</a> <a href="builtins.html#f_loat" class="c-builtin">f̲loat</a> <a href="games-blocks-Stack.xtl.html#DEEP">DEEP</a>)) <a href="builtins.html#c_at" class="c-builtin">c̲at</a> <span class="c-string">&quot;\&quot; fill=\&quot;#11121c\&quot; stroke=\&quot;#5c5f77\&quot; stroke-width=\&quot;3\&quot;/&gt;&quot;</span>)</pre></details>
+<div class="uses">Used in: <a href="games-blocks-blocks.xtl.html#pic">pic</a>, <a href="games-blocks-play.xtl.html#u.s_how"><span class="c-userfunc">ᵘs̲how</span></a></div>
+</div>
+</main>
+</body>
+</html>

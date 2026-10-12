@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shut the Box</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/shut-the-box/shut-the-box-web-f1c3050b4f80f606.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/shut-the-box/shut-the-box-web-f1c3050b4f80f606_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/shut-the-box/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/shut-the-box/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/shut-the-box/shut-the-box-web-f1c3050b4f80f606.js" crossorigin="anonymous" integrity="sha384-KwZSxDGABD+4LwU1LbmkrStceGK9Eb9+6ego7Cd62s9v7PM/6JiTRRfmpyydgi46"><link rel="preload" href="/X_eTaL-games/shut-the-box/shut-the-box-web-f1c3050b4f80f606_bg.wasm" crossorigin="anonymous" integrity="sha384-ulyIrV+qSVrYp0+fKsMGQC5YNdGiJeKPMhWuQ5PSSHGAM84bNKf5sExg9bxZ7um/" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

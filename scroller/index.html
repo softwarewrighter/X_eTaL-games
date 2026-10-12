@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Side-scroller</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/scroller/scroller-web-2b05c6ea9fdc2e65.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/scroller/scroller-web-2b05c6ea9fdc2e65_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/scroller/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/scroller/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/scroller/scroller-web-2b05c6ea9fdc2e65.js" crossorigin="anonymous" integrity="sha384-LkxyQGAcNJw4MQbizxSUE+9LPM3MKc00PfwYC/6nHPAaWRmSEHWEOkuiCxloDDo1"><link rel="preload" href="/X_eTaL-games/scroller/scroller-web-2b05c6ea9fdc2e65_bg.wasm" crossorigin="anonymous" integrity="sha384-mihpgTtWEza5qvxNgqB68ac5gz+qvgrupbF28cC79WapGhB3IS9ZpaH+N5L5+zTW" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>
