@@ -480,7 +480,7 @@ h:u_pWords := { (top, cost) -> top ? "top"; @ f_ormat< "up {cost}" }
 ## X_eTaL-extensions (a 3D model rendered in Blender), every piece at one
 ## scale, standing on its tile.
 SPRITE := 112.0
-h:s_prite := { (x, y, name) -> @ f_ormat< "<image class=\"entity\" href=\"art/{name}.png\" x=\"{sv:w_hole (h:s_x (x, y)) - 0.5 * SPRITE}\" y=\"{sv:w_hole (h:s_y (x, y, 0.0)) - 0.85 * SPRITE}\" width=\"{sv:w_hole SPRITE}\" height=\"{sv:w_hole SPRITE}\"/>" }
+h:s_prite := { (x, y, name) -> @ f_ormat< "<image class=\"entity flat\" href=\"art/{name}.png\" x=\"{sv:w_hole (h:s_x (x, y)) - 0.5 * SPRITE}\" y=\"{sv:w_hole (h:s_y (x, y, 0.0)) - 0.85 * SPRITE}\" width=\"{sv:w_hole SPRITE}\" height=\"{sv:w_hole SPRITE}\"/>" }
 ## A creep's hit points, as a bar over it.
 h:h_pBar := { (x, y, kind, hp, z) ->
   frac := 0.0 m_ax 1.0 m_in hp / kind s_elect HP
@@ -507,6 +507,8 @@ h:t_hings := { (W, mo) ->
   order := g_rade ('+ r_/_2 P) + 0.01 * f_loat 0 + e s_elect h:h_asShot W
   '{ i -> e_nclose h:t_hing (W, i s_elect e, i s_elect P, mo) } e_ach order
 }
+## The board's things, unless the grimoire is open over them.
+h:t_hingsIf := { (W, mo, md) -> md = 1 ? 0 r_eshape e_nclose ""; h:t_hings (W, mo) }
 h:t_hing := { (W, n, p, mo) ->
   x := f_irst p
   y := 2 s_elect p
@@ -541,10 +543,16 @@ h:w_rap := { t n ->
   '{ i -> e_nclose t:j_oin '{ x -> e_nclose (d_isclose x) c_at " " } e_ach (line = i) r_eplicate w } e_ach u_nique line
 }
 h:l_en := { x -> t_ally d_isclose x }
+## The grimoire's panel; with the art, a window in it where the piece
+## turns in the 3D view (behind the picture).
+h:p_anel := { art ->
+  art ? "<path d=\"M46 70 H834 Q850 70 850 86 V574 Q850 590 834 590 H46 Q30 590 30 574 V86 Q30 70 46 70 Z M70 130 V470 H410 V130 Z\" fill=\"#11121c\" fill-rule=\"evenodd\" opacity=\"0.96\" stroke=\"#8d99ae\" stroke-width=\"2\"/>"
+  "<rect x=\"30\" y=\"70\" width=\"820\" height=\"520\" rx=\"16\" fill=\"#11121c\" opacity=\"0.96\" stroke=\"#8d99ae\" stroke-width=\"2\"/>"
+}
 ## The grimoire's page pg: the piece turning (the 3D art's turntable, or
 ## the game's own drawing turned), its name and what it does.
 h:p_age := { (pg, t) ->
-  panel := e_nclose "<rect x=\"30\" y=\"70\" width=\"820\" height=\"520\" rx=\"16\" fill=\"#11121c\" opacity=\"0.96\" stroke=\"#8d99ae\" stroke-width=\"2\"/>"
+  panel := e_nclose h:p_anel ART
   tower := pg <= 9
   pic := h:s_pin (pg, t)
   words := h:a_bout pg
@@ -556,7 +564,7 @@ h:p_age := { (pg, t) ->
 ## The piece on page pg: its picture when the art is in use (it turns in
 ## the 3D view), else the game's own drawing, turned with the time.
 h:s_pin := { (pg, t) ->
-  ART ? e_nclose @ f_ormat< "<image class=\"entity\" href=\"art/{d_isclose pg s_elect PIECES}.png\" x=\"70\" y=\"130\" width=\"340\" height=\"340\"/>"
+  ART ? e_nclose @ f_ormat< "<rect class=\"flat\" x=\"70\" y=\"130\" width=\"340\" height=\"340\" fill=\"#11121c\"/><image class=\"entity flat\" href=\"art/{d_isclose pg s_elect PIECES}.png\" x=\"70\" y=\"130\" width=\"340\" height=\"340\"/>"
   pg <= 9 ? e_nclose "<g transform=\"translate(-816 -504) scale(3)\">" c_at (h:d_rawTower (6.0, 6.0, 1 + (pg - 1) d_iv 3, 1 + (pg - 1) m_od 3, t)) c_at "</g>"
   e_nclose "<g transform=\"translate(-992 -623) scale(3.5)\">" c_at (h:d_rawCreep (5.6, 5.6, pg - 9, 1000.0)) c_at "</g>"
 }
@@ -597,6 +605,90 @@ l:d_raw := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) ->
   top := (16.0, 40.0, 22.0) h:w_ords h:s_ays (mo, lv, wv, t, st)
   said := (16.0, 70.0, 18.0) h:w_ords ms
   book := h:b_ookIf (md, pg, t)
-  VIEW sv:p_icture (VIEW sv:r_ect "fill=\"#1d1f2b\"") c_at (e_nclose BOARD) c_at (h:t_hings (W, mo)) c_at (((3 * sel - 1) + 1 2 4 i_ndexOf sp) s_elect BARS) c_at top c_at said c_at book
+  scene := h:s_ceneIf (W, md, pg, t)
+  VIEW sv:p_icture (VIEW sv:r_ect "class=\"flat\" fill=\"#1d1f2b\"") c_at (e_nclose "<g class=\"flat\">" c_at BOARD c_at "</g>") c_at scene c_at (h:t_hingsIf (W, mo, md)) c_at (((3 * sel - 1) + 1 2 4 i_ndexOf sp) s_elect BARS) c_at top c_at said c_at book
 }
 h:b_ookIf := { (md, pg, t) -> md = 0 ? 0 r_eshape e_nclose ""; h:p_age (pg, t) }
+
+### The scene, for a 3D view
+
+## With the art, the picture carries what a 3D view of it is to draw, as
+## JSON in its metadata: a camera that sees the board as this picture's
+## isometric map does (30 degrees above it, along its diagonal, as many
+## units of the picture to a tile), the tiles, every piece (its model,
+## where it stands, the way it faces, the clip it plays and how far into
+## it), the shots. A page that can draws that scene behind the picture
+## and hides what the picture marks "flat" (the board and the pieces'
+## pictures); one that cannot shows the picture as it is.
+SCALE := TW * 2.0 ^ 0.5
+## Numbers as a JSON list.
+h:j_son := { v -> "[" c_at (1 d_rop t:j_oin '{ x -> e_nclose "," c_at f_ormat x } e_ach v) c_at "]" }
+## Text as a JSON string (the names and colors here need no escapes).
+h:q_uote := { x -> "\"" c_at x c_at "\"" }
+## The board point at the middle of the picture: x and z.
+MID := (0.5 * ((0.5 * 3 s_elect VIEW) - OX) / TW) + 0.5 * ((0.5 * 4 s_elect VIEW) - OY) / TH
+MIDZ := (0.5 * ((0.5 * 4 s_elect VIEW) - OY) / TH) - 0.5 * ((0.5 * 3 s_elect VIEW) - OX) / TW
+## The camera: looking at the board point at the middle of the picture
+## (up above the ground), along the board's diagonal from 30 degrees up,
+## k picture units a tile.
+h:c_amera := { (k, up) ->
+  tx := MID
+  tz := MIDZ
+  "\"camera\":{\"target\":" c_at (h:j_son tx c_at up c_at tz) c_at ",\"dir\":" c_at (h:j_son 0.6124 0.5 0.6124) c_at ",\"scale\":" c_at (f_ormat k) c_at "}"
+}
+## A piece of the scene: its model, place, heading, clip and time.
+h:p_iece := { (m, x, z, hx, hz, clip, t) ->
+  "{\"m\":" c_at (h:q_uote m) c_at ",\"x\":" c_at (f_ormat x) c_at ",\"z\":" c_at (f_ormat z) c_at ",\"dir\":" c_at (h:j_son hx c_at hz) c_at ",\"clip\":" c_at (h:q_uote clip) c_at ",\"t\":" c_at (f_ormat t) c_at "}"
+}
+## The towers: idle, or the fire clip just after a shot.
+h:t_owerPieces := { (W, t) ->
+  tw := h:t_owers W
+  '{ i -> e_nclose h:t_owerPiece (W, i s_elect tw, t) } e_ach r_ange t_ally tw
+}
+h:t_owerPiece := { (W, n, t) ->
+  j := W h:r_ow n
+  p := n s_elect h:p_os W
+  since := (j s_elect COOLDOWN) - n s_elect h:c_ool W
+  since < 0.4 ? h:p_iece (d_isclose j s_elect PIECES, f_irst p, 2 s_elect p, 0.0, 1.0, "fire", since)
+  h:p_iece (d_isclose j s_elect PIECES, f_irst p, 2 s_elect p, 0.0, 1.0, "idle", t)
+}
+## The creeps: walking, each facing along the road where it is.
+h:c_reepPieces := { (W, t) ->
+  c := h:c_reeps W
+  '{ i -> e_nclose h:c_reepPiece (W, i s_elect c, t) } e_ach r_ange t_ally c
+}
+h:c_reepPiece := { (W, n, t) ->
+  p := n s_elect h:p_os W
+  i := 0 m_ax (LONG - 1) m_in f_loor n s_elect h:p_rog W
+  hx := ((i + 2) s_elect PX) - (i + 1) s_elect PX
+  hz := ((i + 2) s_elect PY) - (i + 1) s_elect PY
+  h:p_iece (d_isclose (9 + f_loor n s_elect h:k_ind W) s_elect PIECES, f_irst p, 2 s_elect p, hx, hz, "walk", t)
+}
+## The board's tiles: 1 road, 0 grass, row by row.
+ROADTEXT := t:j_oin '{ r -> e_nclose f_ormat r } e_ach ROAD
+## The scene of the board: its camera, tiles, pieces and shots.
+h:b_oardScene := { (W, t) ->
+  ps := (h:t_owerPieces (W, t)) c_at h:c_reepPieces (W, t)
+  S := (h:s_hots W) s_elect h:p_os W
+  shots := 1 d_rop t:j_oin '{ i -> e_nclose "," c_at h:j_son i s_elect S } e_ach r_ange t_ally S
+  "{\"view\":" c_at (h:j_son 2 d_rop VIEW) c_at ",\"background\":\"#1d1f2b\",\"base\":\"art/\"," c_at (h:c_amera (SCALE, 0.0)) c_at ",\"tiles\":{\"cols\":" c_at (f_ormat C) c_at ",\"road\":" c_at (h:q_uote ROADTEXT) c_at ",\"colors\":[\"#3a7d44\",\"#8d7b5e\"]},\"pieces\":[" c_at (1 d_rop t:j_oin '{ x -> e_nclose "," c_at d_isclose x } e_ach ps) c_at "],\"shots\":[" c_at shots c_at "]}"
+}
+## The scene of the grimoire's page pg: its piece alone, turning, where
+## the panel's window is (200 picture units left of the middle: along
+## the picture's x, which is the board's x less its z).
+h:b_ookScene := { (pg, t) ->
+  k := h:z_oom pg
+  e := 200.0 / k * 2.0 ^ 0.5
+  piece := h:p_iece (d_isclose pg s_elect PIECES, MID - e, MIDZ + e, s_in 0.8 * t, c_os 0.8 * t, "idle", t)
+  "{\"view\":" c_at (h:j_son 2 d_rop VIEW) c_at ",\"background\":\"#11121c\",\"base\":\"art/\"," c_at (h:c_amera (k, h:h_eight pg)) c_at ",\"pieces\":[" c_at piece c_at "],\"shots\":[]}"
+}
+## How near the grimoire's camera is (picture units a tile) and how
+## high it looks: towers are taller than creeps.
+h:z_oom := { pg -> pg <= 9 ? 170.0; 260.0 }
+h:h_eight := { pg -> pg <= 9 ? 0.75; 0.25 }
+## The scene as the picture's metadata, with the art; else nothing.
+h:s_ceneIf := { (W, md, pg, t) ->
+  n_ot ART ? 0 r_eshape e_nclose ""
+  md = 1 ? e_nclose "<metadata id=\"scene\">" c_at (h:b_ookScene (pg, t)) c_at "</metadata>"
+  e_nclose "<metadata id=\"scene\">" c_at (h:b_oardScene (W, t)) c_at "</metadata>"
+}

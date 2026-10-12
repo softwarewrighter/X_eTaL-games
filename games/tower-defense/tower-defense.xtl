@@ -19,12 +19,12 @@ s := (s td:k_ey "2") td:c_lick 352.0 240.0
 td:t_owers s
 td:s_core s
 
-# The first wave (six runners) and thirty seconds of the clock: the
+# The first wave (six runners) and twenty seconds of the clock: the
 # towers shoot the creep in reach that has come farthest; beaten creeps
 # pay. Towers, creeps, shots alive; money, lives, waves begun.
 s := s td:k_ey " "
 u:g_o := { s n -> (n = 0) | 0 < td:s_tatus s ? s; (s td:t_ick 0.1) u:g_o n - 1 }
-s := s u:g_o 300
+s := s u:g_o 200
 td:c_ounts s
 td:s_core s
 pic := []S_HOW td:d_raw s

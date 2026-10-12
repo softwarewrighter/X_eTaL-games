@@ -164,6 +164,12 @@ dialog.board { border: 1px solid var(--line); border-radius: 12px; padding: 34px
   max-height: 94vh; background: var(--card); color: var(--fg); overflow: auto; }
 dialog.board::backdrop { background: rgba(0, 0, 0, 0.55); }
 dialog.board .board-pic svg { display: block; width: 100%; height: auto; cursor: pointer; }
+/* A 3D view of the scene the program's picture describes (scene.js), behind the picture;
+   while it draws, the picture's flat board and pieces are hidden. */
+dialog.board .board-pic { position: relative; }
+dialog.board .board-pic canvas.scene { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+dialog.board .board-pic svg { position: relative; }
+dialog.board .board-pic.scene-on svg .flat { display: none; }
 dialog.board .close { position: absolute; top: 4px; right: 10px; font: 1.6rem/1 system-ui, sans-serif;
   background: none; border: 0; color: var(--muted); cursor: pointer; }
 dialog.board .close:hover { color: var(--fg); }

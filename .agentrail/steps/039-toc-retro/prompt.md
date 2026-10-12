@@ -1,0 +1,1 @@
+the catalog (the user, 2026-10-12): Adventures implies text adventures; Robot chase and Star Trek move to a new group Retro (the classic BASIC-era games); Trek adventure stays in Adventures with the dungeon and the maze. games.py GROUPS, the template, each game.toml's group; the TOC and its browser check.

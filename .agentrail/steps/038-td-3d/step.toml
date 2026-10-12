@@ -1,6 +1,6 @@
 number = 38
 slug = "td-3d"
-status = "pending"
+status = "in-progress"
 description = "tower defense (the user, 2026-10-11): a three.js view (from a CDN) of a scene..."
 role = "production"
 context_files = []

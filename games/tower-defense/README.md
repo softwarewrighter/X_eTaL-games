@@ -76,10 +76,18 @@ What was asked is in [docs/extensions-ask.md](../../docs/extensions-ask.md).
 picture each, pinned by commit and SHA-256) into the git-ignored
 `assets/cache/art/`; the pages build copies them next to the page.
 With `art = "1"` in `td.toml`, the game's X_eTaL draws each piece's
-picture on the board and in the grimoire; with `"0"` it draws its own
-boxes and balls. Next: the board as a three.js scene that the X_eTaL
-program describes, playing the models' clips (towers `idle` and
-`fire`, creeps `walk` and `hit`).
+picture on the board and in the grimoire, and also describes the board
+as a **3D scene**: JSON in the picture's `<metadata id="scene">`, with a
+camera that sees the board exactly as the picture's isometric map does
+(30 degrees up, 45 picture units a tile), the tiles, and every piece's
+model, place, heading, clip and time (towers `idle`, or `fire` just
+after a shot; creeps `walk`, facing along the road). The page draws that
+scene with three.js behind the picture and hides the picture's flat
+board and pieces (marked `flat`), so the labels, hit points, toolbar
+and grimoire stay the program's SVG and clicks work as before; where
+three.js or WebGL is missing, the flat picture stays. In the grimoire
+the piece stands in a window of the panel, turning. With `"0"` the game
+draws its own boxes and balls.
 
 ## Play it
 

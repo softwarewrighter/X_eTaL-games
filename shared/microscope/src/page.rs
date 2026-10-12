@@ -246,6 +246,36 @@ fn picture_point(e: &MouseEvent) -> Option<(f64, f64)> {
     })
 }
 
+/// The scene a picture carries for a 3D view: the JSON in its
+/// `<metadata id="scene">`, if any.
+fn scene_text(svg: &str) -> Option<&str> {
+    let open = "<metadata id=\"scene\">";
+    let start = svg.find(open)? + open.len();
+    let end = svg[start..].find("</metadata>")? + start;
+    Some(&svg[start..end])
+}
+
+/// The scene drawn on the canvas by the page's scene.js
+/// (`window.xetalScene.update`), when the page has it: whether every
+/// piece was drawn.
+fn draw_scene(canvas: &NodeRef, json: &str) -> bool {
+    #[cfg(target_arch = "wasm32")]
+    {
+        let draw = || -> Option<bool> {
+            let canvas = canvas.cast::<web_sys::HtmlCanvasElement>()?;
+            let view = js_sys::Reflect::get(&web_sys::window()?.into(), &"xetalScene".into()).ok()?;
+            let update = js_sys::Reflect::get(&view, &"update".into()).ok()?.dyn_into::<js_sys::Function>().ok()?;
+            update.call2(&view, &canvas, &json.into()).ok()?.as_bool()
+        };
+        draw().unwrap_or(false)
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let _ = (canvas, json);
+        false
+    }
+}
+
 /// An interactive game: a button opening a large dialog (closed by
 /// Escape, its X, or a click on the background) with the program's
 /// latest picture; a click on it is given to the program as an event
@@ -396,6 +426,22 @@ fn board(p: &BoardProps) -> Html {
         });
     }
     let picture = t.lines.iter().rev().find_map(|l| match l { Line::Picture(svg) => Some(svg.clone()), _ => None });
+    // A picture may carry a scene for a 3D view (<metadata id="scene">,
+    // JSON the program wrote): scene.js draws exactly that on the canvas
+    // behind the picture, and while it can the picture's flat board and
+    // pieces (marked "flat") are hidden. The page computes nothing from
+    // the game: it hands the program's text over.
+    let canvas = use_node_ref();
+    let scene_on = use_state(|| false);
+    {
+        let (canvas, scene_on, scene) = (canvas.clone(), scene_on.clone(), picture.as_deref().and_then(scene_text).map(str::to_string));
+        use_effect_with(scene, move |scene| {
+            let drew = scene.as_deref().is_some_and(|json| draw_scene(&canvas, json));
+            if drew != *scene_on {
+                scene_on.set(drew);
+            }
+        });
+    }
     let said: Vec<&String> = t.lines.iter().filter_map(|l| match l { Line::Out(s) => Some(s), _ => None }).collect();
     html! {
         <>
@@ -405,7 +451,12 @@ fn board(p: &BoardProps) -> Html {
             // An error stops the program: said first, above the picture it
             // left, so a game that stopped never looks merely unresponsive.
             if let Some(e) = &t.error { <div class="err board-err">{format!("The program stopped: {e}")}</div> }
-            if let Some(svg) = picture { <div class="board-pic">{ Html::from_html_unchecked(AttrValue::from(svg)) }</div> }
+            if let Some(svg) = picture {
+                <div class={classes!("board-pic", (*scene_on).then_some("scene-on"))}>
+                    <canvas class="scene" ref={canvas.clone()} />
+                    { Html::from_html_unchecked(AttrValue::from(svg)) }
+                </div>
+            }
             <pre class="transcript" hidden=true>{ for said.iter().map(|s| format!("{s}\n")) }</pre>
         </dialog>
         </>

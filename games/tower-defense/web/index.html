@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tower defense</title>
+  <!-- three.js (a CDN, the user's choice) for the 3D view of the scene the program describes -->
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+  <link data-trunk rel="copy-file" href="../../../shared/microscope/scene.js" />
+  <script type="module" src="scene.js"></script>
   <link data-trunk rel="rust" data-bin="tower-defense-web" />
   <link data-trunk rel="copy-file" href="../../../images/xetal-logo-green.png" />
   <link data-trunk rel="copy-dir" href="../assets/cache/art" />

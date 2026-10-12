@@ -204,7 +204,7 @@ const TICKS = `(async () => {
   await sleep(300);
   const err = document.querySelector("dialog.board .err")?.textContent || "";
   const nb = [...document.querySelectorAll(".nb .out > div:not([class])")].map((d) => d.textContent + "\\n").join("");
-  return { played, moved: !!x0 && where() !== x0, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
+  return { scene: !!pic()?.querySelector("metadata#scene"), scene3d: !!document.querySelector(".board-pic.scene-on"), played, moved: !!x0 && where() !== x0, err, nb, pics: document.querySelectorAll("dialog.board .board-pic svg").length, controls: !!document.querySelector(".controls") };
 })()`;
 const BOARD_OPEN = `(() => { if (!document.querySelector("dialog.board[open]")) document.querySelector("button.board-open").click(); return !!document.querySelector("dialog.board[open]"); })()`;
 const BOARD_IS_OPEN = `!!document.querySelector("dialog.board[open]")`;
@@ -316,7 +316,7 @@ try {
         const problem = (xrefs.bad.length && `cross-reference links lead nowhere: ${xrefs.bad.join(", ")}`) || (!xrefs.n && "no cross-reference links")
           || (interactive && await boardProblems(page)) || await aboutProblems(page, ".brand h1 a.wiki, .brand h1 button.about-open", wiki);
         if (problem) { console.log(`FAIL: ${slug} (browser): ${problem}`); failed++; }
-        else if (ticks) console.log(`ok: ${slug} (browser: the clock ran in its dialog, ${got.played} s of play in 3 s, keys moved you, notebook matches the golden, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
+        else if (ticks) console.log(`ok: ${slug} (browser: the clock ran in its dialog, ${got.played} s of play in 3 s, keys moved you,${got.scene ? (got.scene3d ? " its scene drawn in 3D," : " its scene not drawn in 3D here (no WebGL?), the flat picture shown,") : ""} notebook matches the golden, closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
         else if (interactive) console.log(`ok: ${slug} (browser: ${typed.length} clicks and keys in its dialog, transcript and notebook match the goldens,${got.restarted ? " a key after the end started a new game," : ""} closed by Escape, the background and the X, only Play, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
         else console.log(`ok: ${slug} (browser: ${typed.length} lines typed, terminal and notebook match the goldens${got.pics ? `, ${got.pics} pictures` : ""}, ${xrefs.n} docs links, ${wiki ? "Wikipedia link" : "about dialog"})`);
       }
