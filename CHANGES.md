@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 14:00 `chore` Saga step more-covers completed.
+
 - 13:40 `feat` Four more covers (the user's art): Space Rocks on Asteroids, Falling Blocks on Falling blocks, Ray Caster on the Raycaster (its ESRB acronym blurred), Horse Race on Horse race; scripts/covers.py lists them.
 
 - 12:11 `chore` Saga step covers completed.
