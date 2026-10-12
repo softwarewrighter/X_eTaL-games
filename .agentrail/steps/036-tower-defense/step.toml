@@ -1,6 +1,6 @@
 number = 36
 slug = "tower-defense"
-status = "pending"
+status = "in-progress"
 description = "new game (the user, 2026-10-11): games/tower-defense/ on lib/Ecs: enemies alo..."
 role = "production"
 context_files = []

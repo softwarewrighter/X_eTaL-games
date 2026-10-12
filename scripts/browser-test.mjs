@@ -161,7 +161,10 @@ const CLICK = (lines, ended) => `(async () => {
     const svg = document.querySelector("dialog.board[open] .board-pic svg");
     const vb = svg.getAttribute("viewBox").split(" ").map(Number);
     const r = svg.getBoundingClientRect();
-    const cx = r.left + (x - vb[0]) / vb[2] * r.width, cy = r.top + (y - vb[1]) / vb[3] * r.height;
+    // The viewBox fitted into the drawn box, centered (letterboxed when
+    // the shapes differ), as SVG draws it.
+    const k = Math.min(r.width / vb[2], r.height / vb[3]);
+    const cx = r.left + (r.width - k * vb[2]) / 2 + (x - vb[0]) * k, cy = r.top + (r.height - k * vb[3]) / 2 + (y - vb[1]) * k;
     const el = document.elementFromPoint(cx, cy) || svg;
     el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: cx, clientY: cy }));
     await until(() => said() !== before, "the program to answer " + line);

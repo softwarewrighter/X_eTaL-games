@@ -1,0 +1,585 @@
+## Tower defense's rules, a library: tower-defense.xtl (scripted),
+## play.xtl (the game: clicks, keys and the clock) and the web page all
+## use these. Built on lib/Ecs: the creeps, the towers and their shots
+## are rows of one world, and every rule is a system over all of them at
+## once. The game is 2D underneath (a grid of tiles and a road) and
+## drawn in 2.5D: an isometric god's-eye view, every point of the board
+## turned into the picture by one linear map (and a click turned back by
+## its inverse). A game's state is a tuple: (the world, the money, the
+## lives, the waves begun, the creeps still to come, the seconds to the
+## next, the tower picked to build, the view (0 the board, 1 the
+## grimoire), the grimoire's page, the seconds played, how it stands: 0
+## playing, 1 every wave beaten, 2 no lives left; how fast the game
+## runs (1, 2 or 4 times), and what the last click or key did).
+
+"ec:" u_se< "Ecs"
+"sv:" u_se< "Svg"
+"t:" u_se< "Text"
+
+### The data
+
+## The layout: where it is (x then y, in tiles), what kind (1 to 3) and
+## level, how far a creep has come along the road, its hit points, the
+## seconds it is slowed, a tower's seconds to its next shot, a shot's
+## target (an entity), damage, splash and chill, and what it is.
+"h" ec:c_omponents< "pos:2 kind level prog hp slow cool target dmg area chill tower creep shot"
+## The map: R rows of C tiles, row by row; the grass as 1s, the road as
+## 1s.
+rows := "td.toml" []L_IST "map"
+cells := t:j_oin rows
+R := t_ally rows
+C := (t_ally cells) d_iv R
+GRASS := 0 + cells = f_irst "."
+ROAD := 1 - GRASS
+## A distance beyond any on the map.
+FAR := 1000000
+## The road's tiles in order, from S to E: every road tile's distance to
+## E by a flood (each one more than its nearest road neighbor, all at
+## once, until nothing changes), then the tiles sorted by it, farthest
+## first. The road is one path, so that order is the way along it.
+h:s_hift := { d k ->
+  k > 0 ? (k d_rop d) c_at k r_eshape FAR
+  ((n_eg k) r_eshape FAR) c_at ((t_ally d) + k) t_ake d
+}
+COL := ((r_ange t_ally cells) - 1) m_od C
+h:f_lood := { d ->
+  e := (FAR * GRASS) m_ax d m_in 1 + ((FAR * 0 + COL = C - 1) m_ax d h:s_hift 1) m_in ((FAR * 0 + COL = 0) m_ax d h:s_hift -1) m_in (d h:s_hift C) m_in d h:s_hift n_eg C
+  '& r_/ e = d ? d
+  h:f_lood e
+}
+DIST := h:f_lood FAR * 0 + (r_ange t_ally cells) != f_irst w_here cells = f_irst "E"
+PATH := (g_rade n_eg (w_here ROAD) s_elect DIST) s_elect w_here ROAD
+PX := 0.5 + f_loat (PATH - 1) m_od C
+PY := 0.5 + f_loat (PATH - 1) d_iv C
+## How long the road is, in tiles.
+LONG := (t_ally PATH) - 1
+## A column of a table from td.toml as numbers.
+h:c_ol := { T j -> 'sv:n_um e_ach j s_elect_2 T }
+## The towers, a row per kind and level (arrow 1 to 3, cannon 1 to 3,
+## frost 1 to 3).
+TT := ("td.toml" "tower") []T_ABLE ("towers" "tower-fields")
+RANGE := TT h:c_ol 2
+DAMAGE := TT h:c_ol 3
+COOLDOWN := TT h:c_ol 4
+SPLASH := TT h:c_ol 5
+CHILL := TT h:c_ol 6
+COST := f_loor TT h:c_ol 7
+## The creeps, a row per kind.
+CT := ("td.toml" "creep") []T_ABLE ("creeps" "creep-fields")
+HP := CT h:c_ol 2
+SPEED := CT h:c_ol 3
+ARMOR := CT h:c_ol 4
+BOUNTY := f_loor CT h:c_ol 5
+LEAK := f_loor CT h:c_ol 6
+LETTERS := t:j_oin 7 s_elect_2 CT
+## The waves, the money and lives at the start, the art switch.
+WAVES := "td.toml" []L_IST "waves"
+start := f_loor 'sv:n_um e_ach "td.toml" []L_IST "start"
+ART := "1" m_atch d_isclose f_irst "td.toml" []L_IST "art"
+## A shot's speed, tiles a second; the seconds between creeps.
+SHOT := 9.0
+GAP := 1.0
+
+### A new game
+
+## n by 2 from two columns.
+h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
+## n rows, each the value v_i, m wide; and n rows each v, m wide.
+h:r_ows := { (v, m) -> o_\ (m c_at t_ally v) r_eshape v }
+h:c_ols := { (v, n) -> (n c_at t_ally v) r_eshape v }
+# :: (Any a, Num b, Num c, Num d, Num e, Num f, Num g, Num h) => a -> (Float, Int, Int, b, c, Float, d, e, f, Float, g, h, Char)
+## A new game: an empty world, the money and lives from td.toml, no wave
+## begun, the arrow tower picked.
+l:n_ew := { z -> (h:w_orld 96, f_irst start, 2 s_elect start, 0, 0 r_eshape 0, 0.0, 1, 0, 1, 0.0, 0, 1, "Pick a tower below, click the grass to build it; click a tower to upgrade it (its cost is over it).") }
+
+### The systems
+
+## The creeps, the towers, the shots alive.
+h:c_reeps := { W -> w_here (ec:a_live W) & h:h_asCreep W }
+h:t_owers := { W -> w_here (ec:a_live W) & h:h_asTower W }
+h:s_hots := { W -> w_here (ec:a_live W) & h:h_asShot W }
+## Where along the road the creeps are, from how far each has come: the
+## segment it is on and how far along it, every creep at once.
+h:a_long := { p ->
+  i := 0 m_ax (LONG - 1) m_in f_loor p
+  f := p - f_loat i
+  x := ((i + 1) s_elect PX) + f * ((i + 2) s_elect PX) - (i + 1) s_elect PX
+  y := ((i + 1) s_elect PY) + f * ((i + 2) s_elect PY) - (i + 1) s_elect PY
+  h:p_air (x, y)
+}
+## The next creep of the wave onto the road, when its time has come.
+h:s_pawning := { (W, q, tm) ->
+  (0 = t_ally q) | tm > 0.0 ? (W, q, tm)
+  (W, ids) := W ec:s_pawn 1
+  k := f_irst q
+  W := W h:s_etCreep (ids, 1.0)
+  W := W h:s_etKind (ids, f_loat k)
+  W := W h:s_etProg (ids, 0.0)
+  W := W h:s_etHp (ids, k s_elect HP)
+  W := W h:s_etSlow (ids, 0.0)
+  W := W h:s_etPos (ids, h:a_long 1 r_eshape 0.0)
+  (W, 1 d_rop q, GAP)
+}
+## Every creep comes along the road by its speed (half while slowed);
+## the creeps past E get out, and cost their lives.
+h:c_rawl := { W dt ->
+  c := h:c_reeps W
+  0 = t_ally c ? (W, 0)
+  k := f_loor c s_elect h:k_ind W
+  sl := c s_elect h:s_low W
+  p := (c s_elect h:p_rog W) + dt * (k s_elect SPEED) * 1.0 - 0.5 * f_loat sl > 0.0
+  W := W h:s_etProg (c, p)
+  W := W h:s_etSlow (c, 0.0 m_ax sl - dt)
+  W := W h:s_etPos (c, h:a_long p)
+  out := p >= f_loat LONG
+  (W ec:d_espawn out r_eplicate c, '+ r_/ 0 c_at out r_eplicate k s_elect LEAK)
+}
+## A tower's row in the towers' table: its kind and level.
+h:r_ow := { W tw -> (3 * (f_loor tw s_elect h:k_ind W) - 1) + f_loor tw s_elect h:l_evel W }
+## The towers aim and shoot: every tower against every creep at once (a
+## table, towers down, creeps across), each ready tower at the creep in
+## its reach that has come farthest, a shot spawned for each.
+h:a_im := { W dt ->
+  tw := h:t_owers W
+  0 = t_ally tw ? W
+  cool := 0.0 m_ax (tw s_elect h:c_ool W) - dt
+  W := W h:s_etCool (tw, cool)
+  c := h:c_reeps W
+  0 = t_ally c ? W
+  j := W h:r_ow tw
+  T := tw s_elect h:p_os W
+  P := c s_elect h:p_os W
+  dx := (1 s_elect_2 T) '- t_able 1 s_elect_2 P
+  dy := (2 s_elect_2 T) '- t_able 2 s_elect_2 P
+  reach := h:r_ows (j s_elect RANGE, t_ally c)
+  S := (f_loat ((dx * dx) + dy * dy) <= reach * reach) * h:c_ols (1.0 + c s_elect h:p_rog W, t_ally tw)
+  best := 'm_ax r_/_2 S
+  pick := 'm_in r_/_2 (h:c_ols (r_ange t_ally c, t_ally tw)) + 1000 * 0 + S < h:r_ows (best, t_ally c)
+  ready := (cool <= 0.0) & best > 0.0
+  n := '+ r_/ 0 + ready
+  0 = n ? W
+  from := ready r_eplicate tw
+  js := ready r_eplicate j
+  (W, ids) := W ec:s_pawn n
+  W := W h:s_etShot (ids, 1.0)
+  W := W h:s_etPos (ids, from s_elect h:p_os W)
+  W := W h:s_etTarget (ids, f_loat (ready r_eplicate pick) s_elect c)
+  W := W h:s_etDmg (ids, js s_elect DAMAGE)
+  W := W h:s_etArea (ids, js s_elect SPLASH)
+  W := W h:s_etChill (ids, js s_elect CHILL)
+  W h:s_etCool (from, js s_elect COOLDOWN)
+}
+## Shots that reach their target: every hitting shot against every creep
+## at once (shots down, creeps across): the target, and with a splash
+## every creep near where it lands, takes the shot's damage less its
+## armor (never below 1); a chill slows them.
+h:i_mpact := { W hs ->
+  c := h:c_reeps W
+  tg := f_loor hs s_elect h:t_arget W
+  I := tg s_elect h:p_os W
+  P := c s_elect h:p_os W
+  dx := (1 s_elect_2 I) '- t_able 1 s_elect_2 P
+  dy := (2 s_elect_2 I) '- t_able 2 s_elect_2 P
+  area := h:r_ows (hs s_elect h:a_rea W, t_ally c)
+  H := (tg '= t_able c) | (area > 0.0) & ((dx * dx) + dy * dy) <= area * area
+  arm := h:c_ols ((f_loor c s_elect h:k_ind W) s_elect ARMOR, t_ally hs)
+  D := (f_loat H) * 1.0 m_ax (h:r_ows (hs s_elect h:d_mg W, t_ally c)) - arm
+  cold := 'm_ax r_/_1 (f_loat H) * h:r_ows (hs s_elect h:c_hill W, t_ally c)
+  W := W h:s_etHp (c, (c s_elect h:h_p W) - '+ r_/_1 D)
+  W h:s_etSlow (c, (c s_elect h:s_low W) m_ax cold)
+}
+## Every shot flies at its target; shots whose target is gone vanish,
+## and those that reach it hit (and go).
+h:f_ly := { W dt ->
+  s := h:s_hots W
+  0 = t_ally s ? W
+  alive := (ec:a_live W) & h:h_asCreep W
+  ok := (f_loor s s_elect h:t_arget W) s_elect alive
+  W := W ec:d_espawn (n_ot ok) r_eplicate s
+  s := ok r_eplicate s
+  0 = t_ally s ? W
+  S := s s_elect h:p_os W
+  D := ((f_loor s s_elect h:t_arget W) s_elect h:p_os W) - S
+  far := ('+ r_/_2 D * D) ^ 0.5
+  k := 1.0 m_in (SHOT * dt) / 0.001 m_ax far
+  W := W h:s_etPos (s, S + D * h:p_air (k, k))
+  hs := (far <= SHOT * dt) r_eplicate s
+  0 = t_ally hs ? W
+  (W h:i_mpact hs) ec:d_espawn hs
+}
+## The creeps with no hit points left are beaten: their money is won,
+## and they go.
+h:b_eaten := { W ->
+  c := h:c_reeps W
+  dead := ((c s_elect h:h_p W) <= 0.0) r_eplicate c
+  (W ec:d_espawn dead, '+ r_/ 0 c_at (f_loor dead s_elect h:k_ind W) s_elect BOUNTY)
+}
+## How it stands: no lives 2, every wave begun and beaten 1, else 0.
+h:o_utcome := { (lv, wv, q, W) ->
+  lv <= 0 ? 2
+  (wv = t_ally WAVES) & (0 = t_ally q) & 0 = t_ally h:c_reeps W ? 1
+  0
+}
+# :: (Any a, Num b, Any c, Num d, Num e, Any f) => (Float, Int, Int, Int, Int, Float, a, b, c, Float, d, e, f) -> Float -> (Float, Int, Int, Int, Int, Float, a, b, c, Float, d, e, f)
+## A tick of the clock, dt seconds: the next creep comes, the creeps
+## come along the road, the towers shoot, the shots fly and hit, the
+## beaten creeps pay; each a system over every entity at once. While the
+## grimoire is open the board waits (only the time moves, for its
+## turning pictures). A game over stays as it is.
+l:t_ick := { s dt ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  st > 0 ? s
+  md = 1 ? (W, mo, lv, wv, q, tm, sel, md, pg, t + dt, st, sp, ms)
+  d := dt * f_loat sp
+  (W, q, tm) := h:s_pawning (W, q, tm - d)
+  (W, lost) := W h:c_rawl d
+  W := (W h:a_im d) h:f_ly d
+  (W, won) := h:b_eaten W
+  lv := lv - lost
+  (W, mo + won, lv, wv, q, tm, sel, md, pg, t + d, h:o_utcome (lv, wv, q, W), sp, ms)
+}
+
+### Clicks and keys
+
+## The next wave on its way, when the last is over.
+h:w_ave := { s ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  wv >= t_ally WAVES ? h:s_aid (s, "That was the last wave.")
+  (0 < t_ally q) | 0 < t_ally h:c_reeps W ? h:s_aid (s, "Beat this wave first.")
+  (W, mo, lv, wv + 1, LETTERS i_ndexOf d_isclose (wv + 1) s_elect WAVES, 0.0, sel, md, pg, t, st, sp, @ f_ormat< "Wave {wv + 1} is coming.")
+}
+## The tower whose box holds the point xy of the picture (the nearest
+## one when boxes overlap), or 0: every tower's box tested at once.
+h:t_owerAt := { W xy ->
+  tw := h:t_owers W
+  0 = t_ally tw ? 0
+  P := tw s_elect h:p_os W
+  sx := h:s_x (1 s_elect_2 P, 2 s_elect_2 P)
+  sy := h:s_y (1 s_elect_2 P, 2 s_elect_2 P, 0.0)
+  z := 26.0 + 10.0 * tw s_elect h:l_evel W
+  x := f_irst xy
+  y := 2 s_elect xy
+  in := ((a_bs x - sx) <= 18.0) & (y <= sy + 10.0) & y >= sy - z
+  n_ot '| r_/ in ? 0
+  (f_irst g_rade n_eg ((f_loat in) * 1000.0) + '+ r_/_2 P) s_elect tw
+}
+## The tower on tile k (a number from 1), or 0.
+h:o_n := { W k ->
+  tw := h:t_owers W
+  T := tw s_elect h:p_os W
+  at := (1 + (C * f_loor 2 s_elect_2 T) + f_loor 1 s_elect_2 T) = k
+  f_irst (at r_eplicate tw) c_at 0
+}
+## A click on tile k: a tower of the kind picked built there (on grass,
+## if the money is there), or the tower there upgraded (to level 3).
+h:b_uild := { s k ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  k = 0 ? s
+  0 = k s_elect GRASS ? h:s_aid (s, "Towers go on the grass, not the road.")
+  tw := W h:o_n k
+  tw > 0 ? h:u_pgrade (s, tw)
+  cost := (1 + 3 * sel - 1) s_elect COST
+  cost > mo ? h:s_aid (s, @ f_ormat< "That tower costs {cost}; the money is {mo}.")
+  (W, ids) := W ec:s_pawn 1
+  W := W h:s_etTower (ids, 1.0)
+  W := W h:s_etKind (ids, f_loat sel)
+  W := W h:s_etLevel (ids, 1.0)
+  W := W h:s_etCool (ids, 0.0)
+  W := W h:s_etPos (ids, (0.5 + f_loat (k - 1) m_od C) c_at 0.5 + f_loat (k - 1) d_iv C)
+  (W, mo - cost, lv, wv, q, tm, sel, md, pg, t, st, sp, @ f_ormat< "Built: {d_isclose (1 + 3 * sel - 1) s_elect 1 s_elect_2 TT} ({cost}). Click it to upgrade.")
+}
+h:u_pgrade := { (s, tw) ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  l := f_loor tw s_elect h:l_evel W
+  l >= 3 ? h:s_aid (s, "That tower is at the top level.")
+  cost := (1 + (W h:r_ow tw)) s_elect COST
+  cost > mo ? h:s_aid (s, @ f_ormat< "The upgrade costs {cost}; the money is {mo}.")
+  (W h:s_etLevel (tw, f_loat l + 1), mo - cost, lv, wv, q, tm, sel, md, pg, t, st, sp, @ f_ormat< "Upgraded to {d_isclose (1 + (W h:r_ow tw)) s_elect 1 s_elect_2 TT} (level {l + 1}, {cost}).")
+}
+## The grimoire's pages: the nine towers by kind and level, then the
+## three creeps.
+PAGES := 12
+## The state with a new message.
+h:s_aid := { (s, m) ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, m)
+}
+## The game run faster: 1, 2, 4 times, then 1 again.
+h:f_aster := { s ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  n := (1 + (1 2 4 i_ndexOf sp) m_od 3) s_elect 1 2 4
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, n, @ f_ormat< "Speed {n}x.")
+}
+## The view and the picked tower changed.
+h:s_et := { s (sel, md, pg) ->
+  (W, mo, lv, wv, q, tm, a, b, c, t, st, sp, ms) := s
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms)
+}
+## The board's view: the picture's units of a tile, where tile (0, 0)'s
+## corner is, the toolbar's buttons and the grimoire's.
+TW := 32.0
+TH := 16.0
+OX := 352.0
+OY := 96.0
+VIEW := 0.0 0.0 880.0 600.0
+BAR := 6 4 r_eshape 12 532 132 52  156 532 132 52  300 532 132 52  444 532 132 52  588 532 132 52  732 532 136 52.0
+BOOK := 3 4 r_eshape 60 520 180 52  260 520 180 52  640 520 180 52.0
+## The tile under a point of the picture (a number from 1), or 0 off the
+## map: the inverse of the board's map.
+h:t_ile := { xy ->
+  a := ((f_irst xy) - OX) / TW
+  b := ((2 s_elect xy) - OY) / TH
+  gx := f_loor 0.5 * a + b
+  gy := f_loor 0.5 * b - a
+  (gx < 0) | (gy < 0) | (gx >= C) | gy >= R ? 0
+  1 + (C * gy) + gx
+}
+# :: (Any a, Num b, Any c, Num d, Num e) => (Float, Int, a, Int, Int, Float, Int, b, Int, c, d, e, Char) -> Float -> (Float, Int, a, Int, Int, Float, Int, b, Int, c, d, e, Char)
+## A click at xy (the picture's units): in the grimoire its buttons
+## (back, next, close; a click outside it closes it too); on the board the toolbar (a tower to build, the
+## next wave, the speed, the grimoire), a tower (upgrade it: anywhere on
+## its box, which stands up over the tiles behind it) or a tile (build
+## there).
+l:c_lick := { s xy ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  st > 0 ? s
+  md = 1 ? h:b_ook (s, h:b_ookHit xy)
+  b := BAR sv:h_it xy
+  (b > 0) & b <= 3 ? s h:s_et (b, 0, pg)
+  b = 4 ? h:w_ave s
+  b = 5 ? h:f_aster s
+  b = 6 ? s h:s_et (sel, 1, pg)
+  tw := W h:t_owerAt xy
+  tw > 0 ? h:u_pgrade (s, tw)
+  s h:b_uild h:t_ile xy
+}
+## Which of the grimoire's buttons a click is on (1 back, 2 next, 3
+## close); a click outside its panel closes it too.
+PANEL := 1 4 r_eshape 30 70 820 520.0
+h:b_ookHit := { xy -> 0 = PANEL sv:h_it xy ? 3; BOOK sv:h_it xy }
+h:b_ook := { (s, b) ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  b = 1 ? s h:s_et (sel, 1, 1 + (pg + PAGES - 2) m_od PAGES)
+  b = 2 ? s h:s_et (sel, 1, 1 + pg m_od PAGES)
+  b = 3 ? s h:s_et (sel, 0, pg)
+  s
+}
+# :: (Any a, Num b, Any c, Num d, Num e) => (Float, Int, a, Int, Int, Float, Int, b, Int, c, d, e, Char) -> Char -> (Float, Int, a, Int, Int, Float, Int, b, Int, c, d, e, Char)
+## A key: 1, 2, 3 pick the tower to build (left and right step through
+## them), the space bar sends the next wave, f runs the game faster (1,
+## 2, 4 times), g opens or closes the grimoire (left and right turn its
+## pages there; Enter or x closes it too).
+l:k_ey := { s name ->
+  (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
+  k := ("1" "2" "3" "LEFT" "RIGHT" " " "g" "f" "Enter" "x") i_ndexOf e_nclose name
+  (k > 10) | st > 0 ? s
+  (md = 1) & k >= 9 ? s h:s_et (sel, 0, pg)
+  k >= 9 ? s
+  k = 8 ? h:f_aster s
+  k = 7 ? s h:s_et (sel, 1 - md, pg)
+  (md = 1) & k = 4 ? h:b_ook (s, 1)
+  (md = 1) & k = 5 ? h:b_ook (s, 2)
+  md = 1 ? s
+  k = 6 ? h:w_ave s
+  k = 4 ? s h:s_et (1 + (sel + 1) m_od 3, md, pg)
+  k = 5 ? s h:s_et (1 + sel m_od 3, md, pg)
+  s h:s_et (k, md, pg)
+}
+
+### What it shows
+
+# :: (Any a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k, Any l, Any m) => (a, b, c, d, e, f, g, h, i, j, k, l, m) -> k
+## 0 playing, 1 every wave beaten, 2 no lives left.
+l:s_tatus := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) -> st }
+# :: (Any a, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k) => (a, b, b, b, c, d, e, f, g, h, i, j, k) -> b
+## The money, the lives, the waves begun.
+l:s_core := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) -> mo c_at lv c_at wv }
+# :: (Num a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k, Any l, Any m) => (a, b, c, d, e, f, g, h, i, j, k, l, m) -> Int
+## How many are alive: towers, creeps, shots.
+l:c_ounts := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) -> (t_ally h:t_owers W) c_at (t_ally h:c_reeps W) c_at t_ally h:s_hots W }
+# :: (Any a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k, Any l) => (Float, a, b, c, d, e, f, g, h, i, j, k, l) -> Float
+## The towers: kind, level and tile (x, y), a row each.
+l:t_owers := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) ->
+  tw := h:t_owers W
+  P := f_loat f_loor tw s_elect h:p_os W
+  o_\ (4 c_at t_ally tw) r_eshape (tw s_elect h:k_ind W) c_at (tw s_elect h:l_evel W) c_at (1 s_elect_2 P) c_at 2 s_elect_2 P
+}
+# :: Any a => a -> Int
+## The road as tiles in order (row, column, from 0).
+l:r_oad := { s -> o_\ (2 c_at t_ally PATH) r_eshape ((PATH - 1) d_iv C) c_at (PATH - 1) m_od C }
+## A point of the board (x, y in tiles, z up in the picture's units) in
+## the picture: one linear map, every point at once.
+h:s_x := { (x, y) -> OX + TW * x - y }
+h:s_y := { (x, y, z) -> (OY + TH * x + y) - z }
+## A polygon through points of the board.
+h:p_oly := { (x, y, z, fill) ->
+  sx := h:s_x (x, y)
+  sy := h:s_y (x, y, z)
+  pts := t:j_oin '{ i -> e_nclose @ f_ormat< "{sv:w_hole i s_elect sx},{sv:w_hole i s_elect sy} " } e_ach r_ange t_ally x
+  @ f_ormat< "<polygon points=\"{pts}\" fill=\"{fill}\" stroke=\"#1d1f2b\" stroke-width=\"1\"/>"
+}
+## The board, drawn once: each tile a diamond, grass or road.
+h:t_ileAt := { k ->
+  gx := f_loat (k - 1) m_od C
+  gy := f_loat (k - 1) d_iv C
+  fill := d_isclose (1 + k s_elect ROAD) s_elect "#3a7d44" "#8d7b5e"
+  e_nclose h:p_oly (gx c_at (gx + 1.0) c_at (gx + 1.0) c_at gx, gy c_at gy c_at (gy + 1.0) c_at gy + 1.0, 0.0 0.0 0.0 0.0, fill)
+}
+BOARD := t:j_oin 'h:t_ileAt e_ach r_ange t_ally cells
+## A tower's colors (top, left, right faces) by kind.
+FACES := 3 3 r_eshape "#d4a373" "#a47148" "#7f5539" "#adb5bd" "#6c757d" "#495057" "#bde0fe" "#7fb7e8" "#4a90c8"
+## A box standing on the board: its middle (x, y), half its width, its
+## height, and its corners turned by a (radians) about the middle; the
+## two faces toward the viewer and the top.
+h:b_ox := { (x, y, w, z, a, kind) ->
+  u := (a + 0.25 * p_i @) + 0.5 * (p_i @) * 0.0 1.0 2.0 3.0
+  cx := x + w * 1.414 * c_os u
+  cy := y + w * 1.414 * s_in u
+  i := g_rade n_eg cx + cy
+  near := 3 t_ake i
+  l := 2 t_ake near
+  r := (f_irst near) c_at 3 s_elect near
+  col := '{ j -> e_nclose d_isclose j s_elect kind s_elect FACES } e_ach 1 2 3
+  zs := 0.0 0.0 c_at z c_at z
+  left := h:p_oly ((l s_elect cx) c_at r_ev l s_elect cx, (l s_elect cy) c_at r_ev l s_elect cy, zs, d_isclose 2 s_elect col)
+  right := h:p_oly ((r s_elect cx) c_at r_ev r s_elect cx, (r s_elect cy) c_at r_ev r s_elect cy, zs, d_isclose 3 s_elect col)
+  top := h:p_oly (cx, cy, 4 r_eshape z, d_isclose f_irst col)
+  left c_at right c_at top
+}
+## A tower drawn: a box as tall as its level, with a pip a level on top.
+h:d_rawTower := { (x, y, kind, level, a) ->
+  z := 14.0 + 10.0 * f_loat level
+  pips := t:j_oin '{ i -> e_nclose @ f_ormat< "<circle cx=\"{sv:w_hole (h:s_x (x, y)) + 6.0 * f_loat i - 2}\" cy=\"{sv:w_hole (h:s_y (x, y, z)) - 3.0}\" r=\"2.5\" fill=\"#ffffff\"/>" } e_ach r_ange level
+  (h:b_ox (x, y, 0.32, z, a, kind)) c_at pips
+}
+## Every kind and level of tower drawn once, on tile (0, 0); the board
+## moves each to its tile (towers do not turn on the board).
+TOWERART := '{ j -> e_nclose h:d_rawTower (0.0, 0.0, 1 + (j - 1) d_iv 3, 1 + (j - 1) m_od 3, 0.0) } e_ach r_ange 9
+h:p_laced := { (x, y, j) -> @ f_ormat< "<g transform=\"translate({sv:w_hole (h:s_x (x, y)) - OX} {sv:w_hole (h:s_y (x, y, 0.0)) - OY})\">{d_isclose j s_elect TOWERART}</g>" }
+## Over a tower, what its upgrade costs: gold when the money is there,
+## gray when not, "top" at level 3 (j: its row in the towers' table).
+h:u_pLabel := { (x, y, j, mo) ->
+  top := 0 = j m_od 3
+  cost := (1 + j m_in 8) s_elect COST
+  words := h:u_pWords (top, cost)
+  fill := d_isclose (1 + (n_ot top) & cost <= mo) s_elect "#adb5bd" "#ffd166"
+  z := 30.0 + 10.0 * f_loat 1 + (j - 1) m_od 3
+  @ f_ormat< "<text x=\"{sv:w_hole h:s_x (x, y)}\" y=\"{sv:w_hole (h:s_y (x, y, z)) - 8.0}\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"{fill}\" stroke=\"#1d1f2b\" stroke-width=\"3\" paint-order=\"stroke\">{words}</text>"
+}
+h:u_pWords := { (top, cost) -> top ? "top"; @ f_ormat< "up {cost}" }
+## A creep drawn: a shadow, a body by its kind, its hit points as a bar.
+CREEPCOLORS := "#80ed99" "#c1440e" "#5c7aa6"
+h:d_rawCreep := { (x, y, kind, hp) ->
+  sx := sv:w_hole h:s_x (x, y)
+  sy := h:s_y (x, y, 0.0)
+  r := (1 + kind) s_elect 0.0 6.0 10.0 8.0
+  col := d_isclose kind s_elect CREEPCOLORS
+  frac := 0.0 m_ax 1.0 m_in hp / kind s_elect HP
+  @ f_ormat< "<ellipse cx=\"{sx}\" cy=\"{sv:w_hole sy}\" rx=\"{sv:w_hole r}\" ry=\"{sv:w_hole 0.5 * r}\" fill=\"#000000\" opacity=\"0.3\"/><circle class=\"entity\" cx=\"{sx}\" cy=\"{sv:w_hole sy - r}\" r=\"{sv:w_hole r}\" fill=\"{col}\" stroke=\"#1d1f2b\" stroke-width=\"1.5\"/><rect x=\"{sv:w_hole (h:s_x (x, y)) - 10.0}\" y=\"{sv:w_hole sy - 6.0 + 2.0 * r}\" width=\"20\" height=\"3\" fill=\"#3a0d0d\"/><rect x=\"{sv:w_hole (h:s_x (x, y)) - 10.0}\" y=\"{sv:w_hole sy - 6.0 + 2.0 * r}\" width=\"{sv:w_hole 20.0 * frac}\" height=\"3\" fill=\"#ff595e\"/>"
+}
+## A shot drawn, in the air.
+h:s_hotAt := { (x, y) -> @ f_ormat< "<circle cx=\"{sv:w_hole h:s_x (x, y)}\" cy=\"{sv:w_hole h:s_y (x, y, 22.0)}\" r=\"3\" fill=\"#fff3b0\" stroke=\"#000000\" stroke-width=\"0.5\"/>" }
+## Everything on the board, drawn far to near (by x + y): what each
+## entity is picks its drawing.
+h:t_hings := { (W, mo) ->
+  e := w_here ec:a_live W
+  P := e s_elect h:p_os W
+  order := g_rade ('+ r_/_2 P) + 0.01 * f_loat 0 + e s_elect h:h_asShot W
+  '{ i -> e_nclose h:t_hing (W, i s_elect e, i s_elect P, mo) } e_ach order
+}
+h:t_hing := { (W, n, p, mo) ->
+  x := f_irst p
+  y := 2 s_elect p
+  n s_elect h:h_asTower W ? (h:p_laced (x, y, W h:r_ow n)) c_at h:u_pLabel (x, y, W h:r_ow n, mo)
+  n s_elect h:h_asCreep W ? h:d_rawCreep (x, y, f_loor n s_elect h:k_ind W, n s_elect h:h_p W)
+  h:s_hotAt (x, y)
+}
+## A button: its rectangle, its words, lit when picked.
+h:b_utton := { (r, words, lit) ->
+  fill := d_isclose (1 + lit) s_elect "#2b2d42" "#4361ee"
+  cls := d_isclose (1 + lit) s_elect "button" "button you"
+  e_nclose @ f_ormat< "<g class=\"{cls}\"><rect x=\"{sv:w_hole f_irst r}\" y=\"{sv:w_hole 2 s_elect r}\" width=\"{sv:w_hole 3 s_elect r}\" height=\"{sv:w_hole 4 s_elect r}\" rx=\"8\" fill=\"{fill}\" stroke=\"#8d99ae\" stroke-width=\"2\"/><text x=\"{sv:w_hole (f_irst r) + 0.5 * 3 s_elect r}\" y=\"{sv:w_hole (2 s_elect r) + 33.0}\" font-size=\"18\" text-anchor=\"middle\" fill=\"#ffffff\">{words}</text></g>"
+}
+## The toolbar: the three towers (with what they cost), the next wave,
+## the speed, the grimoire; drawn once for each tower picked and speed.
+h:b_ar := { j ->
+  sel := 1 + (j - 1) d_iv 3
+  sp := (1 + (j - 1) m_od 3) s_elect 1 2 4
+  names := "Arrow" "Cannon" "Frost"
+  towers := '{ k -> h:b_utton (k s_elect BAR, @ f_ormat< "{d_isclose k s_elect names} {(1 + 3 * k - 1) s_elect COST}", k = sel) } e_ach 1 2 3
+  t:j_oin towers c_at (h:b_utton (4 s_elect BAR, "Next wave", 0 = 1)) c_at (h:b_utton (5 s_elect BAR, @ f_ormat< "Speed {sp}x", sp > 1)) c_at h:b_utton (6 s_elect BAR, "Grimoire", 0 = 1)
+}
+BARS := 'h:b_ar m_ap r_ange 9
+## Text cut into lines of about n characters, at spaces: each word's line
+## from a running sum of the words' lengths.
+h:w_rap := { t n ->
+  w := (n_ot t = f_irst " ") p_artition t
+  len := 1 + 'h:l_en e_ach w
+  line := (('+ s_\ len) - 1) d_iv n
+  '{ i -> e_nclose t:j_oin '{ x -> e_nclose (d_isclose x) c_at " " } e_ach (line = i) r_eplicate w } e_ach u_nique line
+}
+h:l_en := { x -> t_ally d_isclose x }
+## The grimoire's page pg: the piece turning (the 3D art's turntable, or
+## the game's own drawing turned), its name and what it does.
+h:p_age := { (pg, t) ->
+  panel := e_nclose "<rect x=\"30\" y=\"70\" width=\"820\" height=\"520\" rx=\"16\" fill=\"#11121c\" opacity=\"0.96\" stroke=\"#8d99ae\" stroke-width=\"2\"/>"
+  tower := pg <= 9
+  pic := h:s_pin (pg, t)
+  words := h:a_bout pg
+  lines := '{ i -> (430.0, 150.0 + 30.0 * f_loat i - 1, 20.0) h:w_ords d_isclose i s_elect words } e_ach r_ange t_ally words
+  buttons := (h:b_utton (1 s_elect BOOK, "Back", 0 = 1)) c_at (h:b_utton (2 s_elect BOOK, "Next", 0 = 1)) c_at h:b_utton (3 s_elect BOOK, "Close", 0 = 1)
+  hint := (440.0, 500.0, 15.0) h:w_ords "Left, right: pages | g, Enter, x or a click outside: close"
+  panel c_at pic c_at (r_avel lines) c_at buttons c_at hint
+}
+## The piece on page pg, turning with the time: the art's turntable frame
+## when the art is in use, else the game's own drawing, turned.
+h:s_pin := { (pg, t) ->
+  ART ? e_nclose h:f_rame (pg, (f_loor 8.0 * t) m_od 16)
+  pg <= 9 ? e_nclose "<g transform=\"translate(-816 -504) scale(3)\">" c_at (h:d_rawTower (6.0, 6.0, 1 + (pg - 1) d_iv 3, 1 + (pg - 1) m_od 3, t)) c_at "</g>"
+  e_nclose "<g transform=\"translate(-992 -623) scale(3.5)\">" c_at (h:d_rawCreep (5.6, 5.6, pg - 9, 1000.0)) c_at "</g>"
+}
+## The art's turntable frame f of page pg's piece, cut from its sheet.
+PIECES := "arrow-1" "arrow-2" "arrow-3" "cannon-1" "cannon-2" "cannon-3" "frost-1" "frost-2" "frost-3" "runner" "brute" "shield"
+h:f_rame := { (pg, f) ->
+  @ f_ormat< "<svg x=\"80\" y=\"140\" width=\"320\" height=\"320\" viewBox=\"{256 * f m_od 4} {256 * f d_iv 4} 256 256\"><image href=\"art/{d_isclose pg s_elect PIECES}-turn.png\" width=\"1024\" height=\"1024\"/></svg>"
+}
+## What page pg says: a tower's name, level, numbers, words and its next
+## upgrade; a creep's name, numbers and words.
+h:a_bout := { pg ->
+  pg > 9 ? h:c_reepAbout pg - 9
+  name := d_isclose pg s_elect 1 s_elect_2 TT
+  lvl := 1 + (pg - 1) m_od 3
+  next := h:n_extUp pg
+  head := (e_nclose @ f_ormat< "{name} (level {lvl})") c_at e_nclose @ f_ormat< "Reach {pg s_elect RANGE} | damage {pg s_elect DAMAGE} | every {pg s_elect COOLDOWN} s"
+  more := e_nclose @ f_ormat< "Splash {pg s_elect SPLASH} | slows {pg s_elect CHILL} s | costs {pg s_elect COST}"
+  head c_at more c_at (e_nclose "") c_at ((d_isclose pg s_elect 8 s_elect_2 TT) h:w_rap 38) c_at (e_nclose "") c_at e_nclose next
+}
+h:n_extUp := { pg ->
+  3 = 1 + (pg - 1) m_od 3 ? "The top level."
+  @ f_ormat< "Click it on the board to upgrade: {(pg + 1) s_elect COST}."
+}
+h:c_reepAbout := { k ->
+  name := d_isclose k s_elect 1 s_elect_2 CT
+  head := (e_nclose name) c_at e_nclose @ f_ormat< "Hit points {k s_elect HP} | speed {k s_elect SPEED} | armor {k s_elect ARMOR}"
+  more := e_nclose @ f_ormat< "Worth {k s_elect BOUNTY} | costs {k s_elect LEAK} lives if it gets out"
+  head c_at more c_at (e_nclose "") c_at (d_isclose k s_elect 8 s_elect_2 CT) h:w_rap 38
+}
+## Words at x, y in size z, light on the dark picture.
+h:w_ords := { (x, y, z) t -> e_nclose @ f_ormat< "<text x=\"{sv:w_hole x}\" y=\"{sv:w_hole y}\" font-size=\"{sv:w_hole z}\" fill=\"#e9ecef\">{t}</text>" }
+## What the top line says.
+h:s_ays := { (mo, lv, wv, t, st) ->
+  st = 1 ? @ f_ormat< "Every wave beaten! Lives {lv} | Money {mo} | Time {f_loor t} s"
+  st = 2 ? @ f_ormat< "The creeps got through. Wave {wv} | Time {f_loor t} s"
+  @ f_ormat< "Money {mo} | Lives {lv} | Wave {wv} of {t_ally WAVES} | Time {f_loor t} s"
+}
+# :: (Any c, Any d, Num e, Num f, Num g) => (Float, Int, a, b, c, d, Int, e, Int, Float, f, g, Char) -> Char
+## The picture, as SVG text: the board and everything on it drawn far to
+## near, the toolbar, the top line, and the grimoire over it all when
+## open.
+l:d_raw := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) ->
+  top := (16.0, 40.0, 22.0) h:w_ords h:s_ays (mo, lv, wv, t, st)
+  said := (16.0, 70.0, 18.0) h:w_ords ms
+  book := h:b_ookIf (md, pg, t)
+  VIEW sv:p_icture (VIEW sv:r_ect "fill=\"#1d1f2b\"") c_at (e_nclose BOARD) c_at (h:t_hings (W, mo)) c_at (((3 * sel - 1) + 1 2 4 i_ndexOf sp) s_elect BARS) c_at top c_at said c_at book
+}
+h:b_ookIf := { (md, pg, t) -> md = 0 ? 0 r_eshape e_nclose ""; h:p_age (pg, t) }

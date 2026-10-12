@@ -1,0 +1,42 @@
+#!/usr/bin/env xetal
+## Tower defense: stop the creeps on the road before they get out. Pick
+## a tower on the toolbar (or 1, 2, 3; left and right step through
+## them), click a grass tile to build it there, click a tower to upgrade
+## it; Next wave (or the space bar) sends the next wave; the Grimoire (or
+## g) shows every tower and creep, turning, with what it does. Six waves
+## to beat; a creep that gets out costs lives. The game moves with the
+## clock: on the page it is in a dialog, and the clock's ticks (twenty a
+## second), your clicks and your keys come to the program as events; at
+## the command line, lines such as "tick 0.05", "click 384 192" and
+## "key space" on standard input. When the waves are beaten or the lives
+## are gone the program ends (on the page, Play or any key then starts a
+## new game). The rules are Defense.xtl's, built on lib/Ecs.
+"td:" u_se< "Defense"
+
+## Show the game, then wait for the next event.
+u:s_how := { s ->
+  pic := []S_HOW td:d_raw s
+  0 < td:s_tatus s ? u:e_nd s
+  u:l_oop s
+}
+## The next event: a tick moves the game on and shows it; a click or a
+## key acts.
+u:l_oop := { s ->
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? u:q_uit s
+  "tick" m_atch []E_KIND e ? u:s_how s td:t_ick f_irst []E_AT e
+  "click" m_atch []E_KIND e ? u:l_oop s td:c_lick []E_AT e
+  n_ot "key" m_atch []E_KIND e ? u:l_oop s
+  u:l_oop s td:k_ey f_ormat []E_KEY e
+}
+## The end of the events: how it stands.
+u:q_uit := { s ->
+  said := p_rint! @ f_ormat< "Money {f_irst td:s_core s}, lives {2 s_elect td:s_core s}, waves begun {3 s_elect td:s_core s}."
+  "THE END"
+}
+## How the game ended (the program ends with it).
+u:e_nd := { s ->
+  1 = td:s_tatus s ? @ f_ormat< "Every wave beaten, with {2 s_elect td:s_core s} lives left!"
+  "The creeps got through."
+}
+u:s_how td:n_ew 0

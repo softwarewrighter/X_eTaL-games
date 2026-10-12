@@ -3,9 +3,17 @@
 
 set positional-arguments
 
+# Python for the scripts comes from the repository's uv environment
+# (.venv, made by `just venv`; uv only, never pip), first on the path.
+export PATH := justfile_directory() + "/.venv/bin:" + env_var("PATH")
+
 # List the recipes
 default:
     @just --list
+
+# Make the Python environment the scripts use (.venv, with uv; standard library only)
+venv:
+    uv venv .venv --python 3.14
 
 # Get and build xetal at the known-good commit in XETAL_COMMIT (work/xetal, bin/xetal)
 xetal:

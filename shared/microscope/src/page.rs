@@ -231,14 +231,18 @@ struct BoardProps {
 }
 
 /// Where a click on a picture falls in the picture's own coordinates:
-/// its SVG's viewBox, drawn at full width in its own proportions.
+/// its SVG's viewBox, fitted into the drawn box keeping its proportions
+/// and centered (SVG's default, xMidYMid meet), so a picture of another
+/// shape than its box is letterboxed and the click is mapped through it.
 fn picture_point(e: &MouseEvent) -> Option<(f64, f64)> {
     let target = e.target()?.dyn_into::<Element>().ok()?;
     let svg = target.closest("svg").ok()??;
     let vb: Vec<f64> = svg.get_attribute("viewBox")?.split_whitespace().filter_map(|n| n.parse().ok()).collect();
     let r = svg.get_bounding_client_rect();
-    (vb.len() == 4 && r.width() > 0.0 && r.height() > 0.0).then(|| {
-        (vb[0] + (e.client_x() as f64 - r.left()) / r.width() * vb[2], vb[1] + (e.client_y() as f64 - r.top()) / r.height() * vb[3])
+    (vb.len() == 4 && vb[2] > 0.0 && vb[3] > 0.0 && r.width() > 0.0 && r.height() > 0.0).then(|| {
+        let k = (r.width() / vb[2]).min(r.height() / vb[3]);
+        let (left, top) = (r.left() + (r.width() - k * vb[2]) / 2.0, r.top() + (r.height() - k * vb[3]) / 2.0);
+        (vb[0] + (e.client_x() as f64 - left) / k, vb[1] + (e.client_y() as f64 - top) / k)
     })
 }
 

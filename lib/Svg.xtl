@@ -101,11 +101,13 @@ l:c_hoices := { m names ->
   r c_at '{ j -> ((1 s_elect j s_elect m) + u * 12, (2 s_elect j s_elect m) + u * 27, u * 20) l:w_ords d_isclose j s_elect names } e_ach r_ange 4
 }
 # :: Float -> Box Char -> Char
-## The picture: an SVG document of the view v holding the pieces p.
+## The picture: an SVG document of the view v holding the pieces p,
+## 1000 wide and as high as the view's proportions make it (so it is
+## never letterboxed).
 ## >> "g:" u_se< "Svg"
 ## >> (0 0 20 10.0) g:p_icture e_nclose "<circle/>"
-## <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10 " width="1000" height="400" font-family="sans-serif"><circle/></svg>
+## <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10 " width="1000" height="500" font-family="sans-serif"><circle/></svg>
 l:p_icture := { v p ->
   vb := t:j_oin '{ x -> e_nclose (l:w_hole x) c_at " " } e_ach v
-  t:j_oin (e_nclose @ f_ormat< "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{vb}\" width=\"1000\" height=\"400\" font-family=\"sans-serif\">") c_at p c_at e_nclose "</svg>"
+  t:j_oin (e_nclose @ f_ormat< "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{vb}\" width=\"1000\" height=\"{l:w_hole 1000.0 * (4 s_elect v) / 3 s_elect v}\" font-family=\"sans-serif\">") c_at p c_at e_nclose "</svg>"
 }

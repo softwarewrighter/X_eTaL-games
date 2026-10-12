@@ -1,0 +1,13 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "tower-defense"
+title = "Tower defense"
+summary = "Build and upgrade towers to stop six waves of creeps on the road, on an isometric board: click to build, click to upgrade, and open the grimoire to see every tower and creep turning. Built on lib/Ecs: every tower against every creep in one table, shots spawned and despawned, splash, armor and slowing as one table of shots against creeps; the board drawn in 2.5D by one linear map."
+lesson = "every tower against every creep in one table; shots against creeps in another (splash, armor, chill); the road found by a flood; an isometric board by one linear map and clicks by its inverse"
+concepts = ["Ecs.xtlm macro", "tuples", "[]E_VENT ticks, clicks and keys", "t_able", "fixed point", "SVG"]
+status = "live"
+group = "Action"
+order = 155
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Tower_defense"   # the title links here (opens in a new tab)

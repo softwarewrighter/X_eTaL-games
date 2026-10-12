@@ -35,3 +35,5 @@ bin/xetal
 /pages/
 games/*/play-*.svg
 games/*/*-[0-9]*.svg
+# The uv environment for the scripts (just venv)
+.venv/

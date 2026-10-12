@@ -392,7 +392,10 @@ bar as `key space`). Step 34, the maze (the user,
 2026-10-10): DONE (a first-person view of a maze carved from the seed,
 with a mini map of what has been seen). Steps 35 to 37 (the user, 2026-10-11):
 falling blocks (DONE: turning by reversing and transposing, rows
-cleared by keeping the others, a computer player), tower defense, a
+cleared by keeping the others, a computer player), tower defense
+(DONE in 2D/2.5D SVG: clicks, waves, upgrades, a grimoire, speed;
+its 3D art asked of X_eTaL-extensions in docs/extensions-ask.md, and a
+three.js view of a scene the X_eTaL program describes to follow), a
 raycaster.
 
 ## Saga 6 -- macros

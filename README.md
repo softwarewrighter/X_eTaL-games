@@ -53,6 +53,7 @@ and is tested by its expected output.
 | [Maze](games/maze/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/maze/)) | a maze carved in one go (runs by a scan, one way north per run by a table); distances by a flood to a fixed point; a first-person view as lookups at every depth at once | live |
 | [Falling blocks](games/blocks/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/blocks/)) | a piece turned by reversing and transposing; full rows by a row-wise and, cleared by keeping the others; a computer player trying every move at once | live |
 | [Side-scroller](games/scroller/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/scroller/)) | gravity, movement and collision as systems over every body at once (lib/Ecs), ticked by the clock | live |
+| [Tower defense](games/tower-defense/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/tower-defense/)) | every tower against every creep in one table, shots against creeps in another (lib/Ecs); the road by a flood; an isometric board by one linear map, clicks by its inverse | live |
 | [Racer](games/racer/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/racer/)) | laps and places as systems (lib/Ecs): every car against every segment of the track, every pair of cars compared at once | live |
 | [Asteroids](games/asteroids/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/asteroids/)) | entities that come and go (lib/Ecs): spawning and despawning by masks, every shot against every rock at once | live |
 | Battleship | placement masks, a probability map | planned |
@@ -85,6 +86,7 @@ its idiom in the code.
 | a maze carved with whole-array operations (`('+ s_\ ends) - ends` for the runs); every distance by a flood to a fixed point; the corridors ahead looked up at every depth at once and drawn far to near | [Maze](games/maze/README.md) |
 | a piece turned by `o_\ r_ev`; full rows by `'& r_/_2`, cleared by `(n_ot full) r_eplicate W`; every landing row tried at once; a computer player weighing every turn and column | [Falling blocks](games/blocks/README.md) |
 | gravity, movement and collision with the ground for every body at once; a hit as a mask used as a number (`x * (1 - hit) + snap * hit`); the clock's ticks as events | [Side-scroller](games/scroller/README.md) |
+| towers against creeps and shots against creeps as tables (reach, the farthest creep, splash, armor, chill); the road by a flood; the board in 2.5D by one linear map and clicks by its inverse | [Tower defense](games/tower-defense/README.md) |
 | every car's distance to every segment of the track as one table; places from every pair of cars compared (`1 + '+ r_/_2 0 + p '< t_able p`) | [Racer](games/racer/README.md) |
 | shots and rocks spawned and despawned in the slots a mask says are free; every shot against every rock as one table; a rock's halves by `r_eplicate` and one rotation over all of them | [Asteroids](games/asteroids/README.md) |
 | a press as a row of a 25 by 25 matrix; a board of presses one product mod 2; solved by elimination over GF(2) | [Lights out](games/lights-out/README.md) |
@@ -95,11 +97,13 @@ its idiom in the code.
 Prerequisites: [Rust](https://rustup.rs) (stable) and
 [`just`](https://github.com/casey/just); for the browser games,
 `rustup target add wasm32-unknown-unknown` and
-[trunk](https://trunkrs.dev); for the gate (maintainers),
-`sw-markdown-checker`.
+[trunk](https://trunkrs.dev); for the scripts, [uv](https://docs.astral.sh/uv/)
+(`just venv` makes the Python environment once; `just` puts it first
+on the path); for the gate (maintainers), `sw-markdown-checker`.
 
 ```bash
 just                                 # list the tasks
+just venv                            # the scripts' Python (uv), once
 just xetal                           # build the bundled X_eTaL interpreter
 just eval "'+ r_/_2 2 3 r_eshape r_ange 6"   # try it: row sums, 6 15
 just gate                            # the pre-commit gate

@@ -1,0 +1,164 @@
+# Tower defense: the map, the towers, the creeps and the waves, read by
+# Defense.xtl (X_eTaL's []L_IST and []T_ABLE). Every value is a string.
+#
+# The map, rows of equal length: . grass (towers go here), = the road,
+# S where the creeps come in, E where they get out (costing lives). The
+# road must be one path from S to E; the creeps follow it.
+map = [
+  "................",
+  "S=====..........",
+  ".....=..........",
+  ".....=...======.",
+  ".....=...=....=.",
+  ".....=====....=.",
+  "..............=.",
+  "..=============.",
+  "..=.............",
+  "..=============E",
+]
+
+# Money and lives at the start.
+start = ["120", "20"]
+
+# The towers, each at three levels: how far it reaches (tiles), the
+# damage of a shot, the seconds between shots, the splash (tiles; 0 hits
+# only the target), the seconds a hit slows a creep (0 none), and the
+# cost of building it (level 1) or of the upgrade to that level.
+towers = ["arrow-1", "arrow-2", "arrow-3", "cannon-1", "cannon-2", "cannon-3", "frost-1", "frost-2", "frost-3"]
+tower-fields = ["name", "range", "damage", "cooldown", "splash", "slow", "cost", "about"]
+
+# The creeps: their hit points, speed (tiles a second), armor (taken
+# off each hit's damage, which is never below 1), the money each brings
+# when beaten, the lives it costs if it gets out, and its letter in the
+# waves.
+creeps = ["runner", "brute", "shield"]
+creep-fields = ["name", "hp", "speed", "armor", "bounty", "leak", "letter", "about"]
+
+# The waves, in order: one letter a creep, in the order they come (a
+# second apart). Clear the last wave to win.
+waves = ["rrrrrr", "rrrrbrrrr", "rrssrrss", "bbrrrrbb", "ssssbbss", "rrrrrrrrrrbbbsss"]
+
+# Whether the pieces are drawn with the 3D art published by
+# X_eTaL-extensions (fetched by assets/fetch.sh into assets/cache/art/;
+# see docs/extensions-ask.md) or with the game's own shapes: "1" or "0".
+art = ["0"]
+
+[tower.arrow-1]
+name = "Arrow tower"
+range = "2.6"
+damage = "3"
+cooldown = "0.5"
+splash = "0"
+slow = "0"
+cost = "40"
+about = "A wooden post with a crossbow: quick shots at the creep furthest along."
+
+[tower.arrow-2]
+name = "Stone arrow tower"
+range = "2.9"
+damage = "5"
+cooldown = "0.4"
+splash = "0"
+slow = "0"
+cost = "50"
+about = "Stone walls and twin crossbows: farther, harder, faster."
+
+[tower.arrow-3]
+name = "Ballista tower"
+range = "3.3"
+damage = "8"
+cooldown = "0.3"
+splash = "0"
+slow = "0"
+cost = "90"
+about = "A repeating ballista under a red banner: the fastest shots in the game."
+
+[tower.cannon-1]
+name = "Cannon"
+range = "2.2"
+damage = "6"
+cooldown = "1.4"
+splash = "0.9"
+slow = "0"
+cost = "60"
+about = "A short barrel on a stone base: slow, but its shot hurts every creep near where it lands."
+
+[tower.cannon-2]
+name = "Heavy cannon"
+range = "2.5"
+damage = "10"
+cooldown = "1.2"
+splash = "1.1"
+slow = "0"
+cost = "70"
+about = "A longer barrel bound in iron: a wider and harder blast."
+
+[tower.cannon-3]
+name = "Twin cannon"
+range = "2.8"
+damage = "15"
+cooldown = "1.0"
+splash = "1.3"
+slow = "0"
+cost = "120"
+about = "Two barrels on a turning ring: the biggest blast, against armor too."
+
+[tower.frost-1]
+name = "Frost crystal"
+range = "2.4"
+damage = "1"
+cooldown = "0.8"
+splash = "0"
+slow = "1.5"
+cost = "50"
+about = "An ice crystal on a pedestal: a hit does little, but slows the creep to half speed."
+
+[tower.frost-2]
+name = "Frost cluster"
+range = "2.7"
+damage = "2"
+cooldown = "0.7"
+splash = "0.7"
+slow = "2"
+cost = "60"
+about = "A cluster of crystals: the cold spreads to the creeps around the target."
+
+[tower.frost-3]
+name = "Floating frost"
+range = "3.1"
+damage = "3"
+cooldown = "0.6"
+splash = "1.0"
+slow = "3"
+cost = "100"
+about = "A glowing crystal floating among shards: a wide, long chill."
+
+[creep.runner]
+name = "Runner"
+hp = "8"
+speed = "1.6"
+armor = "0"
+bounty = "4"
+leak = "1"
+letter = "r"
+about = "A small green wedge on four legs: fast and frail."
+
+[creep.brute]
+name = "Brute"
+hp = "40"
+speed = "0.7"
+armor = "1"
+bounty = "12"
+leak = "3"
+letter = "b"
+about = "A horned block on heavy feet: slow, and hard to bring down."
+
+[creep.shield]
+name = "Shield"
+hp = "18"
+speed = "1.0"
+armor = "4"
+bounty = "9"
+leak = "2"
+letter = "s"
+about = "A domed shell of armor plates: small hits glance off; cannons crack it."
