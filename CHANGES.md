@@ -12,6 +12,10 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 09:55 `feat` The catalog's groups (the user: Adventures implied text adventures; rename it Retro, groups alphabetical): Adventures is now Retro (Trek adventure, Star Trek, Robot chase, the dungeon, the maze) and the groups are listed alphabetically: Action, Chance and strategy, Puzzles, Quizzes, Retro. Also: tower defense's l:d_raw makes its view field an Int for certain, as X_eTaL infers that function's type two ways from run to run (an ask).
+
+- 09:55 `build` Python only from the repository's uv environment (the user, again: no system Python): `just venv` makes `.venv` with `uv venv --managed-python` (uv's own CPython, not Homebrew's), and every script sources scripts/venv.sh, which puts `.venv/bin` first on the path (or stops with a hint), so scripts run on their own (not through just) never reach the system's python3 either.
+
 - 08:45 `chore` Saga step td-3d completed.
 
 - 08:33 `game` Tower defense in 3D (the user: animated towers and creeps, three.js with Rust/Yew, X_eTaL writing the scene): the X_eTaL program puts a scene in its picture's metadata (a camera matching its isometric map, the tiles, every piece's model, place, heading, clip and time; the grimoire's piece turning in a window of its panel); microscope gains scene.js (three.js from jsDelivr: the .glb models pooled, each posed at the clip time the program gives) and draws it on a canvas behind the picture, hiding the picture's `flat` parts only while every model is drawn (the flat picture stays without WebGL); A11 records the rule; the browser test reports whether the scene was drawn in 3D; the golden is shorter (the page tests run it three times).

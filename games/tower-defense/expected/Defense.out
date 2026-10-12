@@ -7,4 +7,4 @@ l:s_core : (Any a, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k
 l:c_ounts : (Num a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k, Any l, Any m) => (a, b, c, d, e, f, g, h, i, j, k, l, m) -> Int
 l:t_owers : (Any a, Any b, Any c, Any d, Any e, Any f, Any g, Any h, Any i, Any j, Any k, Any l) => (Float, a, b, c, d, e, f, g, h, i, j, k, l) -> Float
 l:r_oad : Any a => a -> Int
-l:d_raw : (Any c, Any d, Num e, Num f, Num g) => (Float, Int, a, b, c, d, Int, e, Int, Float, f, g, Char) -> Char
+l:d_raw : (Any c, Any d, Num e, Num f) => (Float, Int, a, b, c, d, Int, Int, Int, Float, e, f, Char) -> Char

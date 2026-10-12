@@ -25,7 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 STATUSES = {"draft", "live", "deferred"}
 # The catalog's table of contents groups the games, in this order.
-GROUPS = ["Puzzles", "Chance and strategy", "Adventures", "Action", "Quizzes"]
+GROUPS = ["Action", "Chance and strategy", "Puzzles", "Quizzes", "Retro"]  # the catalog lists them in this order (alphabetical)
 FIELDS = {"slug": str, "title": str, "summary": str, "lesson": str, "concepts": list,
           "status": str, "group": str, "order": int, "sources": list, "needs": list}
 

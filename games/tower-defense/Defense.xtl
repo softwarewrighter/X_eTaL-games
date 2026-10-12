@@ -597,11 +597,15 @@ h:s_ays := { (mo, lv, wv, t, st) ->
   st = 2 ? @ f_ormat< "The creeps got through. Wave {wv} | Time {f_loor t} s"
   @ f_ormat< "Money {mo} | Lives {lv} | Wave {wv} of {t_ally WAVES} | Time {f_loor t} s"
 }
-# :: (Any c, Any d, Num e, Num f, Num g) => (Float, Int, a, b, c, d, Int, e, Int, Float, f, g, Char) -> Char
+# :: (Any c, Any d, Num e, Num f) => (Float, Int, a, b, c, d, Int, Int, Int, Float, e, f, Char) -> Char
+## (md m_od 2: the view made an Int for certain; X_eTaL infers this
+## function's type two ways from run to run otherwise, an ask in
+## docs/xetal-asks.md.)
 ## The picture, as SVG text: the board and everything on it drawn far to
 ## near, the toolbar, the top line, and the grimoire over it all when
 ## open.
 l:d_raw := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) ->
+  md := md m_od 2
   top := (16.0, 40.0, 22.0) h:w_ords h:s_ays (mo, lv, wv, t, st)
   said := (16.0, 70.0, 18.0) h:w_ords ms
   book := h:b_ookIf (md, pg, t)

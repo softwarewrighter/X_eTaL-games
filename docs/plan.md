@@ -400,7 +400,8 @@ pieces' art (DONE: X_eTaL-extensions delivered twelve animated .glb
 models with previews; fetched by assets/fetch.sh, the previews drawn
 on the board and in the grimoire), the three.js view (DONE: the program writes the scene, the page
 draws it with the models' clips; the grimoire's pieces turn), the
-catalog's Retro group, a raycaster.
+catalog's groups (DONE: Adventures renamed Retro, the groups
+alphabetical), a raycaster.
 
 ## Saga 6 -- macros
 
