@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-11
 
+- 19:23 `chore` Saga step td-art completed.
+
 - 19:19 `game` Tower defense draws its pieces from X_eTaL-extensions' 3D models (the user: use the extensions' Blender models): assets/fetch.sh pins the twelve .glb and preview pictures (commit 3a14f1e, SHA-256 each) into the git-ignored cache; the pages build copies them next to the page; with td.toml art = "1" the X_eTaL program draws each piece's picture on the board (at one scale, standing on its tile, the upgrade cost over towers, hit points over creeps) and in the grimoire; the ask is marked delivered (no turntable sheets: the coming three.js view turns the models).
 
 - 19:00 `chore` Saga step tower-defense completed.

@@ -1,8 +1,9 @@
 number = 37
 slug = "td-art"
-status = "in-progress"
+status = "completed"
 description = "tower defense (the user, 2026-10-11): use the pieces X_eTaL-extensions publis..."
 role = "production"
 context_files = []
 created_at = "2026-10-11T19:04:07"
-commits = []
+completed_at = "2026-10-11T19:23:52"
+commits = ["10365392829eeb8b59691163af2e6af20f88b0d2"]

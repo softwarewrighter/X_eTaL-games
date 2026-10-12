@@ -1,0 +1,1 @@
+Tower defense uses X_eTaL-extensions' pieces: fetch.sh pins 12 glb+png, pages copy them, X_eTaL draws the previews on the board and in the grimoire; ask marked delivered
