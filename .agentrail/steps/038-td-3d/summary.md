@@ -1,0 +1,1 @@
+Tower defense 3D: X_eTaL writes the scene in picture metadata, microscope scene.js (three.js CDN) draws it behind the SVG with the extensions' animated models; grimoire turns pieces; flat fallback

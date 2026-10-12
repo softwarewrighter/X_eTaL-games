@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 08:45 `chore` Saga step td-3d completed.
+
 - 08:33 `game` Tower defense in 3D (the user: animated towers and creeps, three.js with Rust/Yew, X_eTaL writing the scene): the X_eTaL program puts a scene in its picture's metadata (a camera matching its isometric map, the tiles, every piece's model, place, heading, clip and time; the grimoire's piece turning in a window of its panel); microscope gains scene.js (three.js from jsDelivr: the .glb models pooled, each posed at the clip time the program gives) and draws it on a canvas behind the picture, hiding the picture's `flat` parts only while every model is drawn (the flat picture stays without WebGL); A11 records the rule; the browser test reports whether the scene was drawn in 3D; the golden is shorter (the page tests run it three times).
 
 ## 2026-10-11
