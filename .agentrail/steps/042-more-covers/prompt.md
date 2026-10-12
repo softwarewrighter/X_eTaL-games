@@ -1,0 +1,1 @@
+the user (2026-10-12): two more covers, space-rocks (Asteroids) and falling-blocks (Falling blocks), added like the others (just covers; the ESRB acronym blurred where it shows).

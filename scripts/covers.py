@@ -23,11 +23,15 @@ COVERS = {
     "towerd-defense": "tower-defense",
     "world-capitals": "capitals",
     "trek": "trek-adventure",
+    "space-rocks": "asteroids",
+    "falling-blocks": "blocks",
+    "ray-caster": "raycaster",
+    "horse-race": "horse-race",
     "puzzles": "group-puzzles",
 }
 # The covers whose badge has the ESRB logo and acronym, and where it is
 # (left, top, right, bottom in the 1024-pixel original).
-ESRB = {"maze-escape", "race", "towerd-defense"}
+ESRB = {"maze-escape", "race", "towerd-defense", "ray-caster"}
 ESRB_BOX = (24, 948, 142, 1006)
 SIZE = 320
 

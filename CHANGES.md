@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 13:40 `feat` Four more covers (the user's art): Space Rocks on Asteroids, Falling Blocks on Falling blocks, Ray Caster on the Raycaster (its ESRB acronym blurred), Horse Race on Horse race; scripts/covers.py lists them.
+
 - 12:11 `chore` Saga step covers completed.
 
 - 12:01 `feat` Covers on the catalog (the user's cover art): `just covers DIR` (scripts/covers.py, Pillow by uv pip) resizes each NAME-cover.jpg to 320 pixels into images/covers/ (dungeon, maze, racer, side-scroller, stargazer, tower defense, capitals, trek adventure, and the Puzzles group), blurring the ESRB logo and acronym (the E / Everyone rating stays, the user's); each game's card shows its screenshot and, beside its title, its cover; the cards are in sections by group (the table of contents' order, its group names now link to them), and the Puzzles section is headed by its cover and its puzzles' names.
