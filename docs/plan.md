@@ -402,7 +402,9 @@ on the board and in the grimoire), the three.js view (DONE: the program writes t
 draws it with the models' clips; the grimoire's pieces turn), the
 catalog's groups (DONE: Adventures renamed Retro, the groups
 alphabetical), the raycaster (DONE: 120 rays stepped through the grid
-at once to a fixed point, drawn as SVG columns with a mini map).
+at once to a fixed point, drawn as SVG columns with a mini map). Step 41, covers (the user's cover
+art on the catalog's cards and the Puzzles section; the catalog in
+sections by group): DONE.
 
 ## Saga 6 -- macros
 

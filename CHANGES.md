@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 12:01 `feat` Covers on the catalog (the user's cover art): `just covers DIR` (scripts/covers.py, Pillow by uv pip) resizes each NAME-cover.jpg to 320 pixels into images/covers/ (dungeon, maze, racer, side-scroller, stargazer, tower defense, capitals, trek adventure, and the Puzzles group), blurring the ESRB logo and acronym (the E / Everyone rating stays, the user's); each game's card shows its screenshot and, beside its title, its cover; the cards are in sections by group (the table of contents' order, its group names now link to them), and the Puzzles section is headed by its cover and its puzzles' names.
+
 - 11:43 `chore` Saga step raycaster completed.
 
 - 11:41 `game` The raycaster (the user queued it after tower defense): Rays.xtl casts a ray for every column of the picture (120), every ray stepped through the grid at once to its nearer next line until all hit a wall (a fixed point); walls as tall as they are near (perpendicular distance), darker on the side struck going down and with distance; walking a step if your square's four corners fit; a mini map; the map, colors and moves in raycaster.toml (test.sh: an empty room); the golden walks out by a shortest path in 20 seconds.

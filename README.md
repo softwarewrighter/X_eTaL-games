@@ -108,6 +108,7 @@ just                                 # list the tasks
 just venv                            # the scripts' Python (uv), once
 just xetal                           # build the bundled X_eTaL interpreter
 just eval "'+ r_/_2 2 3 r_eshape r_ange 6"   # try it: row sums, 6 15
+just covers DIR                      # the catalog's covers from cover art in DIR (resized, into images/covers)
 just gate                            # the pre-commit gate
 ```
 

@@ -15,6 +15,11 @@ default:
 venv:
     uv venv .venv --python 3.14 --managed-python
 
+# The catalog's covers from the user's cover art in DIR (resized, the ESRB acronym blurred)
+covers dir:
+    uv pip install --python .venv/bin/python3 pillow
+    scripts/covers.py "$1"
+
 # Get and build xetal at the known-good commit in XETAL_COMMIT (work/xetal, bin/xetal)
 xetal:
     scripts/xetal.sh

@@ -48,6 +48,7 @@ main, footer {{ max-width: 980px; margin: 0 auto; padding: 0 16px; }}
 .layout main {{ max-width: none; margin: 0; padding: 0; }}
 nav.toc {{ position: sticky; top: 16px; align-self: start; padding-top: 24px; font-size: .92rem; }}
 nav.toc h2 {{ font-size: 1rem; margin: 0 0 8px; }}
+nav.toc h3 a {{ color: inherit; text-decoration: none; }}
 nav.toc h3 {{ font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 4px; }}
 nav.toc ul {{ list-style: none; padding: 0; margin: 0; }}
 nav.toc li {{ margin: 3px 0; }}
@@ -59,10 +60,19 @@ header {{ padding: 48px 0 24px; }}
 h1 {{ font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.01em; }}
 .lede {{ color: var(--muted); max-width: 46rem; margin: 0; }}
 .lede a, footer a {{ color: var(--accent); }}
-.grid {{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; padding: 8px 0 40px; }}
+.grid {{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; padding: 8px 0 24px; }}
 .card {{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;
   display:flex; flex-direction:column; gap:10px; }}
 .card h2 {{ font-size:1.15rem; margin:0; }}
+/* A game's cover, a medium thumbnail beside its title; a group's cover heads its section. */
+.card .head {{ display:flex; gap:14px; align-items:center; }}
+.card .head .words {{ display:flex; flex-direction:column; gap:6px; min-width:0; }}
+.cover {{ width:120px; height:120px; flex:none; border-radius:10px; border:1px solid var(--line); object-fit:cover; display:block; }}
+.group {{ padding-top: 8px; }}
+.group > h2 {{ font-size:1.4rem; margin: 18px 0 4px; }}
+.banner {{ display:flex; gap:18px; align-items:center; margin: 6px 0 4px; }}
+.banner img {{ width:180px; height:180px; flex:none; border-radius:12px; border:1px solid var(--line); object-fit:cover; }}
+.banner p {{ margin:0; color:var(--muted); max-width: 34rem; }}
 .shot img {{ width:100%; aspect-ratio: 13 / 9; object-fit: cover; object-position: top; border-radius:8px; border:1px solid var(--line); display:block; }}
 .card p {{ margin:0; color:var(--muted); }}
 .card p.lesson {{ color:var(--fg); font-weight:600; font-size:.9rem; }}
@@ -182,10 +192,13 @@ def card(m):
     if m.get("web") and m.get("picture"):
         alt = html.escape(m["title"])
         pic = f'<a class="shot" href="{slug}/"><img src="{slug}/screenshot.png" alt="{alt}" loading="lazy"></a>\n'
-    return (f'<article class="card" id="{slug}">\n{pic}'
-            f'<span class="status {st}">{STATUS[st]}</span>\n'
-            f'<h2>{title(m)}</h2>\n'
-            f'<p class="lesson">{html.escape(m["lesson"])}</p>\n'
+    head = (f'<span class="status {st}">{STATUS[st]}</span>\n'
+            f'<h2>{title(m)}</h2>\n')
+    if (ROOT / "images" / "covers" / f'{m["slug"]}.jpg').exists():
+        head = (f'<div class="head"><img class="cover" src="covers/{slug}.jpg" alt="" loading="lazy">'
+                f'<div class="words">\n{head}</div></div>\n')
+    head += f'<p class="lesson">{html.escape(m["lesson"])}</p>\n'
+    return (f'<article class="card" id="{slug}">\n{pic}{head}'
             f'<p>{html.escape(m["summary"])}</p>\n'
             f'<div class="chips">{chips}</div>\n'
             f'<div class="links">{" ".join(links)}</div>\n</article>')
@@ -228,7 +241,8 @@ def toc(games):
         items = "".join(f'<li><a href="#{html.escape(m["slug"])}">{html.escape(m["title"])}</a>'
                         + ('' if m["status"] == "live" else f' <span class="draft">({html.escape(STATUS[m["status"]].lower())})</span>')
                         + '</li>' for m in inside)
-        parts.append(f'<h3>{html.escape(g)}</h3><ul>{items}</ul>')
+        key = g.lower().replace(" ", "-")
+        parts.append(f'<h3><a href="#group-{key}">{html.escape(g)}</a></h3><ul>{items}</ul>')
     parts.append('</nav>')
     return "".join(parts)
 
@@ -259,6 +273,27 @@ its documentation and examples (run by the gate), its source, and every place it
 """
 
 
+def groups(games):
+    """The cards in sections by group (the table of contents' order); a
+    group with a cover (images/covers/group-NAME.jpg) is headed by it."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from games import GROUPS
+    out = []
+    for g in GROUPS:
+        inside = [m for m in games if m.get("group") == g]
+        if not inside:
+            continue
+        key = g.lower().replace(" ", "-")
+        banner = ""
+        if (ROOT / "images" / "covers" / f"group-{key}.jpg").exists():
+            names = ", ".join(html.escape(m["title"]) for m in sorted(inside, key=lambda m: m["title"].lower()))
+            banner = (f'<div class="banner"><img src="covers/group-{key}.jpg" alt="" loading="lazy">'
+                      f'<p>{len(inside)} {html.escape(g.lower())}, each written around one array idea: {names}.</p></div>\n')
+        cards = "\n".join(card(m) for m in inside)
+        out.append(f'<section class="group" id="group-{key}">\n<h2>{html.escape(g)}</h2>\n{banner}<div class="grid">\n{cards}\n</div>\n</section>')
+    return "\n".join(out)
+
+
 def git(*args):
     r = subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
     return r.stdout.strip() or "unknown"
@@ -275,7 +310,7 @@ def main():
         idioms = ('<section class="idioms"><h2>One array idea per game</h2>\n'
                   '<p class="lede">Different games, the same few array ideas: each game is written around one.</p>\n'
                   f'<table><thead><tr><th>The array idiom</th><th>Game</th></tr></thead><tbody>{rows}</tbody></table></section>\n')
-        body = start() + idioms + '<section class="grid">\n' + "\n".join(card(m) for m in games) + "\n</section>"
+        body = start() + idioms + groups(games)
     else:
         body = '<p class="empty">The first game is on its way.</p>'
     out.parent.mkdir(parents=True, exist_ok=True)

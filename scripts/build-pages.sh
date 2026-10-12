@@ -40,6 +40,8 @@ done < <("$root/scripts/games.py" list)
   printf '%s\n' ${keep[@]+"${keep[@]}"} | grep -qx "$s" || { echo "removing pages/$s/"; rm -rf "$d"; }
 done
 cp "$root/images/xetal-logo-green.png" "$root/images/favicon.ico" "$root/pages/"
+# The covers (images/covers: games' and groups', from just covers).
+mkdir -p "$root/pages/covers"; cp "$root"/images/covers/*.jpg "$root/pages/covers/"
 "$root/scripts/build-catalog.py"
 "$root/scripts/build-docs.sh"
 echo "pages/ built; just publish puts it on the gh-pages branch (the live site)."
