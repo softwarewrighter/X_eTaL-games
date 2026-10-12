@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 10:05 `chore` Saga step toc-retro completed.
+
 - 09:55 `feat` The catalog's groups (the user: Adventures implied text adventures; rename it Retro, groups alphabetical): Adventures is now Retro (Trek adventure, Star Trek, Robot chase, the dungeon, the maze) and the groups are listed alphabetically: Action, Chance and strategy, Puzzles, Quizzes, Retro. Also: tower defense's l:d_raw makes its view field an Int for certain, as X_eTaL infers that function's type two ways from run to run (an ask).
 
 - 09:55 `build` Python only from the repository's uv environment (the user, again: no system Python): `just venv` makes `.venv` with `uv venv --managed-python` (uv's own CPython, not Homebrew's), and every script sources scripts/venv.sh, which puts `.venv/bin` first on the path (or stops with a hint), so scripts run on their own (not through just) never reach the system's python3 either.

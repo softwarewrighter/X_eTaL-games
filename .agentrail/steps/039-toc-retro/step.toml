@@ -1,8 +1,9 @@
 number = 39
 slug = "toc-retro"
-status = "in-progress"
+status = "completed"
 description = "the catalog (the user, 2026-10-12): Adventures implies text adventures; Robot..."
 role = "production"
 context_files = []
 created_at = "2026-10-12T07:23:22"
-commits = []
+completed_at = "2026-10-12T10:05:40"
+commits = ["01dd9b0c22ad32fa79c4d6182423e662814dda43"]

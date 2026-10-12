@@ -1,0 +1,1 @@
+Catalog: Adventures renamed Retro (5 games), groups alphabetical; uv-managed venv sourced by every script; td d_raw type made deterministic + ask for nondeterministic inference
