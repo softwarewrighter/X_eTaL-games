@@ -1,0 +1,185 @@
+## The raycaster's rules, a library: raycaster.xtl (scripted), play.xtl
+## (the game: keys and the clock) and the web page all use these. The map
+## is a grid of walls; you stand anywhere in it, facing any way. The view
+## is one ray per column of the picture, every ray stepped through the
+## grid at once (each to its next line across or down, whichever is
+## nearer) until all of them have hit a wall: a fixed point. A wall's
+## column is as tall as it is near. A game's state is a tuple: (where you
+## are, x and y in tiles, y down; which way you face, radians, 0 east,
+## turning right as it grows; the seconds played; how it stands: 0
+## walking, 1 out of the door).
+
+"sv:" u_se< "Svg"
+"t:" u_se< "Text"
+
+### The data
+
+## The map: R rows of C tiles, row by row: 0 floor, 1 to 4 a wall's
+## color, 5 the door.
+rows := "raycaster.toml" []L_IST "map"
+cells := t:j_oin rows
+R := t_ally rows
+C := (t_ally cells) d_iv R
+GRID := (".1234E@" i_ndexOf cells) s_elect 0 1 2 3 4 5 0
+## The colors: a wall's by its kind, the door's.
+COLORS := 5 3 r_eshape n_umbers t:j_oin '{ x -> e_nclose (d_isclose x) c_at " " } e_ach ("raycaster.toml" []L_IST "colors") c_at "raycaster.toml" []L_IST "door"
+## A step, a turn, the view's width, the rays.
+moves := 'sv:n_um e_ach "raycaster.toml" []L_IST "moves"
+STEP := f_irst moves
+TURN := 2 s_elect moves
+WIDE := 3 s_elect moves
+RAYS := f_loor 4 s_elect moves
+## Where you start: the middle of the @ tile, facing east.
+AT := f_irst w_here cells = f_irst "@"
+
+### Walking
+
+# :: (Any a, Num b) => a -> (Float, Float, Float, Float, b)
+## A new game: you at the start, facing east.
+l:n_ew := { z -> (0.5 + f_loat (AT - 1) m_od C, 0.5 + f_loat (AT - 1) d_iv C, 0.0, 0.0, 0) }
+## What is on the tiles at x, y (any number of them): 0 floor, 1 to 4 a
+## wall, 5 the door; beyond the map, a wall.
+h:t_ile := { (x, y) ->
+  c := f_loor x
+  r := f_loor y
+  out := (c < 0) | (r < 0) | (c >= C) | r >= R
+  k := 1 + (C * 0 m_ax r m_in R - 1) + 0 m_ax c m_in C - 1
+  (k s_elect GRID) m_ax 3 * 0 + out
+}
+## Whether you fit at x, y: no wall within 0.2 tiles, the four corners
+## of your square tested at once.
+h:f_its := { (x, y) -> '& r_/ 0 = h:t_ile (x + 0.2 -0.2 0.2 -0.2, y + 0.2 0.2 -0.2 -0.2) }
+## Whether a step to x, y reaches the door.
+h:d_oor := { (x, y) -> '| r_/ 5 = h:t_ile (x + 0.2 -0.2 0.2 -0.2, y + 0.2 0.2 -0.2 -0.2) }
+## You moved by (dx, dy), if you fit there; out of the door if it is
+## there.
+h:m_oved := { (x, y, a, t, st, dx, dy) ->
+  h:d_oor (x + dx, y + dy) ? (x, y, a, t, 1)
+  h:f_its (x + dx, y + dy) ? (x + dx, y + dy, a, t, st)
+  (x, y, a, t, st)
+}
+# :: (Any a, Num b) => (Float, Float, Float, a, b) -> Char -> (Float, Float, Float, a, b)
+## A key: up (or w) steps ahead, down (or s) steps back, left and right
+## turn, a and d step sideways; other keys, and keys once out, do
+## nothing.
+l:k_ey := { s name ->
+  (x, y, a, t, st) := s
+  k := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d") i_ndexOf e_nclose name
+  (k > 8) | st > 0 ? s
+  k = 3 ? (x, y, a - TURN, t, st)
+  k = 4 ? (x, y, a + TURN, t, st)
+  f := (1 2 5 6 7 8 i_ndexOf k) s_elect 1.0 -1.0 1.0 -1.0 0.0 0.0
+  g := (1 2 5 6 7 8 i_ndexOf k) s_elect 0.0 0.0 0.0 0.0 -1.0 1.0
+  h:m_oved (x, y, a, t, st, STEP * (f * c_os a) - g * s_in a, STEP * (f * s_in a) + g * c_os a)
+}
+# :: (Any a, Any b, Any c, Num d, Num e) => (a, b, c, d, e) -> d -> (a, b, c, d, e)
+## A tick of the clock: the time moves (once out, it stops).
+l:t_ick := { s dt ->
+  (x, y, a, t, st) := s
+  st > 0 ? s
+  (x, y, a, t + dt, st)
+}
+
+### Looking
+
+## The rays: one for each column, from the left of the view to the
+## right, each a direction (x and y).
+h:r_ays := { a ->
+  cam := (2.0 * (f_loat (r_ange RAYS) - 1) / f_loat RAYS - 1) - 1.0
+  ((c_os a) - WIDE * cam * s_in a, (s_in a) + WIDE * cam * c_os a)
+}
+## Every ray one line further (across where its next line across is
+## nearer, else down), all at once, until all have hit a wall (or forty
+## lines, the map's diagonal and more).
+h:s_tep := { (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n) ->
+  ('& r_/ hit) | n >= 40 ? (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n)
+  across := (n_ot hit) & sx < sy
+  down := (n_ot hit) & n_ot across
+  fa := f_loat across
+  fd := f_loat down
+  mx := mx + ix * 0 + across
+  my := my + iy * 0 + down
+  sx := sx + fa * dx
+  sy := sy + fd * dy
+  side := (side * 0 + n_ot across | down) + 0 + down
+  hit := 0 < h:t_ile (0.5 + f_loat mx, 0.5 + f_loat my)
+  h:s_tep (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n + 1)
+}
+## What every ray sees from x, y facing a: the wall it hits (its kind),
+## which way it was struck (0 across, 1 down) and how far it is (along
+## the way you face, so walls stand straight).
+h:c_ast := { (x, y, a) ->
+  (rx, ry) := h:r_ays a
+  dx := 1.0 / 0.000001 m_ax a_bs rx
+  dy := 1.0 / 0.000001 m_ax a_bs ry
+  mx := (RAYS r_eshape f_loor x)
+  my := (RAYS r_eshape f_loor y)
+  ix := (0 + rx > 0.0) - 0 + rx < 0.0
+  iy := (0 + ry > 0.0) - 0 + ry < 0.0
+  fx := x - f_loat f_loor x
+  fy := y - f_loat f_loor y
+  sx := dx * (fx * f_loat rx < 0.0) + (1.0 - fx) * f_loat rx >= 0.0
+  sy := dy * (fy * f_loat ry < 0.0) + (1.0 - fy) * f_loat ry >= 0.0
+  (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n) := h:s_tep (mx, my, sx, sy, dx, dy, ix, iy, RAYS r_eshape 0, RAYS r_eshape 0 = 1, 0)
+  far := ((sx - dx) * f_loat side = 0) + (sy - dy) * f_loat side = 1
+  (h:t_ile (0.5 + f_loat mx, 0.5 + f_loat my), side, 0.05 m_ax far)
+}
+
+### What it shows
+
+# :: (Any a, Any b, Any c, Any d, Any e) => (a, b, c, d, e) -> e
+## 0 walking, 1 out of the door.
+l:s_tatus := { (x, y, a, t, st) -> st }
+# :: Any b => (a, a, a, a, b) -> a
+## Where you are, which way you face, the seconds.
+l:y_ou := { (x, y, a, t, st) -> x c_at y c_at a c_at t }
+# :: (Num a, Any b, Any c) => (Float, Float, a, b, c) -> Float
+## What the rays see, a row each: the wall's kind, its side, how far.
+l:s_ees := { (x, y, a, t, st) ->
+  (k, side, far) := h:c_ast (x, y, a)
+  o_\ (3 c_at RAYS) r_eshape (f_loat k) c_at (f_loat side) c_at far
+}
+## The picture's size; the view below the top line.
+VIEW := 0.0 0.0 800.0 560.0
+TOP := 60.0
+HIGH := 500.0
+## One column of the view: its place, its wall's height and color
+## (darker for a side struck down, and with the distance).
+h:c_olumn := { (i, k, side, far) ->
+  h := HIGH m_in (0.9 * HIGH) / far
+  w := (3 s_elect VIEW) / f_loat RAYS
+  dim := (1.0 - 0.3 * f_loat side) * 0.25 m_ax 1.0 - far / 14.0
+  rgb := f_loor dim * (1 m_ax k) s_elect COLORS
+  e_nclose @ f_ormat< "<rect x=\"{sv:w_hole w * f_loat i - 1}\" y=\"{sv:w_hole (TOP + 0.5 * HIGH) - 0.5 * h}\" width=\"{sv:w_hole w + 0.6}\" height=\"{sv:w_hole h}\" fill=\"rgb({f_irst rgb},{2 s_elect rgb},{3 s_elect rgb})\"/>"
+}
+## The mini map, drawn once: the walls, 8 picture units a tile.
+MAPX := 788.0 - 8.0 * f_loat C
+MAPY := 72.0
+h:m_apTile := { i ->
+  k := i s_elect GRID
+  e_nclose @ f_ormat< "<rect x=\"{sv:w_hole MAPX + 8.0 * f_loat (i - 1) m_od C}\" y=\"{sv:w_hole MAPY + 8.0 * f_loat (i - 1) d_iv C}\" width=\"8\" height=\"8\" fill=\"{h:m_apFill k}\"/>"
+}
+h:m_apFill := { k -> k = 5 ? "#2a9d8f"; k > 0 ? "#c8c8c8"; "#20222e" }
+MAP := t:j_oin 'h:m_apTile e_ach r_ange t_ally cells
+## You on the mini map: a dot and the way you face.
+h:y_ouOnMap := { (x, y, a) ->
+  px := MAPX + 8.0 * x
+  py := MAPY + 8.0 * y
+  e_nclose @ f_ormat< "<g class=\"you\"><circle cx=\"{sv:w_hole px}\" cy=\"{sv:w_hole py}\" r=\"3\" fill=\"#e63946\"/><line x1=\"{sv:w_hole px}\" y1=\"{sv:w_hole py}\" x2=\"{sv:w_hole px + 9.0 * c_os a}\" y2=\"{sv:w_hole py + 9.0 * s_in a}\" stroke=\"#e63946\" stroke-width=\"2\"/></g>"
+}
+## Words on the dark picture.
+h:w_ords := { (x, y, z) t -> e_nclose @ f_ormat< "<text x=\"{sv:w_hole x}\" y=\"{sv:w_hole y}\" font-size=\"{sv:w_hole z}\" fill=\"#e9ecef\">{t}</text>" }
+h:s_ays := { (t, st) ->
+  st = 1 ? @ f_ormat< "You found the way out in {f_loor t} seconds!"
+  @ f_ormat< "Find the way out (the teal door) | Time {f_loor t} s | Arrows: walk, turn; a, d: sideways"
+}
+# :: (Num a, Num b, Num c) => (Float, Float, a, b, c) -> Char
+## The picture, as SVG text: the ceiling and the floor, a column for
+## every ray, the mini map with you on it, and the top line.
+l:d_raw := { (x, y, a, t, st) ->
+  (k, side, far) := h:c_ast (x, y, a)
+  cols := '{ i -> h:c_olumn (i, i s_elect k, i s_elect side, i s_elect far) } e_ach r_ange RAYS
+  back := e_nclose @ f_ormat< "<rect y=\"{sv:w_hole TOP}\" width=\"800\" height=\"{sv:w_hole 0.5 * HIGH}\" fill=\"#2b2d42\"/><rect y=\"{sv:w_hole TOP + 0.5 * HIGH}\" width=\"800\" height=\"{sv:w_hole 0.5 * HIGH}\" fill=\"#4a4e45\"/>"
+  top := (16.0, 40.0, 20.0) h:w_ords h:s_ays (t, st)
+  VIEW sv:p_icture (VIEW sv:r_ect "fill=\"#111111\"") c_at back c_at cols c_at (e_nclose MAP) c_at (h:y_ouOnMap (x, y, a)) c_at top
+}

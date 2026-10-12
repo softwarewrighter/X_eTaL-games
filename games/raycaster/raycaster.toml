@@ -1,0 +1,29 @@
+# The raycaster's map, read by Rays.xtl (X_eTaL's []L_IST). Rows of
+# equal length, top to bottom: . floor, a digit a wall of that color
+# (1 to 4, the colors below), E the way out (a door: walk into it), @
+# where you start, facing east. The outside must be walls. Every value
+# is a string.
+map = [
+  "1111111111111111",
+  "1@.....2.......1",
+  "1.333..2..44.4.1",
+  "1.3....2...4...1",
+  "1.3.1111...4.333",
+  "1...1......4...1",
+  "122.1.2222.444.1",
+  "1...1....2.....1",
+  "1.3333.3.2.111.1",
+  "1......3...1.E.1",
+  "1.22...3.....1.1",
+  "1111111111111111",
+]
+
+# The walls' colors by digit (red, green, blue: 0 to 255 each), then the
+# door's.
+colors = ["178 64 52", "70 120 180", "150 150 150", "90 150 80"]
+door = ["42 157 143"]
+
+# How far a step goes (tiles), how far a turn turns (radians), the view's
+# width (the camera plane: 0.66 is about 66 degrees), how many rays (one
+# per column of the picture).
+moves = ["0.125", "0.1309", "0.66", "120"]

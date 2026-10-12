@@ -1,0 +1,30 @@
+#!/usr/bin/env xetal
+## The raycaster: find the way out of the walls, seen from inside. Up (or
+## w) steps ahead, down (or s) steps back, left and right turn, a and d
+## step sideways; walk into the teal door to get out; r starts again. The
+## clock runs while you look: on the page the game is in a dialog, and
+## the clock's ticks (twenty a second) and your keys come to the program
+## as events; at the command line, lines such as "tick 0.05" and
+## "key UP" on standard input. Getting out ends the program (on the page,
+## Play or any key then starts again). The rules are Rays.xtl's.
+"rc:" u_se< "Rays"
+
+## Show the game, then wait for the next event.
+u:s_how := { s ->
+  pic := []S_HOW rc:d_raw s
+  0 < rc:s_tatus s ? u:e_nd s
+  u:l_oop s
+}
+## The next event: a tick moves the game on and shows it; a key acts.
+u:l_oop := { s ->
+  e := []E_VENT @
+  "end" m_atch []E_KIND e ? "THE END"
+  "tick" m_atch []E_KIND e ? u:s_how s rc:t_ick f_irst []E_AT e
+  n_ot "key" m_atch []E_KIND e ? u:l_oop s
+  name := f_ormat []E_KEY e
+  "r" m_atch name ? u:s_how rc:n_ew 0
+  u:l_oop s rc:k_ey name
+}
+## How it ended (the program ends with it).
+u:e_nd := { s -> @ f_ormat< "You found the way out in {f_loor 4 s_elect rc:y_ou s} seconds!" }
+u:s_how rc:n_ew 0

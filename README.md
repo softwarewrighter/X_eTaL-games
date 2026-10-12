@@ -54,6 +54,7 @@ and is tested by its expected output.
 | [Falling blocks](games/blocks/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/blocks/)) | a piece turned by reversing and transposing; full rows by a row-wise and, cleared by keeping the others; a computer player trying every move at once | live |
 | [Side-scroller](games/scroller/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/scroller/)) | gravity, movement and collision as systems over every body at once (lib/Ecs), ticked by the clock | live |
 | [Tower defense](games/tower-defense/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/tower-defense/)) | every tower against every creep in one table, shots against creeps in another (lib/Ecs); the road by a flood; an isometric board by one linear map, clicks by its inverse | live |
+| [Raycaster](games/raycaster/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/raycaster/)) | ray casting as arrays: a ray per column, all stepped through the grid together to a fixed point; walls as tall as they are near | live |
 | [Racer](games/racer/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/racer/)) | laps and places as systems (lib/Ecs): every car against every segment of the track, every pair of cars compared at once | live |
 | [Asteroids](games/asteroids/README.md) ([live](https://softwarewrighter.github.io/X_eTaL-games/asteroids/)) | entities that come and go (lib/Ecs): spawning and despawning by masks, every shot against every rock at once | live |
 | Battleship | placement masks, a probability map | planned |
@@ -87,6 +88,7 @@ its idiom in the code.
 | a piece turned by `o_\ r_ev`; full rows by `'& r_/_2`, cleared by `(n_ot full) r_eplicate W`; every landing row tried at once; a computer player weighing every turn and column | [Falling blocks](games/blocks/README.md) |
 | gravity, movement and collision with the ground for every body at once; a hit as a mask used as a number (`x * (1 - hit) + snap * hit`); the clock's ticks as events | [Side-scroller](games/scroller/README.md) |
 | towers against creeps and shots against creeps as tables (reach, the farthest creep, splash, armor, chill); the road by a flood; the board in 2.5D by one linear map and clicks by its inverse | [Tower defense](games/tower-defense/README.md) |
+| a ray for every column, all stepped through the grid at once (`across := (n_ot hit) & sx < sy`) until all hit a wall; walls as tall as they are near | [Raycaster](games/raycaster/README.md) |
 | every car's distance to every segment of the track as one table; places from every pair of cars compared (`1 + '+ r_/_2 0 + p '< t_able p`) | [Racer](games/racer/README.md) |
 | shots and rocks spawned and despawned in the slots a mask says are free; every shot against every rock as one table; a rock's halves by `r_eplicate` and one rotation over all of them | [Asteroids](games/asteroids/README.md) |
 | a press as a row of a 25 by 25 matrix; a board of presses one product mod 2; solved by elimination over GF(2) | [Lights out](games/lights-out/README.md) |

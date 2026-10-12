@@ -401,7 +401,8 @@ models with previews; fetched by assets/fetch.sh, the previews drawn
 on the board and in the grimoire), the three.js view (DONE: the program writes the scene, the page
 draws it with the models' clips; the grimoire's pieces turn), the
 catalog's groups (DONE: Adventures renamed Retro, the groups
-alphabetical), a raycaster.
+alphabetical), the raycaster (DONE: 120 rays stepped through the grid
+at once to a fixed point, drawn as SVG columns with a mini map).
 
 ## Saga 6 -- macros
 

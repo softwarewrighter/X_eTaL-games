@@ -1,0 +1,13 @@
+# One game's description: read by scripts/games.py for the tests, the
+# README's game list and the live catalog (pages/index.html).
+slug = "raycaster"
+title = "Raycaster"
+summary = "Find the way out of the walls, seen from inside, as the first 3D games drew it: one ray for every column of the picture, every ray stepped through the grid at once until all of them hit a wall. Walk and turn with the arrow keys; a mini map shows where you are."
+lesson = "ray casting as arrays: a ray per column, all stepped through the grid together to a fixed point; walls as tall as they are near"
+concepts = ["fixed point", "masks as numbers", "tuples", "[]E_VENT ticks and keys", "SVG"]
+status = "live"
+group = "Retro"
+order = 170
+sources = []
+needs = []
+wikipedia = "https://en.wikipedia.org/wiki/Ray_casting"   # the title links here (opens in a new tab)

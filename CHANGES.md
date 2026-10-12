@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-10-12
 
+- 11:41 `game` The raycaster (the user queued it after tower defense): Rays.xtl casts a ray for every column of the picture (120), every ray stepped through the grid at once to its nearer next line until all hit a wall (a fixed point); walls as tall as they are near (perpendicular distance), darker on the side struck going down and with distance; walking a step if your square's four corners fit; a mini map; the map, colors and moves in raycaster.toml (test.sh: an empty room); the golden walks out by a shortest path in 20 seconds.
+
 - 10:05 `chore` Saga step toc-retro completed.
 
 - 09:55 `feat` The catalog's groups (the user: Adventures implied text adventures; rename it Retro, groups alphabetical): Adventures is now Retro (Trek adventure, Star Trek, Robot chase, the dungeon, the maze) and the groups are listed alphabetically: Action, Chance and strategy, Puzzles, Quizzes, Retro. Also: tower defense's l:d_raw makes its view field an Int for certain, as X_eTaL infers that function's type two ways from run to run (an ask).
