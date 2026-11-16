@@ -6,10 +6,10 @@
 ## StarTrek.xtl.
 "t:" u_se< "StarTrek"
 "p:" u_se< "Play"
-said := p_rint! ""
-said := p_rint! "*** STAR TREK ***"
-said := p_rint! "DEFEND THE FEDERATION."
-said := p_rint! ""
+_ := p_rint! ""
+_ := p_rint! "*** STAR TREK ***"
+_ := p_rint! "DEFEND THE FEDERATION."
+_ := p_rint! ""
 
 ## A command's arguments, asked for as the BASIC asks: a factor or a
 ## number of sectors only after a good course; nothing to fire with
@@ -31,11 +31,11 @@ u:c_ourseAnd := { prompt ->
 ## A turn: the menu, a command, its result, until the game is over.
 u:t_urn := { s ->
   0 < t:s_tatus s ? p_rint! t:e_nd s
-  said := p_rint! ""
-  said := p_rint! "1=SRS 2=LRS 3=WAR 4=IMP 5=PHA 6=TOR 7=SHE 8=STA 9=HEL 0=QUI"
+  _ := p_rint! ""
+  _ := p_rint! "1=SRS 2=LRS 3=WAR 4=IMP 5=PHA 6=TOR 7=SHE 8=STA 9=HEL 0=QUI"
   c := p:n_umber "COMMAND ?"
   u:t_urn s t:c_ommand c c_at s u:a_rgs c
 }
 s := t:n_ew 0
-said := p_rint! @ f_ormat< "STARDATE {t:d_ate s} - YOU HAVE 30 DAYS TO DESTROY {t:k_lingons s} KLINGONS."
-done := u:t_urn s
+_ := p_rint! @ f_ormat< "STARDATE {t:d_ate s} - YOU HAVE 30 DAYS TO DESTROY {t:k_lingons s} KLINGONS."
+_ := u:t_urn s

@@ -26,7 +26,7 @@ moves and asks for the tiles to shut:
 ```
 "b:" u_se< "ShutTheBox"
 u:t_urn := { s ->
-  said := p_rint! b:v_iew s
+  _ := p_rint! b:v_iew s
   d := b:r_oll s
   m := s b:m_oves '+ r_/ d
   0 = t_ally m ? "NO MOVE. YOUR SCORE: " c_at f_ormat b:s_core s

@@ -10,7 +10,7 @@
 ## The items here as the TAKE menu lists them, "  3=TOOLKIT".
 u:l_ist := { v ->
   0 = t_ally v ? 0
-  shown := p_rint! @ f_ormat< "  {f_irst v}={d_isclose (f_irst v) s_elect t:i_tems @}"
+  _ := p_rint! @ f_ormat< "  {f_irst v}={d_isclose (f_irst v) s_elect t:i_tems @}"
   1 + u:l_ist 1 d_rop v
 }
 
@@ -23,36 +23,36 @@ u:a_rg := { s c ->
   0
 }
 u:t_akeWhat := { s ->
-  said := p_rint! "TAKE WHAT?"
+  _ := p_rint! "TAKE WHAT?"
   here := t:p_resent s
   0 = t_ally here ? 0
   listed := u:l_ist here
   p:n_umber "ITEM# ?"
 }
 u:u_seWhat := { s ->
-  said := p_rint! "USE WHAT?"
-  said := p_rint! "1=TOOLKIT 2=COUPLER 3=COMPUTER"
+  _ := p_rint! "USE WHAT?"
+  _ := p_rint! "1=TOOLKIT 2=COUPLER 3=COMPUTER"
   p:n_umber "ITEM# ?"
 }
 
 ## A turn: the room, the menu, a command, what it says, the clock.
 u:t_urn := { s ->
   0 < t:s_tatus s ? s t:s_ay 200 + t:s_tatus s
-  said := p_rint! "----------------------------------------"
-  said := p_rint! @ f_ormat< "TURNS LEFT {t:t_urns s}"
-  said := p_rint! ""
-  said := s t:s_ay t:r_oom s
-  said := p_rint! ""
-  said := p_rint! "1=LOOK 2=INV  3=GO    4=TAKE"
-  said := p_rint! "5=USE  6=THROW 7=FIRE 8=HELP 0=QUIT"
+  _ := p_rint! "----------------------------------------"
+  _ := p_rint! @ f_ormat< "TURNS LEFT {t:t_urns s}"
+  _ := p_rint! ""
+  _ := s t:s_ay t:r_oom s
+  _ := p_rint! ""
+  _ := p_rint! "1=LOOK 2=INV  3=GO    4=TAKE"
+  _ := p_rint! "5=USE  6=THROW 7=FIRE 8=HELP 0=QUIT"
   c := p:n_umber "COMMAND ?"
   c = 0 ? s t:s_ay 204
   next := s t:m_ove c c_at s u:a_rg c
-  said := next t:s_ay t:s_aid next
+  _ := next t:s_ay t:s_aid next
   later := t:c_lock next
-  said := later t:s_ay t:a_larms later
+  _ := later t:s_ay t:a_larms later
   u:t_urn later
 }
 s := t:n_ew 0
-said := s t:s_ay 300
-done := u:t_urn s
+_ := s t:s_ay 300
+_ := u:t_urn s

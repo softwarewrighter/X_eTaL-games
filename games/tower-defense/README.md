@@ -100,13 +100,6 @@ just test-game tower-defense  # compare with the expected output
 At the terminal nothing moves until you type a `tick` line; the page
 gives the ticks.
 
-## Known X_eTaL issue
-
-The grass is kept as 1s and 0s made where the map is read: adding 0 to
-a named true/false value stops with a type mismatch (the ask in
-[docs/xetal-asks.md](../../docs/xetal-asks.md) about a comparison being
-a number in one place and Bool in another).
-
 ## Assets
 
 The twelve pieces from X_eTaL-extensions (MIT), fetched by

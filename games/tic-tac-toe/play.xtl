@@ -5,7 +5,7 @@
 ## corner; a fork can beat it).
 "t:" u_se< "TicTacToe"
 "p:" u_se< "Play"
-said := p_rint! "TIC-TAC-TOE: YOU ARE X."
+_ := p_rint! "TIC-TAC-TOE: YOU ARE X."
 
 ## Your move: the number of an empty square, or it asks again.
 u:a_sk := { b ->
@@ -16,16 +16,16 @@ u:v_erdict := { b -> d_isclose (t:s_tatus b) s_elect "YOU WIN!" "I WIN." "A DRAW
 
 ## You, then the computer, until the game is over.
 u:y_ou := { b ->
-  said := p_rint! ""
-  shown := p_rint! t:v_iew b
-  pic := []S_HOW t:p_icture b
+  _ := p_rint! ""
+  _ := p_rint! t:v_iew b
+  _ := []S_HOW t:p_icture b
   0 < t:s_tatus b ? u:v_erdict b
   u:m_e b t:m_ove u:a_sk b
 }
 u:m_e := { b ->
   0 < t:s_tatus b ? u:y_ou b
   k := t:a_i b
-  said := p_rint! @ f_ormat< "I TAKE {k}"
+  _ := p_rint! @ f_ormat< "I TAKE {k}"
   u:y_ou b t:m_ove k
 }
 u:y_ou t:n_ew 0

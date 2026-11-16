@@ -1,6 +1,6 @@
 ## Text: printing lines, shared by the games.
 
-# :: Num b => Box a -> b
+# :: (Any a, Num b) => Box a -> b
 ## Print each string of a strand on its own line; how many were printed.
 ## >> "t:" u_se< "Text"
 ## >> t:l_ines "one" "two"
@@ -9,7 +9,7 @@
 ## 2
 l:l_ines := { v ->
   0 = t_ally v ? 0
-  said := p_rint! d_isclose f_irst v
+  _ := p_rint! d_isclose f_irst v
   1 + l:l_ines 1 d_rop v
 }
 # :: Truthy a => Int -> Int -> a

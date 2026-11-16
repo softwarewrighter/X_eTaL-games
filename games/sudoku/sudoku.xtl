@@ -69,5 +69,5 @@ s:p_roblem 1 2 3 4 5 6 7 8 0 0 0 0 0 0 0 0 0 9 c_at 63 r_eshape 0
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "'& r_/ (k = 0) | x = k" a_ssert< "the solution keeps every given"
-ok := "'& r_/ r_avel 1 = s:p_erUnit s:o_nehot x" a_ssert< "every unit holds every digit once"
+_ := "'& r_/ (k = 0) | x = k" a_ssert< "the solution keeps every given"
+_ := "'& r_/ r_avel 1 = s:p_erUnit s:o_nehot x" a_ssert< "every unit holds every digit once"

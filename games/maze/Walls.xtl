@@ -116,10 +116,10 @@ h:m_oved := { (G, at, to, f, n, seen, mp, goal) ->
 ## do nothing.
 l:k_ey := { s name ->
   (G, at, f, n, seen, mp, goal) := s
-  k := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d" "m") i_ndexOf e_nclose name
-  k > 9 ? s
-  k = 9 ? (G, at, f, n, seen, 1 - mp, goal)
-  k := 1 + (k - 1) m_od 4
+  key := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d" "m") i_ndexOf e_nclose name
+  key > 9 ? s
+  key = 9 ? (G, at, f, n, seen, 1 - mp, goal)
+  k := 1 + (key - 1) m_od 4
   t := (4 + f + (2 * k) - 7) m_od 4
   k > 2 ? (G, at, t, n, h:s_ee (G, at, t, seen), mp, goal)
   h:m_oved (G, at, at + (1 + (f + 2 * k - 1) m_od 4) s_elect STEPS, f, n, seen, mp, goal)
@@ -143,9 +143,9 @@ l:d_istances := { (G, at, f, n, seen, mp, goal) ->
   d := h:f_lood (G, FAR * 0 + (r_ange NB) != at)
   (BH c_at B) r_eshape d - (1 + FAR) * 0 + G
 }
-# :: (Any a, Any b, Any c, Any d, Any f, Any g) => (a, b, c, d, e, f, g) -> e
+# :: (Any a, Any b, Any c, Any d, Num e, Any f, Any g) => (a, b, c, d, e, f, g) -> e
 ## The blocks seen so far, as a matrix of 0s and 1s.
-l:s_een := { (G, at, f, n, seen, mp, goal) -> (BH c_at B) r_eshape seen }
+l:s_een := { (G, at, f, n, seen, mp, goal) -> (BH c_at B) r_eshape 0 + seen }
 ## The view's planes: a block at depth k spans from plane k to plane k+1;
 ## each plane's half width and half height, nearest first.
 H := 400.0 230.0 130.0 74.0 42.0 24.0 14.0

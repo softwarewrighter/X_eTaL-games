@@ -10,31 +10,27 @@
 # random. The world: a row per entity slot (32) and a column per field
 # (20: alive, then for each component whether the entity has it, then
 # its fields); 10 entities are alive.
-s := cr:n_ew 0
-(W, g, n, m, lv) := s
+start := cr:n_ew 0
+(W, _, _, _, _) := start
 s_hape W
 ec:c_ount W
 
 # What each entity is, as the components it has: a row each, a 1 where
 # it has hit points, attack, chase, heal, gold (its kind's table in
 # dungeon.toml gives it those; nothing in the code names a kind).
-cr:h_as s
+cr:h_as start
 
 # A few turns (right twice, down twice, left twice): what happens is
-# said, and the monsters that see you come closer.
-u:g_o := { s d -> s cr:t_urn d }
-s := s u:g_o 0 1.0
-s := s u:g_o 0 1.0
-s := s u:g_o 1 0.0
-s := s u:g_o 1 0.0
-s := s u:g_o 0 -1.0
-s := s u:g_o 0 -1.0
-(W, g, n, m, lv) := s
+# said, and the monsters that see you come closer. The steps are the
+# rows of a matrix (a row and a column each), taken one after another.
+u:w_alk := { s D -> 0 = t_ally D ? s; (s cr:t_urn f_irst D) u:w_alk 1 d_rop D }
+walked := start u:w_alk 6 2 r_eshape 0 1 0 1 1 0 1 0 0 -1 0 -1.0
+(_, _, _, m, _) := walked
 m
-cr:y_ou s
-pic := []S_HOW cr:d_raw s
+cr:y_ou walked
+_ := []S_HOW cr:d_raw walked
 
 # What the game guarantees, checked by a_ssert< (silent when it holds).
 u:w_orld := { (W, g, n, m, lv) -> W }
-ok := "10 = ec:c_ount u:w_orld cr:n_ew 0" a_ssert< "a new dungeon holds ten entities"
-ok := "6 = 3 s_elect cr:y_ou s" a_ssert< "six turns taken"
+_ := "10 = ec:c_ount u:w_orld cr:n_ew 0" a_ssert< "a new dungeon holds ten entities"
+_ := "6 = 3 s_elect cr:y_ou walked" a_ssert< "six turns taken"

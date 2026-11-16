@@ -21,13 +21,12 @@ r := rc:s_ees s
 # degrees): the middle ray now looks south, down the corridor.
 u:p_ress := { s k -> s rc:k_ey k }
 u:k_eys := { s ks -> 0 = t_ally ks ? s; (s u:p_ress d_isclose f_irst ks) u:k_eys 1 d_rop ks }
-s := s u:k_eys "UP" "UP" "UP"
-s := s u:k_eys 12 r_eshape e_nclose "RIGHT"
-rc:y_ou s
-60 s_elect rc:s_ees s
-pic := []S_HOW rc:d_raw s
+turned := (s u:k_eys "UP" "UP" "UP") u:k_eys 12 r_eshape e_nclose "RIGHT"
+rc:y_ou turned
+60 s_elect rc:s_ees turned
+_ := []S_HOW rc:d_raw turned
 
 # What the game guarantees, checked by a_ssert< (silent when it holds).
-ok := "2 = f_loor f_irst 60 s_elect rc:s_ees rc:n_ew 0" a_ssert< "straight ahead at the start is the blue wall"
-ok := "120 = t_ally rc:s_ees s" a_ssert< "a ray for every column"
-ok := "0 = rc:s_tatus s" a_ssert< "still inside"
+_ := "2 = f_loor f_irst 60 s_elect rc:s_ees rc:n_ew 0" a_ssert< "straight ahead at the start is the blue wall"
+_ := "120 = t_ally rc:s_ees turned" a_ssert< "a ray for every column"
+_ := "0 = rc:s_tatus turned" a_ssert< "still inside"

@@ -34,13 +34,13 @@ the clock.
 u:t_urn := { s ->
   0 < t:s_tatus s ? s t:s_ay 200 + t:s_tatus s
   ...
-  said := s t:s_ay t:r_oom s
+  _ := s t:s_ay t:r_oom s
   c := u:n_um "COMMAND ?"
   c = 0 ? s t:s_ay 204
   next := s t:m_ove c c_at s u:a_rg c
-  said := next t:s_ay t:s_aid next
+  _ := next t:s_ay t:s_aid next
   later := t:c_lock next
-  said := later t:s_ay t:a_larms later
+  _ := later t:s_ay t:a_larms later
   u:t_urn later
 }
 ```

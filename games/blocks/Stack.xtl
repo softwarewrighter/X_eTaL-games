@@ -95,9 +95,9 @@ l:n_ew := { z -> h:n_ext ((DEEP c_at WIDE) r_eshape 0, r_oll! t_ally names, 0, 0
 ## The piece left where it is: full rows cleared and scored, the next
 ## piece in.
 h:s_ettle := { (W, M, k, r, c, nx, sc, ln, acc, t, st) ->
-  W := h:l_eave (W, M, k, r, c)
-  n := h:f_ull W
-  h:n_ext (l:c_lear W, nx, sc + (h:l_evel ln) * (1 + n) s_elect POINTS, ln + n, t)
+  left := h:l_eave (W, M, k, r, c)
+  n := h:f_ull left
+  h:n_ext (l:c_lear left, nx, sc + (h:l_evel ln) * (1 + n) s_elect POINTS, ln + n, t)
 }
 ## A step down, or, where it cannot go down, settled.
 h:d_own := { s ->
@@ -191,11 +191,11 @@ l:a_i := { s ->
 ## over, do nothing.
 l:k_ey := { s name ->
   (W, M, k, r, c, nx, sc, ln, acc, t, st) := s
-  q := ("LEFT" "RIGHT" "UP" "DOWN" "a" "d" "w" "s" " " "h") i_ndexOf e_nclose name
-  (q > 10) | st > 0 ? s
-  q = 10 ? s h:a_fter l:a_i s
-  q = 9 ? h:d_ropped s
-  q := 1 + (q - 1) m_od 4
+  key := ("LEFT" "RIGHT" "UP" "DOWN" "a" "d" "w" "s" " " "h") i_ndexOf e_nclose name
+  (key > 10) | st > 0 ? s
+  key = 10 ? s h:a_fter l:a_i s
+  key = 9 ? h:d_ropped s
+  q := 1 + (key - 1) m_od 4
   q < 3 ? s h:s_lid (2 * q) - 3
   q = 3 ? h:t_urned s
   h:d_own s
@@ -247,13 +247,13 @@ h:s_ays := { (sc, ln, t, st) ->
 l:d_raw := { (W, M, k, r, c, nx, sc, ln, acc, t, st) ->
   v := 0.0 0.0 480.0 c_at Y0 + 16.0 + CELL * f_loat DEEP
   box := e_nclose @ f_ormat< "<rect x=\"{sv:w_hole X0 - 4.0}\" y=\"{sv:w_hole Y0 - 4.0}\" width=\"{sv:w_hole 6.0 + CELL * f_loat WIDE}\" height=\"{sv:w_hole 6.0 + CELL * f_loat DEEP}\" fill=\"#11121c\" stroke=\"#5c5f77\" stroke-width=\"3\"/>"
-  (i, j) := h:c_ells (M, h:l_anding (W, M, r, c), c)
-  ghost := h:b_locks (i, j, k, X0, Y0, 1)
+  (gi, gj) := h:c_ells (M, h:l_anding (W, M, r, c), c)
+  ghost := h:b_locks (gi, gj, k, X0, Y0, 1)
   (i, j) := h:c_ells (M, r, c)
   piece := (e_nclose "<g class=\"you\">") c_at (h:b_locks (i, j, k, X0, Y0, 0)) c_at e_nclose "</g>"
   N := h:s_hape nx
-  (i, j) := h:c_ells (N, 0, 0)
-  nxt := h:b_locks (i, j, nx, X0 + 40.0 + CELL * f_loat WIDE, Y0 + 40.0, 0)
+  (ni, nj) := h:c_ells (N, 0, 0)
+  nxt := h:b_locks (ni, nj, nx, X0 + 40.0 + CELL * f_loat WIDE, Y0 + 40.0, 0)
   label := (X0 + 40.0 + CELL * f_loat WIDE, Y0 + 22.0, 22.0) sv:w_ords "Next"
   top := (16.0, 42.0, 24.0) sv:w_ords h:s_ays (sc, ln, t, st)
   v sv:p_icture (v sv:r_ect "fill=\"#1d1f2b\"") c_at box c_at (h:s_ettled W) c_at ghost c_at piece c_at label c_at nxt c_at top

@@ -9,8 +9,8 @@
 "a:" u_se< "Atlas"
 
 u:l_oop := { s ->
-  said := p_rint! a:s_ay s
-  pic := []S_HOW a:d_raw s
+  _ := p_rint! a:s_ay s
+  _ := []S_HOW a:d_raw s
   e := []E_VENT @
   "end" m_atch []E_KIND e ? "THE END"
   "click" m_atch []E_KIND e ? u:l_oop s a:c_lick []E_AT e; u:l_oop s

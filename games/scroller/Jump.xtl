@@ -47,19 +47,15 @@ h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
 l:n_ew := { z ->
   at := w_here cells m_ember? "@owF"
   ch := at s_elect cells
-  (W, ids) := (h:w_orld 64) ec:s_pawn t_ally at
+  (spawned, ids) := (h:w_orld 64) ec:s_pawn t_ally at
   x := 0.1 + f_loat (at - 1) m_od C
   y := (1.0 - SIZE) + f_loat (at - 1) d_iv C
-  W := W h:s_etPos (ids, h:p_air (x, y))
   me := (ch = f_irst "@") r_eplicate ids
   walk := (ch = f_irst "w") r_eplicate ids
-  W := W h:s_etVel (me, 0.0 0.0)
-  W := W h:s_etVel (walk, (n_eg WALK) c_at 0.0)
-  W := W h:s_etBody (me c_at walk, 1.0)
-  W := W h:s_etPlayer (me, 1.0)
-  W := W h:s_etWalker (walk, 1.0)
-  W := W h:s_etCoin ((ch = f_irst "o") r_eplicate ids, 1.0)
-  W := W h:s_etGoal ((ch = f_irst "F") r_eplicate ids, 1.0)
+  placed := spawned h:s_etPos (ids, h:p_air (x, y))
+  moving := ((placed h:s_etVel (me, 0.0 0.0)) h:s_etVel (walk, (n_eg WALK) c_at 0.0)) h:s_etBody (me c_at walk, 1.0)
+  cast := (moving h:s_etPlayer (me, 1.0)) h:s_etWalker (walk, 1.0)
+  W := (cast h:s_etCoin ((ch = f_irst "o") r_eplicate ids, 1.0)) h:s_etGoal ((ch = f_irst "F") r_eplicate ids, 1.0)
   (W, 0, 0.0, 0)
 }
 
@@ -96,15 +92,14 @@ h:a_cross := { W dt ->
   y := 2 s_elect_2 P
   vx := 1 s_elect_2 V
   ahead := vx > 0.0
-  nx := (1 s_elect_2 P) + vx * dt
-  c := f_loor nx + SIZE * f_loat ahead
+  tx := (1 s_elect_2 P) + vx * dt
+  c := f_loor tx + SIZE * f_loat ahead
   hit := (vx != 0.0) & (h:s_olid (f_loor y + 0.01, c)) | h:s_olid (f_loor y + SIZE - 0.01, c)
   h := f_loat hit
   snap := (f_loat c) + (f_loat n_ot ahead) - SIZE * f_loat ahead
-  nx := (nx * 1.0 - h) + snap * h
-  vx := vx * 1.0 - h * 1.0 + f_loat b s_elect h:h_asWalker W
-  W := W h:s_etPos (b, h:p_air (nx, y))
-  W h:s_etVel (b, h:p_air (vx, 2 s_elect_2 V))
+  nx := (tx * 1.0 - h) + snap * h
+  nvx := vx * 1.0 - h * 1.0 + f_loat b s_elect h:h_asWalker W
+  (W h:s_etPos (b, h:p_air (nx, y))) h:s_etVel (b, h:p_air (nvx, 2 s_elect_2 V))
 }
 ## Down (or up): every body moves by its speed, landing on the ground
 ## below it or stopped by the ground above, its speed then 0.
@@ -115,14 +110,13 @@ h:d_own := { W dt ->
   x := 1 s_elect_2 P
   vy := 2 s_elect_2 V
   down := vy > 0.0
-  ny := (2 s_elect_2 P) + vy * dt
-  r := f_loor ny + SIZE * f_loat down
+  ty := (2 s_elect_2 P) + vy * dt
+  r := f_loor ty + SIZE * f_loat down
   hit := (vy != 0.0) & (h:s_olid (r, f_loor x + 0.01)) | h:s_olid (r, f_loor x + SIZE - 0.01)
   h := f_loat hit
   snap := (f_loat r) + (f_loat n_ot down) - SIZE * f_loat down
-  ny := (ny * 1.0 - h) + snap * h
-  W := W h:s_etPos (b, h:p_air (x, ny))
-  W h:s_etVel (b, h:p_air (1 s_elect_2 V, vy * 1.0 - h))
+  ny := (ty * 1.0 - h) + snap * h
+  (W h:s_etPos (b, h:p_air (x, ny))) h:s_etVel (b, h:p_air (1 s_elect_2 V, vy * 1.0 - h))
 }
 ## Which entities of ids touch you (at p, one row of x and y).
 h:t_ouching := { W (ids, p) -> (r_avel ec:n_ear (ids s_elect h:p_os W, 1 2 r_eshape p, SIZE)) r_eplicate ids }
@@ -137,18 +131,18 @@ h:t_ouch := { W g ->
   me := h:m_e W
   p := me s_elect h:p_os W
   got := W h:t_ouching (w_here (ec:a_live W) & h:h_asCoin W, p)
-  W := W ec:d_espawn got
-  met := W h:t_ouching (w_here (ec:a_live W) & h:h_asWalker W, p)
-  vy := 2 s_elect me s_elect h:v_el W
-  beat := (vy > 0.0) & (0.3 + 2 s_elect p) < 2 s_elect_2 met s_elect h:p_os W
+  picked := W ec:d_espawn got
+  met := picked h:t_ouching (w_here (ec:a_live picked) & h:h_asWalker picked, p)
+  vy := 2 s_elect me s_elect h:v_el picked
+  beat := (vy > 0.0) & (0.3 + 2 s_elect p) < 2 s_elect_2 met s_elect h:p_os picked
   b := f_loat h:a_ny beat
-  W := W h:s_etVel (me, (1 s_elect me s_elect h:v_el W) c_at (vy * 1.0 - b) - 0.6 * JUMP * b)
-  W := W ec:d_espawn beat r_eplicate met
-  gone := w_here (ec:a_live W) & (h:h_asWalker W) & (2 s_elect_2 h:p_os W) > f_loat R + 1
-  W := W ec:d_espawn gone
+  bounced := picked h:s_etVel (me, (1 s_elect me s_elect h:v_el picked) c_at (vy * 1.0 - b) - 0.6 * JUMP * b)
+  fought := bounced ec:d_espawn beat r_eplicate met
+  gone := w_here (ec:a_live fought) & (h:h_asWalker fought) & (2 s_elect_2 h:p_os fought) > f_loat R + 1
+  left := fought ec:d_espawn gone
   caught := (h:a_ny n_ot beat) | (2 s_elect p) > f_loat R
-  won := 0 < t_ally W h:t_ouching (w_here (ec:a_live W) & h:h_asGoal W, p)
-  (W, g + t_ally got, h:o_utcome (caught, won))
+  won := 0 < t_ally left h:t_ouching (w_here (ec:a_live left) & h:h_asGoal left, p)
+  (left, g + t_ally got, h:o_utcome (caught, won))
 }
 # :: Num a => (Float, Int, Float, a) -> Float -> (Float, Int, Float, a)
 ## A tick of the clock, dt seconds: gravity, then every body across and
@@ -156,10 +150,9 @@ h:t_ouch := { W g ->
 ## A game over stays as it is.
 l:t_ick := { (W, g, t, st) dt ->
   st > 0 ? (W, g, t, st)
-  W := (h:s_low W h:g_ravity dt) h:a_cross dt
-  W := W h:d_own dt
-  (W, g, st) := W h:t_ouch g
-  (W, g, t + dt, st)
+  moved := ((h:s_low W h:g_ravity dt) h:a_cross dt) h:d_own dt
+  (left, coins, stands) := moved h:t_ouch g
+  (left, coins, t + dt, stands)
 }
 
 ### Your keys

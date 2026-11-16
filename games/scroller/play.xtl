@@ -12,7 +12,7 @@
 
 ## Show the game, then wait for the next event.
 u:s_how := { s ->
-  pic := []S_HOW j:d_raw s
+  _ := []S_HOW j:d_raw s
   0 < j:s_tatus s ? u:e_nd s
   u:l_oop s
 }

@@ -48,16 +48,19 @@ h:t_itle := { n -> ((lowers i_ndexOf 1 t_ake n) s_elect []A) c_at 1 d_rop n }
 ## world of n slots: every column number worked out as a plain number.
 ## A malformed component stops the compiler: error[bad-components].
 ## The left side is the namespace of the names it writes: "u" in a
-## program, "h" (private) or "l" (exported) in a library.
+## program, "h" (private) or "l" (exported) in a library. It reads its
+## text as a list of components rather than copying it (uses: parsed).
+## takes: text text
+## uses: parsed
 ## >> "ec:" u_se< "Ecs"
 ## >> "u" ec:c_omponents< "pos:2 hp"
 ## >> W := u:w_orld 3
 ## >> s_hape W
 ## 3 6
-## >> W := W u:s_etHp (2, 7.0)
-## >> u:h_p W
+## >> healed := W u:s_etHp (2, 7.0)
+## >> u:h_p healed
 ## 0.0 7.0 0.0
-## >> u:h_asHp W
+## >> u:h_asHp healed
 ## 0 1 0
 m:c_omponents< := { ns t ->
   n := h:t_rim ns

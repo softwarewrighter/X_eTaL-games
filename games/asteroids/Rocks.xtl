@@ -45,30 +45,26 @@ SHOTS := 3 s_elect gun
 h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
 ## Angles in radians from a number of degrees.
 h:r_adians := { d -> (p_i @) * (f_loat d) / 180.0 }
+## The world with the entities ids at P, moving at V.
+h:p_lace := { W (ids, P, V) -> (W h:s_etPos (ids, P)) h:s_etVel (ids, V) }
 ## A wave of big rocks (wave k says how many): each on a ring around the
 ## middle, flying off in a direction of its own, all drawn at random.
 h:w_ave := { W k ->
   n := k s_elect WAVES
-  (W, ids) := W ec:s_pawn n
+  (spawned, ids) := W ec:s_pawn n
   a := h:r_adians r_oll! n r_eshape 360
   b := h:r_adians r_oll! n r_eshape 360
-  W := W h:s_etPos (ids, h:p_air ((0.5 * FX) + 7.0 * c_os a, (0.5 * FY) + 7.0 * s_in a))
-  W := W h:s_etVel (ids, h:p_air ((3 s_elect SPEEDS) * c_os b, (3 s_elect SPEEDS) * s_in b))
-  W := W h:s_etSize (ids, 3.0)
-  W h:s_etRock (ids, 1.0)
+  P := h:p_air ((0.5 * FX) + 7.0 * c_os a, (0.5 * FY) + 7.0 * s_in a)
+  V := h:p_air ((3 s_elect SPEEDS) * c_os b, (3 s_elect SPEEDS) * s_in b)
+  ((spawned h:p_lace (ids, P, V)) h:s_etSize (ids, 3.0)) h:s_etRock (ids, 1.0)
 }
 ## The ship put in the middle, still, heading up.
-h:c_enter := { W me ->
-  W := W h:s_etPos (me, (0.5 * FX) c_at 0.5 * FY)
-  W := W h:s_etVel (me, 0.0 0.0)
-  W h:s_etDir (me, n_eg 0.5 * p_i @)
-}
+h:c_enter := { W me -> (W h:p_lace (me, (0.5 * FX) c_at 0.5 * FY, 0.0 0.0)) h:s_etDir (me, n_eg 0.5 * p_i @) }
 # :: (Any a, Num b, Num c, Num d) => a -> (Float, b, Int, c, Float, d, Float)
 ## A new game: the ship in the middle and the first wave of rocks.
 l:n_ew := { z ->
-  (W, ids) := (h:w_orld 64) ec:s_pawn 1
-  W := (W h:c_enter ids) h:s_etShip (ids, 1.0)
-  (W h:w_ave 1, 0, LIVES, 1, 0.0, 0, SAFE)
+  (spawned, me) := (h:w_orld 64) ec:s_pawn 1
+  (((spawned h:c_enter me) h:s_etShip (me, 1.0)) h:w_ave 1, 0, LIVES, 1, 0.0, 0, SAFE)
 }
 
 ### The systems
@@ -84,15 +80,15 @@ h:m_ove := { W dt ->
   P := (c s_elect h:p_os W) + dt * c s_elect h:v_el W
   x := 1 s_elect_2 P
   y := 2 s_elect_2 P
-  W := W h:s_etPos (c, h:p_air (x - FX * f_loat f_loor x / FX, y - FY * f_loat f_loor y / FY))
-  me := h:m_e W
-  W h:s_etVel (me, DRAG * me s_elect h:v_el W)
+  moved := W h:s_etPos (c, h:p_air (x - FX * f_loat f_loor x / FX, y - FY * f_loat f_loor y / FY))
+  me := h:m_e moved
+  moved h:s_etVel (me, DRAG * me s_elect h:v_el moved)
 }
 ## Every shot's time runs down; the spent shots go.
 h:a_ge := { W dt ->
   s := h:s_hots W
-  W := W h:s_etLife (s, (s s_elect h:l_ife W) - dt)
-  W ec:d_espawn ((s s_elect h:l_ife W) <= 0.0) r_eplicate s
+  aged := W h:s_etLife (s, (s s_elect h:l_ife W) - dt)
+  aged ec:d_espawn ((s s_elect h:l_ife aged) <= 0.0) r_eplicate s
 }
 ## Which of the points P lie within reach of which rocks r (each its
 ## radius plus more): a table, P's rows down, the rocks across.
@@ -118,11 +114,8 @@ h:h_alves := { W (ids, gone) ->
   vy := ((1 s_elect_2 V) * s_in a) + (2 s_elect_2 V) * c_os a
   k := ((f_loor sz) s_elect SPEEDS) / 0.001 m_ax ((vx * vx) + vy * vy) ^ 0.5
   P := two s_elect h:p_os W
-  (W, kids) := (W ec:d_espawn gone) ec:s_pawn n
-  W := W h:s_etPos (kids, P)
-  W := W h:s_etVel (kids, h:p_air (k * vx, k * vy))
-  W := W h:s_etSize (kids, sz)
-  W h:s_etRock (kids, 1.0)
+  (spawned, kids) := (W ec:d_espawn gone) ec:s_pawn n
+  ((spawned h:p_lace (kids, P, h:p_air (k * vx, k * vy))) h:s_etSize (kids, sz)) h:s_etRock (kids, 1.0)
 }
 ## Shots that reach a rock: the shots are spent, the rocks go (their
 ## points scored), and the rocks bigger than small leave two halves each,
@@ -136,8 +129,7 @@ h:s_hoot := { W ->
   hit := ('| r_/_1 H) r_eplicate r
   sz := f_loor hit s_elect h:s_ize W
   big := (sz > 1) r_eplicate hit
-  W := W h:h_alves (big, (('| r_/_2 H) r_eplicate s) c_at hit)
-  (W, '+ r_/ 0 c_at sz s_elect POINTS)
+  (W h:h_alves (big, (('| r_/_2 H) r_eplicate s) c_at hit), '+ r_/ 0 c_at sz s_elect POINTS)
 }
 ## A rock that reaches the ship, unless it cannot be hit: a life lost,
 ## the ship back in the middle, safe for a while.
@@ -164,11 +156,11 @@ h:s_tanding := { (won, lives) -> won = 1 ? 1; lives <= 0 ? 2; 0 }
 ## every entity at once. A game over stays as it is.
 l:t_ick := { (W, sc, lv, wv, t, st, sf) dt ->
   st > 0 ? (W, sc, lv, wv, t, st, sf)
-  W := (W h:m_ove dt) h:a_ge dt
-  (W, pts) := h:s_hoot W
-  (W, lv, sf) := h:c_rash (W, lv, 0.0 m_ax sf - dt)
-  (W, wv, won) := h:n_ext (W, wv)
-  (W, sc + pts, lv, wv, t + dt, h:s_tanding (won, lv), sf)
+  flown := (W h:m_ove dt) h:a_ge dt
+  (broken, pts) := h:s_hoot flown
+  (crashed, lives, safe) := h:c_rash (broken, lv, 0.0 m_ax sf - dt)
+  (next, wave, won) := h:n_ext (crashed, wv)
+  (next, sc + pts, lives, wave, t + dt, h:s_tanding (won, lives), safe)
 }
 
 ### Your keys
@@ -179,11 +171,10 @@ h:f_ire := { W me ->
   SHOTS <= f_loat t_ally h:s_hots W ? W
   d := me s_elect h:d_ir W
   u := (c_os d) c_at s_in d
-  (W, ids) := W ec:s_pawn 1
-  W := W h:s_etPos (ids, (me s_elect h:p_os W) + 0.6 * u)
-  W := W h:s_etVel (ids, (me s_elect h:v_el W) + SHOT * u)
-  W := W h:s_etLife (ids, FLIGHT)
-  W h:s_etShot (ids, 1.0)
+  (spawned, ids) := W ec:s_pawn 1
+  P := (me s_elect h:p_os W) + 0.6 * u
+  V := (me s_elect h:v_el W) + SHOT * u
+  ((spawned h:p_lace (ids, P, V)) h:s_etLife (ids, FLIGHT)) h:s_etShot (ids, 1.0)
 }
 ## The ship's speed with an up key's added along its heading, no faster
 ## than the fastest.

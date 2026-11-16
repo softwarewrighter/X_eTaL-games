@@ -32,9 +32,9 @@ lo:s_ay t
 u:p_ressAll := { s ks -> 0 = t_ally ks ? s; (s lo:p_ress f_irst ks) u:p_ressAll 1 d_rop ks }
 done := s u:p_ressAll w_here x
 lo:s_ay done
-pic := []S_HOW lo:d_raw done
+_ := []S_HOW lo:d_raw done
 
 # What the game guarantees, checked by a_ssert< (silent when it holds).
-ok := "0 = '+ r_/ (lo:l_ights s) lo:a_fter x" a_ssert< "the solution turns every light off"
-ok := "1 = lo:s_tatus done" a_ssert< "pressing the solution wins"
-ok := "0 = '+ r_/ r_avel (q '+ '* i_nner lo:p_resses @) m_od 2" a_ssert< "the quiet patterns change nothing"
+_ := "0 = '+ r_/ (lo:l_ights s) lo:a_fter x" a_ssert< "the solution turns every light off"
+_ := "1 = lo:s_tatus done" a_ssert< "pressing the solution wins"
+_ := "0 = '+ r_/ r_avel (q '+ '* i_nner lo:p_resses @) m_od 2" a_ssert< "the quiet patterns change nothing"

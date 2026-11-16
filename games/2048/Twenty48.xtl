@@ -54,10 +54,10 @@ l:l_eft := [l:c_ompress [l:m_erge l:c_ompress]]
 ## back: d is 1 left, 2 right, 3 up, 4 down. Up and down transpose the
 ## board (o_\) once, right and down reverse its rows once: each a power
 ## of 0 or 1. Turning back undoes them in the other order.
-l:t_urn := { b d -> (1 * d m_ember? 2 4) 'r_ev_2 p_ower (1 * d m_ember? 3 4) 'o_\ p_ower b }
+l:t_urn := { b d -> (d m_ember? 2 4) 'r_ev_2 p_ower (d m_ember? 3 4) 'o_\ p_ower b }
 # :: Num b => a -> b -> a
 ## The board turned back from the left-moving view of move d (undoing l:t_urn).
-l:b_ack := { b d -> (1 * d m_ember? 3 4) 'o_\ p_ower (1 * d m_ember? 2 4) 'r_ev_2 p_ower b }
+l:b_ack := { b d -> (d m_ember? 3 4) 'o_\ p_ower (d m_ember? 2 4) 'r_ev_2 p_ower b }
 # :: (Num a, Truthy a, Num b) => a -> b -> a
 ## Every tile of board b moved in direction d (1 left, 2 right, 3 up, 4 down): turned so the move is left, moved left, turned back.
 l:s_lide := { b d -> (l:l_eft b l:t_urn d) l:b_ack d }

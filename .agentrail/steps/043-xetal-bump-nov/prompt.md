@@ -1,0 +1,1 @@
+the user (2026-11-15): move the pinned X_eTaL forward to 2026-10-30 or newer: just xetal-bump to the latest origin/main (from 4952874, 2026-10-08), just gate --full, goldens re-run, whatever the new version changed fixed or filed in docs/xetal-asks.md, asks that landed re-checked, docs and CHANGES.md updated, in its own commit

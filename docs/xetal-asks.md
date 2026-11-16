@@ -15,22 +15,23 @@ workaround in use.
 | filed | feature | A terminal for interactive programs (the request: [`xetal-terminal-request.md`](xetal-terminal-request.md)); X_eTaL is building it as its saga 25 (at 70e129d: a run waits for typed lines and resumes, D50; the pane not yet): a resumable evaluator and a shared terminal pane in Rust and Yew, on the web-sw-tos model, replacing `window.prompt`. No WASI build of `xetal` (decided upstream) | all interactive games | pages run the engine (`xetal-play`) in Yew and replay the typed history on every line |
 | open | feature | `[]G_RID` of numbers (still so at f823212): draw the numbers in the cells, and let a program choose the color scale (logarithmic, or a few fixed colors) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
 | open | feature | A functional update (amend / "at"; still none at f823212): items of an array replaced at given positions, returning a new array | trek adventure, Star Trek (each wrote `l:u_pdate`), minesweeper, robot chase | a table of positions against indices (`l:u_pdate`) |
-| open | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there | tic-tac-toe, Star Trek | top-level (`l:` or private) helpers that take the extra values as arguments |
-| open | feature | Named dyadic trains (still so at f823212): `u:s_ign := [> - <]` is monadic only, so a dyadic fork must be written inline in a lambda (`{ t g -> t [< - >] g }`) | guess, robot chase | the fork written inline |
-| open | feature | `p_ower` with a Bool count (still so at f823212) (a 0/1 condition), as other numeric places accept Truthy values | 2048 | `1 *` before the condition |
+| landed | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there (landed, X_eTaL's G4: a lambda's local function, `n_ear := { x -> x + t }` then `n_ear 3`, works at c58204b) | tic-tac-toe, Star Trek | kept by choice: tic-tac-toe's `l:n_ear` and Star Trek's helpers are documented functions of their libraries, not stand-ins |
+| dropped | feature | Named dyadic trains (still so at f823212): `u:s_ign := [> - <]` is monadic only, so a dyadic fork must be written inline in a lambda (`{ t g -> t [< - >] g }`) (declined by X_eTaL, TR4: a named or quoted train is monadic; a dyadic one is a lambda) | guess, robot chase | the fork written inline |
+| landed | feature | `p_ower` with a Bool count (still so at f823212) (a 0/1 condition), as other numeric places accept Truthy values (landed by X_eTaL's D128, G7: `(2 > 1) '{ x -> x + 1 } p_ower 5` is 6 at c58204b) | 2048 | removed 2026-11-15: 2048's turns are `(d m_ember? 2 4) 'r_ev_2 p_ower ...` |
 | open | performance | `i_nner` on numeric matrices costs about 100 ns per multiply-add at 512b3ee: a 27 by 81 by 9 product (`units '+ '* i_nner onehot`) takes 1.9 ms (still so at 75e6a5c), so a solver doing it twice a round took 8.8 s on a hard sudoku | sudoku | the unit counts by selecting with a table and summing (`'+ r_/_2 U s_elect m`, 0.1 ms) |
 | open | performance | Reading numbers out of text is slow on long text: `n_umbers` on 3000 lines (30 KB) takes 5.9 s, and `@ i_nclude< "coast.txt"` of a 228 KB file took 4 minutes, at 512b3ee and 75e6a5c | capitals | data read from TOML (`[]L_IST`) and parsed one short string at a time (`'{ x -> f_irst n_umbers d_isclose x } e_ach list`: 21615 points in 74 ms) |
 | open | performance | `m_ember?` of a long vector against a long vector: 207360 cells against 20000 took 13 s (75e6a5c) | capitals | the cells sorted without repeats and each gap of 0s laid out by one `r_eplicate` (0.3 s for the whole map) |
 | open | performance | Star Trek's scripted game went from 15 ms (f823212) to 39 ms at 512b3ee (v0.1.0) and 42 ms at 75e6a5c; its terminal game from 16 to 41 ms, its page from 1059 to 1455 ms; other games unchanged or faster (tic-tac-toe 45 to 28 ms). Under the bench's 25 ms allowance, so not a gate failure | Star Trek | none |
 | open | feature | Numbers in data files: `[]L_IST` and `[]T_ABLE` give strings only, so a table of coordinates is written as strings and parsed in X_eTaL; X_eTaL's planned `.xtln` (Saga 37: a data-only notation of X_eTaL values) would carry numbers and matrices as they are | capitals, stargazer | numbers as strings in TOML, parsed with `n_umbers` per item |
 | open | bug | `[]T_ABLE` and `[]L_IST` read a path relative to the working directory, while `i_nclude<` reads one relative to the file that names it; a library reading its data works only when run from its own directory (75e6a5c) | capitals | every recipe runs a game's programs from its directory |
-| open | feature | A clearer message for a half-written library: a file with bare helper functions and no `l:` name yet is taken for a program, and the error says only `user functions are named with u: (write u:h_elp)`; adding "or define an `l:` name to make this file a library" would point both ways | all | none needed |
+| landed | feature | A clearer message for a half-written library: a file with bare helper functions and no `l:` name yet is taken for a program, and the error says only `user functions are named with u: (write u:h_elp)`; adding "or define an `l:` name to make this file a library" would point both ways (landed, X_eTaL's G14: the message now reads `write u:h_elp (the program's) or h:h_elp (a helper)`, at c58204b) | all | none needed |
 | open | performance | Fast paths for a few array idioms the games lean on (one request, from the capitals map and the sudoku solver at 75e6a5c; requests, not defects, to weigh against X_eTaL's own plans): a join of boxed texts (raze: APL enlist, J `;`, K `,/`): none built in, and `'c_at r_/` on 242 texts takes 1.37 s; hashed membership and index-of: `m_ember?` 207360 against 20000 takes 13 s; mix (APL mix (up arrow)): boxed equal-length results to a matrix; linear text-to-number parsing (APL quad-VFI): `n_umbers` on 30 KB takes 5.9 s; a matrix-product kernel for `'+ '* i_nner` (1.9 ms for 27x81x9). Details: [the idioms](#fast-paths-for-idioms-the-games-use) | capitals, sudoku | `t:j_oin` (lib/Text.xtl: pairs, level by level, 90 ms); sorting and one `r_eplicate` for marking; numbers parsed one short string at a time; the sudoku's table selection |
-| open | bug | A comparison's result is a number in one place and a Bool in another (4952874): `0 + 0 < 1 2 3` is 1 1 1, and so is `q:n_um (5, 0 < 1 2 3)` with a library's `l:n_um := { (a, m) -> 0 + m }`; but `s := q:n_ew 5` with `l:n_ew := { z -> (z, 0 < 1 2 3) }`, then `q:n_um s`, stops with `type-mismatch: expected a number, found Bool` (the tuple a function returned carries Bool, and arithmetic refuses it) | maze (the blocks seen, a Bool vector in the state) | the seen blocks returned as Bool (shown as 0 and 1) rather than made numbers with `0 +` |
-| open | bug | Type inference is not deterministic (4952874): running the same library twice can print two different types for one function, half the runs each; in tower defense `l:d_raw` came out as `(Any c, Any d, Num e, Num f, Num g) => (Float, Int, a, b, c, d, Int, e, Int, Float, f, g, Char) -> Char` or as `(Any c, Any d, Num e, Num f) => (Float, Int, a, b, c, d, Int, Int, Int, Float, e, f, Char) -> Char` (whether a field compared only with literals stays `Num` or becomes `Int`), so its type golden failed every other run. Repro: `for i in $(seq 12); do xetal run games/tower-defense/Defense.xtl \| md5; done \| sort \| uniq -c` at c93d5f5 (not yet reduced) | tower defense | the field made an Int for certain (`md := md m_od 2`) in `l:d_raw`, named in a comment there |
+| landed | bug | A comparison's result is a number in one place and a Bool in another (4952874): `0 + 0 < 1 2 3` is 1 1 1, and so is `q:n_um (5, 0 < 1 2 3)` with a library's `l:n_um := { (a, m) -> 0 + m }`; but `s := q:n_ew 5` with `l:n_ew := { z -> (z, 0 < 1 2 3) }`, then `q:n_um s`, stops with `type-mismatch: expected a number, found Bool` (the tuple a function returned carries Bool, and arithmetic refuses it) (landed by X_eTaL's step 095, G19: the repro prints 1 1 1 at c58204b) | maze (the blocks seen, a Bool vector in the state) | removed 2026-11-15: the maze's `l:s_een` gives numbers (`0 + seen`); tower defense's grass was ordinary code and stays |
+| landed | bug | Type inference is not deterministic (4952874): running the same library twice can print two different types for one function, half the runs each; in tower defense `l:d_raw` came out as `(Any c, Any d, Num e, Num f, Num g) => (Float, Int, a, b, c, d, Int, e, Int, Float, f, g, Char) -> Char` or as `(Any c, Any d, Num e, Num f) => (Float, Int, a, b, c, d, Int, Int, Int, Float, e, f, Char) -> Char` (whether a field compared only with literals stays `Num` or becomes `Int`), so its type golden failed every other run. Repro: `for i in $(seq 12); do xetal run games/tower-defense/Defense.xtl \| md5; done \| sort \| uniq -c` at c93d5f5 (not yet reduced) (landed by X_eTaL's step 096, G20) | tower defense | removed 2026-11-15: `md m_od 2` is gone from tower defense's `l:d_raw`, whose type is the same on every run |
+| landed | bug | `f_ormat<` refuses markup: since macro contracts (X_eTaL 57cff93, 2026-10-17; still so at 538537c) a text holding an SVG tag or a hex color stops with `error[unused-argument]: f_ormat< did not use rect of the text on its right`, though the word is written to the output; 43 of the 160 format texts here fail (repros and the cause in [Details](#f_ormat-refuses-markup)) (landed by d5ae66a, 2026-11-15, X_eTaL's G21: any text outside a format's braces is accepted; in use since the pin moved to 8c49bd8, where all 160 format texts here pass) | lib/Svg and every game that draws (asteroids, falling blocks, capitals, dungeon, lights out, maze, racer, raycaster, scroller, stargazer, tower defense) | none was needed: no text was rewritten |
 | landed | feature | `xetal doc --out` over several programs listed the files by name alone, so eleven `play.xtl` looked the same in the sidebar (landed by 18d9aae, D129: grouped by directory; in use since the pin moved to d284a8c) | all | none |
-| open | bug | `xetal migrate` writes a library's bare helpers as `h:` but leaves the names inside `f_ormat<` templates (`"{f_ill j}"`) bare, so the migrated library fails (`unknown-builtin`) where the template is expanded (d284a8c) | capitals, stargazer, lib/Svg | the names in the templates written h: by hand |
-| open | bug | A library that fails to parse is reported at the import as `error[not-exported]: x:m_sg is not defined by that library; it defines` (an empty list) instead of the library's own parse error (found at 512b3ee, still so at 75e6a5c; repro in [Details](#a-library-that-does-not-parse)) | all (found writing the format macros) | `xetal FILE.xtl` on the library itself shows the real error |
+| landed | bug | `xetal migrate` writes a library's bare helpers as `h:` but leaves the names inside `f_ormat<` templates (`"{f_ill j}"`) bare, so the migrated library fails (`unknown-builtin`) where the template is expanded (d284a8c) (landed by d5ae66a, 2026-11-15, X_eTaL's G22: migrate renames the helpers inside a template's braces too) | capitals, stargazer, lib/Svg | the names in the templates written h: by hand |
+| landed | bug | A library that fails to parse is reported at the import as `error[not-exported]: x:m_sg is not defined by that library; it defines` (an empty list) instead of the library's own parse error (found at 512b3ee, still so at 75e6a5c; repro in [Details](#a-library-that-does-not-parse)) (landed, X_eTaL's G16: the import now reports the library's own error, `error[bad-quote]: ... at ./L.xtl:1:18`, at c58204b) | all (found writing the format macros) | `xetal FILE.xtl` on the library itself shows the real error |
 | landed | bug | `t_able` and `i_nner` slower since the higher-order built-ins became kernels (X_eTaL saga 30): robot chase 1.7 times slower (26 to 44 ms) between 39938f3 and 70e129d; at f823212 it is 16 ms, shut the box 4 times and 2048 1.6 times faster than at 70e129d; numbers in [`bench.md`](bench.md) | robot chase, Star Trek, tic-tac-toe | none; `just bench` (in the gate) watches for slowdowns |
 | landed | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (landed by f823212: `error[library-name-in-program]`) | all | none: the layout check's own test was removed |
 
@@ -133,6 +134,44 @@ error[bad-quote]: a quote must touch a function name, `{`, `[` or a symbol at ..
 
 Wanted: the library's own error, located in the library, named at the
 import.
+
+### `f_ormat<` refuses markup
+
+Landed in X_eTaL d5ae66a (2026-11-15, its ask G21), the day it was
+filed: the check also reads a string's plain words (a `<` opening a tag
+dropped, a `#` not a comment). Kept here as the record.
+
+Found moving to X_eTaL 538537c (2026-11-15); it began with the macro
+contracts of 57cff93 (2026-10-17, MC31): a macro that copies its text
+must write every name and number of it. `f_ormat<` does write them, but
+the check does not see them in two cases, both ordinary in SVG text:
+
+```
+$ printf '%s\n' '@ f_ormat< "<rect \"{1}\""' > t.xtl
+$ xetal t.xtl
+error[unused-argument]: f_ormat< did not use rect of the text on its right; a macro that copies its text writes every name and number of it (## uses: copied)
+$ printf '%s\n' '@ f_ormat< "class=\"light\" rx=\"18\" fill=\"{1}\" stroke=\"#000000\" stroke-width=\"4\""' > t.xtl
+$ xetal t.xtl
+error[unused-argument]: f_ormat< did not use width of the text on its right; a macro that copies its text writes every name and number of it (## uses: copied)
+```
+
+Both come out right without the quotes or the color (`@ f_ormat<
+"<rect x={1 + 2}/>"` prints `<rect x=3/>`). What we read in
+`xetal-contract/src/uses.rs` (`words` and `loose`), offered as a
+pointer, not a diagnosis:
+
+- a piece of the expansion that does not lex as X_eTaL (`<rect "`, an
+  open quote) is split into runs of name characters, and `<` counts as
+  one, so the piece holds `<rect` and the text's `rect` is not found;
+- a piece that does lex is read as code, where `#` starts a comment:
+  in `" stroke="#000000" stroke-width="4"` everything after the `#`
+  is skipped, so `width` is not found.
+
+Wanted: `f_ormat<` (and `p_anic<`, `t_odo<`, which format the same
+way) accepting any text outside its `{}`: only what is inside the
+braces is X_eTaL. Counted here by running every format text of `lib/`
+and `games/` alone, each `{...}` replaced by `{1}`: 43 of 160 refused
+at 538537c, none at c58204b.
 
 ### Fast paths for idioms the games use
 

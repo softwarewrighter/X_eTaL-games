@@ -23,20 +23,19 @@ d := P - R
 rows := 7 9 8 c_at 9 r_eshape 0
 cols := 6 6 5 c_at 9 r_eshape 0
 alive := 1 1 1 c_at 9 r_eshape 0
-t := 8 8 3 0 0 0 c_at rows c_at cols c_at alive c_at 256 r_eshape 0
-r:v_iew t
-t := t r:m_ove 5
-r:v_iew t
-r:a_live t
-t := t r:m_ove 5
-r:v_iew t
-r:a_live t
-r:s_tatus t                              # 1: won
+trap := 8 8 3 0 0 0 c_at rows c_at cols c_at alive c_at 256 r_eshape 0
+r:v_iew trap
+crashed := trap r:m_ove 5
+r:v_iew crashed
+r:a_live crashed
+won := crashed r:m_ove 5
+r:v_iew won
+r:a_live won
+r:s_tatus won                            # 1: won
 
 # Stepping west into the wreck instead loses (status 2). Read right to
 # left, the parentheses make the wait happen first.
-t0 := 8 8 3 0 0 0 c_at rows c_at cols c_at alive c_at 256 r_eshape 0
-lost := (t0 r:m_ove 5) r:m_ove 4
+lost := (trap r:m_ove 5) r:m_ove 4
 r:m_essage lost
 r:s_tatus lost
 
@@ -47,5 +46,5 @@ r:l_rs s
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "1 = r:s_tatus t" a_ssert< "the three robots collide: won"
-ok := "2 = r:s_tatus lost" a_ssert< "walking into a robot: caught"
+_ := "1 = r:s_tatus won" a_ssert< "the three robots collide: won"
+_ := "2 = r:s_tatus lost" a_ssert< "walking into a robot: caught"

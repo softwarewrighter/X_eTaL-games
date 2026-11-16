@@ -25,7 +25,7 @@ t b:m_oves 7
 ## A whole game by the high-tiles player: each turn shuts the move with
 ## the highest tiles. Each line is the box before the roll.
 u:g_ame := { s ->
-  said := p_rint! b:v_iew s
+  _ := p_rint! b:v_iew s
   r := '+ r_/ b:r_oll s
   0 = t_ally s b:m_oves r ? b:s_core s
   t := s b:s_hut s b:h_igh r
@@ -37,5 +37,5 @@ u:g_ame s                                # the score: 0 shuts the box
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "512 = 2 s_elect s_hape M" a_ssert< "every subset of nine tiles"
-ok := "'& r_/ 7 = (s b:m_oves 7) '+ '* i_nner r_ange 9" a_ssert< "every move for a 7 adds up to 7"
+_ := "512 = 2 s_elect s_hape M" a_ssert< "every subset of nine tiles"
+_ := "'& r_/ 7 = (s b:m_oves 7) '+ '* i_nner r_ange 9" a_ssert< "every move for a 7 adds up to 7"

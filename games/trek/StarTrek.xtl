@@ -136,10 +136,10 @@ l:e_nter := { s ->
   e := (f_irst order) - 1
   t := (s l:u_pdate l:sectRow c_at (e d_iv 8) c_at l:sectCol c_at e m_od 8) l:w_ithGrid (g_rade order) s_elect codes
   0 = n ? t
-  said := p_rint! ""
-  said := p_rint! "*** RED ALERT *** RED ALERT *** RED ALERT ***"
-  said := p_rint! @ f_ormat< "*** {n} KLINGON(S) IN QUADRANT {l:a_t l:q_uad s} ***"
-  said := p_rint! "*** RED ALERT *** RED ALERT *** RED ALERT ***"
+  _ := p_rint! ""
+  _ := p_rint! "*** RED ALERT *** RED ALERT *** RED ALERT ***"
+  _ := p_rint! @ f_ormat< "*** {n} KLINGON(S) IN QUADRANT {l:a_t l:q_uad s} ***"
+  _ := p_rint! "*** RED ALERT *** RED ALERT *** RED ALERT ***"
   t
 }
 
@@ -149,12 +149,12 @@ l:e_nter := { s ->
 ## once (a Klingon's code, 4 or more, is cut to 4 and read as K), spaced
 ## by lib/Board.
 l:s_rs := { s ->
-  said := p_rint! ""
-  said := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s} SECTOR {l:a_t l:s_ector s}"
-  said := p_rint! "   1 2 3 4 5 6 7 8"
-  shown := p_rint! (8 2 r_eshape "A B C D E F G H ") c_at_2 b:s_paced (1 + 4 m_in l:g_rid s) s_elect ".E*BK"
-  said := p_rint! @ f_ormat< "STARDATE {l:d_ate s} ENERGY {l:e_nergy s} SHIELDS {l:s_hields s} TORP {l:t_orps s}"
-  said := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s} KLINGONS LEFT {l:k_lingons s}"
+  _ := p_rint! ""
+  _ := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s} SECTOR {l:a_t l:s_ector s}"
+  _ := p_rint! "   1 2 3 4 5 6 7 8"
+  _ := p_rint! (8 2 r_eshape "A B C D E F G H ") c_at_2 b:s_paced (1 + 4 m_in l:g_rid s) s_elect ".E*BK"
+  _ := p_rint! @ f_ormat< "STARDATE {l:d_ate s} ENERGY {l:e_nergy s} SHIELDS {l:s_hields s} TORP {l:t_orps s}"
+  _ := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s} KLINGONS LEFT {l:k_lingons s}"
   s
 }
 # :: Int -> Int
@@ -164,16 +164,16 @@ l:s_rs := { s ->
 ## the 25 quadrants are one selection from a 3 by 64 matrix, and every
 ## cell's four characters are picked at once from " *0123456789".
 l:l_rs := { s ->
-  said := p_rint! ""
-  said := p_rint! @ f_ormat< "LONG RANGE SCAN AT QUADRANT {l:a_t l:q_uad s}"
-  said := p_rint! "LEGEND: K B S   K=KLINGONS B=BASES S=STARS   ***=VOID"
+  _ := p_rint! ""
+  _ := p_rint! @ f_ormat< "LONG RANGE SCAN AT QUADRANT {l:a_t l:q_uad s}"
+  _ := p_rint! "LEGEND: K B S   K=KLINGONS B=BASES S=STARS   ***=VOID"
   r := (f_irst l:q_uad s) + -2 -1 0 1 2
   c := (2 s_elect l:q_uad s) + -2 -1 0 1 2
   in := r_avel ((r >= 0) & r <= 7) '& t_able (c >= 0) & c <= 7
   cell := r_avel 1 + (8 * 0 m_ax 7 m_in r) '+ t_able 0 m_ax 7 m_in c
   planes := cell s_elect_2 3 64 r_eshape 192 t_ake 10 d_rop s
   digits := ((3 + planes) * 3 25 r_eshape in) + 2 * 3 25 r_eshape n_ot in
-  shown := p_rint! (5 20 r_eshape r_avel_2 (25 r_eshape 1) c_at digits) s_elect " *0123456789"
+  _ := p_rint! (5 20 r_eshape r_avel_2 (25 r_eshape 1) c_at digits) s_elect " *0123456789"
   s
 }
 
@@ -182,7 +182,7 @@ l:l_rs := { s ->
 # :: (Any a, Any b) => a -> b -> a
 ## Say t and give s back.
 l:s_ay := { s t ->
-  said := p_rint! t
+  _ := p_rint! t
   s
 }
 # :: Any a => a -> a
@@ -195,10 +195,10 @@ l:c_ell := { rc -> 8 b:c_ell rc }
 ## The Enterprise moved to sector rc: its old sector emptied, the new one
 ## marked, both in one expression over the 64 sectors.
 l:m_oveTo := { s rc ->
-  g := r_avel l:g_rid s
+  was := r_avel l:g_rid s
   all := r_ange 64
-  g := g * all != l:c_ell l:s_ector s
-  g := (g * all != l:c_ell rc) + all = l:c_ell rc
+  left := was * all != l:c_ell l:s_ector s
+  g := (left * all != l:c_ell rc) + all = l:c_ell rc
   (s l:u_pdate l:sectRow c_at (f_irst rc) c_at l:sectCol c_at 2 s_elect rc) l:w_ithGrid g
 }
 # :: Int -> Int -> Int
@@ -220,7 +220,7 @@ l:c_ells := { P -> 1 + (8 * 0 m_ax 7 m_in 1 s_elect P) + 0 m_ax 7 m_in 2 s_elect
 ## Print each sector of a flat list of rows and columns, "  C-5".
 l:t_rack := { v ->
   0 = t_ally v ? 0
-  said := p_rint! @ f_ormat< "  {l:a_t 2 t_ake v}"
+  _ := p_rint! @ f_ormat< "  {l:a_t 2 t_ake v}"
   1 + l:t_rack 2 d_rop v
 }
 
@@ -231,10 +231,10 @@ l:t_rack := { v ->
 l:f_ire := { s ->
   0 = l:h_ere s ? s
   u := 29 + r_oll! 31
-  h := l:s_hields s
-  e := (l:e_nergy s) - 0 m_ax u - h
-  h := 0 m_ax h - u
-  said := p_rint! @ f_ormat< "HIT - SHIELDS {h} ENERGY {e}"
+  had := l:s_hields s
+  e := (l:e_nergy s) - 0 m_ax u - had
+  h := 0 m_ax had - u
+  _ := p_rint! @ f_ormat< "HIT - SHIELDS {h} ENERGY {e}"
   s l:u_pdate l:energy c_at e c_at l:shieldsAt c_at h
 }
 
@@ -247,10 +247,10 @@ l:w_arp := { s cp ->
   p := 2 s_elect cp
   (c < 1) | (c > 8) | (p < 1) | p > 8 ? s
   (l:e_nergy s) < 8 * p ? l:i_nsufficient s
-  q := (l:q_uad s) + p * c s_elect_2 l:c_ourses @
-  said := (q < 0) | q > 7
-  told := l:c_lamped '+ r_/ said
-  q := 0 m_ax 7 m_in q
+  to := (l:q_uad s) + p * c s_elect_2 l:c_ourses @
+  out := (to < 0) | to > 7
+  _ := l:c_lamped '+ r_/ out
+  q := 0 m_ax 7 m_in to
   l:s_rs l:e_nter s l:u_pdate l:energy c_at ((l:e_nergy s) - 8 * p) c_at l:stardate c_at ((l:d_ate s) + p) c_at l:quadRow c_at (f_irst q) c_at l:quadCol c_at 2 s_elect q
 }
 # :: Num a => Int -> a
@@ -284,7 +284,7 @@ l:c_ross := { s c ->
 # :: Int -> Int -> Int
 ## Stop at sector rc in front of an obstacle.
 l:h_alt := { s rc ->
-  said := p_rint! @ f_ormat< "OBSTRUCTED - HALTED AT SECTOR {l:a_t rc}"
+  _ := p_rint! @ f_ormat< "OBSTRUCTED - HALTED AT SECTOR {l:a_t rc}"
   s l:m_oveTo rc
 }
 
@@ -314,7 +314,7 @@ l:h_its := { v ->
   k := (f_irst v) - 1
   rc := (k d_iv 8) c_at k m_od 8
   hp := (2 s_elect v) - 4
-  said := p_rint! @ f_ormat< "KLINGON AT {l:a_t rc}{l:p_hp hp}"
+  _ := p_rint! @ f_ormat< "KLINGON AT {l:a_t rc}{l:p_hp hp}"
   1 + l:h_its 2 d_rop v
 }
 # :: Int -> Char
@@ -330,14 +330,14 @@ l:p_hp := { hp ->
 l:t_orpedo := { s c ->
   0 >= l:t_orps s ? s l:s_ay "NO TORPEDOES REMAINING"
   (c < 1) | c > 8 ? s
-  said := p_rint! "TORPEDO TRACK:"
+  _ := p_rint! "TORPEDO TRACK:"
   t := s l:u_pdate l:torpedoes c_at (l:t_orps s) - 1
   P := s l:p_ath c c_at 7
   in := l:i_nside P
   what := in * (l:c_ells P) s_elect r_avel l:g_rid s
   j := f_irst (w_here (n_ot in) | what != 0) c_at 8
   hits := j s_elect in c_at 0
-  shown := l:t_rack r_avel_2 ((j - 1) + hits) t_ake_2 P
+  _ := l:t_rack r_avel_2 ((j - 1) + hits) t_ake_2 P
   0 = hits ? l:f_ire t l:s_ay "TORPEDO MISSED - LEFT QUADRANT"
   l:f_ire t l:s_trike (j s_elect what) c_at j s_elect_2 P
 }
@@ -351,7 +351,7 @@ l:s_trike := { s wrc ->
   w = 2 ? s l:s_ay @ f_ormat< "TORPEDO ABSORBED BY STAR AT {at}"
   g := (r_avel l:g_rid s) * k != r_ange 64
   w = 3 ? (s l:w_ithGrid g) l:w_ithPlane 2 c_at (r_avel s l:g_alaxy 2) * (l:h_ome s) != r_ange 64
-  said := p_rint! @ f_ormat< "*** KLINGON DESTROYED AT {at} ***"
+  _ := p_rint! @ f_ormat< "*** KLINGON DESTROYED AT {at} ***"
   (s l:w_ithGrid g) l:w_ithPlane 1 c_at (r_avel s l:g_alaxy 1) - (l:h_ome s) = r_ange 64
 }
 # :: Int -> Int -> Int
@@ -367,21 +367,21 @@ l:s_hieldsTo := { s p ->
 ## The status report: the stardate, energy, shields, torpedoes and
 ## Klingons left, the quadrant and the sector.
 l:r_eport := { s ->
-  said := p_rint! ""
-  said := p_rint! @ f_ormat< "STARDATE {l:d_ate s} / {5 s_elect s}"
-  said := p_rint! @ f_ormat< "ENERGY   {l:e_nergy s}"
-  said := p_rint! @ f_ormat< "SHIELDS  {l:s_hields s}"
-  said := p_rint! @ f_ormat< "TORP     {l:t_orps s}"
-  said := p_rint! @ f_ormat< "KLINGONS {l:k_lingons s}"
-  said := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s}"
-  said := p_rint! @ f_ormat< "SECTOR   {l:a_t l:s_ector s}"
+  _ := p_rint! ""
+  _ := p_rint! @ f_ormat< "STARDATE {l:d_ate s} / {5 s_elect s}"
+  _ := p_rint! @ f_ormat< "ENERGY   {l:e_nergy s}"
+  _ := p_rint! @ f_ormat< "SHIELDS  {l:s_hields s}"
+  _ := p_rint! @ f_ormat< "TORP     {l:t_orps s}"
+  _ := p_rint! @ f_ormat< "KLINGONS {l:k_lingons s}"
+  _ := p_rint! @ f_ormat< "QUADRANT {l:a_t l:q_uad s}"
+  _ := p_rint! @ f_ormat< "SECTOR   {l:a_t l:s_ector s}"
   s
 }
 # :: Any a => a -> a
 ## Print the commands.
 l:h_elp := { s ->
-  said := p_rint! ""
-  shown := l:l_ines (
+  _ := p_rint! ""
+  _ := l:l_ines (
     "1 SRS  SHORT RANGE SCAN"
     "2 LRS  LONG RANGE SCAN"
     "3 WAR  WARP DRIVE"
@@ -441,15 +441,15 @@ l:j_udge := { s ->
 ## The game's ending, printed, and the Klingons left.
 l:e_nd := { s ->
   st := l:s_tatus s
-  said := p_rint! ""
+  _ := p_rint! ""
   st = 1 ? l:m_ission s
-  said := p_rint! d_isclose (st - 1) s_elect "*** STARDATE EXPIRED ***" "*** ENTERPRISE LOST ***" "*** COMMAND RESIGNED ***"
+  _ := p_rint! d_isclose (st - 1) s_elect "*** STARDATE EXPIRED ***" "*** ENTERPRISE LOST ***" "*** COMMAND RESIGNED ***"
   @ f_ormat< "KLINGONS REMAINING {l:k_lingons s}"
 }
 # :: Int -> Char
 ## The mission complete: the stardate and the energy left.
 l:m_ission := { s ->
-  said := p_rint! "*** MISSION COMPLETE ***"
-  said := p_rint! @ f_ormat< "STARDATE {l:d_ate s}"
+  _ := p_rint! "*** MISSION COMPLETE ***"
+  _ := p_rint! @ f_ormat< "STARDATE {l:d_ate s}"
   @ f_ormat< "ENERGY   {l:e_nergy s}"
 }

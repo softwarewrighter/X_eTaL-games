@@ -28,7 +28,7 @@ and its numbers, `s t:c_ommand c c_at args`.
 "t:" u_se< "StarTrek"
 u:t_urn := { s ->
   0 < t:s_tatus s ? p_rint! t:e_nd s
-  said := p_rint! "1=SRS 2=LRS 3=WAR 4=IMP 5=PHA 6=TOR 7=SHE 8=STA 9=HEL 0=QUI"
+  _ := p_rint! "1=SRS 2=LRS 3=WAR 4=IMP 5=PHA 6=TOR 7=SHE 8=STA 9=HEL 0=QUI"
   c := u:n_um "COMMAND ?"
   u:t_urn s t:c_ommand c c_at s u:a_rgs c
 }

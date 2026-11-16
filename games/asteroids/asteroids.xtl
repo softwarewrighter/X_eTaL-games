@@ -8,28 +8,28 @@
 # A new game: the ship in the middle and the first wave, three big rocks
 # on a ring around it, flying off at random. The world has 64 slots;
 # alive: the ship, rocks, shots, and the slots in use.
-s := ro:n_ew 0
-(W, sc, lv, wv, t, st, sf) := s
+start := ro:n_ew 0
+(W, _, _, _, _, _, _) := start
 s_hape W
-ro:c_ounts s
-f_loor 0.5 + 100 * ro:r_ocks s
+ro:c_ounts start
+f_loor 0.5 + 100 * ro:r_ocks start
 
 # Fire every tick for a second, heading up: at most six shots fly at
 # once (a shot is spawned in the first free slot, and spent after a
 # second of flight).
 u:f_ire := { s n -> n = 0 ? s; ((s ro:k_ey " ") ro:t_ick 0.05) u:f_ire n - 1 }
-s := s u:f_ire 20
-ro:c_ounts s
+fired := start u:f_ire 20
+ro:c_ounts fired
 
 # Four more seconds of fire: shots that reach a rock break it, and its
 # two halves are spawned in the slots that freed. The score, lives and
 # wave; what is alive.
-s := s u:f_ire 80
-ro:s_core s
-ro:c_ounts s
-pic := []S_HOW ro:d_raw s
+later := fired u:f_ire 80
+ro:s_core later
+ro:c_ounts later
+_ := []S_HOW ro:d_raw later
 
 # What the game guarantees, checked by a_ssert< (silent when it holds).
-ok := "4 = 4 s_elect ro:c_ounts ro:n_ew 0" a_ssert< "a new game fills four slots"
-ok := "6 >= 3 s_elect ro:c_ounts s" a_ssert< "no more than six shots in flight"
-ok := "(4 s_elect ro:c_ounts s) = '+ r_/ 3 t_ake ro:c_ounts s" a_ssert< "every slot in use holds the ship, a rock or a shot"
+_ := "4 = 4 s_elect ro:c_ounts ro:n_ew 0" a_ssert< "a new game fills four slots"
+_ := "6 >= 3 s_elect ro:c_ounts later" a_ssert< "no more than six shots in flight"
+_ := "(4 s_elect ro:c_ounts later) = '+ r_/ 3 t_ake ro:c_ounts later" a_ssert< "every slot in use holds the ship, a rock or a shot"

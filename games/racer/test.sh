@@ -12,11 +12,10 @@ cp "$here/Race.xtl" "$tmp/"
 sed -e 's/^colors = \[\(.*\)\]/colors = [\1, "#2a9d8f"]/; s/^tops = \[\(.*\)\]/tops = [\1, "7.6"]/' "$here/racer.toml" > "$tmp/racer.toml"
 cat > "$tmp/t.xtl" <<'XTL'
 "rc:" u_se< "Race"
-s := rc:n_ew 0
-t_ally rc:c_ars s
+start := rc:n_ew 0
+t_ally rc:c_ars start
 u:w_ait := { s n -> n = 0 ? s; (s rc:t_ick 0.05) u:w_ait n - 1 }
-s := s u:w_ait 440
-t_ally w_here 1 <= 1 d_rop 1 s_elect_2 rc:c_ars s
+t_ally w_here 1 <= 1 d_rop 1 s_elect_2 rc:c_ars start u:w_ait 440
 XTL
 got="$(cd "$tmp" && XETAL_PATH="$root/lib" "$root/bin/xetal" run --seed 1 t.xtl)"
 want="5

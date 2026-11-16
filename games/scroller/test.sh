@@ -19,12 +19,12 @@ open(sys.argv[2], "w").write(t)
 PY
 cat > "$tmp/t.xtl" <<'XTL'
 "j:" u_se< "Jump"
-s := j:n_ew 0
-2 s_elect j:c_ounts s
+start := j:n_ew 0
+2 s_elect j:c_ounts start
 u:w_ait := { s n -> n = 0 ? s; (s j:t_ick 0.05) u:w_ait n - 1 }
-s := s u:w_ait 40
-f_loor 0.5 + 100 * 2 s_elect_2 j:b_odies s
-j:s_tatus s
+later := start u:w_ait 40
+f_loor 0.5 + 100 * 2 s_elect_2 j:b_odies later
+j:s_tatus later
 XTL
 got="$(cd "$tmp" && XETAL_PATH="$root/lib" "$root/bin/xetal" run --seed 1 t.xtl)"
 want="4

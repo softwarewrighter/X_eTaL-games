@@ -22,17 +22,14 @@ mz:y_ou s
 
 # A few keys: the mini map on, then up the left side and turn right.
 u:p_ress := { s k -> s mz:k_ey k }
-s := s u:p_ress "m"
-s := s u:p_ress "UP"
-s := s u:p_ress "UP"
-s := s u:p_ress "RIGHT"
-mz:y_ou s
+walked := (((s u:p_ress "m") u:p_ress "UP") u:p_ress "UP") u:p_ress "RIGHT"
+mz:y_ou walked
 
 # The blocks seen so far: what has been in view.
-mz:s_een s
-pic := []S_HOW mz:d_raw s
+mz:s_een walked
+_ := []S_HOW mz:d_raw walked
 
 # What the maze guarantees, checked by a_ssert< (silent when it holds).
 t := mz:n_ew 0
-ok := "'& r_/ (0 <= r_avel mz:d_istances t) = r_avel 0 = mz:g_rid t" a_ssert< "every open block can be reached"
-ok := "0 = mz:s_tatus s" a_ssert< "still looking"
+_ := "'& r_/ (0 <= r_avel mz:d_istances t) = r_avel 0 = mz:g_rid t" a_ssert< "every open block can be reached"
+_ := "0 = mz:s_tatus walked" a_ssert< "still looking"

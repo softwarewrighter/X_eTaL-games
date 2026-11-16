@@ -51,7 +51,7 @@ l:p_lace := { b ->
   1 + j - 'm_ax s_\_2 j * b != prev
 }
 l:l_eft := [l:c_ompress [l:m_erge l:c_ompress]]
-l:t_urn := { b d -> (1 * d m_ember? 2 4) 'r_ev_2 p_ower (1 * d m_ember? 3 4) 'o_\ p_ower b }
+l:t_urn := { b d -> (d m_ember? 2 4) 'r_ev_2 p_ower (d m_ember? 3 4) 'o_\ p_ower b }
 l:s_lide := { b d -> (l:l_eft b l:t_urn d) l:b_ack d }
 ```
 

@@ -6,7 +6,7 @@
 # :: Any a => a -> Char
 ## The line typed, as it was typed.
 l:l_ine := { prompt ->
-  shown := p_rint! prompt
+  _ := p_rint! prompt
   []R_EAD @
 }
 # :: Char -> Int

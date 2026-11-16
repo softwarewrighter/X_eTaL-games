@@ -9,13 +9,12 @@
 # A room is the rows whose key it is and whose condition holds: one mask
 # over the whole table. Storage (room 5) at the start, then after the
 # toolkit and the coupler are taken: their rows drop out.
-s := t:n_ew 0
-s := s t:u_pdate 1 5
+s := (t:n_ew 0) t:u_pdate 1 5
 s t:l_ines 5
-said := s t:s_ay 5
+_ := s t:s_ay 5
 taken := s t:u_pdate 5 1 6 1
 taken t:l_ines 5
-said := taken t:s_ay 5
+_ := taken t:s_ay 5
 
 # The exits are a 9 by 9 table: from the corridor (room 3) you can reach
 # rooms 2, 4, 5, 7 and 9.
@@ -41,22 +40,22 @@ game := (t:n_ew 0) u:p_lay moves
 game
 last := r_avel -1 t_ake game
 t:s_tatus last                           # 1: won
-said := last t:s_ay 201
+_ := last t:s_ay 201
 
 # Two ways to lose: fire the phaser at the boarders in the shuttle bay
 # (2: dead), or let the turns run out (3: too late). Throwing the
 # tribble instead makes the boarders retreat.
 bay := 8 20 1 0 0 0 1 0 1 0 0 0
 t:s_tatus bay t:m_ove 7 0
-said := bay t:s_ay t:s_aid bay t:m_ove 6 0
+_ := bay t:s_ay t:s_aid bay t:m_ove 6 0
 9 s_elect bay t:m_ove 6 0                # the boarders: gone
 u:w_ait := { s -> t:c_lock s t:m_ove 1 0 }
 t:s_tatus 30 'u:w_ait p_ower t:n_ew 0
 
 # Nothing carried: the inventory says so.
-said := (t:n_ew 0) t:s_ay t:s_aid (t:n_ew 0) t:m_ove 2 0
+_ := (t:n_ew 0) t:s_ay t:s_aid (t:n_ew 0) t:m_ove 2 0
 
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "1 = t:s_tatus last" a_ssert< "the scripted moves win"
+_ := "1 = t:s_tatus last" a_ssert< "the scripted moves win"

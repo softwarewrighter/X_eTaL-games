@@ -113,15 +113,11 @@ h:a_long := { p ->
 ## The next creep of the wave onto the road, when its time has come.
 h:s_pawning := { (W, q, tm) ->
   (0 = t_ally q) | tm > 0.0 ? (W, q, tm)
-  (W, ids) := W ec:s_pawn 1
+  (spawned, ids) := W ec:s_pawn 1
   k := f_irst q
-  W := W h:s_etCreep (ids, 1.0)
-  W := W h:s_etKind (ids, f_loat k)
-  W := W h:s_etProg (ids, 0.0)
-  W := W h:s_etHp (ids, k s_elect HP)
-  W := W h:s_etSlow (ids, 0.0)
-  W := W h:s_etPos (ids, h:a_long 1 r_eshape 0.0)
-  (W, 1 d_rop q, GAP)
+  creep := ((spawned h:s_etCreep (ids, 1.0)) h:s_etKind (ids, f_loat k)) h:s_etProg (ids, 0.0)
+  fresh := ((creep h:s_etHp (ids, k s_elect HP)) h:s_etSlow (ids, 0.0)) h:s_etPos (ids, h:a_long 1 r_eshape 0.0)
+  (fresh, 1 d_rop q, GAP)
 }
 ## Every creep comes along the road by its speed (half while slowed);
 ## the creeps past E get out, and cost their lives.
@@ -131,11 +127,9 @@ h:c_rawl := { W dt ->
   k := f_loor c s_elect h:k_ind W
   sl := c s_elect h:s_low W
   p := (c s_elect h:p_rog W) + dt * (k s_elect SPEED) * 1.0 - 0.5 * f_loat sl > 0.0
-  W := W h:s_etProg (c, p)
-  W := W h:s_etSlow (c, 0.0 m_ax sl - dt)
-  W := W h:s_etPos (c, h:a_long p)
+  moved := ((W h:s_etProg (c, p)) h:s_etSlow (c, 0.0 m_ax sl - dt)) h:s_etPos (c, h:a_long p)
   out := p >= f_loat LONG
-  (W ec:d_espawn out r_eplicate c, '+ r_/ 0 c_at out r_eplicate k s_elect LEAK)
+  (moved ec:d_espawn out r_eplicate c, '+ r_/ 0 c_at out r_eplicate k s_elect LEAK)
 }
 ## A tower's row in the towers' table: its kind and level.
 h:r_ow := { W tw -> (3 * (f_loor tw s_elect h:k_ind W) - 1) + f_loor tw s_elect h:l_evel W }
@@ -146,31 +140,27 @@ h:a_im := { W dt ->
   tw := h:t_owers W
   0 = t_ally tw ? W
   cool := 0.0 m_ax (tw s_elect h:c_ool W) - dt
-  W := W h:s_etCool (tw, cool)
-  c := h:c_reeps W
-  0 = t_ally c ? W
-  j := W h:r_ow tw
-  T := tw s_elect h:p_os W
-  P := c s_elect h:p_os W
+  cooled := W h:s_etCool (tw, cool)
+  c := h:c_reeps cooled
+  0 = t_ally c ? cooled
+  j := cooled h:r_ow tw
+  T := tw s_elect h:p_os cooled
+  P := c s_elect h:p_os cooled
   dx := (1 s_elect_2 T) '- t_able 1 s_elect_2 P
   dy := (2 s_elect_2 T) '- t_able 2 s_elect_2 P
   reach := h:r_ows (j s_elect RANGE, t_ally c)
-  S := (f_loat ((dx * dx) + dy * dy) <= reach * reach) * h:c_ols (1.0 + c s_elect h:p_rog W, t_ally tw)
+  S := (f_loat ((dx * dx) + dy * dy) <= reach * reach) * h:c_ols (1.0 + c s_elect h:p_rog cooled, t_ally tw)
   best := 'm_ax r_/_2 S
   pick := 'm_in r_/_2 (h:c_ols (r_ange t_ally c, t_ally tw)) + 1000 * 0 + S < h:r_ows (best, t_ally c)
   ready := (cool <= 0.0) & best > 0.0
   n := '+ r_/ 0 + ready
-  0 = n ? W
+  0 = n ? cooled
   from := ready r_eplicate tw
   js := ready r_eplicate j
-  (W, ids) := W ec:s_pawn n
-  W := W h:s_etShot (ids, 1.0)
-  W := W h:s_etPos (ids, from s_elect h:p_os W)
-  W := W h:s_etTarget (ids, f_loat (ready r_eplicate pick) s_elect c)
-  W := W h:s_etDmg (ids, js s_elect DAMAGE)
-  W := W h:s_etArea (ids, js s_elect SPLASH)
-  W := W h:s_etChill (ids, js s_elect CHILL)
-  W h:s_etCool (from, js s_elect COOLDOWN)
+  (spawned, ids) := cooled ec:s_pawn n
+  aimed := ((spawned h:s_etShot (ids, 1.0)) h:s_etPos (ids, from s_elect h:p_os spawned)) h:s_etTarget (ids, f_loat (ready r_eplicate pick) s_elect c)
+  loaded := ((aimed h:s_etDmg (ids, js s_elect DAMAGE)) h:s_etArea (ids, js s_elect SPLASH)) h:s_etChill (ids, js s_elect CHILL)
+  loaded h:s_etCool (from, js s_elect COOLDOWN)
 }
 ## Shots that reach their target: every hitting shot against every creep
 ## at once (shots down, creeps across): the target, and with a splash
@@ -188,27 +178,26 @@ h:i_mpact := { W hs ->
   arm := h:c_ols ((f_loor c s_elect h:k_ind W) s_elect ARMOR, t_ally hs)
   D := (f_loat H) * 1.0 m_ax (h:r_ows (hs s_elect h:d_mg W, t_ally c)) - arm
   cold := 'm_ax r_/_1 (f_loat H) * h:r_ows (hs s_elect h:c_hill W, t_ally c)
-  W := W h:s_etHp (c, (c s_elect h:h_p W) - '+ r_/_1 D)
-  W h:s_etSlow (c, (c s_elect h:s_low W) m_ax cold)
+  (W h:s_etHp (c, (c s_elect h:h_p W) - '+ r_/_1 D)) h:s_etSlow (c, (c s_elect h:s_low W) m_ax cold)
 }
 ## Every shot flies at its target; shots whose target is gone vanish,
 ## and those that reach it hit (and go).
 h:f_ly := { W dt ->
-  s := h:s_hots W
-  0 = t_ally s ? W
+  all := h:s_hots W
+  0 = t_ally all ? W
   alive := (ec:a_live W) & h:h_asCreep W
-  ok := (f_loor s s_elect h:t_arget W) s_elect alive
-  W := W ec:d_espawn (n_ot ok) r_eplicate s
-  s := ok r_eplicate s
-  0 = t_ally s ? W
-  S := s s_elect h:p_os W
-  D := ((f_loor s s_elect h:t_arget W) s_elect h:p_os W) - S
+  ok := (f_loor all s_elect h:t_arget W) s_elect alive
+  kept := W ec:d_espawn (n_ot ok) r_eplicate all
+  s := ok r_eplicate all
+  0 = t_ally s ? kept
+  S := s s_elect h:p_os kept
+  D := ((f_loor s s_elect h:t_arget kept) s_elect h:p_os kept) - S
   far := ('+ r_/_2 D * D) ^ 0.5
   k := 1.0 m_in (SHOT * dt) / 0.001 m_ax far
-  W := W h:s_etPos (s, S + D * h:p_air (k, k))
+  flown := kept h:s_etPos (s, S + D * h:p_air (k, k))
   hs := (far <= SHOT * dt) r_eplicate s
-  0 = t_ally hs ? W
-  (W h:i_mpact hs) ec:d_espawn hs
+  0 = t_ally hs ? flown
+  (flown h:i_mpact hs) ec:d_espawn hs
 }
 ## The creeps with no hit points left are beaten: their money is won,
 ## and they go.
@@ -234,12 +223,11 @@ l:t_ick := { s dt ->
   st > 0 ? s
   md = 1 ? (W, mo, lv, wv, q, tm, sel, md, pg, t + dt, st, sp, ms)
   d := dt * f_loat sp
-  (W, q, tm) := h:s_pawning (W, q, tm - d)
-  (W, lost) := W h:c_rawl d
-  W := (W h:a_im d) h:f_ly d
-  (W, won) := h:b_eaten W
-  lv := lv - lost
-  (W, mo + won, lv, wv, q, tm, sel, md, pg, t + d, h:o_utcome (lv, wv, q, W), sp, ms)
+  (spawned, coming, wait) := h:s_pawning (W, q, tm - d)
+  (crawled, lost) := spawned h:c_rawl d
+  (kept, won) := h:b_eaten (crawled h:a_im d) h:f_ly d
+  lives := lv - lost
+  (kept, mo + won, lives, wv, coming, wait, sel, md, pg, t + d, h:o_utcome (lives, wv, coming, kept), sp, ms)
 }
 
 ### Clicks and keys
@@ -286,13 +274,10 @@ h:b_uild := { s k ->
   tw > 0 ? h:u_pgrade (s, tw)
   cost := (1 + 3 * sel - 1) s_elect COST
   cost > mo ? h:s_aid (s, @ f_ormat< "That tower costs {cost}; the money is {mo}.")
-  (W, ids) := W ec:s_pawn 1
-  W := W h:s_etTower (ids, 1.0)
-  W := W h:s_etKind (ids, f_loat sel)
-  W := W h:s_etLevel (ids, 1.0)
-  W := W h:s_etCool (ids, 0.0)
-  W := W h:s_etPos (ids, (0.5 + f_loat (k - 1) m_od C) c_at 0.5 + f_loat (k - 1) d_iv C)
-  (W, mo - cost, lv, wv, q, tm, sel, md, pg, t, st, sp, @ f_ormat< "Built: {d_isclose (1 + 3 * sel - 1) s_elect 1 s_elect_2 TT} ({cost}). Click it to upgrade.")
+  (spawned, ids) := W ec:s_pawn 1
+  tower := ((spawned h:s_etTower (ids, 1.0)) h:s_etKind (ids, f_loat sel)) h:s_etLevel (ids, 1.0)
+  built := (tower h:s_etCool (ids, 0.0)) h:s_etPos (ids, (0.5 + f_loat (k - 1) m_od C) c_at 0.5 + f_loat (k - 1) d_iv C)
+  (built, mo - cost, lv, wv, q, tm, sel, md, pg, t, st, sp, @ f_ormat< "Built: {d_isclose (1 + 3 * sel - 1) s_elect 1 s_elect_2 TT} ({cost}). Click it to upgrade.")
 }
 h:u_pgrade := { (s, tw) ->
   (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) := s
@@ -597,15 +582,11 @@ h:s_ays := { (mo, lv, wv, t, st) ->
   st = 2 ? @ f_ormat< "The creeps got through. Wave {wv} | Time {f_loor t} s"
   @ f_ormat< "Money {mo} | Lives {lv} | Wave {wv} of {t_ally WAVES} | Time {f_loor t} s"
 }
-# :: (Any c, Any d, Num e, Num f) => (Float, Int, a, b, c, d, Int, Int, Int, Float, e, f, Char) -> Char
-## (md m_od 2: the view made an Int for certain; X_eTaL infers this
-## function's type two ways from run to run otherwise, an ask in
-## docs/xetal-asks.md.)
+# :: (Any c, Any d, Num e, Num f, Num g) => (Float, Int, a, b, c, d, Int, e, Int, Float, f, g, Char) -> Char
 ## The picture, as SVG text: the board and everything on it drawn far to
 ## near, the toolbar, the top line, and the grimoire over it all when
 ## open.
 l:d_raw := { (W, mo, lv, wv, q, tm, sel, md, pg, t, st, sp, ms) ->
-  md := md m_od 2
   top := (16.0, 40.0, 22.0) h:w_ords h:s_ays (mo, lv, wv, t, st)
   said := (16.0, 70.0, 18.0) h:w_ords ms
   book := h:b_ookIf (md, pg, t)

@@ -44,10 +44,9 @@ h:s_tep := { m (r, c) ->
   0 = t_ally cand ? m h:s_tep (r, c + 1)
   p := f_irst cand
   k := r_ange 25
-  m := (k + ((p - r) * k = r) + (r - p) * k = p) s_elect m
-  hit := 0 + (1 = c s_elect_2 m) & k != r
-  m := (m + hit '* t_able r s_elect m) m_od 2
-  m h:s_tep (r + 1, c + 1)
+  up := (k + ((p - r) * k = r) + (r - p) * k = p) s_elect m
+  hit := 0 + (1 = c s_elect_2 up) & k != r
+  ((up + hit '* t_able r s_elect up) m_od 2) h:s_tep (r + 1, c + 1)
 }
 # :: Int -> Int
 ## The presses that turn board b off (a 0/1 vector of 25), when there
@@ -70,8 +69,8 @@ l:s_olve := { b ->
 ## A new puzzle: some squares pressed at random on a board all off, so
 ## it can always be solved (a board left all off gets its middle pressed).
 l:n_ew := { x ->
-  p := 0 + 1 = r_oll! 25 r_eshape 2
-  p := p + (0 = '+ r_/ p) * 13 = r_ange 25
+  some := 0 + 1 = r_oll! 25 r_eshape 2
+  p := some + (0 = '+ r_/ some) * 13 = r_ange 25
   0 0 c_at (25 r_eshape 0) l:a_fter p
 }
 # :: a -> a

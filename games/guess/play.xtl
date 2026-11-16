@@ -5,8 +5,8 @@
 ## asked for again. The rules are those of NumberGuess.xtl.
 "g:" u_se< "NumberGuess"
 "p:" u_se< "Play"
-said := p_rint! "--- GUESS THE NUMBER ---"
-said := p_rint! "I AM THINKING OF A NUMBER BETWEEN 1 AND 100."
+_ := p_rint! "--- GUESS THE NUMBER ---"
+_ := p_rint! "I AM THINKING OF A NUMBER BETWEEN 1 AND 100."
 t := g:n_ew g:top
 
 ## A guess: the first number typed, or it asks again.
@@ -17,7 +17,7 @@ u:a_sk := { n ->
 ## Answer each guess until one is right; how many it took.
 u:t_urn := { n ->
   r := t g:m_ove u:a_sk n
-  shown := p_rint! g:r_eply r
+  _ := p_rint! g:r_eply r
   r = 0 ? n; u:t_urn n + 1
 }
 n := u:t_urn 1

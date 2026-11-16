@@ -62,18 +62,14 @@ l:n_ew := { x ->
   goal := f_irst (g_rade n_eg me h:s_teps floor) s_elect floor
   far := ((4 <= me h:s_teps order) & order != goal) r_eplicate order
   at := me c_at goal c_at (t_ally ents) t_ake far
-  (W, ids) := (h:w_orld 32) ec:s_pawn t_ally at
-  W := W h:s_etPos (ids, f_loat o_\ (2 c_at t_ally at) r_eshape ((at - 1) d_iv 25) c_at (at - 1) m_od 25)
-  W := W h:s_etGoal (2 s_elect ids, 1.0)
+  (spawned, ids) := (h:w_orld 32) ec:s_pawn t_ally at
+  cell := f_loat o_\ (2 c_at t_ally at) r_eshape ((at - 1) d_iv 25) c_at (at - 1) m_od 25
+  placed := (spawned h:s_etPos (ids, cell)) h:s_etGoal (2 s_elect ids, 1.0)
   mob := ((r_ange t_ally ids) != 2) r_eplicate ids
   k := 1 c_at 1 + kk
-  W := W h:s_etKind (mob, f_loat k - 1)
-  W := W h:s_etPlayer (f_irst ids, 1.0)
-  W := W h:p_utSome (mob, k, HP, 1)
-  W := W h:p_utSome (mob, k, AT, 2)
-  W := W h:p_utSome (mob, k, CH, 3)
-  W := W h:p_utSome (mob, k, HE, 4)
-  W := W h:p_utSome (mob, k, GO, 5)
+  named := (placed h:s_etKind (mob, f_loat k - 1)) h:s_etPlayer (f_irst ids, 1.0)
+  armed := ((named h:p_utSome (mob, k, HP, 1)) h:p_utSome (mob, k, AT, 2)) h:p_utSome (mob, k, CH, 3)
+  W := (armed h:p_utSome (mob, k, HE, 4)) h:p_utSome (mob, k, GO, 5)
   (W, 0, 0, "Find the way out (>). Arrow keys or WASD to move; walk into a monster to fight.", lv)
 }
 ## Component c (1 hp, 2 atk, 3 chase, 4 heal, 5 gold) for the entities
@@ -112,11 +108,11 @@ l:t_urn := { (W, g, n, m, lv) d ->
   to := (me s_elect h:p_os W) + d
   foe := w_here (ec:a_live W) & (h:h_asHp W) & (0 = h:p_layer W) & W h:a_t to
   wall := (h:c_ell 1 2 r_eshape to) s_elect h:w_alls lv
-  (W, said) := h:y_ou (W, me, to, foe, f_irst wall)
-  (W, g, picked) := h:p_ickUp (W, g, me)
-  (W, g, beaten) := h:b_eaten (W, g)
-  (W, hurt) := h:m_onsters (W, me, lv)
-  (W, g, n + 1, t:j_oin (e_nclose said) c_at picked c_at beaten c_at e_nclose hurt, lv)
+  (stepped, said) := h:y_ou (W, me, to, foe, f_irst wall)
+  (looted, found, picked) := h:p_ickUp (stepped, g, me)
+  (cleared, gold, beaten) := h:b_eaten (looted, found)
+  (after, hurt) := h:m_onsters (cleared, me, lv)
+  (after, gold, n + 1, t:j_oin (e_nclose said) c_at picked c_at beaten c_at e_nclose hurt, lv)
 }
 ## You: a hit on the monster in the way, else a step (not into a wall).
 h:y_ou := { (W, me, to, foe, wall) ->
@@ -131,8 +127,8 @@ h:p_ickUp := { (W, g, me) ->
   0 = t_ally here ? (W, g, 0 r_eshape e_nclose "")
   heal := '+ r_/ here s_elect h:h_eal W
   gold := '+ r_/ here s_elect h:g_old W
-  W := W h:s_etHp (me, heal + me s_elect h:h_p W)
-  (W ec:d_espawn here, g + f_loor gold, e_nclose @ f_ormat< "You pick up {f_loor heal} hp and {f_loor gold} gold. ")
+  healed := W h:s_etHp (me, heal + me s_elect h:h_p W)
+  (healed ec:d_espawn here, g + f_loor gold, e_nclose @ f_ormat< "You pick up {f_loor heal} hp and {f_loor gold} gold. ")
 }
 ## The beaten monsters (no hit points left) drop their gold and go.
 h:b_eaten := { (W, g) ->
@@ -147,21 +143,20 @@ h:m_onsters := { (W, me, lv) ->
   ms := ((h:f_oes W) s_elect h:h_asChase W) r_eplicate h:f_oes W
   0 = t_ally ms ? (W, "")
   P := ms s_elect h:p_os W
-  d := ((t_ally ms) c_at 2) r_eshape (me s_elect h:p_os W)
-  d := d - P
+  d := (((t_ally ms) c_at 2) r_eshape me s_elect h:p_os W) - P
   far := '+ r_/_2 a_bs d
   next := far = 1
   hit := '+ r_/ next r_eplicate ms s_elect h:a_tk W
-  W := W h:s_etHp (me, (me s_elect h:h_p W) - hit)
+  struck := W h:s_etHp (me, (me s_elect h:h_p W) - hit)
   go := (far > 1) & far <= 6
   rowFirst := (a_bs 1 s_elect_2 d) >= a_bs 2 s_elect_2 d
   step := o_\ (2 c_at t_ally ms) r_eshape (rowFirst * h:s_ign 1 s_elect_2 d) c_at (n_ot rowFirst) * h:s_ign 2 s_elect_2 d
-  Q := P + f_loat step * go '* t_able 1 1
-  c := h:c_ell Q
-  taken := h:c_ell (w_here (ec:a_live W) & h:h_asHp W) s_elect h:p_os W
+  want := P + f_loat step * go '* t_able 1 1
+  c := h:c_ell want
+  taken := h:c_ell (w_here (ec:a_live struck) & h:h_asHp struck) s_elect h:p_os struck
   ok := go & (n_ot c s_elect h:w_alls lv) & (n_ot c m_ember? taken) & (c i_ndexOf c) = r_ange t_ally c
-  Q := (P * f_loat n_ot ok '* t_able 1 1) + Q * f_loat ok '* t_able 1 1
-  (W h:s_etPos (ms, Q), h:o_uch hit)
+  Q := (P * f_loat n_ot ok '* t_able 1 1) + want * f_loat ok '* t_able 1 1
+  (struck h:s_etPos (ms, Q), h:o_uch hit)
 }
 ## What a monster's hit says.
 h:o_uch := { hit ->
@@ -208,8 +203,8 @@ l:d_raw := { (W, g, n, m, lv) ->
   v := 0.0 0.0 2500.0 1000.0
   y := l:y_ou (W, g, n, m, lv)
   top := (20.0, 70.0, 44.0) sv:w_ords @ f_ormat< "HP {f_irst y}   Gold {2 s_elect y}   Turn {3 s_elect y}   {m}"
-  live := w_here ec:a_live W
-  live := (g_rade n_eg live s_elect h:g_oal W) s_elect live
+  alive := w_here ec:a_live W
+  live := (g_rade n_eg alive s_elect h:g_oal W) s_elect alive
   P := live s_elect h:p_os W
   k := f_loor live s_elect h:k_ind W
   o := live s_elect h:g_oal W

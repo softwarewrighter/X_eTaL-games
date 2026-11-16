@@ -5,7 +5,7 @@
 ## those of Mines.xtl.
 "m:" u_se< "Mines"
 "p:" u_se< "Play"
-said := p_rint! "MINESWEEPER: 9 BY 9, 10 MINES"
+_ := p_rint! "MINESWEEPER: 9 BY 9, 10 MINES"
 
 ## A command: f (flag) or not, then a row and a column from 1 to 9;
 ## anything else is asked for again.
@@ -17,9 +17,9 @@ u:a_sk := { s ->
 }
 ## A turn: the field (as text and as a picture), a command, its result.
 u:t_urn := { s ->
-  said := p_rint! ""
-  shown := p_rint! m:v_iew s
-  pic := []S_HOW m:p_icture s
+  _ := p_rint! ""
+  _ := p_rint! m:v_iew s
+  _ := []S_HOW m:p_icture s
   1 = m:s_tatus s ? "YOU CLEARED THE FIELD!"
   2 = m:s_tatus s ? "BOOM! YOU HIT A MINE."
   c := u:a_sk s

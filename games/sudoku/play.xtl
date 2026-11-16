@@ -7,7 +7,7 @@
 ## SudokuGrid.xtl.
 "s:" u_se< "SudokuGrid"
 "p:" u_se< "Play"
-said := p_rint! "SUDOKU: EVERY ROW, COLUMN AND BOX HOLDS 1 TO 9"
+_ := p_rint! "SUDOKU: EVERY ROW, COLUMN AND BOX HOLDS 1 TO 9"
 
 ## A puzzle by number (1 to how many puzzles.toml has), or 81 cells of
 ## your own, checked: refused with the reason, and asked again.
@@ -18,7 +18,7 @@ u:p_uzzle := { @ ->
   (1 = t_ally c) & (k >= 1) & k <= n ? c
   w := s:p_roblem c
   0 = w ? c
-  said := p_rint! u:b_adPuzzle w c_at t_ally c
+  _ := p_rint! u:b_adPuzzle w c_at t_ally c
   u:p_uzzle @
 }
 ## Why a puzzle of your own was refused (w from s:p_roblem, and how many
@@ -45,8 +45,8 @@ u:c_ell := { s rc ->
 }
 ## A turn: the grid, then commands until a move changes it.
 u:t_urn := { s ->
-  said := p_rint! ""
-  shown := p_rint! s:v_iew s
+  _ := p_rint! ""
+  _ := p_rint! s:v_iew s
   1 = s:s_tatus s ? "SOLVED!"
   u:a_sk s
 }
@@ -66,12 +66,12 @@ u:a_sk := { s ->
   s u:s_ay w u:r_efused 3 s_elect v
 }
 u:s_ay := { s text ->
-  said := p_rint! text
+  _ := p_rint! text
   u:a_sk s
 }
 ## The puzzle's solution, and the game is over.
 u:s_olution := { s ->
-  shown := p_rint! s:s_hown s:s_olve s:g_ivens s
+  _ := p_rint! s:s_hown s:s_olve s:g_ivens s
   "THE SOLUTION"
 }
 u:t_urn s:n_ew u:p_uzzle @

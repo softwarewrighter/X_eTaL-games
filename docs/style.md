@@ -46,16 +46,26 @@ better when it is clearer, never when it is cryptic.
 - A sign is a dyadic fork, `d [> - <] 0`; a dyadic fork is written
   inline (a named train is monadic).
 - A sequence of steps is a train of atops, `[f [g h]]` (f of g of h).
-- An optional transform is a power of 0 or 1, `(1 * cond) 'f p_ower x`
-  (a power count must be a number, not a Bool).
+- An optional transform is a power of 0 or 1, `cond 'f p_ower x` (a
+  condition as the count: once when it holds, not at all when not).
 - A function over the rows of a matrix: `m_ap` over the row numbers
   (`'{ f _r s_elect m } m_ap r_ange t_ally m`); `m_ap` alone maps items.
 - What a scripted game guarantees is stated with X_eTaL's system macro
-  `a_ssert<`, bound so it prints nothing: `ok := "3 = t:s_tatus end"
-  a_ssert< "perfect play is a draw"`. It is silent when the condition
-  holds and writes the condition as written to standard error when it
-  does not, which fails the tests (the self-test proves it). The control
-  macros (`i_f<`, `u_nless<`) are not used: a guard does their job.
+  `a_ssert<`, its value discarded so it prints nothing: `_ := "3 =
+  t:s_tatus end" a_ssert< "perfect play is a draw"`. It is silent when
+  the condition holds and writes the condition as written to standard
+  error when it does not, which fails the tests (the self-test proves
+  it). The control macros (`i_f<`, `u_nless<`) are not used: a guard
+  does their job.
+- A name is bound once in its scope (X_eTaL refuses a second `:=`), and
+  the games do not use the changing form (`s!`). A value kept only for
+  its effect is discarded, `_ := p_rint! ...`. State is passed to pure
+  functions and comes back new: a chain of updates is one expression,
+  `((W h:s_etPos (ids, P)) h:s_etVel (ids, V)) h:s_etSize (ids, sz)`; a
+  stage worth reading gets a name of its own (`start`, `fired`,
+  `landed`), never a number; a repeated step is a function that calls
+  itself with the new state (`u:w_ait := { s n -> n = 0 ? s; (s
+  st:t_ick 0.05) u:w_ait n - 1 }`).
 - Values of different meanings passed as one argument are a tuple, named
   in the parameters: `l:w_ords := { (x, y, z) t -> ... }`, called as
   `(x, y, size) sv:w_ords t`; X_eTaL then shows the type as
@@ -139,6 +149,5 @@ fell into, all caught by the goldens:
 | tuples and records (state with fields) | a flat vector and named accessors |
 | checked type signatures | `# ::` comments and the type goldens |
 | amend (a functional update) | `State`'s update by a table |
-| local functions in a lambda | top-level helpers taking the extra values |
 | user macros (assertions) | checks printed by the scripted games |
 | screen control, single keys | text redrawn each turn, a line per command |

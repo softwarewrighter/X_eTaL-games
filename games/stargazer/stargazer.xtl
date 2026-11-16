@@ -19,22 +19,22 @@ f_loor 0 k:a_t i
 # middling and faint, and the picture X_eTaL draws for it.
 s := k:n_ew 1
 '{ j -> e_nclose k:n_ame j } e_ach k:m_arks s
-pic := []S_HOW k:d_raw s
+_ := []S_HOW k:d_raw s
 
 # A click on the first ringed star opens its menu; a click on the right
 # name (the middle of its button) answers it.
 j := f_irst k:m_arks s
-t := s k:c_lick 1 k:a_t j
-k:s_ay t
-c := f_irst w_here (k:o_ffered t) = j
-b := c s_elect k:m_enu t
-t := t k:c_lick ((f_irst b) + 0.5 * 3 s_elect b) c_at (2 s_elect b) + 0.5 * 4 s_elect b
-k:s_ay t
-pic := []S_HOW k:d_raw t
-k:s_core t
+asked := s k:c_lick 1 k:a_t j
+k:s_ay asked
+c := f_irst w_here (k:o_ffered asked) = j
+b := c s_elect k:m_enu asked
+answered := asked k:c_lick ((f_irst b) + 0.5 * 3 s_elect b) c_at (2 s_elect b) + 0.5 * 4 s_elect b
+k:s_ay answered
+_ := []S_HOW k:d_raw answered
+k:s_core answered
 
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "i m_ember? 7 k:c_hoices i" a_ssert< "a star is among its own choices"
-ok := "4 = t_ally u_nique 7 k:c_hoices i" a_ssert< "four different stars to choose from"
+_ := "i m_ember? 7 k:c_hoices i" a_ssert< "a star is among its own choices"
+_ := "4 = t_ally u_nique 7 k:c_hoices i" a_ssert< "four different stars to choose from"

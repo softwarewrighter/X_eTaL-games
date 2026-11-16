@@ -18,8 +18,8 @@ u:s_tep := { name ->
 ## Show the dungeon, read the next event, act on a key, again.
 u:l_oop := { s ->
   (W, g, n, m, lv) := s
-  said := p_rint! m
-  pic := []S_HOW cr:d_raw s
+  _ := p_rint! m
+  _ := []S_HOW cr:d_raw s
   0 < cr:s_tatus s ? u:e_nd s
   e := []E_VENT @
   "end" m_atch []E_KIND e ? "THE END"

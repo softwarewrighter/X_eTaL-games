@@ -85,11 +85,11 @@ l:n_ame := { i -> d_isclose i s_elect names }
 l:v_iew := { a ->
   0 = a ? -4500.0 -1000.0 45000.0 18000.0
   r1 := (a s_elect ra1) + 360 * f_loat (a s_elect ra0) > a s_elect ra1
-  w := 100 * r1 - a s_elect ra0
-  h := 100 * (a s_elect dec1) - a s_elect dec0
-  cx := (l:s_x r1) + w / 2
-  cy := (l:s_y a s_elect dec1) + h / 2
-  w := w m_ax 2.5 * h
+  wide := 100 * r1 - a s_elect ra0
+  tall := 100 * (a s_elect dec1) - a s_elect dec0
+  cx := (l:s_x r1) + wide / 2
+  cy := (l:s_y a s_elect dec1) + tall / 2
+  w := wide m_ax 2.5 * tall
   h := w / 2.5
   (cx - 0.6 * w) c_at (cy - 0.7 * h) c_at (1.2 * w) c_at 1.2 * h
 }
@@ -113,8 +113,8 @@ l:c_hoices := { q i ->
 ## Band b's star for star i: a star of that band other than i, at a
 ## place fixed by q, i and b.
 h:o_ne := { q (i, b) ->
-  l := w_here band = b
-  l := (l != i) r_eplicate l
+  in := w_here band = b
+  l := (in != i) r_eplicate in
   (1 + (q + (7919 * i) + 104729 * b) m_od t_ally l) s_elect l
 }
 
@@ -196,8 +196,8 @@ h:a_nswer := { s k ->
   right := pick = i
   n := 4 s_elect s
   t := (5 + n + d, 2 - right)
-  s := (2, 0) h:s_et (3, (3 s_elect s) + right) h:s_et t h:s_et s
-  (-2 d_rop s) c_at d c_at pick
+  next := (2, 0) h:s_et (3, (3 s_elect s) + right) h:s_et t h:s_et s
+  (-2 d_rop next) c_at d c_at pick
 }
 
 ### What the game says and draws

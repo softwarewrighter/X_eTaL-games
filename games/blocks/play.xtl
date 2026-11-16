@@ -13,7 +13,7 @@
 
 ## Show the game, then wait for the next event.
 u:s_how := { s ->
-  pic := []S_HOW st:d_raw s
+  _ := []S_HOW st:d_raw s
   0 < st:s_tatus s ? u:e_nd s
   u:l_oop s
 }
@@ -29,7 +29,7 @@ u:l_oop := { s ->
 }
 ## The end of the events: the score so far.
 u:q_uit := { s ->
-  said := p_rint! @ f_ormat< "Score {f_irst st:s_core s}, lines {2 s_elect st:s_core s}, level {3 s_elect st:s_core s}."
+  _ := p_rint! @ f_ormat< "Score {f_irst st:s_core s}, lines {2 s_elect st:s_core s}, level {3 s_elect st:s_core s}."
   "THE END"
 }
 ## How the game ended (the program ends with it).

@@ -53,16 +53,12 @@ h:p_air := { (a, b) -> o_\ (2 c_at t_ally a) r_eshape a c_at b }
 ## A new race: a car for each paint, on the grid behind the start line
 ## in pairs, all heading for the second point of the track.
 l:n_ew := { z ->
-  (W, ids) := (h:w_orld 8) ec:s_pawn t_ally colors
+  (spawned, ids) := (h:w_orld 8) ec:s_pawn t_ally colors
   i := f_loat r_ange t_ally ids
-  W := W h:s_etPos (ids, h:p_air ((f_irst X) - 1.1 * i, (f_irst Y) + 0.5 - f_loat (r_ange t_ally ids) m_od 2))
-  W := W h:s_etDir (ids, 0.0)
-  W := W h:s_etSpeed (ids, 0.0)
-  W := W h:s_etTop (ids, TOPS)
-  W := W h:s_etNext (ids, 2.0)
-  W := W h:s_etLap (ids, 0.0)
-  W := W h:s_etPlayer (f_irst ids, 1.0)
-  W := W h:s_etPaint (ids, i)
+  grid := h:p_air ((f_irst X) - 1.1 * i, (f_irst Y) + 0.5 - f_loat (r_ange t_ally ids) m_od 2)
+  parked := ((spawned h:s_etPos (ids, grid)) h:s_etDir (ids, 0.0)) h:s_etSpeed (ids, 0.0)
+  aimed := ((parked h:s_etTop (ids, TOPS)) h:s_etNext (ids, 2.0)) h:s_etLap (ids, 0.0)
+  W := (aimed h:s_etPlayer (f_irst ids, 1.0)) h:s_etPaint (ids, i)
   (W, 0.0, 0, 0)
 }
 
@@ -102,12 +98,11 @@ h:d_rive := { W dt ->
   T := (W h:t_arget c) - P
   far := 0.001 m_ax ((1 s_elect_2 T) * 1 s_elect_2 T) + (2 s_elect_2 T) * 2 s_elect_2 T
   side := (((c_os d) * 2 s_elect_2 T) - (s_in d) * 1 s_elect_2 T) / far ^ 0.5
-  d := d + (f_loat rival) * STEER * dt * -1.0 m_ax 1.0 m_in 3.0 * side
-  v := (v * KEEP + (f_loat rival) * 1.0 - KEEP) + (f_loat rival) * 0.05 * top - v
+  turned := d + (f_loat rival) * STEER * dt * -1.0 m_ax 1.0 m_in 3.0 * side
+  fast := (v * KEEP + (f_loat rival) * 1.0 - KEEP) + (f_loat rival) * 0.05 * top - v
   off := (h:o_ffLine P) > (WIDTH * WIDTH) / 4.0
-  v := (v * f_loat n_ot off) + (f_loat off) * v m_in GRASS
-  W := W h:s_etDir (c, d)
-  W h:s_etSpeed (c, v)
+  held := (fast * f_loat n_ot off) + (f_loat off) * fast m_in GRASS
+  (W h:s_etDir (c, turned)) h:s_etSpeed (c, held)
 }
 ## Cars that touch another (within 0.7 tiles) are slowed, every pair at
 ## once; then every car moves along its heading by its speed.
@@ -117,8 +112,7 @@ h:m_ove := { W dt ->
   bump := 1 < '+ r_/_2 0 + ec:n_ear (P, P, 0.7)
   v := (c s_elect h:s_peed W) * 1.0 - 0.1 * f_loat bump
   d := c s_elect h:d_ir W
-  W := W h:s_etSpeed (c, v)
-  W h:s_etPos (c, P + h:p_air (v * dt * c_os d, v * dt * s_in d))
+  (W h:s_etSpeed (c, v)) h:s_etPos (c, P + h:p_air (v * dt * c_os d, v * dt * s_in d))
 }
 ## Every car that comes near the point it heads for heads for the next
 ## one; passing the first point (the line) is a lap done.
@@ -127,8 +121,8 @@ h:p_ass := { W ->
   T := (W h:t_arget c) - c s_elect h:p_os W
   at := (NEAR * NEAR) > ((1 s_elect_2 T) * 1 s_elect_2 T) + (2 s_elect_2 T) * 2 s_elect_2 T
   k := f_loor c s_elect h:n_ext W
-  W := W h:s_etLap (c, (c s_elect h:l_ap W) + f_loat at & k = 1)
-  W h:s_etNext (c, f_loat k + (f_loor at) * (1 + k m_od N) - k)
+  lapped := W h:s_etLap (c, (c s_elect h:l_ap W) + f_loat at & k = 1)
+  lapped h:s_etNext (c, f_loat k + (f_loor at) * (1 + k m_od N) - k)
 }
 ## How far each car is in the race: laps, points passed in this lap, less
 ## a little for the way still to go to the next.
@@ -154,8 +148,8 @@ h:f_inish := { (W, t, st, pl) ->
 l:t_ick := { (W, t, st, pl) dt ->
   st > 0 ? (W, t, st, pl)
   t < GO ? (W, t + dt, st, pl)
-  W := h:p_ass (W h:d_rive dt) h:m_ove dt
-  h:f_inish (W, t + dt, st, pl)
+  raced := h:p_ass (W h:d_rive dt) h:m_ove dt
+  h:f_inish (raced, t + dt, st, pl)
 }
 
 ### Your keys
@@ -169,9 +163,9 @@ l:k_ey := { s name ->
   me := h:m_e W
   v := me s_elect h:s_peed W
   d := me s_elect h:d_ir W
-  k := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d") i_ndexOf e_nclose name
-  (k > 8) | (st > 0) | t < GO ? s
-  k := 1 + (k - 1) m_od 4
+  key := ("UP" "DOWN" "LEFT" "RIGHT" "w" "s" "a" "d") i_ndexOf e_nclose name
+  (key > 8) | (st > 0) | t < GO ? s
+  k := 1 + (key - 1) m_od 4
   k = 1 ? (W h:s_etSpeed (me, FAST m_in v + ACCEL), t, st, pl)
   k = 2 ? (W h:s_etSpeed (me, 0.0 m_ax v - 1.5 * ACCEL), t, st, pl)
   (W h:s_etDir (me, d + TURN * f_loat (2 * k) - 7), t, st, pl)

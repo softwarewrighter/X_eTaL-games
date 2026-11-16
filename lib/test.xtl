@@ -21,7 +21,7 @@ b:s_paced 2 3 r_eshape "abcdef"
 10 20 30 40 50 s:p_ut 2 7 8
 
 # Text: lines printed; the rows of a table for a key and a state.
-said := t:l_ines "one" "two"
+_ := t:l_ines "one" "two"
 kfv := 3 4 r_eshape 1 1 2 2 0 2 0 2 0 1 0 0
 w_here ((1 s_elect kfv) m_ember? 1) & kfv t:h_olds 0 1
 w_here ((1 s_elect kfv) m_ember? 1 2) & kfv t:h_olds 0 0
@@ -59,15 +59,13 @@ v g:p_icture e_nclose "<circle/>"
 # one whole-column expression, and the entities near a point.
 "ec:" u_se< "Ecs"
 "u" ec:c_omponents< "pos:2 vel:2"
-W := u:w_orld 4
-(W, ids) := W ec:s_pawn 3
+(spawned, ids) := (u:w_orld 4) ec:s_pawn 3
 ids
-W := W u:s_etPos (ids, 3 2 r_eshape 0 0 5 5 9 9.0)
-W := W u:s_etVel (1 2, 2 2 r_eshape 1 0 0 1.0)
+W := (spawned u:s_etPos (ids, 3 2 r_eshape 0 0 5 5 9 9.0)) u:s_etVel (1 2, 2 2 r_eshape 1 0 0 1.0)
 movers := w_here (ec:a_live W) & (u:h_asPos W) & u:h_asVel W
-W := W u:s_etPos (movers, (movers s_elect u:p_os W) + movers s_elect u:v_el W)
-u:p_os W
-W := W ec:d_espawn 2
-ec:c_ount W
-ec:n_ear ((w_here ec:a_live W) s_elect u:p_os W, 1 2 r_eshape 1 0.0, 1.5)
+moved := W u:s_etPos (movers, (movers s_elect u:p_os W) + movers s_elect u:v_el W)
+u:p_os moved
+fewer := moved ec:d_espawn 2
+ec:c_ount fewer
+ec:n_ear ((w_here ec:a_live fewer) s_elect u:p_os fewer, 1 2 r_eshape 1 0.0, 1.5)
 

@@ -71,9 +71,9 @@ l:v_iew := { r ->
   p := l:p_ool r
   x := l:m_x p s_elect lon
   y := l:m_y p s_elect lat
-  w := 3000.0 m_ax 1.3 * ('m_ax r_/ x) - 'm_in r_/ x
-  h := 1.3 * ('m_ax r_/ y) - 'm_in r_/ y
-  w := w m_ax 2.5 * h
+  wide := 3000.0 m_ax 1.3 * ('m_ax r_/ x) - 'm_in r_/ x
+  tall := 1.3 * ('m_ax r_/ y) - 'm_in r_/ y
+  w := wide m_ax 2.5 * tall
   h := w / 2.5
   cx := ('m_ax r_/ x) + 'm_in r_/ x
   cy := ('m_ax r_/ y) + 'm_in r_/ y
@@ -171,8 +171,8 @@ h:a_nswer := { s k ->
   right := pick = l:a_nswer i
   n := 4 s_elect s
   t := (4 + n + d, 2 - right)
-  s := (2, 0) h:s_et (3, (3 s_elect s) + right) h:s_et t h:s_et s
-  (-2 d_rop s) c_at d c_at pick
+  next := (2, 0) h:s_et (3, (3 s_elect s) + right) h:s_et t h:s_et s
+  (-2 d_rop next) c_at d c_at pick
 }
 
 ### What the game says and draws

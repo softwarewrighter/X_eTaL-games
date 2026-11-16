@@ -7,7 +7,7 @@
 "b:" u_se< "ShutTheBox"
 "p:" u_se< "Play"
 "x:" u_se< "Text"
-said := p_rint! "SHUT THE BOX"
+_ := p_rint! "SHUT THE BOX"
 
 ## The tiles typed, as a 0/1 vector of 9, if they are one of the moves;
 ## else it asks again.
@@ -17,15 +17,15 @@ u:a_sk := { m ->
 }
 ## A turn: the box, the roll, the moves; shut, until stuck or shut.
 u:t_urn := { s ->
-  said := p_rint! ""
-  said := p_rint! b:v_iew s
+  _ := p_rint! ""
+  _ := p_rint! b:v_iew s
   d := b:r_oll s
   r := '+ r_/ d
-  said := p_rint! @ f_ormat< "YOU ROLL {d}: {r}"
+  _ := p_rint! @ f_ormat< "YOU ROLL {d}: {r}"
   m := s b:m_oves r
   0 = t_ally m ? @ f_ormat< "NO MOVE. YOUR SCORE: {b:s_core s}"
-  said := p_rint! "MOVES:"
-  listed := x:l_ines b:l_isted m
+  _ := p_rint! "MOVES:"
+  _ := x:l_ines b:l_isted m
   t := s b:s_hut u:a_sk m
   0 = b:s_core t ? "YOU SHUT THE BOX!"
   u:t_urn t

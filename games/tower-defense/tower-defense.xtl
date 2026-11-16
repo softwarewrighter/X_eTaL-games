@@ -6,29 +6,28 @@
 
 # The road, in order from S to E (row, column): every road tile's
 # distance to E by a flood, then sorted, farthest first.
-s := td:n_ew 0
-3 t_ake td:r_oad s
-t_ally td:r_oad s
+start := td:n_ew 0
+3 t_ake td:r_oad start
+t_ally td:r_oad start
 
 # Clicks build towers: a click is turned back into a tile by the inverse
 # of the board's map. Two arrow towers beside the road, then a cannon
 # (picked with the key 2) that the money does not stretch to.
-s := s td:c_lick 416.0 208.0
-s := s td:c_lick 480.0 240.0
-s := (s td:k_ey "2") td:c_lick 352.0 240.0
-td:t_owers s
-td:s_core s
+arrows := (start td:c_lick 416.0 208.0) td:c_lick 480.0 240.0
+built := (arrows td:k_ey "2") td:c_lick 352.0 240.0
+td:t_owers built
+td:s_core built
 
 # The first wave (six runners) and twenty seconds of the clock: the
 # towers shoot the creep in reach that has come farthest; beaten creeps
 # pay. Towers, creeps, shots alive; money, lives, waves begun.
-s := s td:k_ey " "
+wave := built td:k_ey " "
 u:g_o := { s n -> (n = 0) | 0 < td:s_tatus s ? s; (s td:t_ick 0.1) u:g_o n - 1 }
-s := s u:g_o 200
-td:c_ounts s
-td:s_core s
-pic := []S_HOW td:d_raw s
+later := wave u:g_o 200
+td:c_ounts later
+td:s_core later
+_ := []S_HOW td:d_raw later
 
 # What the game guarantees, checked by a_ssert< (silent when it holds).
-ok := "52 = t_ally td:r_oad td:n_ew 0" a_ssert< "the road is 52 tiles from S to E"
-ok := "20 = 2 s_elect td:s_core s" a_ssert< "no creep of the first wave got out"
+_ := "52 = t_ally td:r_oad td:n_ew 0" a_ssert< "the road is 52 tiles from S to E"
+_ := "20 = 2 s_elect td:s_core later" a_ssert< "no creep of the first wave got out"

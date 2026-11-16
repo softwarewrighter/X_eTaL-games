@@ -7,16 +7,16 @@
 p := hr:n_ew 5
 r := hr:r_oll p
 r
-p := p hr:m_ove r
-p
-hr:v_iew p
+moved := p hr:m_ove r
+moved
+hr:v_iew moved
 
 ## A whole race: a round at a time until a horse finishes; each round
 ## printed as its rolls, then the track.
 u:r_ace := { p ->
   r := p_rint! hr:r_oll p
   q := p hr:m_ove r
-  shown := p_rint! hr:v_iew q
+  _ := p_rint! hr:v_iew q
   1 = hr:s_tatus q ? q; u:r_ace q
 }
 final := u:r_ace hr:n_ew 5
@@ -26,5 +26,5 @@ final
 # What the game guarantees, checked by a_ssert< (the condition as
 # written; silent when it holds, a line on standard error, which fails
 # the tests, when it does not).
-ok := "1 = hr:s_tatus final" a_ssert< "the race ends with a winner"
-ok := "0 < t_ally hr:w_inners final" a_ssert< "someone wins"
+_ := "1 = hr:s_tatus final" a_ssert< "the race ends with a winner"
+_ := "0 < t_ally hr:w_inners final" a_ssert< "someone wins"

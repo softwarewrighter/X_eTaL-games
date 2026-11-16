@@ -59,12 +59,6 @@ just test-game maze  # compare with the expected output
 carves a 12 by 5 one) and the colors of the walls by depth, the floor
 and the ceiling.
 
-## Known X_eTaL issue
-
-The blocks seen are kept as true/false and shown as such: making them
-numbers with `0 +` stops with a type mismatch when the state comes back
-from a function (an ask in [docs/xetal-asks.md](../../docs/xetal-asks.md)).
-
 ## Assets
 
 None.

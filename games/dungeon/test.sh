@@ -30,12 +30,8 @@ s := cr:n_ew 0
 u:w_orld := { (W, g, n, m, lv) -> W }
 ec:c_ount u:w_orld s
 t_ally w_here '& r_/_2 (cr:h_as s) = ((t_ally cr:h_as s) c_at 5) r_eshape 1 1 1 0 1
-t := s cr:t_urn 1 0.0
-t := t cr:t_urn 0 1.0
-t := t cr:t_urn -1 0.0
-t := t cr:t_urn 0 -1.0
-t := t cr:t_urn 0 0.0
-cr:s_tatus t
+u:w_alk := { s D -> 0 = t_ally D ? s; (s cr:t_urn f_irst D) u:w_alk 1 d_rop D }
+cr:s_tatus s u:w_alk 5 2 r_eshape 1 0 0 1 -1 0 0 -1 0 0.0
 XTL
 got="$(cd "$tmp" && XETAL_PATH="$root/lib" "$root/bin/xetal" run --seed 1 t.xtl)"
 want="12

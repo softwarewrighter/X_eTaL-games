@@ -11,7 +11,7 @@
 
 ## Show the view, then wait for the next key.
 u:s_how := { s ->
-  pic := []S_HOW mz:d_raw s
+  _ := []S_HOW mz:d_raw s
   0 < mz:s_tatus s ? u:e_nd s
   u:l_oop s
 }

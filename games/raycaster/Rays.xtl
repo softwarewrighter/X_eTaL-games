@@ -97,13 +97,11 @@ h:s_tep := { (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n) ->
   down := (n_ot hit) & n_ot across
   fa := f_loat across
   fd := f_loat down
-  mx := mx + ix * 0 + across
-  my := my + iy * 0 + down
-  sx := sx + fa * dx
-  sy := sy + fd * dy
-  side := (side * 0 + n_ot across | down) + 0 + down
-  hit := 0 < h:t_ile (0.5 + f_loat mx, 0.5 + f_loat my)
-  h:s_tep (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n + 1)
+  tx := mx + ix * 0 + across
+  ty := my + iy * 0 + down
+  struck := (side * 0 + n_ot across | down) + 0 + down
+  wall := 0 < h:t_ile (0.5 + f_loat tx, 0.5 + f_loat ty)
+  h:s_tep (tx, ty, sx + fa * dx, sy + fd * dy, dx, dy, ix, iy, struck, wall, n + 1)
 }
 ## What every ray sees from x, y facing a: the wall it hits (its kind),
 ## which way it was struck (0 across, 1 down) and how far it is (along
@@ -112,15 +110,15 @@ h:c_ast := { (x, y, a) ->
   (rx, ry) := h:r_ays a
   dx := 1.0 / 0.000001 m_ax a_bs rx
   dy := 1.0 / 0.000001 m_ax a_bs ry
-  mx := (RAYS r_eshape f_loor x)
-  my := (RAYS r_eshape f_loor y)
+  mx0 := RAYS r_eshape f_loor x
+  my0 := RAYS r_eshape f_loor y
   ix := (0 + rx > 0.0) - 0 + rx < 0.0
   iy := (0 + ry > 0.0) - 0 + ry < 0.0
   fx := x - f_loat f_loor x
   fy := y - f_loat f_loor y
-  sx := dx * (fx * f_loat rx < 0.0) + (1.0 - fx) * f_loat rx >= 0.0
-  sy := dy * (fy * f_loat ry < 0.0) + (1.0 - fy) * f_loat ry >= 0.0
-  (mx, my, sx, sy, dx, dy, ix, iy, side, hit, n) := h:s_tep (mx, my, sx, sy, dx, dy, ix, iy, RAYS r_eshape 0, RAYS r_eshape 0 = 1, 0)
+  sx0 := dx * (fx * f_loat rx < 0.0) + (1.0 - fx) * f_loat rx >= 0.0
+  sy0 := dy * (fy * f_loat ry < 0.0) + (1.0 - fy) * f_loat ry >= 0.0
+  (mx, my, sx, sy, _, _, _, _, side, _, _) := h:s_tep (mx0, my0, sx0, sy0, dx, dy, ix, iy, RAYS r_eshape 0, RAYS r_eshape 0 = 1, 0)
   far := ((sx - dx) * f_loat side = 0) + (sy - dy) * f_loat side = 1
   (h:t_ile (0.5 + f_loat mx, 0.5 + f_loat my), side, 0.05 m_ax far)
 }
