@@ -12,7 +12,8 @@ workaround in use.
 
 | Status | Kind | Ask | Games | Workaround |
 | ------ | ---- | --- | ----- | ---------- |
-| partly landed | feature | A terminal for interactive programs (the request: [`xetal-terminal-request.md`](xetal-terminal-request.md)), X_eTaL's saga 25 and its ask G1. Landed and used by every page since 2026-11-17: a run that waits for a line and resumes (`xetal_play::Interactive`, D50), so the replay workaround is gone. Still asked: a terminal pane a page can take (X_eTaL's is built into its live demo, `xetal-web` with `xetal-webtui`, not a crate of its own), with screen control (`[]A_T`, `[]C_LS`, colors, single keys) in the browser. No WASI build of `xetal` (decided upstream) | all interactive games | pages draw their own pane (printed lines, pictures, a line to type) over the resumable run; games use no screen control |
+| partly landed | feature | A terminal for interactive programs (the request: [`xetal-terminal-request.md`](xetal-terminal-request.md)), X_eTaL's saga 25 and its ask G1. Landed and used by every page since 2026-11-17: a run that waits for a line and resumes (`xetal_play::Interactive`, D50), so the replay workaround is gone. What is still asked is the next row. No WASI build of `xetal` (decided upstream) | all interactive games | pages draw their own pane (printed lines, pictures, a line to type) over the resumable run; games use no screen control |
+| open | feature | A terminal pane a page can take: a crate with a Yew component that runs one program on the resumable run and shows it as X_eTaL's own terminal does, with screen control (`[]A_T`, `[]C_LS`, colors, single keys) and `[]S_HOW` pictures. At 8c49bd8 the pane is part of the live demo (`xetal-web`, with `xetal-webtui` for the shell), so a page outside X_eTaL cannot use it (details below) | every game; first the ones that would redraw a board in place (2048, falling blocks, sudoku, dungeon) | the page draws its own pane (lines printed, pictures, a line to type); no game uses screen control, so boards are printed again each turn |
 | open | feature | `[]G_RID` of numbers (still so at f823212): draw the numbers in the cells, and let a program choose the color scale (logarithmic, or a few fixed colors) | 2048, minesweeper (counts), any numeric board | boards of numbers are printed as text; pictures are used for character and 0/1 boards |
 | open | feature | A functional update (amend / "at"; still none at f823212): items of an array replaced at given positions, returning a new array | trek adventure, Star Trek (each wrote `l:u_pdate`), minesweeper, robot chase | a table of positions against indices (`l:u_pdate`) |
 | landed | feature | Local functions: a function defined inside a lambda (`n_ear := { t -> ... }`) and applied there (landed, X_eTaL's G4: a lambda's local function, `n_ear := { x -> x + t }` then `n_ear 3`, works at c58204b) | tic-tac-toe, Star Trek | kept by choice: tic-tac-toe's `l:n_ear` and Star Trek's helpers are documented functions of their libraries, not stand-ins |
@@ -36,6 +37,43 @@ workaround in use.
 | landed | bug | An executable program (shebang) that defines `l:` names is taken for a library: MC8 row 9 is never reported (landed by f823212: `error[library-name-in-program]`) | all | none: the layout check's own test was removed |
 
 ## Details
+
+### A terminal pane a page can take
+
+The run a page needs has landed and every game page uses it:
+`xetal_play::Interactive` (`start`, `step`, `feed`) stops where the
+program reads a line, a key or an event and goes on when the page
+feeds it one. What a page still writes for itself is the pane: here
+`shared/microscope/src/terminal.rs` (`Live`: the store, the transcript
+of lines and pictures) and the `Terminal` component in
+`shared/microscope/src/page.rs` (a scrolling list of lines and a text
+input).
+
+X_eTaL has its own pane, in its live demo: the output pane of
+`xetal-web`, with `xetal-webtui` for the shell and the cell grid of
+`xetal-screen`. It is built into that application, so the games
+cannot take it, and a second pane written here would drift from it
+(what a color looks like, how a key is named, where the cursor sits).
+
+The ask: that pane as a crate of its own, used by the live demo and by
+pages like these. For the games it would need:
+
+- a Yew component given a program's text, its libraries and data files
+  (name and text, as `xetal-store` holds them) and a seed, with a way
+  to start it again (New game, Restart);
+- the program's output on the cell grid, so `[]A_T`, `[]C_LS` and the
+  colors work in the browser as at the command line;
+- typed lines for `[]R_EAD`, single keys for `[]K_EY`, and clicks, keys
+  and ticks as `[]E_VENT` lines, each fed where the program waits;
+- the pictures a program shows (`[]S_HOW`) in place, and a click on one
+  reported in the picture's own coordinates;
+- the transcript as text for tests (the games' page tests and browser
+  test compare it with the command line's goldens).
+
+Until then the games keep their own pane and use no screen control: a
+board is printed again each turn. No game is blocked; this would let
+2048, falling blocks, sudoku and the dungeon redraw in place and would
+retire `Live` and `Terminal` here.
 
 ### A functional update (amend)
 

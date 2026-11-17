@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-11-17
 
+- 12:01 `docs` A new ask for X_eTaL (the user's go): its terminal pane as a crate a page can take (a Yew component over the resumable run, with screen control, keys, events and pictures); the terminal ask's row points to it. No game is blocked by it.
+
 - 11:29 `chore` Saga step terminal-pane completed.
 
 - 11:10 `refactor` The typed games' pages no longer replay: the page's terminal keeps `play.xtl` running on X_eTaL's resumable run (`xetal_play::Interactive`, in the pin since 8c49bd8; wrapped as `microscope::terminal::Live`, which the click and tick games already used), so the program waits where it reads a line and goes on when one is typed, and a line costs only its own work. X_eTaL's agent pointed out that nothing upstream was blocking this. `session` is now a whole session fed line by line through `Live` and then the end of its input as the command line gives it (`Live::end`: a program waiting for an event gets `end`), so every game's `tests/page.rs` checks the resumed run against the command-line goldens (all unchanged); the store has no typed queue any more; a new test feeds a program line by line and past its end. Restart this game and New game start the program again. The page's notes, microscope's README, the capitals and stargazer READMEs (their "each click runs the program again" limits were already out of date), docs/plan.md, docs/bench.md, docs/audit.md and the terminal request say so; the terminal ask is partly landed: what stays asked is a pane a page can take (X_eTaL's is built into its live demo) and screen control in the browser.
