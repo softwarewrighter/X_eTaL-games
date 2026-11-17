@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dungeon</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/dungeon/dungeon-web-54044392d419f3c3.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/dungeon/dungeon-web-54044392d419f3c3_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/dungeon/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/dungeon/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/dungeon/dungeon-web-54044392d419f3c3.js" crossorigin="anonymous" integrity="sha384-tKtl9Tz7QfuqJ2L0ZdpS3X/9uHVr8IInZ+S/3wAP/vyFr2fOiZBlt95psaL4rZgk"><link rel="preload" href="/X_eTaL-games/dungeon/dungeon-web-54044392d419f3c3_bg.wasm" crossorigin="anonymous" integrity="sha384-1Pv0yEPjpoCliCdYXMhRcrH4AmhQlrYX5NPc5/RLW6NN58IapYfbi2WwdIAeYCPV" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

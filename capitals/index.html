@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Capitals</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/capitals/capitals-web-d6139b5f59941ca1.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/capitals/capitals-web-d6139b5f59941ca1_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/capitals/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/capitals/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/capitals/capitals-web-d6139b5f59941ca1.js" crossorigin="anonymous" integrity="sha384-rvwkHys9npCNpB2Q+mJm/C5PF9lS758UHGBE173upPfLQCJczao13xVu2ciZ1FhQ"><link rel="preload" href="/X_eTaL-games/capitals/capitals-web-d6139b5f59941ca1_bg.wasm" crossorigin="anonymous" integrity="sha384-qsFofHBGnX7FP0CFi6lM6qIggKPlhiK10Ju09KvjChCV39PP0peRj9GNz5rfV/qw" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

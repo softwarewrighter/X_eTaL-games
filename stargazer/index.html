@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stargazer</title>
+  
+<script type="module">
+import init, * as bindings from '/X_eTaL-games/stargazer/stargazer-web-fc96defaff782ad7.js';
+const wasm = await init({ module_or_path: '/X_eTaL-games/stargazer/stargazer-web-fc96defaff782ad7_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+  <link rel="icon" href="/X_eTaL-games/stargazer/favicon-5b2e7fb9fe62ed88.ico" integrity="sha384-DqenffRgSJ6dHiS3YyLmNjOkedLw3if2auWsSWbR489GrcQ3iFPflkNp8jvTX+kT"/>
+  <link rel="stylesheet" href="/X_eTaL-games/stargazer/microscope-283586772a7bf669.css" integrity="sha384-36kme5TZMlfov3UzJrJhB9ETS4oAYThcmC1hMyZzM2cBm9RO4awrPeKH+HBEiXAe"/>
+<link rel="modulepreload" href="/X_eTaL-games/stargazer/stargazer-web-fc96defaff782ad7.js" crossorigin="anonymous" integrity="sha384-qpSAxMsyQfQYz9crtLS8TEPiMPxFPO3kIJFGpHJzuIpeM2prW9Grkf3W4NRVwIUn"><link rel="preload" href="/X_eTaL-games/stargazer/stargazer-web-fc96defaff782ad7_bg.wasm" crossorigin="anonymous" integrity="sha384-AjeL2zDH05SB6BFQz/Ul3gNNMt0jqeAmC04Wu94F2iqJdLtkGeDqoUfbqbc2ZQt9" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>
