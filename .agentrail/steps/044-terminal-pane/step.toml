@@ -1,9 +1,10 @@
 number = 44
 slug = "terminal-pane"
-status = "in-progress"
+status = "completed"
 description = "launch step 4: when X_eTaL saga 25 lands, vendor it and replace microscope::t..."
 role = "production"
 context_files = []
 created_at = "2026-10-04T11:46:35"
+completed_at = "2026-11-17T11:28:47"
 task_type = "refactor"
-commits = []
+commits = ["fc387d572c23392a42ac991ca6f6d52bb48092cb"]
