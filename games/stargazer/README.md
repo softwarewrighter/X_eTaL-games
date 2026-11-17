@@ -94,6 +94,3 @@ or drawn there.
 
 - The polar parts of the sky are drawn in the same plate carree as the
   rest, so they stretch near the poles.
-- Each click runs the program again from the start (as every page here
-  replays its input); X_eTaL's terminal pane and resumable runs will
-  end that.

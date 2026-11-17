@@ -1,12 +1,12 @@
 //! A game in the page, exactly as X_eTaL runs it: its terminal program
-//! (`play.xtl`) run with everything typed so far as its keyboard (the
-//! page is a terminal that replays the session from the start on every
-//! line typed; the same seed makes the replay the same game), and its
+//! (`play.xtl`) kept running (X_eTaL's resumable run: it stops where it
+//! reads a line and goes on from there when one is typed; the same seed
+//! and the same lines make the same game), and its
 //! scripted program run as a notebook, each statement then its output,
 //! as `just show` lays it out. Pictures are only those the program
 //! shows (`[]S_HOW`, SVG drawn by X_eTaL).
 
-use std::collections::{BTreeMap, VecDeque};
+use std::collections::BTreeMap;
 use std::io::Write;
 use std::sync::{Arc, Mutex};
 
@@ -21,8 +21,8 @@ pub enum Line {
     Picture(String),
 }
 
-/// A session replayed: the transcript, whether the program is waiting
-/// for the next line (it asked and nothing was left to read), and the
+/// A session so far: the transcript, whether the program is waiting
+/// for the next line, and the
 /// X_eTaL error if it stopped on one. Neither waiting nor an error:
 /// the game is over.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -49,11 +49,12 @@ impl Shared {
     }
 }
 
-/// The store a session runs on: its libraries, the lines typed, and
-/// the transcript the output and the reads go into, in order.
+/// The store a program runs on: its libraries and data files, and the
+/// transcript its output and pictures go into, in order. It has no
+/// keyboard of its own: a running game is fed its lines (Live), and a
+/// notebook reads none.
 struct Session {
     files: BTreeMap<String, String>,
-    typed: Mutex<VecDeque<String>>,
     shared: Arc<Mutex<Shared>>,
 }
 
@@ -67,13 +68,7 @@ impl Store for Session {
     }
 
     fn line(&self) -> Result<String, String> {
-        let next = self.typed.lock().map_err(|_| "the store is unusable".to_string())?.pop_front();
-        let line = next.ok_or_else(|| NO_INPUT.to_string())?;
-        if let Ok(mut s) = self.shared.lock() {
-            s.flush();
-            s.lines.push(Line::In(line.clone()));
-        }
-        Ok(line)
+        Err("no more input".into())
     }
 
     fn show(&self, svg: &str) -> Result<(), String> {
@@ -84,8 +79,6 @@ impl Store for Session {
         Ok(())
     }
 }
-
-const NO_INPUT: &str = "no more input";
 
 struct Out(Arc<Mutex<Shared>>);
 
@@ -113,15 +106,9 @@ fn path(name: &str) -> String {
     if file.contains('.') { name.to_string() } else { format!("{name}.xtl") }
 }
 
-/// Install a store holding `libraries` (and data files) and `typed`,
-/// writing into `shared`.
-fn install(libraries: &[(&str, &str)], typed: &[String], shared: &Arc<Mutex<Shared>>) {
-    let store = Session {
-        files: libraries.iter().map(|(n, t)| (path(n), t.to_string())).collect(),
-        typed: Mutex::new(typed.iter().cloned().collect()),
-        shared: shared.clone(),
-    };
-    xetal_store::install(Arc::new(store));
+/// A store holding `libraries` (and data files), writing into `shared`.
+fn store(libraries: &[(&str, &str)], shared: &Arc<Mutex<Shared>>) -> Arc<Session> {
+    Arc::new(Session { files: libraries.iter().map(|(n, t)| (path(n), t.to_string())).collect(), shared: shared.clone() })
 }
 
 /// What was printed since the last take, as lines (an unfinished last
@@ -136,17 +123,19 @@ fn take(shared: &Arc<Mutex<Shared>>) -> Vec<Line> {
     std::mem::take(&mut s.lines)
 }
 
-/// Run `src` with `libraries` (name, text) where `u_se<` finds them,
-/// `typed` as the keyboard, rolling from `seed`.
+/// A whole session at once: `src` started with `libraries` (name, text)
+/// where `u_se<` finds them, rolling from `seed`, and given each line of
+/// `typed` where it waits (Live, as the page runs it; lines typed after
+/// the program ended are not read), then the end of its input as the
+/// command line gives it with a file for a keyboard (Live::end): what
+/// the tests compare with the command line's goldens.
 pub fn session(libraries: &[(&str, &str)], src: &str, typed: &[String], seed: u64) -> Transcript {
-    let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
-    let shared = Arc::new(Mutex::new(Shared::default()));
-    install(libraries, typed, &shared);
-    let run = xetal_play::run_to(src, seed, &mut Out(shared.clone()));
-    let lines = take(&shared);
-    let err = run.err.trim().to_string();
-    let waiting = err.contains(NO_INPUT) && err.contains("[]R_EAD");
-    Transcript { lines, waiting, error: (!err.is_empty() && !waiting).then_some(err) }
+    let mut live = Live::start(libraries, src, seed);
+    for line in typed {
+        live.feed(line);
+    }
+    live.end();
+    live.transcript()
 }
 
 /// One statement of a notebook (with the comments above it) and what it
@@ -170,7 +159,7 @@ pub struct Notebook {
 pub fn notebook(libraries: &[(&str, &str)], src: &str, seed: u64) -> Notebook {
     let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
     let shared = Arc::new(Mutex::new(Shared::default()));
-    install(libraries, &[], &shared);
+    xetal_store::install(store(libraries, &shared));
     let cells: Arc<Mutex<Vec<Cell>>> = Arc::new(Mutex::new(Vec::new()));
     let (c, sh) = (cells.clone(), shared.clone());
     let mut start = move |source: &str| {
@@ -191,11 +180,11 @@ pub fn notebook(libraries: &[(&str, &str)], src: &str, seed: u64) -> Notebook {
     Notebook { cells, error: (!err.is_empty()).then_some(err) }
 }
 
-/// A game played by clicks, kept running (X_eTaL's resumable run,
+/// A game kept running (X_eTaL's resumable run,
 /// `xetal_play::Interactive`): started once, it stops where it waits for
-/// the next event, and each click fed to it goes on from there, so a click
-/// costs only its own work (a replay from the start made a long game
-/// slower with every click). Its store (libraries, data files, the
+/// the next line (typed, or an event: a click, a key, a tick), and each
+/// line fed to it goes on from there, so a line costs only its own work.
+/// Its store (libraries, data files, the
 /// transcript) is installed again before each step, since the notebook
 /// installs one of its own.
 pub struct Live {
@@ -205,6 +194,8 @@ pub struct Live {
     lines: Vec<Line>,
     error: Option<String>,
     over: bool,
+    /// Waiting for an event (`[]E_VENT`), not a typed line.
+    event: bool,
     lean: bool,
 }
 
@@ -218,17 +209,13 @@ impl Live {
     pub fn start(libraries: &[(&str, &str)], src: &str, seed: u64) -> Live {
         let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
         let shared = Arc::new(Mutex::new(Shared::default()));
-        let store = Arc::new(Session {
-            files: libraries.iter().map(|(n, t)| (path(n), t.to_string())).collect(),
-            typed: Mutex::new(VecDeque::new()),
-            shared: shared.clone(),
-        });
+        let store = store(libraries, &shared);
         xetal_store::install(store.clone());
         let (run, error) = match xetal_play::Interactive::start(src, seed, Box::new(Out(shared.clone()))) {
             Ok(run) => (Some(run), None),
             Err(r) => (None, Some(r.err.trim().to_string()).filter(|e| !e.is_empty())),
         };
-        let mut live = Live { run, store, shared, lines: vec![], error, over: false, lean: false };
+        let mut live = Live { run, store, shared, lines: vec![], error, over: false, event: false, lean: false };
         live.go();
         live
     }
@@ -275,15 +262,18 @@ impl Live {
                     self.run = None;
                     break;
                 }
-                _ => break,
+                step => {
+                    self.event = matches!(step, xetal_play::Step::WaitingEvent);
+                    break;
+                }
             }
         }
         self.lines.extend(take(&self.shared));
         self.trim();
     }
 
-    /// A line (an event, `click X Y`) for the waiting program, and its
-    /// run to the next wait.
+    /// A line (typed, or an event, `click X Y`) for the waiting program,
+    /// and its run to the next wait.
     pub fn feed(&mut self, line: &str) {
         if self.over {
             return;
@@ -294,6 +284,21 @@ impl Live {
         }
         if let Some(run) = self.run.as_mut() {
             run.feed(line.to_string());
+        }
+        self.go();
+    }
+
+    /// The end of the input, as the command line's when its keyboard is a
+    /// file that has run out: a program waiting for an event is given the
+    /// `end` event (and usually ends); one waiting for a typed line stays
+    /// waiting. The page never ends a game's input; the tests do.
+    pub fn end(&mut self) {
+        if self.over || !self.event {
+            return;
+        }
+        let _turn = TURN.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some(run) = self.run.as_mut() {
+            run.feed("end".to_string());
         }
         self.go();
     }

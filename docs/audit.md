@@ -82,9 +82,9 @@ commits.
 
 ## Known limits
 
-- The page's terminal replays everything typed on every line; it moves
-  to X_eTaL's own terminal pane when X_eTaL releases it (`plan.md`,
-  saga 5).
+- The page's terminal replayed everything typed on every line when
+  this audit was written; since 2026-11-17 it keeps the program running
+  on X_eTaL's resumable run (`plan.md`, saga 5).
 - `[]G_RID` cannot draw numbers in cells, so boards of numbers (2048)
   are text.
 - Named dyadic trains, Bool power counts and an amend are still asked

@@ -184,7 +184,7 @@ no attribution sections.
 | 4 | trek-adventure | DONE: TrekAdventure.xtl: every line of text one row of a table (text, key, condition item, value; 157 rows), a room or message picked by one mask (`m_ember?`, `w_here`), exits a 9 by 9 table, the state one vector of 12 changed by a table-driven update; play.xtl plays as the BASIC (numeric menus, 30 turns, the Klingon clock, three endings), its golden a full winning session; trek-adventure.xtl plays the walkthrough into a 12 by 12 table of states and shows the losses; the shared page. |
 | 5 | trek | DONE: StarTrek.xtl (galaxy as three 8 by 8 planes made at once; entering a quadrant places everything by a random order and its inverse; courses a 2 by 8 table, paths by `t_able`, first obstacle by `w_here`; phasers one masked subtraction; LRS a 5 by 5 window by one `s_elect_2` from a 3 by 64 matrix, characters by `r_avel_2`; a destroyed Klingon leaves the galaxy too, unlike the BASIC); play.xtl with the BASIC's prompts; trek.xtl shows the planes, a path, a fight and running out of time; the shared page. |
 | 6 | gallery-1-release | DONE: catalog intro and summaries match the accurate pages; screenshots for every game; README and plan; this retrospective. |
-| 7 | terminal-pane | WAITING on X_eTaL saga 25 (a resumable evaluator: a run returns "waiting for a line" at `[]R_EAD` and continues on Enter, and a shared terminal pane in Rust and Yew modeled on web-sw-tos). Then: vendor it, swap the replay terminal for that pane, keep the browser tests. There will be no WASI build of `xetal` (X_eTaL decided, 2026-10-02): pages keep the engine, `xetal-play`, in Yew. No game uses a browser dialog for input, ever. |
+| 7 | terminal-pane | DONE in saga 5 (2026-11-17: the resumable run under the page's own pane). Was WAITING on X_eTaL saga 25 (a resumable evaluator: a run returns "waiting for a line" at `[]R_EAD` and continues on Enter, and a shared terminal pane in Rust and Yew modeled on web-sw-tos). Then: vendor it, swap the replay terminal for that pane, keep the browser tests. There will be no WASI build of `xetal` (X_eTaL decided, 2026-10-02): pages keep the engine, `xetal-play`, in Yew. No game uses a browser dialog for input, ever. |
 | 8 | terminal-shell | folded into accurate-pages (the shared page) and terminal-pane |
 
 ### Saga 2 retrospective
@@ -204,8 +204,8 @@ Learned, mostly from the user:
   (`tests/page.rs`) and in headless Chrome (`just browser-test`, the
   DevTools protocol over Node's WebSocket, no packages).
 - The `xetal` binary will not be built for WASI (X_eTaL's decision):
-  input waits on X_eTaL's terminal pane over a resumable evaluator;
-  until then the page replays the typed history on every line.
+  the page keeps the program running on X_eTaL's resumable run (it
+  waits where it reads and goes on when a line is typed).
 - Ports are one-time rewrites in X_eTaL's own style; no copies, links
   or attribution of the BASIC.
 - A game's rules are one library; on macOS a library named like its
@@ -357,7 +357,7 @@ promotion gate, as it touches the games).
 | # | Step slug | Delivers | Waits on |
 | - | --------- | -------- | -------- |
 | 0 | about | DONE (the user's request): a game's title, on its page and its catalog card, links to its Wikipedia article (page glyph, new tab) or opens a dialog on its history and play (Escape, a click outside, the X); `wikipedia` or `about` in game.toml, required by the layout check; the browser test checks links and all three ways to close, on every page and the catalog. |
-| 1 | terminal-pane | every game's page on X_eTaL's terminal pane (a run that waits at `[]R_EAD` and resumes; no replay of the typed history); the page and browser tests kept; the docs no longer describe a workaround | X_eTaL saga 25 |
+| 1 | terminal-pane | DONE (2026-11-17, at X_eTaL 8c49bd8): every game's page runs its program on X_eTaL's resumable run (`xetal_play::Interactive`, wrapped as `microscope::terminal::Live`): typed games as the click games already did; it waits at `[]R_EAD` and resumes, nothing replayed; `session` is now a whole session fed line by line, so every `tests/page.rs` checks the resumed run against the command-line goldens; the docs no longer describe a workaround. X_eTaL's pane is built into its live demo, not a crate, so the page keeps its own pane; screen control in the page stays asked (saga 7 step 1). Planned: every game's page on X_eTaL's terminal pane (a run that waits at `[]R_EAD` and resumes; no replay of the typed history); the page and browser tests kept; the docs no longer describe a workaround | X_eTaL saga 25 |
 | 2 | promotion-blockers | DONE: X_eTaL f823212 vendored; every output unchanged; the program-with-`l:` ask landed (our check removed); named dyadic trains, Bool power counts, numbers in `[]G_RID` and amend still open; the games 1.6 to 4 times faster than at 70e129d (the table/inner-product slowdown gone), a new timing baseline. Planned: re-check the asks that make the games look like a prototype (the program-with-`l:` misclassification, `--draw`, provenance) on the latest X_eTaL; vendor fixes as they land; remove their workarounds | X_eTaL fixes |
 | 2a | american-spelling | DONE (the user's request): `scripts/check-spelling.py` (from X_eTaL-demos, with its self-test) in the gate; 60 British forms fixed across docs, comments, game text and identifiers (the shell's module renamed to `color`); CLAUDE.md rule 10. |
 | 2b | clone-and-publish | DONE (the user's request): `XETAL_COMMIT` and `scripts/xetal.sh` replace `vendor/xetal` (3.3 MB of X_eTaL's source no longer tracked); `just xetal-bump`; `pages/` untracked, built by the gate, published by `just publish` to `gh-pages` (one commit); the upload workflow removed; GitHub Pages serves the branch. |

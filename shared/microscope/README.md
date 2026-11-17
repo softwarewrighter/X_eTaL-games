@@ -12,7 +12,7 @@ which shows only what X_eTaL prints or draws.
 | `source` | `code(src)` draws any snippet decorated and colored, as X_eTaL renders it; `line(src, range)` and `block(src, range)` draw a line or a program with `range` highlighted as one block; `between` and `find` compute ranges; `shape(dims, meaning)` labels a shape as `s_hape = ...` with a tooltip |
 | `canvas`, `color` | `Canvas` draws an RGBA array scaled to its box and reports clicks as (row, column); `color` turns arrays into pixels (`field`, `scaled`, `signed`, `mask`, `ramp`) |
 | `cells` | small boards as clickable HTML cells (0 / 1 boards, shaded counts with numbers) |
-| `terminal` | `session(libraries, src, typed, seed)` runs a terminal program with everything typed so far as its keyboard and returns the transcript (printed lines, typed lines and `[]S_HOW` pictures, in order), whether it is waiting for the next line, and any error; `notebook(libraries, src, seed)` runs a program as `just show` does: each statement and what it printed |
+| `terminal` | `Live::start(libraries, src, seed)` starts a terminal program and runs it to where it waits for a line (X_eTaL's resumable run, `xetal_play::Interactive`); `feed(line)` gives it a line typed, or an event (`click X Y`, `key NAME`, `tick DT`), and runs it to its next wait; `transcript()` is the printed lines, typed lines and `[]S_HOW` pictures so far, in order, whether it is waiting for the next line, and any error; `session(libraries, src, typed, seed)` is a whole session at once and then the end of its input, as the command line with a file for a keyboard, for tests; `notebook(libraries, src, seed)` runs a program as `just show` does: each statement and what it printed |
 | `page` | `GamePage`: a game's page from its files (`Game`: title, lede, `play.xtl`, the scripted program, the library): the terminal, the notebook, the sources; nothing else |
 | `chrome` | `header` (logo, title, lede), `chip` (a stage: name, code, shape), `panel`, `notice`, `footer` (copyright, license, repository, all games, the vendored X_eTaL commit, build host, sha and time) |
 
@@ -46,8 +46,8 @@ game's files.
 The page: the title (a link to the game's Wikipedia article with a
 page glyph, opening a new tab, or a button opening a dialog on its
 history and play, from `wikipedia` or `about` in its `game.toml`,
-closed by Escape, a click outside or its X), the terminal (`play.xtl`, everything typed replayed on the
-same seed; `?seed=N` in the address replays game N), the notebook
+closed by Escape, a click outside or its X), the terminal (`play.xtl`, kept running: it waits where it
+reads a line and goes on when one is typed; `?seed=N` in the address plays game N), the notebook
 (`SLUG.xtl` on seed 1, as `just show`), and the program and library
 sources, decorated by X_eTaL's renderer. Its only controls are New
 game and Restart. Pictures appear only when the program shows them

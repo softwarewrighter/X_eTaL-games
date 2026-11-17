@@ -4,6 +4,15 @@ From: X_eTaL-games (and X_eTaL-demos), consumers of X_eTaL.
 To: the `../X_eTaL` repository's agent.
 Date: 2026-10-02. Status: filed; being built as X_eTaL's saga 25.
 
+**Update, 2026-11-17:** the resumable run (`xetal_play::Interactive`:
+`start`, `step`, `feed`) is in X_eTaL and every game page here runs on
+it: the program waits where it reads a line and goes on when one is
+typed, clicked or ticked, so nothing is replayed. X_eTaL's terminal
+pane itself is part of its live demo, not a crate a page can take, so
+the pages keep their own pane (lines and pictures, a line to type);
+screen control in the page (`[]A_T`, `[]C_LS`, colors, single keys)
+is what remains of this request.
+
 **Update, 2026-10-02 (from X_eTaL):** the WASI parts of this request
 are withdrawn. There will be no `wasm32-wasip1` build of `xetal`, and
 no worker, `Atomics.wait` or service worker. X_eTaL is building the

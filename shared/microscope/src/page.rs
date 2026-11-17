@@ -12,7 +12,7 @@ use yew::prelude::*;
 
 use crate::chrome::footer;
 use crate::source::{block, NONE};
-use crate::terminal::{notebook, session, Line, Live};
+use crate::terminal::{notebook, Line, Live};
 
 /// What a game page shows.
 #[derive(Clone, Debug, PartialEq, Properties)]
@@ -182,7 +182,23 @@ struct TermProps {
 
 #[function_component(Terminal)]
 fn terminal(p: &TermProps) -> Html {
-    let t = use_memo((p.seed, p.typed.clone()), |(seed, typed)| session(&p.game.libraries(), p.game.play, typed, *seed));
+    // The program keeps running between lines (Live): it is started once
+    // for a seed and waits where it reads; only the lines it has not been
+    // given yet are fed to it. A new seed, or fewer lines than it was
+    // given (Restart this game), starts it again.
+    let live = use_mut_ref(|| None::<(u64, Live, usize)>);
+    let t = {
+        let mut slot = live.borrow_mut();
+        if !matches!(&*slot, Some((s, _, fed)) if *s == p.seed && *fed <= p.typed.len()) {
+            *slot = Some((p.seed, Live::start(&p.game.libraries(), p.game.play, p.seed), 0));
+        }
+        let (_, game, fed) = slot.as_mut().expect("started above");
+        for line in &p.typed[*fed..] {
+            game.feed(line);
+        }
+        *fed = p.typed.len();
+        game.transcript()
+    };
     let input = use_node_ref();
     let pane = use_node_ref();
     {
@@ -279,7 +295,7 @@ fn draw_scene(canvas: &NodeRef, json: &str) -> bool {
 /// An interactive game: a button opening a large dialog (closed by
 /// Escape, its X, or a click on the background) with the program's
 /// latest picture; a click on it is given to the program as an event
-/// line and the program is run again with every click so far.
+/// line where it waits for one.
 #[function_component(Board)]
 fn board(p: &BoardProps) -> Html {
     // The game keeps running between clicks (Live): only the clicks it has
@@ -533,13 +549,13 @@ pub fn game_page(g: &Game) -> Html {
                     if g.interactive {
                         <section class="panel">
                             <h2>{"Play: play.xtl"}</h2>
-                            <p class="note">{"The game's program, unmodified, run by X_eTaL in your browser. Play opens its picture, drawn by X_eTaL; each click is given to the program as an event, click X Y in the picture's coordinates, and the program is run again from the start with every click so far, on the same seed, so it is the same game. Close it with Escape, the X or a click outside; Play again to go on."}</p>
+                            <p class="note">{"The game's program, unmodified, run by X_eTaL in your browser. Play opens its picture, drawn by X_eTaL; each click is given to the program as an event, click X Y in the picture's coordinates, where it waits for one. Close it with Escape, the X or a click outside; Play again to go on."}</p>
                             <Board game={g.clone()} seed={*seed} typed={(*typed).clone()} {on_line} />
                         </section>
                     } else {
                         <section class="panel">
                             <h2>{"Play: play.xtl"}</h2>
-                            <p class="note">{"The game's terminal program, unmodified, run by X_eTaL in your browser. Type a line and press Enter: the program is run again from the start with everything typed so far as its keyboard, on the same seed, so it is the same game."}</p>
+                            <p class="note">{"The game's terminal program, unmodified, run by X_eTaL in your browser. Type a line and press Enter: the program, waiting where it reads, takes the line and goes on. The same seed and the same lines make the same game."}</p>
                             <Terminal game={g.clone()} seed={*seed} typed={(*typed).clone()} {on_line} />
                         </section>
                     }

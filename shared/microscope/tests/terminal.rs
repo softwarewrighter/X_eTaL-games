@@ -83,3 +83,22 @@ fn keys_ticks_and_clicks_reach_a_running_game() {
     let out: Vec<String> = t.lines.iter().filter_map(|l| match l { Line::Out(s) => Some(s.clone()), _ => None }).collect();
     assert_eq!(out, vec!["key ", "tick 0.05", "click 12.0 34.0"]);
 }
+
+#[test]
+fn a_typed_line_goes_on_from_where_the_program_waits() {
+    // The page's terminal keeps the program running (Live): each line is
+    // fed where it waits, and the transcript is the one a whole session
+    // gives. Lines after the program ended are not read.
+    use microscope::terminal::Live;
+    let mut live = Live::start(&[LIB], ECHO, 1);
+    assert!(live.transcript().waiting);
+    assert_eq!(live.transcript().lines, vec![Line::Out("say something:".into())]);
+    live.feed("a");
+    assert_eq!(live.transcript().lines.len(), 3, "the prompt, the line typed, the next prompt");
+    live.feed("bye");
+    let t = live.transcript();
+    assert!(!t.waiting && t.error.is_none());
+    assert_eq!(t, session(&[LIB], ECHO, &typed(&["a", "bye"]), 1));
+    live.feed("late");
+    assert_eq!(live.transcript(), t);
+}

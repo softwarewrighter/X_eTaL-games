@@ -9,8 +9,9 @@ a machine: on another host the comparison is skipped. After a change
 that is meant to cost time (a new X_eTaL, a bigger game), write a new
 baseline with `just bench --baseline` and say why in the commit.
 
-The page times include the test's own pauses between typed lines and
-the page's replay of everything typed so far, and are one run each:
+The page times include the test's own pauses between typed lines (and,
+before 2026-11-17, the page's replay of everything typed so far), and
+are one run each:
 they are shown for information, and only the native times (scripted
 and terminal) can fail the check.
 

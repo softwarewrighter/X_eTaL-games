@@ -46,8 +46,8 @@ shows the picture and passes your clicks to the program.
   `l:c_lick`, which tests it against the same rectangles and dots the
   picture was drawn with: a region button starts a round, a menu choice
   answers, a dot opens its menu. On the page each click is the line
-  `click X Y` in map units, and the program is run again from the start
-  with every click so far, so a game replays exactly.
+  `click X Y` in map units, given to the program where it waits for one;
+  the same seed and the same clicks make the same game.
 
 From `Atlas.xtl`:
 
@@ -96,9 +96,6 @@ drawn there.
 
 - Oceania crosses the date line, so its view spans nearly the whole
   width of the map.
-- Each click runs the program again from the start (as every page here
-  replays its input), so a long game slows down; X_eTaL's terminal pane
-  and resumable runs will end that.
 
 ## Workarounds
 
