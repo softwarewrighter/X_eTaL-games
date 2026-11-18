@@ -1,0 +1,9 @@
+number = 45
+slug = "xetal-bump-member"
+status = "in-progress"
+description = "the X_eTaL agent (2026-11-17): G1 landed (terminal released, docs/terminal.md..."
+role = "production"
+context_files = []
+created_at = "2026-11-17T17:30:08"
+task_type = "refactor"
+commits = []
