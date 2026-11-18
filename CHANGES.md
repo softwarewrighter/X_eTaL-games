@@ -12,6 +12,8 @@ archive), `vendor` a refresh of the vendored X_eTaL.
 
 ## 2026-11-17
 
+- 19:07 `chore` Saga step xetal-bump-member completed.
+
 - 18:38 `vendor` X_eTaL moved from 8c49bd8 to 0b3b3be (2026-11-17, main), 11 commits: the terminal released (its ask G1 landed; docs/terminal.md), `m_ember?` hashed (G10, d117449), a debug adapter. Every golden, page test and browser test unchanged (full gate). Asks re-read against X_eTaL's ledger and re-timed here: the terminal landed; the pane a page can take is filed (their G23, planned as step 194); `m_ember?` landed (207360 against 20000: 0.06 s, from 13 s); reading numbers partly landed (`n_umbers` quick; `@ i_nclude<` of a 53 KB file still 30 s). No workaround removed: the map's sorted cells and TOML data are how the game is written now and are not slower.
 
 - 12:01 `docs` A new ask for X_eTaL (the user's go): its terminal pane as a crate a page can take (a Yew component over the resumable run, with screen control, keys, events and pictures); the terminal ask's row points to it. No game is blocked by it.

@@ -1,0 +1,1 @@
+Pin moved 8c49bd8 -> 0b3b3be (11 commits: terminal released, m_ember? hashed); full gate ok, all goldens unchanged. Asks updated to upstream's ledger and re-timed: terminal landed, pane crate filed as G23 (planned step 194), m_ember? landed (0.06 s), numbers partly landed (include of 53 KB still 30 s). No workaround removed.
